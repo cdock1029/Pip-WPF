@@ -2,9 +2,9 @@
 
 namespace Pip.View;
 
-public partial class SavedPage : UserControl
+public partial class SavedTreasuriesView : UserControl
 {
-    public SavedPage()
+    public SavedTreasuriesView()
     {
         InitializeComponent();
     }

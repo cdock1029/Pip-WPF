@@ -75,7 +75,7 @@
                 </StackPanel>
             </UniformGrid>
 
-            <view:SavedPage Grid.Column="2" />
+            <view:SavedTreasuriesView Grid.Column="2" />
         </Grid>
 
         <StatusBar Grid.Row="3">

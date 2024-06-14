@@ -16,7 +16,7 @@ public class TreasuryItemViewModel(Treasury treasury) : ViewModelBase
         }
     }
 
-    public DateOnly IssueDate
+    public DateTime? IssueDate
     {
         get => _treasury.IssueDate;
         set
@@ -26,7 +26,7 @@ public class TreasuryItemViewModel(Treasury treasury) : ViewModelBase
         }
     }
 
-    public DateOnly MaturityDate
+    public DateTime? MaturityDate
     {
         get => _treasury.MaturityDate;
         set

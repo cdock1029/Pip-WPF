@@ -17,13 +17,13 @@ public class TreasuryDataProvider : ITreasuryDataProvider
         return
         [
             new Treasury
-                { Cusip = "ABCDEFG", IssueDate = new DateOnly(2024, 7, 1), MaturityDate = new DateOnly(2024, 8, 1) },
+                { Cusip = "ABCDEFG", IssueDate = new DateTime(2024, 7, 1), MaturityDate = new DateTime(2024, 8, 1) },
             new Treasury
-                { Cusip = "XYZ", IssueDate = new DateOnly(2024, 7, 15), MaturityDate = new DateOnly(2024, 9, 2) },
+                { Cusip = "XYZ", IssueDate = new DateTime(2024, 7, 15), MaturityDate = new DateTime(2024, 9, 2) },
             new Treasury
-                { Cusip = "MNOP", IssueDate = new DateOnly(2024, 8, 7), MaturityDate = new DateOnly(2024, 10, 5) },
+                { Cusip = "MNOP", IssueDate = new DateTime(2024, 8, 7), MaturityDate = new DateTime(2024, 10, 5) },
             new Treasury
-                { Cusip = "QRS", IssueDate = new DateOnly(2025, 1, 1), MaturityDate = new DateOnly(2026, 1, 1) }
+                { Cusip = "QRS", IssueDate = new DateTime(2025, 1, 1), MaturityDate = new DateTime(2026, 1, 1) }
         ];
     }
 }
