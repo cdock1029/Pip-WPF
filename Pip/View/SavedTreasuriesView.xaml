@@ -3,10 +3,40 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModel="clr-namespace:Pip.ViewModel"
              mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=viewModel:TreasuriesViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
 
+    <!-- Content -->
     <Grid>
-        <TextBlock>Saved Treasuries page</TextBlock>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <!-- Treasuries list -->
+        <ListView Grid.Column="0"
+                  Width="260"
+                  SelectedItem="{Binding SelectedTreasury}"
+                  ItemsSource="{Binding Treasuries}" DisplayMemberPath="Cusip"
+                  d:ItemsSource="{d:SampleData ItemCount=5}" />
+
+        <UniformGrid Grid.Column="1" Margin="10 0" Rows="3" Columns="1">
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <Label FontWeight="SemiBold" Margin="0 0 5 0">Cusip:</Label>
+                <TextBlock Text="{Binding SelectedTreasury.Cusip, FallbackValue=''}" />
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <Label FontWeight="SemiBold" Margin="0 0 5 0">Issue Date:</Label>
+                <TextBlock Text="{Binding SelectedTreasury.IssueDate, FallbackValue=''}" />
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <Label FontWeight="SemiBold" Margin="0 0 5 0">Maturity Date:</Label>
+                <TextBlock Text="{Binding SelectedTreasury.MaturityDate, FallbackValue=''}" />
+            </StackPanel>
+        </UniformGrid>
+
     </Grid>
 </UserControl>

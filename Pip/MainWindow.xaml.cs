@@ -1,17 +1,16 @@
 ﻿using System.Windows;
-using Pip.Data;
 using Pip.ViewModel;
 
 namespace Pip;
 
 public partial class MainWindow : Window
 {
-    private readonly TreasuriesViewModel _viewModel;
+    private readonly MainViewModel _viewModel;
 
-    public MainWindow()
+    public MainWindow(MainViewModel viewModel)
     {
         InitializeComponent();
-        _viewModel = new TreasuriesViewModel(new TreasuryDataProvider());
+        _viewModel = viewModel;
         DataContext = _viewModel;
         Loaded += MainWindow_Loaded;
     }

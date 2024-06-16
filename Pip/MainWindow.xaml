@@ -7,9 +7,21 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:view="clr-namespace:Pip.View"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance Type=viewModel:TreasuriesViewModel}"
+        d:DataContext="{d:DesignInstance Type=viewModel:MainViewModel}"
         Title="MainWindow" Height="500" Width="800">
     <Window.Resources>
+        <DataTemplate DataType="{x:Type viewModel:SearchViewModel}">
+            <view:SearchView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:TreasuriesViewModel}">
+            <view:SavedTreasuriesView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:AnnouncedViewModel}">
+            <view:AnnouncedView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:AuctionsViewModel}">
+            <view:AuctionsView/>
+        </DataTemplate>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -37,47 +49,17 @@
         <DockPanel Grid.Row="1">
             <ToolBarTray DockPanel.Dock="Top">
                 <ToolBar>
-                    <Button Content="Search" />
-                    <Button Content="Saved" />
-                    <Button Content="Announced" />
-                    <Button Content="Auctions" />
+                    <Button Content="Search" Command="{Binding SelectViewModelCommand}" CommandParameter="{Binding SearchViewModel}" />
+                    <Button Content="Saved Treasuries" Command="{Binding SelectViewModelCommand}" CommandParameter="{Binding TreasuriesViewModel}" />
+                    <Button Content="Announced" Command="{Binding SelectViewModelCommand}" CommandParameter="{Binding AnnouncedViewModel}" />
+                    <Button Content="Auctions" Command="{Binding SelectViewModelCommand}" CommandParameter="{Binding  AuctionsViewModel}" />
                 </ToolBar>
             </ToolBarTray>
         </DockPanel>
 
         <!-- Content -->
-        <Grid Grid.Row="2" Margin="10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-
-            <!-- Treasuries list -->
-            <ListView Grid.Column="0"
-                      Width="260"
-                      SelectedItem="{Binding SelectedTreasury}"
-                      ItemsSource="{Binding Treasuries}" DisplayMemberPath="Cusip"
-                      d:ItemsSource="{d:SampleData ItemCount=5}" />
-
-            <UniformGrid Grid.Column="1" Margin="10 0" Rows="3" Columns="1">
-                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                    <Label FontWeight="SemiBold" Margin="0 0 5 0">Cusip:</Label>
-                    <TextBlock Text="{Binding SelectedTreasury.Cusip, FallbackValue=''}" />
-                </StackPanel>
-                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                    <Label FontWeight="SemiBold" Margin="0 0 5 0">Issue Date:</Label>
-                    <TextBlock Text="{Binding SelectedTreasury.IssueDate, FallbackValue=''}" />
-                </StackPanel>
-                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                    <Label FontWeight="SemiBold" Margin="0 0 5 0">Maturity Date:</Label>
-                    <TextBlock Text="{Binding SelectedTreasury.MaturityDate, FallbackValue=''}" />
-                </StackPanel>
-            </UniformGrid>
-
-            <view:SavedTreasuriesView Grid.Column="2" />
-        </Grid>
-
+        <ContentControl Grid.Row="2" Margin="10" Content="{Binding SelectedViewModel}"/>
+       
         <StatusBar Grid.Row="3">
             <Label>Pip a rino</Label>
         </StatusBar>
