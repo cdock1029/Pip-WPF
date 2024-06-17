@@ -1,28 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows.Controls;
 
-namespace Pip.View
+namespace Pip.View;
+
+/// <summary>
+///     Interaction logic for AuctionsView.xaml
+/// </summary>
+public partial class AuctionsView : UserControl
 {
-    /// <summary>
-    /// Interaction logic for AuctionsView.xaml
-    /// </summary>
-    public partial class AuctionsView : UserControl
+    public AuctionsView()
     {
-        public AuctionsView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

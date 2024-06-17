@@ -4,8 +4,8 @@ namespace Pip.ViewModel;
 
 public class SearchViewModel : ViewModelBase
 {
-    private string? _searchText;
     private ObservableCollection<TreasuryItemViewModel> _searchResults = [];
+    private string? _searchText;
 
     public string? SearchText
     {

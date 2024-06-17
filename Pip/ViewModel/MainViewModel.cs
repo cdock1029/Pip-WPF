@@ -37,10 +37,7 @@ public class MainViewModel : ViewModelBase
 
     public override async Task LoadAsync()
     {
-        if (SelectedViewModel is not null)
-        {
-            await SelectedViewModel.LoadAsync();
-        }
+        if (SelectedViewModel is not null) await SelectedViewModel.LoadAsync();
     }
 
     private async void SelectViewModel(object? parameter)

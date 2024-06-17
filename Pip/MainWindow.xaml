@@ -11,16 +11,16 @@
         Title="MainWindow" Height="500" Width="800">
     <Window.Resources>
         <DataTemplate DataType="{x:Type viewModel:SearchViewModel}">
-            <view:SearchView/>
+            <view:SearchView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:TreasuriesViewModel}">
-            <view:SavedTreasuriesView/>
+            <view:SavedTreasuriesView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:AnnouncedViewModel}">
-            <view:AnnouncedView/>
+            <view:AnnouncedView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:AuctionsViewModel}">
-            <view:AuctionsView/>
+            <view:AuctionsView />
         </DataTemplate>
     </Window.Resources>
     <Grid>
@@ -49,17 +49,21 @@
         <DockPanel Grid.Row="1">
             <ToolBarTray DockPanel.Dock="Top">
                 <ToolBar>
-                    <Button Content="Search" Command="{Binding SelectViewModelCommand}" CommandParameter="{Binding SearchViewModel}" />
-                    <Button Content="Saved Treasuries" Command="{Binding SelectViewModelCommand}" CommandParameter="{Binding TreasuriesViewModel}" />
-                    <Button Content="Announced" Command="{Binding SelectViewModelCommand}" CommandParameter="{Binding AnnouncedViewModel}" />
-                    <Button Content="Auctions" Command="{Binding SelectViewModelCommand}" CommandParameter="{Binding  AuctionsViewModel}" />
+                    <Button Content="Search" Command="{Binding SelectViewModelCommand}"
+                            CommandParameter="{Binding SearchViewModel}" />
+                    <Button Content="Saved Treasuries" Command="{Binding SelectViewModelCommand}"
+                            CommandParameter="{Binding TreasuriesViewModel}" />
+                    <Button Content="Announced" Command="{Binding SelectViewModelCommand}"
+                            CommandParameter="{Binding AnnouncedViewModel}" />
+                    <Button Content="Auctions" Command="{Binding SelectViewModelCommand}"
+                            CommandParameter="{Binding  AuctionsViewModel}" />
                 </ToolBar>
             </ToolBarTray>
         </DockPanel>
 
         <!-- Content -->
-        <ContentControl Grid.Row="2" Margin="10" Content="{Binding SelectedViewModel}"/>
-       
+        <ContentControl Grid.Row="2" Margin="10" Content="{Binding SelectedViewModel}" />
+
         <StatusBar Grid.Row="3">
             <Label>Pip a rino</Label>
         </StatusBar>
