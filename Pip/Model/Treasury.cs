@@ -227,6 +227,7 @@ public class Treasury
     [JsonPropertyName("originalDatedDate")]
     public DateTime? OriginalDatedDate { get; set; }
 
+    [JsonConverter(typeof(EmptyStringConverter<DateTime>))]
     [JsonPropertyName("originalIssueDate")]
     public DateTime? OriginalIssueDate { get; set; }
 

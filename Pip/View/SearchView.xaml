@@ -3,9 +3,41 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModel="clr-namespace:Pip.ViewModel"
              mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=viewModel:SearchViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
 
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type viewModel:TreasuryItemViewModel}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="Cusip: {0}, Issue Date: {1}">
+                            <Binding Path="Cusip" />
+                            <Binding Path="IssueDate" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
+        <Style TargetType="ListView" x:Key="ListViewEmptyStyle" BasedOn="{StaticResource {x:Type ListView}}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Items.Count}"
+                             Value="0">
+                    <Setter Property="Control.Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                           Text="Search Results" />
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -15,10 +47,14 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Label VerticalContentAlignment="Center">Search:</Label>
-            <TextBox Grid.Column="1" Margin="10 0" />
+            <Label VerticalContentAlignment="Center">Enter CUSIP:</Label>
+            <TextBox Grid.Column="1" Margin="10 0"
+                     Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Button Grid.Column="2" Margin="0 0 10 0" Content="Search" Command="{Binding GetDataCommand}"
+                    CommandParameter="{Binding SearchText}" />
         </Grid>
-        <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">Search Results</TextBlock>
+        <ListView Grid.Row="1" Style="{StaticResource ListViewEmptyStyle}" ItemsSource="{Binding SearchResults}" />
     </Grid>
 </UserControl>
