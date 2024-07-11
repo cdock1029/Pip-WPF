@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Pip.View.AuctionsView"
+﻿<UserControl x:Class="Pip.UI.View.AuctionsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"

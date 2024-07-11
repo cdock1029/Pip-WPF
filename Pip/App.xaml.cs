@@ -1,9 +1,9 @@
 ﻿using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
-using Pip.Data;
-using Pip.ViewModel;
+using Pip.UI.Data;
+using Pip.UI.ViewModel;
 
-namespace Pip;
+namespace Pip.UI;
 
 public partial class App : Application
 {

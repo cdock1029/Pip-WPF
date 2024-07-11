@@ -1,6 +1,6 @@
-﻿using Pip.Command;
+﻿using Pip.UI.Command;
 
-namespace Pip.ViewModel;
+namespace Pip.UI.ViewModel;
 
 public class MainViewModel : ViewModelBase
 {

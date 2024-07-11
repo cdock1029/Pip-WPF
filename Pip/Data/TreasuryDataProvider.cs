@@ -1,12 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Pip.Model;
+using Pip.UI.Model;
 
-namespace Pip.Data;
-
-public interface ITreasuryDataProvider
-{
-    Task<IEnumerable<Treasury>?> GetTreasuries();
-}
+namespace Pip.UI.Data;
 
 public class TreasuryDataProvider : ITreasuryDataProvider
 {

@@ -1,4 +1,4 @@
-﻿namespace Pip.ViewModel;
+﻿namespace Pip.UI.ViewModel;
 
 public class AnnouncedViewModel : ViewModelBase
 {

@@ -1,9 +1,9 @@
 ﻿using System.Collections.ObjectModel;
-using Pip.Command;
-using Pip.Data;
-using Pip.Model;
+using Pip.UI.Command;
+using Pip.UI.Data;
+using Pip.UI.Model;
 
-namespace Pip.ViewModel;
+namespace Pip.UI.ViewModel;
 
 public class TreasuriesViewModel : ViewModelBase
 {

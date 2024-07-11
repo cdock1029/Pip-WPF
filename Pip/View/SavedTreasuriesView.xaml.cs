@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Pip.View;
+namespace Pip.UI.View;
 
 public partial class SavedTreasuriesView : UserControl
 {

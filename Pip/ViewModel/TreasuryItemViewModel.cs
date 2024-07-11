@@ -1,6 +1,6 @@
-﻿using Pip.Model;
+﻿using Pip.UI.Model;
 
-namespace Pip.ViewModel;
+namespace Pip.UI.ViewModel;
 
 public class TreasuryItemViewModel(Treasury treasury) : ViewModelBase
 {

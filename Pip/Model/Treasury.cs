@@ -2,7 +2,7 @@
 
 using System.Text.Json.Serialization;
 
-namespace Pip.Model;
+namespace Pip.UI.Model;
 
 public class Treasury
 {

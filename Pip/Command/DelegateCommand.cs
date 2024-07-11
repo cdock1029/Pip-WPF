@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace Pip.Command;
+namespace Pip.UI.Command;
 
 public class DelegateCommand : ICommand
 {

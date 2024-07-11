@@ -1,7 +1,7 @@
 ﻿using System.Windows;
-using Pip.ViewModel;
+using Pip.UI.ViewModel;
 
-namespace Pip;
+namespace Pip.UI;
 
 public partial class MainWindow : Window
 {

@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Pip.Model;
+namespace Pip.UI.Model;
 
 public class EmptyStringConverter<T> : JsonConverter<T?>
 {

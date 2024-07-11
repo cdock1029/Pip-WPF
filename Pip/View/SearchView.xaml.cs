@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Pip.View;
+namespace Pip.UI.View;
 
 /// <summary>
 ///     Interaction logic for SearchView.xaml

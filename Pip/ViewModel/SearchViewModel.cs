@@ -1,10 +1,10 @@
 ﻿using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Net.Http.Json;
-using Pip.Command;
-using Pip.Model;
+using Pip.UI.Command;
+using Pip.UI.Model;
 
-namespace Pip.ViewModel;
+namespace Pip.UI.ViewModel;
 
 public class SearchViewModel : ViewModelBase
 {
