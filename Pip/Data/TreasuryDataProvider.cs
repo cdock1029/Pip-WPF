@@ -7,6 +7,8 @@ namespace Pip.UI.Data;
 
 public class TreasuryDataProvider(IHttpClientFactory httpClientFactory) : ITreasuryDataProvider
 {
+    private const string BaseAddress = "https://www.treasurydirect.gov/TA_WS/";
+
     [SuppressMessage("ReSharper", "StringLiteralTypo")]
     public async Task<IEnumerable<Treasury>?> GetTreasuries()
     {
@@ -14,24 +16,50 @@ public class TreasuryDataProvider(IHttpClientFactory httpClientFactory) : ITreas
         return
         [
             new Treasury
-                { Cusip = "ABCDEFG", IssueDate = new DateOnly(2024, 7, 1), MaturityDate = new DateOnly(2024, 8, 1) },
+            {
+                Cusip = "912797GL5",
+                IssueDate = new DateOnly(2024, 7, 25),
+                MaturityDate = new DateOnly(2024, 9, 5),
+                SecurityType = "Bill", SecurityTerm = "42-Day"
+            },
             new Treasury
-                { Cusip = "XYZ", IssueDate = new DateOnly(2024, 7, 15), MaturityDate = new DateOnly(2024, 9, 2) },
+            {
+                Cusip = "912797KX4",
+                IssueDate = new DateOnly(2024, 6, 18),
+                MaturityDate = new DateOnly(2024, 8, 13),
+                SecurityType = "Bill", SecurityTerm = "8-Week"
+            },
             new Treasury
-                { Cusip = "MNOP", IssueDate = new DateOnly(2024, 8, 7), MaturityDate = new DateOnly(2024, 10, 5) },
-            new Treasury
-                { Cusip = "QRS", IssueDate = new DateOnly(2025, 1, 1), MaturityDate = new DateOnly(2026, 1, 1) }
+            {
+                Cusip = "912797GK7",
+                IssueDate = new DateOnly(2024, 5, 9),
+                MaturityDate = new DateOnly(2024, 8, 8),
+                SecurityType = "Bill", SecurityTerm = "13-Week"
+            }
         ];
     }
 
     public async Task<IEnumerable<Treasury>?> SearchTreasuriesAsync(string cusip)
     {
-        var client = httpClientFactory.CreateClient();
-        client.BaseAddress = new Uri("https://www.treasurydirect.gov/TA_WS/");
-
+        var client = GetClient();
         var treasuries =
             await client.GetFromJsonAsync<IEnumerable<Treasury>>(
                 $"securities/search/?format=json&cusip={cusip}");
         return treasuries;
+    }
+
+    public async Task<IEnumerable<Treasury>?> GetUpcomingAsync()
+    {
+        var client = GetClient();
+
+        var treasuries = await client.GetFromJsonAsync<IEnumerable<Treasury>>("securities/upcoming/?format=json");
+        return treasuries;
+    }
+
+    private HttpClient GetClient()
+    {
+        var client = httpClientFactory.CreateClient();
+        client.BaseAddress = new Uri(BaseAddress);
+        return client;
     }
 }

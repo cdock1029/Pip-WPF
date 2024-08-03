@@ -264,7 +264,7 @@ public class Treasury
 
     [JsonPropertyName("reopening")] public string? Reopening { get; set; }
 
-    [JsonPropertyName("securityTerm")] public string? SecurityTerm { get; set; }
+    [JsonPropertyName("securityTerm")] public required string SecurityTerm { get; set; }
 
     [JsonPropertyName("securityTermDayMonth")]
     public string? SecurityTermDayMonth { get; set; }
@@ -272,7 +272,7 @@ public class Treasury
     [JsonPropertyName("securityTermWeekYear")]
     public string? SecurityTermWeekYear { get; set; }
 
-    [JsonPropertyName("securityType")] public string? SecurityType { get; set; }
+    [JsonPropertyName("securityType")] public required string SecurityType { get; set; }
 
     [JsonPropertyName("series")] public string? Series { get; set; }
 

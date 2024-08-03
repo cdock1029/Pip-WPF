@@ -18,8 +18,8 @@
         <DataTemplate DataType="{x:Type viewModel:TreasuriesViewModel}">
             <view:SavedTreasuriesView />
         </DataTemplate>
-        <DataTemplate DataType="{x:Type viewModel:AnnouncedViewModel}">
-            <view:AnnouncedView />
+        <DataTemplate DataType="{x:Type viewModel:UpcomingAuctionsViewModel}">
+            <view:UpcomingAuctionsView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:AuctionsViewModel}">
             <view:AuctionsView />
@@ -55,8 +55,8 @@
                             CommandParameter="{Binding SearchViewModel}" />
                     <Button Content="Saved Treasuries" Command="{Binding SelectViewModelCommand}"
                             CommandParameter="{Binding TreasuriesViewModel}" />
-                    <Button Content="Announced" Command="{Binding SelectViewModelCommand}"
-                            CommandParameter="{Binding AnnouncedViewModel}" />
+                    <Button Content="Upcoming Auctions" Command="{Binding SelectViewModelCommand}"
+                            CommandParameter="{Binding UpcomingAuctionsViewModel}" />
                     <Button Content="Auctions" Command="{Binding SelectViewModelCommand}"
                             CommandParameter="{Binding  AuctionsViewModel}" />
                 </ToolBar>

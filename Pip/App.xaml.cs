@@ -30,7 +30,7 @@ public partial class App : Application
             .AddTransient<MainViewModel>()
             .AddTransient<SearchViewModel>()
             .AddTransient<TreasuriesViewModel>()
-            .AddTransient<AnnouncedViewModel>()
+            .AddTransient<UpcomingAuctionsViewModel>()
             .AddTransient<AuctionsViewModel>()
             .AddHttpClient()
             .AddSingleton<TreasuryDataProvider>()

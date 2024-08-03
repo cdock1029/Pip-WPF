@@ -29,7 +29,8 @@ public class TreasuriesViewModel : ViewModelBase
     private void Add(object? parameter)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(parameter as string);
-        var treasuryViewModel = new TreasuryItemViewModel(new Treasury { Cusip = "New" });
+        var treasuryViewModel =
+            new TreasuryItemViewModel(new Treasury { Cusip = "New", SecurityTerm = "", SecurityType = "" });
     }
 
     public override async Task LoadAsync()

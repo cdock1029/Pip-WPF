@@ -8,12 +8,12 @@ public class MainViewModel : ViewModelBase
 
     public MainViewModel(SearchViewModel searchViewModel,
         TreasuriesViewModel treasuriesViewModel,
-        AnnouncedViewModel announcedViewModel,
+        UpcomingAuctionsViewModel upcomingAuctionsViewModel,
         AuctionsViewModel auctionsViewModel)
     {
         SearchViewModel = searchViewModel;
         TreasuriesViewModel = treasuriesViewModel;
-        AnnouncedViewModel = announcedViewModel;
+        UpcomingAuctionsViewModel = upcomingAuctionsViewModel;
         AuctionsViewModel = auctionsViewModel;
 
         SelectedViewModel = SearchViewModel;
@@ -30,7 +30,7 @@ public class MainViewModel : ViewModelBase
 
     public TreasuriesViewModel TreasuriesViewModel { get; }
 
-    public AnnouncedViewModel AnnouncedViewModel { get; }
+    public UpcomingAuctionsViewModel UpcomingAuctionsViewModel { get; }
     public AuctionsViewModel AuctionsViewModel { get; }
 
     public DelegateCommand SelectViewModelCommand { get; }

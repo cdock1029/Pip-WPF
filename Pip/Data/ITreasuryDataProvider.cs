@@ -7,4 +7,5 @@ public interface ITreasuryDataProvider
     Task<IEnumerable<Treasury>?> GetTreasuries();
 
     Task<IEnumerable<Treasury>?> SearchTreasuriesAsync(string cusip);
+    Task<IEnumerable<Treasury>?> GetUpcomingAsync();
 }
