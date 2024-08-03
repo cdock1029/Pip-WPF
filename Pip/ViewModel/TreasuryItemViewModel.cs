@@ -1,4 +1,4 @@
-﻿using Pip.UI.Model;
+﻿using Pip.Model;
 
 namespace Pip.UI.ViewModel;
 
@@ -16,7 +16,7 @@ public class TreasuryItemViewModel(Treasury treasury) : ViewModelBase
         }
     }
 
-    public DateTime? IssueDate
+    public DateOnly IssueDate
     {
         get => _treasury.IssueDate;
         set
@@ -26,7 +26,7 @@ public class TreasuryItemViewModel(Treasury treasury) : ViewModelBase
         }
     }
 
-    public DateTime? MaturityDate
+    public DateOnly? MaturityDate
     {
         get => _treasury.MaturityDate;
         set

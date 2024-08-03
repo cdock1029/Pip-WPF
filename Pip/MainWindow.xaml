@@ -8,7 +8,9 @@
         xmlns:view="clr-namespace:Pip.UI.View"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=viewModel:MainViewModel}"
-        Title="MainWindow" Height="500" Width="800">
+        WindowStartupLocation="CenterScreen"
+        Title="MainWindow"
+        Height="650" Width="900">
     <Window.Resources>
         <DataTemplate DataType="{x:Type viewModel:SearchViewModel}">
             <view:SearchView />

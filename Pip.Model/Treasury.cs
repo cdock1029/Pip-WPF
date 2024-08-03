@@ -1,9 +1,11 @@
 ﻿// Root myDeserializedClass = JsonSerializer.Deserialize<Root>(myJsonResponse);
 
 using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
 
-namespace Pip.UI.Model;
+namespace Pip.Model;
 
+[PrimaryKey(nameof(Cusip), nameof(IssueDate))]
 public class Treasury
 {
     [JsonPropertyName("accruedInterestPer1000")]
@@ -25,13 +27,13 @@ public class Treasury
 
     [JsonPropertyName("announcedCusip")] public string? AnnouncedCusip { get; set; }
 
-    [JsonConverter(typeof(EmptyStringConverter<DateTime>))]
+    [JsonConverter(typeof(DateOnlyConverter))]
     [JsonPropertyName("announcementDate")]
-    public DateTime? AnnouncementDate { get; set; }
+    public DateOnly? AnnouncementDate { get; set; }
 
-    [JsonConverter(typeof(EmptyStringConverter<DateTime>))]
+    [JsonConverter(typeof(DateOnlyConverter))]
     [JsonPropertyName("auctionDate")]
-    public DateTime? AuctionDate { get; set; }
+    public DateOnly? AuctionDate { get; set; }
 
     [JsonPropertyName("auctionDateYear")] public string? AuctionDateYear { get; set; }
 
@@ -54,21 +56,21 @@ public class Treasury
 
     [JsonPropertyName("backDated")] public string? BackDated { get; set; }
 
-    [JsonConverter(typeof(EmptyStringConverter<DateTime>))]
+    [JsonConverter(typeof(DateOnlyConverter))]
     [JsonPropertyName("backDatedDate")]
-    public DateTime? BackDatedDate { get; set; }
+    public DateOnly? BackDatedDate { get; set; }
 
     [JsonPropertyName("bidToCoverRatio")] public string? BidToCoverRatio { get; set; }
 
-    [JsonConverter(typeof(EmptyStringConverter<DateTime>))]
+    [JsonConverter(typeof(DateOnlyConverter))]
     [JsonPropertyName("callDate")]
-    public DateTime? CallDate { get; set; }
+    public DateOnly? CallDate { get; set; }
 
     [JsonPropertyName("callable")] public string? Callable { get; set; }
 
-    [JsonConverter(typeof(EmptyStringConverter<DateTime>))]
+    [JsonConverter(typeof(DateOnlyConverter))]
     [JsonPropertyName("calledDate")]
-    public DateTime? CalledDate { get; set; }
+    public DateOnly? CalledDate { get; set; }
 
     [JsonPropertyName("cashManagementBillCMB")]
     public string? CashManagementBillCMB { get; set; }
@@ -102,8 +104,8 @@ public class Treasury
     [JsonPropertyName("cusip")] public string? Cusip { get; set; }
 
     [JsonPropertyName("datedDate")]
-    [JsonConverter(typeof(EmptyStringConverter<DateTime>))]
-    public DateTime? DatedDate { get; set; }
+    [JsonConverter(typeof(DateOnlyConverter))]
+    public DateOnly? DatedDate { get; set; }
 
     [JsonPropertyName("directBidderAccepted")]
     public string? DirectBidderAccepted { get; set; }
@@ -125,15 +127,15 @@ public class Treasury
     [JsonPropertyName("firstInterestPeriod")]
     public string? FirstInterestPeriod { get; set; }
 
-    [JsonConverter(typeof(EmptyStringConverter<DateTime>))]
+    [JsonConverter(typeof(DateOnlyConverter))]
     [JsonPropertyName("firstInterestPaymentDate")]
-    public DateTime? FirstInterestPaymentDate { get; set; }
+    public DateOnly? FirstInterestPaymentDate { get; set; }
 
     [JsonPropertyName("floatingRate")] public string? FloatingRate { get; set; }
 
-    [JsonConverter(typeof(EmptyStringConverter<DateTime>))]
+    [JsonConverter(typeof(DateOnlyConverter))]
     [JsonPropertyName("frnIndexDeterminationDate")]
-    public DateTime? FrnIndexDeterminationDate { get; set; }
+    public DateOnly? FrnIndexDeterminationDate { get; set; }
 
     [JsonPropertyName("frnIndexDeterminationRate")]
     public string? FrnIndexDeterminationRate { get; set; }
@@ -164,9 +166,9 @@ public class Treasury
 
     [JsonPropertyName("interestRate")] public string? InterestRate { get; set; }
 
-    [JsonConverter(typeof(EmptyStringConverter<DateTime>))]
+    [JsonConverter(typeof(DateOnlyConverter))]
     [JsonPropertyName("issueDate")]
-    public DateTime? IssueDate { get; set; }
+    public DateOnly IssueDate { get; set; }
 
     [JsonPropertyName("lowDiscountRate")] public string? LowDiscountRate { get; set; }
 
@@ -180,13 +182,13 @@ public class Treasury
 
     [JsonPropertyName("lowYield")] public string? LowYield { get; set; }
 
-    [JsonConverter(typeof(EmptyStringConverter<DateTime>))]
+    [JsonConverter(typeof(DateOnlyConverter))]
     [JsonPropertyName("maturingDate")]
-    public DateTime? MaturingDate { get; set; }
+    public DateOnly? MaturingDate { get; set; }
 
-    [JsonConverter(typeof(EmptyStringConverter<DateTime>))]
+    [JsonConverter(typeof(DateOnlyConverter))]
     [JsonPropertyName("maturityDate")]
-    public DateTime? MaturityDate { get; set; }
+    public DateOnly? MaturityDate { get; set; }
 
     [JsonPropertyName("maximumCompetitiveAward")]
     public string? MaximumCompetitiveAward { get; set; }
@@ -223,13 +225,13 @@ public class Treasury
 
     [JsonPropertyName("originalCusip")] public string? OriginalCusip { get; set; }
 
-    [JsonConverter(typeof(EmptyStringConverter<DateTime>))]
+    [JsonConverter(typeof(DateOnlyConverter))]
     [JsonPropertyName("originalDatedDate")]
-    public DateTime? OriginalDatedDate { get; set; }
+    public DateOnly? OriginalDatedDate { get; set; }
 
-    [JsonConverter(typeof(EmptyStringConverter<DateTime>))]
+    [JsonConverter(typeof(DateOnlyConverter))]
     [JsonPropertyName("originalIssueDate")]
-    public DateTime? OriginalIssueDate { get; set; }
+    public DateOnly? OriginalIssueDate { get; set; }
 
     [JsonPropertyName("originalSecurityTerm")]
     public string? OriginalSecurityTerm { get; set; }

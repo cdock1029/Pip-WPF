@@ -32,6 +32,8 @@ public partial class App : Application
             .AddTransient<TreasuriesViewModel>()
             .AddTransient<AnnouncedViewModel>()
             .AddTransient<AuctionsViewModel>()
-            .AddTransient<ITreasuryDataProvider, TreasuryDataProvider>();
+            .AddHttpClient()
+            .AddSingleton<TreasuryDataProvider>()
+            .AddSingleton<ITreasuryDataProvider>(p => p.GetRequiredService<TreasuryDataProvider>());
     }
 }

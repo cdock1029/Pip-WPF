@@ -5,6 +5,10 @@ VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pip.UI", "Pip\Pip.UI.csproj", "{5CE723D9-38E1-4A38-B315-6A26E5FBA471}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pip.DataAccess", "DataAccess\Pip.DataAccess.csproj", "{F291910D-7D57-436E-9759-071E093FF1FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pip.Model", "Pip.Model\Pip.Model.csproj", "{4841918D-B353-4AEF-AA5E-CFFDD5E0830F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,22 @@ Global
 		{5CE723D9-38E1-4A38-B315-6A26E5FBA471}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5CE723D9-38E1-4A38-B315-6A26E5FBA471}.Release|x64.ActiveCfg = Release|x64
 		{5CE723D9-38E1-4A38-B315-6A26E5FBA471}.Release|x64.Build.0 = Release|x64
+		{F291910D-7D57-436E-9759-071E093FF1FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F291910D-7D57-436E-9759-071E093FF1FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F291910D-7D57-436E-9759-071E093FF1FE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F291910D-7D57-436E-9759-071E093FF1FE}.Debug|x64.Build.0 = Debug|Any CPU
+		{F291910D-7D57-436E-9759-071E093FF1FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F291910D-7D57-436E-9759-071E093FF1FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F291910D-7D57-436E-9759-071E093FF1FE}.Release|x64.ActiveCfg = Release|Any CPU
+		{F291910D-7D57-436E-9759-071E093FF1FE}.Release|x64.Build.0 = Release|Any CPU
+		{4841918D-B353-4AEF-AA5E-CFFDD5E0830F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4841918D-B353-4AEF-AA5E-CFFDD5E0830F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4841918D-B353-4AEF-AA5E-CFFDD5E0830F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4841918D-B353-4AEF-AA5E-CFFDD5E0830F}.Debug|x64.Build.0 = Debug|Any CPU
+		{4841918D-B353-4AEF-AA5E-CFFDD5E0830F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4841918D-B353-4AEF-AA5E-CFFDD5E0830F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4841918D-B353-4AEF-AA5E-CFFDD5E0830F}.Release|x64.ActiveCfg = Release|Any CPU
+		{4841918D-B353-4AEF-AA5E-CFFDD5E0830F}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
+using Pip.Model;
 using Pip.UI.Command;
 using Pip.UI.Data;
-using Pip.UI.Model;
 
 namespace Pip.UI.ViewModel;
 
@@ -21,7 +21,7 @@ public class TreasuriesViewModel : ViewModelBase
     public TreasuryItemViewModel? SelectedTreasury
     {
         get => _selectedTreasury;
-        set => SetField(ref _selectedTreasury, value);
+        set => SetProperty(ref _selectedTreasury, value);
     }
 
     public DelegateCommand AddCommand { get; }

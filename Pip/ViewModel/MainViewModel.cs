@@ -23,7 +23,7 @@ public class MainViewModel : ViewModelBase
     public ViewModelBase? SelectedViewModel
     {
         get => _selectedViewModel;
-        set => SetField(ref _selectedViewModel, value);
+        private set => SetProperty(ref _selectedViewModel, value);
     }
 
     public SearchViewModel SearchViewModel { get; }

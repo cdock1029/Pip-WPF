@@ -1,18 +1,18 @@
 ﻿using System.Collections.ObjectModel;
-using System.Net.Http;
-using System.Net.Http.Json;
 using Pip.UI.Command;
-using Pip.UI.Model;
+using Pip.UI.Data;
 
 namespace Pip.UI.ViewModel;
 
 public class SearchViewModel : ViewModelBase
 {
+    private readonly ITreasuryDataProvider _treasuryDataProvider;
     private ObservableCollection<TreasuryItemViewModel> _searchResults = [];
     private string? _searchText;
 
-    public SearchViewModel()
+    public SearchViewModel(ITreasuryDataProvider treasuryDataProvider)
     {
+        _treasuryDataProvider = treasuryDataProvider;
         GetDataCommand = new DelegateCommand(GetData, CanGetData);
     }
 
@@ -21,7 +21,7 @@ public class SearchViewModel : ViewModelBase
         get => _searchText;
         set
         {
-            SetField(ref _searchText, value);
+            SetProperty(ref _searchText, value);
             SearchResults = [];
             GetDataCommand.RaiseCanExecuteChanged();
         }
@@ -30,7 +30,7 @@ public class SearchViewModel : ViewModelBase
     public ObservableCollection<TreasuryItemViewModel> SearchResults
     {
         get => _searchResults;
-        private set => SetField(ref _searchResults, value);
+        private set => SetProperty(ref _searchResults, value);
     }
 
     public DelegateCommand GetDataCommand { get; }
@@ -45,15 +45,10 @@ public class SearchViewModel : ViewModelBase
         ArgumentNullException.ThrowIfNull(parameter);
         var cusip = parameter as string;
 
-        using HttpClient client = new();
-        client.BaseAddress = new Uri("https://www.treasurydirect.gov/TA_WS/");
+        var treasuries = await _treasuryDataProvider.SearchTreasuriesAsync(cusip!);
 
-        var treasuries =
-            await client.GetFromJsonAsync<IEnumerable<Treasury>>(
-                $"securities/search/?format=json&cusip={cusip}");
-
-        if (treasuries is not null)
-            foreach (var treasury in treasuries)
-                SearchResults.Add(new TreasuryItemViewModel(treasury));
+        if (treasuries == null) return;
+        foreach (var treasury in treasuries)
+            SearchResults.Add(new TreasuryItemViewModel(treasury));
     }
 }
