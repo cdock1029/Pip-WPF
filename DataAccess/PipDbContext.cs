@@ -5,6 +5,8 @@ namespace Pip.DataAccess;
 
 public class PipDbContext(DbContextOptions<PipDbContext> options) : DbContext(options)
 {
+    public DbSet<Treasury> Treasuries { get; init; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

@@ -1,5 +1,8 @@
-﻿using System.Windows;
+﻿using System.Configuration;
+using System.Windows;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Pip.DataAccess;
 using Pip.UI.Data;
 using Pip.UI.ViewModel;
 
@@ -34,6 +37,11 @@ public partial class App : Application
             .AddTransient<AuctionsViewModel>()
             .AddHttpClient()
             .AddSingleton<TreasuryDataProvider>()
-            .AddSingleton<ITreasuryDataProvider>(p => p.GetRequiredService<TreasuryDataProvider>());
+            .AddTransient<ITreasuryDataProvider>(p => p.GetRequiredService<TreasuryDataProvider>())
+            .AddDbContextFactory<PipDbContext>(options =>
+            {
+                var connString = ConfigurationManager.ConnectionStrings["PipDbLocal"].ConnectionString;
+                options.UseSqlServer(connString);
+            }, ServiceLifetime.Transient);
     }
 }

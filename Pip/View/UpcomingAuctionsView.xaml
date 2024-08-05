@@ -9,44 +9,7 @@
              d:DataContext="{d:DesignInstance Type=viewModel:UpcomingAuctionsViewModel}">
     <Grid>
         <ScrollViewer Grid.Row="0">
-            <ItemsControl ItemsSource="{Binding Treasuries}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Button
-                            Width="360"
-                            Height="90"
-                            Margin="7"
-                            Padding="20,10"
-                            HorizontalContentAlignment="Left">
-                            <StackPanel Orientation="Horizontal">
-                                <ContentPresenter Width="50"
-                                                  Height="50"
-                                                  Margin="0,0,8,0"
-                                                  Content="{Binding SecurityType}" />
-                                <StackPanel Orientation="Vertical">
-                                    <TextBlock
-                                        Margin="10,0,0,0"
-                                        Style="{StaticResource BodyStrongTextBlockStyle}"
-                                        Text="{Binding Cusip}" AutomationProperties.HeadingLevel="Level3" />
-                                    <TextBlock
-                                        Width="240"
-                                        Margin="10,0,0,0"
-                                        Foreground="{DynamicResource TextFillColorPrimaryBrush}" Opacity="0.7"
-                                        Style="{StaticResource CaptionTextBlockStyle}"
-                                        Text="{Binding IssueDate,StringFormat='{}{0:ddd d MMM yyyy}'}" />
-
-                                    <TextBlock
-                                        Margin="10,0,0,0"
-                                        Foreground="{DynamicResource TextFillColorPrimaryBrush}" Opacity="0.7"
-                                        Style="{StaticResource CaptionTextBlockStyle}"
-                                        Text="{Binding MaturityDate, StringFormat='{}{0:ddd d MMM yyyy}'}" />
-                                </StackPanel>
-
-                            </StackPanel>
-                        </Button>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+            <ItemsControl ItemsSource="{Binding Treasuries}" />
         </ScrollViewer>
     </Grid>
 </UserControl>

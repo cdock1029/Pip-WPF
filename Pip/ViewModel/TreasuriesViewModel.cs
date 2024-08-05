@@ -36,9 +36,9 @@ public class TreasuriesViewModel : ViewModelBase
     public override async Task LoadAsync()
     {
         if (Treasuries.Any()) return;
-        var treasuries = await _treasuryDataProvider.GetTreasuries();
-        if (treasuries is not null)
-            foreach (var treasury in treasuries)
-                Treasuries.Add(new TreasuryItemViewModel(treasury));
+        var treasuries = await _treasuryDataProvider.GetSavedTreasuriesAsync();
+
+        await foreach (var treasury in treasuries)
+            Treasuries.Add(new TreasuryItemViewModel(treasury));
     }
 }

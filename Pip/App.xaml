@@ -1,6 +1,8 @@
 ﻿<Application x:Class="Pip.UI.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewModel="clr-namespace:Pip.UI.ViewModel"
+             xmlns:view="clr-namespace:Pip.UI.View">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -8,6 +10,11 @@
                     Source="pack://application:,,,/PresentationFramework.Fluent;component/Resources/Fluent.xaml" />
                 <ResourceDictionary Source="/Resources/Converters.xaml" />
                 <ResourceDictionary Source="/Resources/Styles.xaml" />
+                <ResourceDictionary>
+                    <DataTemplate DataType="{x:Type viewModel:TreasuryItemViewModel}">
+                        <view:TreasuryItemCondensed />
+                    </DataTemplate>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

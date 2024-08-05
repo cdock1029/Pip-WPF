@@ -19,4 +19,9 @@ public partial class MainWindow : Window
     {
         await _viewModel.LoadAsync();
     }
+
+    private async void MainWindow_SelectedView_Loaded(object sender, RoutedEventArgs e)
+    {
+        await _viewModel.LoadAsync();
+    }
 }

@@ -12,7 +12,7 @@ using Pip.DataAccess;
 namespace Pip.DataAccess.Migrations
 {
     [DbContext(typeof(PipDbContext))]
-    [Migration("20240803034811_InitialCreate")]
+    [Migration("20240805022731_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -388,6 +388,7 @@ namespace Pip.DataAccess.Migrations
                         .HasAnnotation("Relational:JsonPropertyName", "reopening");
 
                     b.Property<string>("SecurityTerm")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "securityTerm");
 
@@ -400,6 +401,7 @@ namespace Pip.DataAccess.Migrations
                         .HasAnnotation("Relational:JsonPropertyName", "securityTermWeekYear");
 
                     b.Property<string>("SecurityType")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "securityType");
 
@@ -493,26 +495,32 @@ namespace Pip.DataAccess.Migrations
 
                     b.HasKey("Cusip", "IssueDate");
 
-                    b.ToTable("Treasury");
+                    b.ToTable("Treasuries");
 
                     b.HasData(
                         new
                         {
                             Cusip = "912797GL5",
                             IssueDate = new DateOnly(2024, 7, 25),
-                            MaturityDate = new DateOnly(2024, 9, 5)
+                            MaturityDate = new DateOnly(2024, 9, 5),
+                            SecurityTerm = "42-Day",
+                            SecurityType = "Bill"
                         },
                         new
                         {
                             Cusip = "912797KX4",
                             IssueDate = new DateOnly(2024, 6, 18),
-                            MaturityDate = new DateOnly(2024, 8, 13)
+                            MaturityDate = new DateOnly(2024, 8, 13),
+                            SecurityTerm = "8-Week",
+                            SecurityType = "Bill"
                         },
                         new
                         {
                             Cusip = "912797GK7",
                             IssueDate = new DateOnly(2024, 5, 9),
-                            MaturityDate = new DateOnly(2024, 8, 8)
+                            MaturityDate = new DateOnly(2024, 8, 8),
+                            SecurityTerm = "13-Week",
+                            SecurityType = "Bill"
                         });
                 });
 #pragma warning restore 612, 618

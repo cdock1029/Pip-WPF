@@ -14,7 +14,7 @@ namespace Pip.DataAccess.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Treasury",
+                name: "Treasuries",
                 columns: table => new
                 {
                     Cusip = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -107,10 +107,10 @@ namespace Pip.DataAccess.Migrations
                     RefCPIOnDatedDate = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RefCpiOnIssueDate = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Reopening = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityTerm = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityTerm = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SecurityTermDayMonth = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SecurityTermWeekYear = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Series = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SomaAccepted = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SomaHoldings = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -136,17 +136,17 @@ namespace Pip.DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Treasury", x => new { x.Cusip, x.IssueDate });
+                    table.PrimaryKey("PK_Treasuries", x => new { x.Cusip, x.IssueDate });
                 });
 
             migrationBuilder.InsertData(
-                table: "Treasury",
+                table: "Treasuries",
                 columns: new[] { "Cusip", "IssueDate", "AccruedInterestPer100", "AccruedInterestPer1000", "AdjustedAccruedInterestPer1000", "AdjustedPrice", "AllocationPercentage", "AllocationPercentageDecimals", "AnnouncedCusip", "AnnouncementDate", "AuctionDate", "AuctionDateYear", "AuctionFormat", "AverageMedianDiscountMargin", "AverageMedianDiscountRate", "AverageMedianInvestmentRate", "AverageMedianPrice", "AverageMedianYield", "BackDated", "BackDatedDate", "BidToCoverRatio", "CallDate", "Callable", "CalledDate", "CashManagementBillCMB", "ClosingTimeCompetitive", "ClosingTimeNoncompetitive", "CompetitiveAccepted", "CompetitiveBidDecimals", "CompetitiveTendered", "CompetitiveTendersAccepted", "CorpusCusip", "CpiBaseReferencePeriod", "CurrentlyOutstanding", "DatedDate", "DirectBidderAccepted", "DirectBidderTendered", "EstimatedAmountOfPubliclyHeldMaturingSecuritiesByType", "FimaIncluded", "FimaNoncompetitiveAccepted", "FimaNoncompetitiveTendered", "FirstInterestPaymentDate", "FirstInterestPeriod", "FloatingRate", "FrnIndexDeterminationDate", "FrnIndexDeterminationRate", "HighDiscountMargin", "HighDiscountRate", "HighInvestmentRate", "HighPrice", "HighYield", "IndexRatioOnIssueDate", "IndirectBidderAccepted", "IndirectBidderTendered", "InterestPaymentFrequency", "InterestRate", "LowDiscountMargin", "LowDiscountRate", "LowInvestmentRate", "LowPrice", "LowYield", "MaturingDate", "MaturityDate", "MaximumCompetitiveAward", "MaximumNoncompetitiveAward", "MaximumSingleBid", "MinimumBidAmount", "MinimumStripAmount", "MinimumToIssue", "MultiplesToBid", "MultiplesToIssue", "NlpExclusionAmount", "NlpReportingThreshold", "NoncompetitiveAccepted", "NoncompetitiveTendersAccepted", "OfferingAmount", "OriginalCusip", "OriginalDatedDate", "OriginalIssueDate", "OriginalSecurityTerm", "PdfFilenameAnnouncement", "PdfFilenameCompetitiveResults", "PdfFilenameNoncompetitiveResults", "PdfFilenameSpecialAnnouncement", "PricePer100", "PrimaryDealerAccepted", "PrimaryDealerTendered", "RefCPIOnDatedDate", "RefCpiOnIssueDate", "Reopening", "SecurityTerm", "SecurityTermDayMonth", "SecurityTermWeekYear", "SecurityType", "Series", "SomaAccepted", "SomaHoldings", "SomaIncluded", "SomaTendered", "Spread", "StandardInterestPaymentPer1000", "Strippable", "Term", "TiinConversionFactorPer1000", "TintCusip1", "TintCusip2", "Tips", "TotalAccepted", "TotalTendered", "TreasuryDirectAccepted", "TreasuryDirectTendersAccepted", "Type", "UnadjustedAccruedInterestPer1000", "UnadjustedPrice", "XmlFilenameAnnouncement", "XmlFilenameCompetitiveResults" },
                 values: new object[,]
                 {
-                    { "912797GK7", new DateOnly(2024, 5, 9), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, new DateOnly(2024, 8, 8), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null },
-                    { "912797GL5", new DateOnly(2024, 7, 25), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, new DateOnly(2024, 9, 5), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null },
-                    { "912797KX4", new DateOnly(2024, 6, 18), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, new DateOnly(2024, 8, 13), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null }
+                    { "912797GK7", new DateOnly(2024, 5, 9), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, new DateOnly(2024, 8, 8), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "13-Week", null, null, "Bill", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null },
+                    { "912797GL5", new DateOnly(2024, 7, 25), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, new DateOnly(2024, 9, 5), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "42-Day", null, null, "Bill", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null },
+                    { "912797KX4", new DateOnly(2024, 6, 18), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, new DateOnly(2024, 8, 13), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "8-Week", null, null, "Bill", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null }
                 });
         }
 
@@ -154,7 +154,7 @@ namespace Pip.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Treasury");
+                name: "Treasuries");
         }
     }
 }

@@ -13,16 +13,16 @@
         Height="650" Width="900">
     <Window.Resources>
         <DataTemplate DataType="{x:Type viewModel:SearchViewModel}">
-            <view:SearchView />
+            <view:SearchView Loaded="MainWindow_SelectedView_Loaded" />
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:TreasuriesViewModel}">
-            <view:SavedTreasuriesView />
+            <view:SavedTreasuriesView Loaded="MainWindow_SelectedView_Loaded" />
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:UpcomingAuctionsViewModel}">
-            <view:UpcomingAuctionsView />
+            <view:UpcomingAuctionsView Loaded="MainWindow_SelectedView_Loaded" />
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModel:AuctionsViewModel}">
-            <view:AuctionsView />
+            <view:AuctionsView Loaded="MainWindow_SelectedView_Loaded" />
         </DataTemplate>
     </Window.Resources>
     <Grid>
