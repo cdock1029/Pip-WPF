@@ -12,10 +12,11 @@ public class AuctionsViewModel : ViewModelBase
     {
         _treasuryDataProvider = treasuryDataProvider;
         GroupedTreasuries = new CollectionViewSource { Source = Treasuries };
-        GroupedTreasuries.GroupDescriptions.Add(new PropertyGroupDescription("Type"));
+        GroupedTreasuries.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TreasuryItemViewModel.Type)));
     }
 
     public CollectionViewSource GroupedTreasuries { get; }
+
     private ObservableCollection<TreasuryItemViewModel> Treasuries { get; } = [];
 
     public override async Task LoadAsync()

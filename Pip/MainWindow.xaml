@@ -10,7 +10,7 @@
         d:DataContext="{d:DesignInstance Type=viewModel:MainViewModel}"
         WindowStartupLocation="CenterScreen"
         Title="MainWindow"
-        Height="650" Width="900">
+        Height="950" Width="900">
     <Window.Resources>
         <DataTemplate DataType="{x:Type viewModel:SearchViewModel}">
             <view:SearchView Loaded="MainWindow_SelectedView_Loaded" />
@@ -64,7 +64,7 @@
         </DockPanel>
 
         <!-- Content -->
-        <ContentControl Grid.Row="2" Margin="10" Content="{Binding SelectedViewModel}" />
+        <ContentControl Grid.Row="2" Margin="20" Content="{Binding SelectedViewModel}" />
 
         <StatusBar Grid.Row="3">
             <Label>Pip a rino</Label>

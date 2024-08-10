@@ -13,8 +13,13 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" HorizontalAlignment="Center">Auctions View</TextBlock>
-        <DataGrid Grid.Row="1" Margin="0,10,0,0" ItemsSource="{Binding GroupedTreasuries.View}"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center">Auctions View</TextBlock>
+        <DataGrid VerticalAlignment="Top" Grid.Row="1" HorizontalAlignment="Center" Grid.Column="0" Name="Dg"
+                  MinWidth="600" Margin="0,10,0,0"
+                  ItemsSource="{Binding GroupedTreasuries.View}"
                   AutoGenerateColumns="True" AutoGeneratingColumn="DataGrid_OnAutoGeneratingColumn">
             <DataGrid.GroupStyle>
                 <GroupStyle>

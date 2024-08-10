@@ -48,8 +48,4 @@
 	  <ProjectReference Include="..\Pip.Model\Pip.Model.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Model\" />
-	</ItemGroup>
-
 </Project>

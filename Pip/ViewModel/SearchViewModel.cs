@@ -1,54 +1,33 @@
 ﻿using System.Collections.ObjectModel;
-using Pip.UI.Command;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Pip.UI.Data;
 
 namespace Pip.UI.ViewModel;
 
-public class SearchViewModel : ViewModelBase
+public partial class SearchViewModel(ITreasuryDataProvider treasuryDataProvider) : ViewModelBase
 {
-    private readonly ITreasuryDataProvider _treasuryDataProvider;
-    private ObservableCollection<TreasuryItemViewModel> _searchResults = [];
+    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(GetDataCommand))]
     private string? _searchText;
 
-    public SearchViewModel(ITreasuryDataProvider treasuryDataProvider)
+    public ObservableCollection<TreasuryItemViewModel> SearchResults { get; } = [];
+
+
+    [RelayCommand(CanExecute = nameof(CanGetData))]
+    private async Task GetData(string? cusip)
     {
-        _treasuryDataProvider = treasuryDataProvider;
-        GetDataCommand = new DelegateCommand(GetData, CanGetData);
-    }
+        ArgumentNullException.ThrowIfNull(cusip);
 
-    public string? SearchText
-    {
-        get => _searchText;
-        set
-        {
-            SetProperty(ref _searchText, value);
-            SearchResults = [];
-            GetDataCommand.RaiseCanExecuteChanged();
-        }
-    }
+        var treasuries = await treasuryDataProvider.SearchTreasuriesAsync(cusip);
 
-    public ObservableCollection<TreasuryItemViewModel> SearchResults
-    {
-        get => _searchResults;
-        private set => SetProperty(ref _searchResults, value);
-    }
-
-    public DelegateCommand GetDataCommand { get; }
-
-    private bool CanGetData(object? parameter)
-    {
-        return !string.IsNullOrWhiteSpace(SearchText);
-    }
-
-    private async void GetData(object? parameter)
-    {
-        ArgumentNullException.ThrowIfNull(parameter);
-        var cusip = parameter as string;
-
-        var treasuries = await _treasuryDataProvider.SearchTreasuriesAsync(cusip!);
-
+        SearchResults.Clear();
         if (treasuries == null) return;
         foreach (var treasury in treasuries)
             SearchResults.Add(new TreasuryItemViewModel(treasury));
+    }
+
+    private bool CanGetData()
+    {
+        return !string.IsNullOrWhiteSpace(SearchText);
     }
 }

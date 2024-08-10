@@ -4,40 +4,26 @@ namespace Pip.UI.ViewModel;
 
 public class TreasuryItemViewModel(Treasury treasury) : ViewModelBase
 {
-    private readonly Treasury _treasury = treasury;
-
     public string? Cusip
     {
-        get => _treasury.Cusip;
-        set
-        {
-            _treasury.Cusip = value;
-            OnPropertyChanged();
-        }
+        get => treasury.Cusip;
+        set { SetProperty(treasury.Cusip, value, treasury, (t, c) => t.Cusip = c); }
     }
 
     public DateOnly IssueDate
     {
-        get => _treasury.IssueDate;
-        set
-        {
-            _treasury.IssueDate = value;
-            OnPropertyChanged();
-        }
+        get => treasury.IssueDate;
+        set { SetProperty(treasury.IssueDate, value, treasury, (t, i) => t.IssueDate = i); }
     }
 
     public DateOnly? MaturityDate
     {
-        get => _treasury.MaturityDate;
-        set
-        {
-            _treasury.MaturityDate = value;
-            OnPropertyChanged();
-        }
+        get => treasury.MaturityDate;
+        set { SetProperty(treasury.MaturityDate, value, treasury, (t, m) => t.MaturityDate = m); }
     }
 
-    public string SecurityType => _treasury.SecurityType;
-    public string SecurityTerm => _treasury.SecurityTerm;
+    public string SecurityType => treasury.SecurityType;
+    public string SecurityTerm => treasury.SecurityTerm;
 
-    public string Type => _treasury.Type;
+    public string Type => treasury.Type;
 }

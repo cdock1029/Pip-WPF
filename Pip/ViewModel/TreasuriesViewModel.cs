@@ -1,30 +1,18 @@
 ﻿using System.Collections.ObjectModel;
-using Pip.UI.Command;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Pip.UI.Data;
 
 namespace Pip.UI.ViewModel;
 
-public class TreasuriesViewModel : ViewModelBase
+public partial class TreasuriesViewModel(ITreasuryDataProvider treasuryDataProvider) : ViewModelBase
 {
-    private readonly ITreasuryDataProvider _treasuryDataProvider;
-    private TreasuryItemViewModel? _selectedTreasury;
-
-    public TreasuriesViewModel(ITreasuryDataProvider treasuryDataProvider)
-    {
-        _treasuryDataProvider = treasuryDataProvider;
-        AddCommand = new DelegateCommand(Add);
-    }
+    [ObservableProperty] private TreasuryItemViewModel? _selectedTreasury;
 
     public ObservableCollection<TreasuryItemViewModel> Treasuries { get; } = [];
 
-    public TreasuryItemViewModel? SelectedTreasury
-    {
-        get => _selectedTreasury;
-        set => SetProperty(ref _selectedTreasury, value);
-    }
 
-    public DelegateCommand AddCommand { get; }
-
+    [RelayCommand]
     private void Add(object? parameter)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(parameter as string);
@@ -35,7 +23,7 @@ public class TreasuriesViewModel : ViewModelBase
     public override async Task LoadAsync()
     {
         if (Treasuries.Any()) return;
-        var treasuries = await _treasuryDataProvider.GetSavedTreasuriesAsync();
+        var treasuries = await treasuryDataProvider.GetSavedTreasuriesAsync();
 
         foreach (var treasury in treasuries)
             Treasuries.Add(new TreasuryItemViewModel(treasury));

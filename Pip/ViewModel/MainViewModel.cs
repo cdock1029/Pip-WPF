@@ -1,48 +1,34 @@
-﻿using Pip.UI.Command;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Pip.UI.ViewModel;
 
-public class MainViewModel : ViewModelBase
+public partial class MainViewModel(
+    SearchViewModel searchViewModel,
+    TreasuriesViewModel treasuriesViewModel,
+    UpcomingAuctionsViewModel upcomingAuctionsViewModel,
+    AuctionsViewModel auctionsViewModel)
+    : ViewModelBase
 {
-    private ViewModelBase? _selectedViewModel;
+    [ObservableProperty] private ViewModelBase _selectedViewModel = searchViewModel;
 
-    public MainViewModel(SearchViewModel searchViewModel,
-        TreasuriesViewModel treasuriesViewModel,
-        UpcomingAuctionsViewModel upcomingAuctionsViewModel,
-        AuctionsViewModel auctionsViewModel)
-    {
-        SearchViewModel = searchViewModel;
-        TreasuriesViewModel = treasuriesViewModel;
-        UpcomingAuctionsViewModel = upcomingAuctionsViewModel;
-        AuctionsViewModel = auctionsViewModel;
 
-        SelectedViewModel = SearchViewModel;
-        SelectViewModelCommand = new DelegateCommand(SelectViewModel);
-    }
+    public SearchViewModel SearchViewModel { get; } = searchViewModel;
 
-    public ViewModelBase? SelectedViewModel
-    {
-        get => _selectedViewModel;
-        private set => SetProperty(ref _selectedViewModel, value);
-    }
+    public TreasuriesViewModel TreasuriesViewModel { get; } = treasuriesViewModel;
 
-    public SearchViewModel SearchViewModel { get; }
+    public UpcomingAuctionsViewModel UpcomingAuctionsViewModel { get; } = upcomingAuctionsViewModel;
+    public AuctionsViewModel AuctionsViewModel { get; } = auctionsViewModel;
 
-    public TreasuriesViewModel TreasuriesViewModel { get; }
-
-    public UpcomingAuctionsViewModel UpcomingAuctionsViewModel { get; }
-    public AuctionsViewModel AuctionsViewModel { get; }
-
-    public DelegateCommand SelectViewModelCommand { get; }
 
     public override async Task LoadAsync()
     {
-        if (SelectedViewModel is not null) await SelectedViewModel.LoadAsync();
+        await SelectedViewModel.LoadAsync();
     }
 
-    private void SelectViewModel(object? parameter)
+    [RelayCommand]
+    private void SelectViewModel(ViewModelBase viewModelBase)
     {
-        SelectedViewModel = parameter as ViewModelBase;
-        //await LoadAsync();
+        SelectedViewModel = viewModelBase;
     }
 }
