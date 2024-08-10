@@ -18,6 +18,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="pip.db" />
+	  <None Remove="pip.db-shm" />
+	  <None Remove="pip.db-wal" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="pip.db">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.7">

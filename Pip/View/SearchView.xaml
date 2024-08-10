@@ -31,7 +31,7 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition />
+                <ColumnDefinition MaxWidth="300" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Label VerticalContentAlignment="Center">Enter CUSIP:</Label>

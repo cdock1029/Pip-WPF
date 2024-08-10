@@ -1,5 +1,4 @@
-﻿using System.Configuration;
-using System.Windows;
+﻿using System.Windows;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Pip.DataAccess;
@@ -38,10 +37,11 @@ public partial class App : Application
             .AddHttpClient()
             .AddSingleton<TreasuryDataProvider>()
             .AddTransient<ITreasuryDataProvider>(p => p.GetRequiredService<TreasuryDataProvider>())
-            .AddDbContextFactory<PipDbContext>(options =>
+            .AddDbContextFactory<PipDbContext>(optionsBuilder =>
             {
-                var connString = ConfigurationManager.ConnectionStrings["PipDbLocal"].ConnectionString;
-                options.UseSqlServer(connString);
+                //var connString = ConfigurationManager.ConnectionStrings["PipDbLocal"].ConnectionString;
+                //optionsBuilder.UseSqlServer(connString);
+                optionsBuilder.UseSqlite("Data Source=pip.db");
             }, ServiceLifetime.Transient);
     }
 }

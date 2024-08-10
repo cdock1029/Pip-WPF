@@ -38,4 +38,6 @@ public class TreasuryItemViewModel(Treasury treasury) : ViewModelBase
 
     public string SecurityType => _treasury.SecurityType;
     public string SecurityTerm => _treasury.SecurityTerm;
+
+    public string Type => _treasury.Type;
 }

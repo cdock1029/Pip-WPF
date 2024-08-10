@@ -321,7 +321,7 @@ public class Treasury
     [JsonPropertyName("xmlFilenameCompetitiveResults")]
     public string? XmlFilenameCompetitiveResults { get; set; }
 
-    [JsonPropertyName("type")] public string? Type { get; set; }
+    [JsonPropertyName("type")] public required string Type { get; set; }
 
     [JsonPropertyName("term")] public string? Term { get; set; }
 }

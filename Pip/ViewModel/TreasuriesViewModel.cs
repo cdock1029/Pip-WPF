@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using Pip.Model;
 using Pip.UI.Command;
 using Pip.UI.Data;
 
@@ -29,8 +28,8 @@ public class TreasuriesViewModel : ViewModelBase
     private void Add(object? parameter)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(parameter as string);
-        var treasuryViewModel =
-            new TreasuryItemViewModel(new Treasury { Cusip = "New", SecurityTerm = "", SecurityType = "" });
+        //var treasuryViewModel =
+        //   new TreasuryItemViewModel(new Treasury { Cusip = "New", SecurityTerm = "", SecurityType = "", Type = "" });
     }
 
     public override async Task LoadAsync()
@@ -38,7 +37,7 @@ public class TreasuriesViewModel : ViewModelBase
         if (Treasuries.Any()) return;
         var treasuries = await _treasuryDataProvider.GetSavedTreasuriesAsync();
 
-        await foreach (var treasury in treasuries)
+        foreach (var treasury in treasuries)
             Treasuries.Add(new TreasuryItemViewModel(treasury));
     }
 }
