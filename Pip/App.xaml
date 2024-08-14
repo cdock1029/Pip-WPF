@@ -6,8 +6,10 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <!--<ResourceDictionary
+                    Source="pack://application:,,,/PresentationFramework.Fluent;component/Resources/Fluent.xaml" />-->
                 <ResourceDictionary
-                    Source="pack://application:,,,/PresentationFramework.Fluent;component/Resources/Fluent.xaml" />
+                    Source="pack://application:,,,/PresentationFramework.Fluent;component/Themes/Fluent.xaml" />
                 <ResourceDictionary Source="/Resources/Converters.xaml" />
                 <ResourceDictionary Source="/Resources/Styles.xaml" />
                 <ResourceDictionary>

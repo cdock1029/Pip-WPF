@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using Pip.UI.Messages;
 
 namespace Pip.UI.ViewModel;
 
@@ -8,7 +10,7 @@ public partial class MainViewModel(
     TreasuriesViewModel treasuriesViewModel,
     UpcomingAuctionsViewModel upcomingAuctionsViewModel,
     AuctionsViewModel auctionsViewModel)
-    : ViewModelBase
+    : ViewModelBase, IRecipient<AfterTreasuryInsertMessage>
 {
     [ObservableProperty] private ViewModelBase _selectedViewModel = searchViewModel;
 
@@ -20,9 +22,15 @@ public partial class MainViewModel(
     public UpcomingAuctionsViewModel UpcomingAuctionsViewModel { get; } = upcomingAuctionsViewModel;
     public AuctionsViewModel AuctionsViewModel { get; } = auctionsViewModel;
 
+    public void Receive(AfterTreasuryInsertMessage message)
+    {
+        SelectViewModelCommand.Execute(TreasuriesViewModel);
+    }
+
 
     public override async Task LoadAsync()
     {
+        SelectedViewModel.IsActive = true;
         await SelectedViewModel.LoadAsync();
     }
 

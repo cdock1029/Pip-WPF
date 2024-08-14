@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Pip.DataAccess;
 using Pip.UI.Data;
+using Pip.UI.View.Services;
 using Pip.UI.ViewModel;
 
 namespace Pip.UI;
@@ -28,20 +29,22 @@ public partial class App : Application
     private static void ConfigureServices(ServiceCollection serviceCollection)
     {
         serviceCollection
-            .AddTransient<MainWindow>()
-            .AddTransient<MainViewModel>()
-            .AddTransient<SearchViewModel>()
-            .AddTransient<TreasuriesViewModel>()
-            .AddTransient<UpcomingAuctionsViewModel>()
-            .AddTransient<AuctionsViewModel>()
+            .AddSingleton<MainWindow>()
+            .AddSingleton<MainViewModel>()
+            .AddSingleton<SearchViewModel>()
+            .AddSingleton<TreasuriesViewModel>()
+            .AddSingleton<UpcomingAuctionsViewModel>()
+            .AddSingleton<AuctionsViewModel>()
             .AddHttpClient()
+            .AddSingleton<IMessageDialogService, MessageDialogService>()
             .AddSingleton<TreasuryDataProvider>()
-            .AddTransient<ITreasuryDataProvider>(p => p.GetRequiredService<TreasuryDataProvider>())
+            .AddSingleton<ITreasuryDataProvider>(p => p.GetRequiredService<TreasuryDataProvider>())
             .AddDbContextFactory<PipDbContext>(optionsBuilder =>
             {
                 //var connString = ConfigurationManager.ConnectionStrings["PipDbLocal"].ConnectionString;
                 //optionsBuilder.UseSqlServer(connString);
                 optionsBuilder.UseSqlite("Data Source=pip.db");
-            }, ServiceLifetime.Transient);
+                optionsBuilder.UseLazyLoadingProxies();
+            });
     }
 }

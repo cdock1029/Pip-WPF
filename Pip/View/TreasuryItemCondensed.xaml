@@ -17,7 +17,7 @@
             <ContentPresenter Width="50"
                               Height="50"
                               Margin="0,0,8,0"
-                              Content="{Binding SecurityType}" />
+                              Content="{Binding Type}" />
             <StackPanel Orientation="Vertical">
                 <TextBlock
                     Margin="10,0,0,0"

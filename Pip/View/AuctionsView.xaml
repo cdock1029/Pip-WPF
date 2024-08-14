@@ -17,10 +17,11 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center">Auctions View</TextBlock>
-        <DataGrid VerticalAlignment="Top" Grid.Row="1" HorizontalAlignment="Center" Grid.Column="0" Name="Dg"
+        <DataGrid VerticalAlignment="Top" Grid.Row="1" HorizontalAlignment="Center" Grid.Column="0"
                   MinWidth="600" Margin="0,10,0,0"
                   ItemsSource="{Binding GroupedTreasuries.View}"
-                  AutoGenerateColumns="True" AutoGeneratingColumn="DataGrid_OnAutoGeneratingColumn">
+                  AutoGenerateColumns="True" AutoGeneratingColumn="DataGrid_OnAutoGeneratingColumn"
+                  SelectionUnit="FullRow">
             <DataGrid.GroupStyle>
                 <GroupStyle>
                     <GroupStyle.HeaderTemplate>

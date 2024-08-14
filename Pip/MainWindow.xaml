@@ -10,6 +10,7 @@
         d:DataContext="{d:DesignInstance Type=viewModel:MainViewModel}"
         WindowStartupLocation="CenterScreen"
         Title="MainWindow"
+        FontSize="14"
         Height="950" Width="900">
     <Window.Resources>
         <DataTemplate DataType="{x:Type viewModel:SearchViewModel}">

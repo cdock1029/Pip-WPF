@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Collections.ObjectModel;
+using System.Net.Http;
 using System.Net.Http.Json;
 using Microsoft.EntityFrameworkCore;
 using Pip.DataAccess;
@@ -10,14 +11,6 @@ public class TreasuryDataProvider(IHttpClientFactory httpClientFactory, PipDbCon
     : ITreasuryDataProvider
 {
     private const string BaseAddress = "https://www.treasurydirect.gov/TA_WS/";
-
-    public async Task<IEnumerable<Treasury>> GetSavedTreasuriesAsync()
-    {
-        var treasuries =
-            await Task.Run(() => dbContext.Treasuries.AsNoTracking().AsEnumerable());
-        return treasuries;
-    }
-
 
     public async Task<IEnumerable<Treasury>?> SearchTreasuriesAsync(string cusip)
     {
@@ -55,4 +48,40 @@ public class TreasuryDataProvider(IHttpClientFactory httpClientFactory, PipDbCon
         client.BaseAddress = new Uri(BaseAddress);
         return client;
     }
+
+
+    #region DB
+
+    // If using SQLite, the underlying database operations are not async but sync even with async EF calls.
+    // Must wrap sync calls inside Task.Run
+    public async Task<IEnumerable<Treasury>> GetSavedAsync()
+    {
+        var treasuries =
+            await Task.Run(() => dbContext.Treasuries.AsEnumerable());
+        return treasuries;
+    }
+
+    public async Task<ObservableCollection<Treasury>> GetSavedObservableAsync()
+    {
+        await Task.Run(() => dbContext.Treasuries.Load());
+        return dbContext.Treasuries.Local.ToObservableCollection();
+    }
+
+    public Task InsertAsync(Treasury treasury)
+    {
+        dbContext.Add(treasury);
+        return Task.Run(dbContext.SaveChanges);
+    }
+
+    public void Add(Treasury treasury)
+    {
+        dbContext.Treasuries.Add(treasury);
+    }
+
+    public Task<int> SaveAsync()
+    {
+        return Task.Run(dbContext.SaveChanges);
+    }
+
+    #endregion DB
 }

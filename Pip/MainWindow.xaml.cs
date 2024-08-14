@@ -17,6 +17,7 @@ public partial class MainWindow : Window
 
     private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
     {
+        _viewModel.IsActive = true;
         await _viewModel.LoadAsync();
     }
 

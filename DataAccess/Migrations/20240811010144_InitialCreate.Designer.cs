@@ -11,8 +11,8 @@ using Pip.DataAccess;
 namespace Pip.DataAccess.Migrations
 {
     [DbContext(typeof(PipDbContext))]
-    [Migration("20240807011206_InitialCreateSqlite")]
-    partial class InitialCreateSqlite
+    [Migration("20240811010144_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -399,9 +399,8 @@ namespace Pip.DataAccess.Migrations
                         .HasColumnType("TEXT")
                         .HasAnnotation("Relational:JsonPropertyName", "securityTermWeekYear");
 
-                    b.Property<string>("SecurityType")
-                        .IsRequired()
-                        .HasColumnType("TEXT")
+                    b.Property<int>("SecurityType")
+                        .HasColumnType("INTEGER")
                         .HasAnnotation("Relational:JsonPropertyName", "securityType");
 
                     b.Property<string>("Series")
@@ -472,9 +471,8 @@ namespace Pip.DataAccess.Migrations
                         .HasColumnType("TEXT")
                         .HasAnnotation("Relational:JsonPropertyName", "treasuryDirectTendersAccepted");
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("TEXT")
+                    b.Property<int>("Type")
+                        .HasColumnType("INTEGER")
                         .HasAnnotation("Relational:JsonPropertyName", "type");
 
                     b.Property<string>("UnadjustedAccruedInterestPer1000")
@@ -504,8 +502,8 @@ namespace Pip.DataAccess.Migrations
                             IssueDate = new DateOnly(2024, 7, 25),
                             MaturityDate = new DateOnly(2024, 9, 5),
                             SecurityTerm = "42-Day",
-                            SecurityType = "Bill",
-                            Type = "Bill"
+                            SecurityType = 0,
+                            Type = 0
                         },
                         new
                         {
@@ -513,8 +511,8 @@ namespace Pip.DataAccess.Migrations
                             IssueDate = new DateOnly(2024, 6, 18),
                             MaturityDate = new DateOnly(2024, 8, 13),
                             SecurityTerm = "8-Week",
-                            SecurityType = "Bill",
-                            Type = "Bill"
+                            SecurityType = 0,
+                            Type = 0
                         },
                         new
                         {
@@ -522,8 +520,8 @@ namespace Pip.DataAccess.Migrations
                             IssueDate = new DateOnly(2024, 5, 9),
                             MaturityDate = new DateOnly(2024, 8, 8),
                             SecurityTerm = "13-Week",
-                            SecurityType = "Bill",
-                            Type = "Bill"
+                            SecurityType = 0,
+                            Type = 0
                         });
                 });
 #pragma warning restore 612, 618

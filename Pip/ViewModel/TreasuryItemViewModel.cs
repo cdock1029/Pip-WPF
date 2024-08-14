@@ -4,7 +4,7 @@ namespace Pip.UI.ViewModel;
 
 public class TreasuryItemViewModel(Treasury treasury) : ViewModelBase
 {
-    public string? Cusip
+    public string Cusip
     {
         get => treasury.Cusip;
         set { SetProperty(treasury.Cusip, value, treasury, (t, c) => t.Cusip = c); }
@@ -22,8 +22,10 @@ public class TreasuryItemViewModel(Treasury treasury) : ViewModelBase
         set { SetProperty(treasury.MaturityDate, value, treasury, (t, m) => t.MaturityDate = m); }
     }
 
-    public string SecurityType => treasury.SecurityType;
+    public TreasurySecurityType SecurityType => treasury.SecurityType;
     public string SecurityTerm => treasury.SecurityTerm;
 
-    public string Type => treasury.Type;
+    public TreasuryType Type => treasury.Type;
+
+    public Treasury Model => treasury;
 }

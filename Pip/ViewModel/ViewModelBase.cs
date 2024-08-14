@@ -2,7 +2,7 @@
 
 namespace Pip.UI.ViewModel;
 
-public class ViewModelBase : ObservableObject
+public class ViewModelBase : ObservableRecipient
 {
     public virtual Task LoadAsync()
     {

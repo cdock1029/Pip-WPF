@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using DateOnly = System.DateOnly;
 
-namespace Pip.Model;
+namespace Pip.Model.Converters;
 
 public class DateOnlyConverter : JsonConverter<DateOnly>
 {
