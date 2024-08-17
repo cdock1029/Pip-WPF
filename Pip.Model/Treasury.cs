@@ -7,7 +7,7 @@ using Pip.Model.Converters;
 namespace Pip.Model;
 
 [PrimaryKey(nameof(Cusip), nameof(IssueDate))]
-public class Treasury
+public class Treasury : IEquatable<Treasury>
 {
     [JsonPropertyName("accruedInterestPer1000")]
     public string? AccruedInterestPer1000 { get; init; }
@@ -102,7 +102,7 @@ public class Treasury
     [JsonPropertyName("currentlyOutstanding")]
     public string? CurrentlyOutstanding { get; init; }
 
-    [JsonPropertyName("cusip")] public required string Cusip { get; set; }
+    [JsonPropertyName("cusip")] public required string Cusip { get; init; }
 
     [JsonPropertyName("datedDate")]
     [JsonConverter(typeof(DateOnlyConverter))]
@@ -169,7 +169,7 @@ public class Treasury
 
     [JsonConverter(typeof(DateOnlyConverter))]
     [JsonPropertyName("issueDate")]
-    public DateOnly IssueDate { get; set; }
+    public DateOnly IssueDate { get; init; }
 
     [JsonPropertyName("lowDiscountRate")] public string? LowDiscountRate { get; init; }
 
@@ -189,7 +189,7 @@ public class Treasury
 
     [JsonConverter(typeof(DateOnlyConverter))]
     [JsonPropertyName("maturityDate")]
-    public DateOnly? MaturityDate { get; set; }
+    public DateOnly? MaturityDate { get; init; }
 
     [JsonPropertyName("maximumCompetitiveAward")]
     public string? MaximumCompetitiveAward { get; init; }
@@ -325,6 +325,28 @@ public class Treasury
     [JsonPropertyName("type")] public required TreasuryType Type { get; init; }
 
     [JsonPropertyName("term")] public string? Term { get; init; }
+
+    public ICollection<Investment>? Investments { get; init; }
+
+    public bool Equals(Treasury? other)
+    {
+        if (other is null) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return Cusip == other.Cusip && IssueDate.Equals(other.IssueDate);
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is null) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != GetType()) return false;
+        return Equals((Treasury)obj);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Cusip, IssueDate);
+    }
 }
 
 [JsonConverter(typeof(JsonStringEnumConverter<TreasuryType>))]

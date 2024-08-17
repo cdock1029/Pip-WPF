@@ -15,11 +15,66 @@ namespace Pip.DataAccess.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.7")
-                .HasAnnotation("Proxies:ChangeTracking", false)
-                .HasAnnotation("Proxies:CheckEquality", false)
-                .HasAnnotation("Proxies:LazyLoading", true);
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
+
+            modelBuilder.Entity("Pip.Model.Investment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Confirmation")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Par")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Reinvestments")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("TreasuryCusip")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateOnly>("TreasuryIssueDate")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TreasuryCusip", "TreasuryIssueDate");
+
+                    b.ToTable("Investment");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Confirmation = "FOO",
+                            Par = 100000,
+                            Reinvestments = 0,
+                            TreasuryCusip = "912797GL5",
+                            TreasuryIssueDate = new DateOnly(2024, 7, 25)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Confirmation = "BAR",
+                            Par = 55000,
+                            Reinvestments = 0,
+                            TreasuryCusip = "912797KX4",
+                            TreasuryIssueDate = new DateOnly(2024, 6, 18)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Confirmation = "BAZ",
+                            Par = 2000400,
+                            Reinvestments = 0,
+                            TreasuryCusip = "912797GK7",
+                            TreasuryIssueDate = new DateOnly(2024, 5, 9)
+                        });
+                });
 
             modelBuilder.Entity("Pip.Model.Treasury", b =>
                 {
@@ -519,7 +574,32 @@ namespace Pip.DataAccess.Migrations
                             SecurityTerm = "13-Week",
                             SecurityType = 0,
                             Type = 0
+                        },
+                        new
+                        {
+                            Cusip = "912797GL5",
+                            IssueDate = new DateOnly(2024, 6, 6),
+                            MaturityDate = new DateOnly(2024, 9, 5),
+                            SecurityTerm = "13-Week",
+                            SecurityType = 0,
+                            Type = 0
                         });
+                });
+
+            modelBuilder.Entity("Pip.Model.Investment", b =>
+                {
+                    b.HasOne("Pip.Model.Treasury", "Treasury")
+                        .WithMany("Investments")
+                        .HasForeignKey("TreasuryCusip", "TreasuryIssueDate")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Treasury");
+                });
+
+            modelBuilder.Entity("Pip.Model.Treasury", b =>
+                {
+                    b.Navigation("Investments");
                 });
 #pragma warning restore 612, 618
         }

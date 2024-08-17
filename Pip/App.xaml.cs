@@ -49,7 +49,6 @@ public partial class App : Application
                 //var connString = ConfigurationManager.ConnectionStrings["PipDbLocal"].ConnectionString;
                 //optionsBuilder.UseSqlServer(connString);
                 optionsBuilder.UseSqlite("Data Source=pip.db");
-                optionsBuilder.UseLazyLoadingProxies();
             });
     }
 

@@ -15,20 +15,17 @@
         </b:EventTrigger>
     </b:Interaction.Triggers>
 
-    <Grid>
-        <!--<ScrollViewer Grid.Row="0">
-            <ItemsControl ItemsSource="{Binding Treasuries}" />
-        </ScrollViewer>-->
-
-        <ListView ItemsSource="{Binding Treasuries}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Type" DisplayMemberBinding="{Binding Type}" />
-                    <GridViewColumn Header="Cusip" DisplayMemberBinding="{Binding Cusip}" />
-                    <GridViewColumn Header="Issue Date" DisplayMemberBinding="{Binding IssueDate}" />
-                    <GridViewColumn Header="Maturity Date" DisplayMemberBinding="{Binding MaturityDate}" />
-                </GridView>
-            </ListView.View>
-        </ListView>
-    </Grid>
+    <ListView
+        HorizontalAlignment="Left"
+        VerticalAlignment="Top"
+        ItemsSource="{Binding Treasuries}">
+        <ListView.View>
+            <GridView>
+                <GridViewColumn Header="Type" DisplayMemberBinding="{Binding Type}" />
+                <GridViewColumn Header="Cusip" DisplayMemberBinding="{Binding Cusip}" />
+                <GridViewColumn Header="Issue Date" DisplayMemberBinding="{Binding IssueDate}" />
+                <GridViewColumn Header="Maturity Date" DisplayMemberBinding="{Binding MaturityDate}" />
+            </GridView>
+        </ListView.View>
+    </ListView>
 </UserControl>

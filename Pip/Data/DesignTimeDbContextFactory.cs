@@ -12,7 +12,6 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<PipDbConte
         var optionsBuilder = new DbContextOptionsBuilder<PipDbContext>();
         //optionsBuilder.UseSqlServer(connectionString, ob => ob.MigrationsAssembly("Pip.DataAccess"));
         optionsBuilder.UseSqlite("Data Source=pip.db", ob => ob.MigrationsAssembly("Pip.DataAccess"));
-        optionsBuilder.UseLazyLoadingProxies();
         return new PipDbContext(optionsBuilder.Options);
     }
 }

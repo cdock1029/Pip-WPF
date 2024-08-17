@@ -9,12 +9,6 @@
              d:DataContext="{d:DesignInstance Type=viewModel:AuctionsViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <b:Interaction.Triggers>
-        <b:EventTrigger EventName="Loaded">
-            <b:InvokeCommandAction Command="{Binding LoadCommand}" />
-        </b:EventTrigger>
-    </b:Interaction.Triggers>
-
     <UserControl.Resources>
         <CollectionViewSource x:Key="CvsTreasuries" Source="{Binding Treasuries}">
             <CollectionViewSource.GroupDescriptions>
@@ -23,26 +17,39 @@
         </CollectionViewSource>
     </UserControl.Resources>
 
+    <b:Interaction.Triggers>
+        <b:EventTrigger EventName="Loaded">
+            <b:InvokeCommandAction Command="{Binding LoadCommand}" />
+        </b:EventTrigger>
+    </b:Interaction.Triggers>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" Margin="0,0,0,10">Auctions View</TextBlock>
-        <DataGrid Grid.Row="1" Grid.Column="0"
-                  MinWidth="500"
-                  HorizontalAlignment="Center"
+        <TextBlock Grid.Row="0" Margin="0,0,0,10">Auctions View</TextBlock>
+        <DataGrid Grid.Row="1"
+                  HorizontalAlignment="Left"
                   VerticalAlignment="Top"
-                  RowDetailsVisibilityMode="VisibleWhenSelected"
                   ItemsSource="{Binding Source={StaticResource CvsTreasuries}}"
                   AutoGenerateColumns="False"
-                  EnableRowVirtualization="False"
+                  EnableRowVirtualization="True"
                   SelectionUnit="FullRow">
+            <DataGrid.Style>
+                <Style TargetType="DataGrid">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Treasuries.Count}" Value="0">
+                            <Setter Property="Visibility" Value="Hidden" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Style>
             <DataGrid.GroupStyle>
                 <GroupStyle>
                     <GroupStyle.ContainerStyle>
                         <Style TargetType="{x:Type GroupItem}">
-                            <Setter Property="Margin" Value="0,0,0,10" />
+                            <Setter Property="Margin" Value="10,0,10,10" />
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type GroupItem}">

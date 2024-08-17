@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Pip.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class TreasuryInvestment : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -139,20 +139,62 @@ namespace Pip.DataAccess.Migrations
                     table.PrimaryKey("PK_Treasuries", x => new { x.Cusip, x.IssueDate });
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Investment",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TreasuryCusip = table.Column<string>(type: "TEXT", nullable: false),
+                    TreasuryIssueDate = table.Column<DateOnly>(type: "TEXT", nullable: false),
+                    Par = table.Column<int>(type: "INTEGER", nullable: false),
+                    Confirmation = table.Column<string>(type: "TEXT", nullable: false),
+                    Reinvestments = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Investment", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Investment_Treasuries_TreasuryCusip_TreasuryIssueDate",
+                        columns: x => new { x.TreasuryCusip, x.TreasuryIssueDate },
+                        principalTable: "Treasuries",
+                        principalColumns: new[] { "Cusip", "IssueDate" },
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Treasuries",
                 columns: new[] { "Cusip", "IssueDate", "AccruedInterestPer100", "AccruedInterestPer1000", "AdjustedAccruedInterestPer1000", "AdjustedPrice", "AllocationPercentage", "AllocationPercentageDecimals", "AnnouncedCusip", "AnnouncementDate", "AuctionDate", "AuctionDateYear", "AuctionFormat", "AverageMedianDiscountMargin", "AverageMedianDiscountRate", "AverageMedianInvestmentRate", "AverageMedianPrice", "AverageMedianYield", "BackDated", "BackDatedDate", "BidToCoverRatio", "CallDate", "Callable", "CalledDate", "CashManagementBillCMB", "ClosingTimeCompetitive", "ClosingTimeNoncompetitive", "CompetitiveAccepted", "CompetitiveBidDecimals", "CompetitiveTendered", "CompetitiveTendersAccepted", "CorpusCusip", "CpiBaseReferencePeriod", "CurrentlyOutstanding", "DatedDate", "DirectBidderAccepted", "DirectBidderTendered", "EstimatedAmountOfPubliclyHeldMaturingSecuritiesByType", "FimaIncluded", "FimaNoncompetitiveAccepted", "FimaNoncompetitiveTendered", "FirstInterestPaymentDate", "FirstInterestPeriod", "FloatingRate", "FrnIndexDeterminationDate", "FrnIndexDeterminationRate", "HighDiscountMargin", "HighDiscountRate", "HighInvestmentRate", "HighPrice", "HighYield", "IndexRatioOnIssueDate", "IndirectBidderAccepted", "IndirectBidderTendered", "InterestPaymentFrequency", "InterestRate", "LowDiscountMargin", "LowDiscountRate", "LowInvestmentRate", "LowPrice", "LowYield", "MaturingDate", "MaturityDate", "MaximumCompetitiveAward", "MaximumNoncompetitiveAward", "MaximumSingleBid", "MinimumBidAmount", "MinimumStripAmount", "MinimumToIssue", "MultiplesToBid", "MultiplesToIssue", "NlpExclusionAmount", "NlpReportingThreshold", "NoncompetitiveAccepted", "NoncompetitiveTendersAccepted", "OfferingAmount", "OriginalCusip", "OriginalDatedDate", "OriginalIssueDate", "OriginalSecurityTerm", "PdfFilenameAnnouncement", "PdfFilenameCompetitiveResults", "PdfFilenameNoncompetitiveResults", "PdfFilenameSpecialAnnouncement", "PricePer100", "PrimaryDealerAccepted", "PrimaryDealerTendered", "RefCPIOnDatedDate", "RefCpiOnIssueDate", "Reopening", "SecurityTerm", "SecurityTermDayMonth", "SecurityTermWeekYear", "SecurityType", "Series", "SomaAccepted", "SomaHoldings", "SomaIncluded", "SomaTendered", "Spread", "StandardInterestPaymentPer1000", "Strippable", "Term", "TiinConversionFactorPer1000", "TintCusip1", "TintCusip2", "Tips", "TotalAccepted", "TotalTendered", "TreasuryDirectAccepted", "TreasuryDirectTendersAccepted", "Type", "UnadjustedAccruedInterestPer1000", "UnadjustedPrice", "XmlFilenameAnnouncement", "XmlFilenameCompetitiveResults" },
                 values: new object[,]
                 {
                     { "912797GK7", new DateOnly(2024, 5, 9), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, new DateOnly(2024, 8, 8), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "13-Week", null, null, 0, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 0, null, null, null, null },
+                    { "912797GL5", new DateOnly(2024, 6, 6), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, new DateOnly(2024, 9, 5), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "13-Week", null, null, 0, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 0, null, null, null, null },
                     { "912797GL5", new DateOnly(2024, 7, 25), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, new DateOnly(2024, 9, 5), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "42-Day", null, null, 0, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 0, null, null, null, null },
                     { "912797KX4", new DateOnly(2024, 6, 18), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, new DateOnly(2024, 8, 13), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "8-Week", null, null, 0, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 0, null, null, null, null }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Investment",
+                columns: new[] { "Id", "Confirmation", "Par", "Reinvestments", "TreasuryCusip", "TreasuryIssueDate" },
+                values: new object[,]
+                {
+                    { 1, "FOO", 100000, 0, "912797GL5", new DateOnly(2024, 7, 25) },
+                    { 2, "BAR", 55000, 0, "912797KX4", new DateOnly(2024, 6, 18) },
+                    { 3, "BAZ", 2000400, 0, "912797GK7", new DateOnly(2024, 5, 9) }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Investment_TreasuryCusip_TreasuryIssueDate",
+                table: "Investment",
+                columns: new[] { "TreasuryCusip", "TreasuryIssueDate" });
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Investment");
+
             migrationBuilder.DropTable(
                 name: "Treasuries");
         }
