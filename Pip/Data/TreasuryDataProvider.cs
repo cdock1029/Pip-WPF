@@ -57,14 +57,19 @@ public class TreasuryDataProvider(IHttpClientFactory httpClientFactory, PipDbCon
     public async Task<IEnumerable<Treasury>> GetSavedAsync()
     {
         var treasuries =
-            await Task.Run(() => dbContext.Treasuries.AsEnumerable());
+            await Task.Run(() => dbContext.Treasuries.AsNoTracking().AsEnumerable());
         return treasuries;
     }
 
-    public async Task<ObservableCollection<Treasury>> GetSavedObservableAsync()
+    public ObservableCollection<Treasury> GetSavedObservable()
     {
-        await Task.Run(() => dbContext.Treasuries.Load());
+        dbContext.Treasuries.Load();
         return dbContext.Treasuries.Local.ToObservableCollection();
+    }
+
+    public IAsyncEnumerable<Treasury> GetSavedAsyncEnumerable()
+    {
+        return dbContext.Treasuries.AsNoTracking().AsAsyncEnumerable();
     }
 
     public Task InsertAsync(Treasury treasury)

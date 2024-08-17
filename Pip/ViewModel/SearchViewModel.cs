@@ -1,54 +1,82 @@
 ﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Pip.Model;
 using Pip.UI.Data;
 using Pip.UI.Messages;
 using Pip.UI.View.Services;
 
 namespace Pip.UI.ViewModel;
 
-public partial class SearchViewModel(
-    ITreasuryDataProvider treasuryDataProvider,
-    IMessageDialogService messageDialogService) : ViewModelBase
+public partial class SearchViewModel : ViewModelBase
 {
-    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(GetDataCommand))]
+    private readonly IMessageDialogService _messageDialogService;
+
+    private readonly ITreasuryDataProvider _treasuryDataProvider;
+
+    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(SearchCommand))]
     private string? _searchText;
 
-    public ObservableCollection<TreasuryItemViewModel> SearchResults { get; } = [];
+    public SearchViewModel(ITreasuryDataProvider treasuryDataProvider,
+        IMessageDialogService messageDialogService)
+    {
+        _treasuryDataProvider = treasuryDataProvider;
+        _messageDialogService = messageDialogService;
+        SearchResults.CollectionChanged += SearchResults_CollectionChanged;
+    }
+
+    public ObservableCollection<Treasury> SearchResults { get; } = [];
+
+    private void SearchResults_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        ClearResultsCommand.NotifyCanExecuteChanged();
+    }
 
 
-    [RelayCommand(CanExecute = nameof(CanGetData))]
-    private async Task GetData(string? cusip)
+    [RelayCommand(CanExecute = nameof(CanSearch))]
+    private async Task Search(string? cusip)
     {
         ArgumentNullException.ThrowIfNull(cusip);
 
-        var treasuries = await treasuryDataProvider.SearchTreasuriesAsync(cusip);
+        var treasuries = await _treasuryDataProvider.SearchTreasuriesAsync(cusip.Trim());
 
         SearchResults.Clear();
         if (treasuries == null) return;
         foreach (var treasury in treasuries)
-            SearchResults.Add(new TreasuryItemViewModel(treasury));
+            SearchResults.Add(treasury);
     }
 
-    private bool CanGetData()
+    private bool CanSearch()
     {
         return !string.IsNullOrWhiteSpace(SearchText);
     }
 
     [RelayCommand]
-    private async Task SaveTreasury(TreasuryItemViewModel? treasury)
+    private async Task SaveTreasury(Treasury? treasury)
     {
         ArgumentNullException.ThrowIfNull(treasury);
-        var result = messageDialogService.ShowOkCancelDialog(
+        var result = _messageDialogService.ShowOkCancelDialog(
             $"CUSIP: [{treasury.Cusip}]\nIssue Date: [{treasury.IssueDate.ToLongDateString()}]\nMaturity Date: [{treasury.MaturityDate?.ToLongDateString()}]",
             "Do you want to save Treasury?");
 
         if (result == MessageDialogResult.OK)
         {
-            await treasuryDataProvider.InsertAsync(treasury.Model);
+            await _treasuryDataProvider.InsertAsync(treasury);
             WeakReferenceMessenger.Default.Send(
                 new AfterTreasuryInsertMessage(new AfterTreasuryInsertArgs(treasury.Cusip, treasury.IssueDate)));
         }
+    }
+
+    [RelayCommand(CanExecute = nameof(CanClearResults))]
+    private void ClearResults()
+    {
+        SearchResults.Clear();
+    }
+
+    private bool CanClearResults()
+    {
+        return SearchResults.Count > 0;
     }
 }

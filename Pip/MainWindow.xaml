@@ -5,27 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:viewModel="clr-namespace:Pip.UI.ViewModel"
-        xmlns:view="clr-namespace:Pip.UI.View"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=viewModel:MainViewModel}"
         WindowStartupLocation="CenterScreen"
         Title="MainWindow"
-        FontSize="14"
-        Height="950" Width="900">
-    <Window.Resources>
-        <DataTemplate DataType="{x:Type viewModel:SearchViewModel}">
-            <view:SearchView Loaded="MainWindow_SelectedView_Loaded" />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewModel:TreasuriesViewModel}">
-            <view:SavedTreasuriesView Loaded="MainWindow_SelectedView_Loaded" />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewModel:UpcomingAuctionsViewModel}">
-            <view:UpcomingAuctionsView Loaded="MainWindow_SelectedView_Loaded" />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewModel:AuctionsViewModel}">
-            <view:AuctionsView Loaded="MainWindow_SelectedView_Loaded" />
-        </DataTemplate>
-    </Window.Resources>
+        Height="800" Width="600"
+        FontSize="16">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -52,20 +37,16 @@
         <DockPanel Grid.Row="1">
             <ToolBarTray DockPanel.Dock="Top">
                 <ToolBar>
-                    <Button Content="Search" Command="{Binding SelectViewModelCommand}"
-                            CommandParameter="{Binding SearchViewModel}" />
-                    <Button Content="Saved Treasuries" Command="{Binding SelectViewModelCommand}"
-                            CommandParameter="{Binding TreasuriesViewModel}" />
-                    <Button Content="Upcoming Auctions" Command="{Binding SelectViewModelCommand}"
-                            CommandParameter="{Binding UpcomingAuctionsViewModel}" />
-                    <Button Content="Auctions" Command="{Binding SelectViewModelCommand}"
-                            CommandParameter="{Binding  AuctionsViewModel}" />
+                    <Button Content="Search" Command="{Binding NavigateSearchCommand}" />
+                    <Button Content="Saved Treasuries" Command="{Binding NavigateSavedCommand}" />
+                    <Button Content="Upcoming Auctions" Command="{Binding NavigateUpcomingCommand}" />
+                    <Button Content="Auctions" Command="{Binding NavigateAuctionsCommand}" />
                 </ToolBar>
             </ToolBarTray>
         </DockPanel>
 
         <!-- Content -->
-        <ContentControl Grid.Row="2" Margin="20" Content="{Binding SelectedViewModel}" />
+        <ContentControl Grid.Row="2" Margin="20" Content="{Binding Navigation.CurrentView}" />
 
         <StatusBar Grid.Row="3">
             <Label>Pip a rino</Label>

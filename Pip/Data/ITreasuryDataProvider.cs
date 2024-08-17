@@ -1,4 +1,5 @@
-﻿using Pip.Model;
+﻿using System.Collections.ObjectModel;
+using Pip.Model;
 
 namespace Pip.UI.Data;
 
@@ -12,4 +13,6 @@ public interface ITreasuryDataProvider
     void Add(Treasury treasury);
     Task<int> SaveAsync();
     Task InsertAsync(Treasury treasury);
+    ObservableCollection<Treasury> GetSavedObservable();
+    IAsyncEnumerable<Treasury> GetSavedAsyncEnumerable();
 }

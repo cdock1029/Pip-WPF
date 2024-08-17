@@ -1,42 +1,43 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Pip.UI.Messages;
+using Pip.UI.View.Services;
 
 namespace Pip.UI.ViewModel;
 
 public partial class MainViewModel(
-    SearchViewModel searchViewModel,
-    TreasuriesViewModel treasuriesViewModel,
-    UpcomingAuctionsViewModel upcomingAuctionsViewModel,
-    AuctionsViewModel auctionsViewModel)
+    INavigationService navigationService)
     : ViewModelBase, IRecipient<AfterTreasuryInsertMessage>
 {
-    [ObservableProperty] private ViewModelBase _selectedViewModel = searchViewModel;
-
-
-    public SearchViewModel SearchViewModel { get; } = searchViewModel;
-
-    public TreasuriesViewModel TreasuriesViewModel { get; } = treasuriesViewModel;
-
-    public UpcomingAuctionsViewModel UpcomingAuctionsViewModel { get; } = upcomingAuctionsViewModel;
-    public AuctionsViewModel AuctionsViewModel { get; } = auctionsViewModel;
+    public INavigationService Navigation { get; } = navigationService;
 
     public void Receive(AfterTreasuryInsertMessage message)
     {
-        SelectViewModelCommand.Execute(TreasuriesViewModel);
+        //SelectViewModel(SavedTreasuriesViewModel);
     }
 
 
-    public override async Task LoadAsync()
+    [RelayCommand]
+    private void NavigateSearch()
     {
-        SelectedViewModel.IsActive = true;
-        await SelectedViewModel.LoadAsync();
+        Navigation.NavigateTo<SearchViewModel>();
     }
 
     [RelayCommand]
-    private void SelectViewModel(ViewModelBase viewModelBase)
+    private void NavigateSaved()
     {
-        SelectedViewModel = viewModelBase;
+        Navigation.NavigateTo<SavedTreasuriesViewModel>();
+    }
+
+    [RelayCommand]
+    private void NavigateUpcoming()
+    {
+        Navigation.NavigateTo<UpcomingAuctionsViewModel>();
+    }
+
+    [RelayCommand]
+    private void NavigateAuctions()
+    {
+        Navigation.NavigateTo<AuctionsViewModel>();
     }
 }

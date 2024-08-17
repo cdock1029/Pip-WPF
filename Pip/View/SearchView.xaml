@@ -3,15 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:viewModel="clr-namespace:Pip.UI.ViewModel"
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             xmlns:model="clr-namespace:Pip.Model;assembly=Pip.Model"
+             xmlns:viewModel="clr-namespace:Pip.UI.ViewModel"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=viewModel:SearchViewModel}"
              d:DesignHeight="450" d:DesignWidth="800"
              x:Name="SearchViewControl">
 
     <UserControl.Resources>
-        <DataTemplate DataType="{x:Type viewModel:TreasuryItemViewModel}">
+        <DataTemplate DataType="{x:Type model:Treasury}">
             <StackPanel Orientation="Horizontal">
                 <TextBlock>
                     <TextBlock.Text>
@@ -42,11 +43,14 @@
                      Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      Width="250">
                 <TextBox.InputBindings>
-                    <KeyBinding Command="{Binding GetDataCommand}" CommandParameter="{Binding SearchText}" Key="Return" />
+                    <KeyBinding Command="{Binding SearchCommand}" CommandParameter="{Binding SearchText}" Key="Return" />
                 </TextBox.InputBindings>
             </TextBox>
-            <Button Grid.Column="2" Margin="0 0 10 0" Content="Search" Command="{Binding GetDataCommand}"
-                    CommandParameter="{Binding SearchText}" />
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                <Button Margin="0 0 10 0" Content="Search" Command="{Binding SearchCommand}"
+                        CommandParameter="{Binding SearchText}" />
+                <Button Margin="0 0 10 0" Content="Clear" Command="{Binding ClearResultsCommand}" />
+            </StackPanel>
         </Grid>
         <ListBox HorizontalAlignment="Center" Grid.Row="1" Margin="0,20,0,0" ItemsSource="{Binding SearchResults}">
             <ListBox.ContextMenu>
@@ -59,6 +63,15 @@
             <ListBox.Resources>
                 <system:String xml:space="preserve" x:Key="MaturityFormat">Maturity: {0:ddd d MMM yyyy}</system:String>
             </ListBox.Resources>
+            <ListBox.Style>
+                <Style TargetType="ListBox">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SearchResults.Count}" Value="0">
+                            <Setter Property="Visibility" Value="Hidden" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.Style>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border Padding="20,10">

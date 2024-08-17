@@ -4,12 +4,31 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModel="clr-namespace:Pip.UI.ViewModel"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=viewModel:UpcomingAuctionsViewModel}">
+
+    <b:Interaction.Triggers>
+        <b:EventTrigger EventName="Loaded">
+            <b:InvokeCommandAction Command="{Binding LoadCommand}" />
+        </b:EventTrigger>
+    </b:Interaction.Triggers>
+
     <Grid>
-        <ScrollViewer Grid.Row="0">
+        <!--<ScrollViewer Grid.Row="0">
             <ItemsControl ItemsSource="{Binding Treasuries}" />
-        </ScrollViewer>
+        </ScrollViewer>-->
+
+        <ListView ItemsSource="{Binding Treasuries}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Type" DisplayMemberBinding="{Binding Type}" />
+                    <GridViewColumn Header="Cusip" DisplayMemberBinding="{Binding Cusip}" />
+                    <GridViewColumn Header="Issue Date" DisplayMemberBinding="{Binding IssueDate}" />
+                    <GridViewColumn Header="Maturity Date" DisplayMemberBinding="{Binding MaturityDate}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </UserControl>

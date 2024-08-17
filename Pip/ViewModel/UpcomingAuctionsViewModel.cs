@@ -1,19 +1,21 @@
 ﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.Input;
+using Pip.Model;
 using Pip.UI.Data;
 
 namespace Pip.UI.ViewModel;
 
-public class UpcomingAuctionsViewModel(ITreasuryDataProvider treasuryDataProvider) : ViewModelBase
+public partial class UpcomingAuctionsViewModel(ITreasuryDataProvider treasuryDataProvider) : ViewModelBase
 {
-    public ObservableCollection<TreasuryItemViewModel> Treasuries { get; } = [];
+    public ObservableCollection<Treasury> Treasuries { get; } = [];
 
+    [RelayCommand]
     public override async Task LoadAsync()
     {
         if (Treasuries.Any()) return;
-
         var treasuries = await treasuryDataProvider.GetUpcomingAsync();
         if (treasuries is not null)
             foreach (var treasury in treasuries)
-                Treasuries.Add(new TreasuryItemViewModel(treasury));
+                Treasuries.Add(treasury);
     }
 }

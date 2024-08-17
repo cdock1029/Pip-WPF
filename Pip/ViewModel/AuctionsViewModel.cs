@@ -1,32 +1,23 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows.Data;
+using CommunityToolkit.Mvvm.Input;
+using Pip.Model;
 using Pip.UI.Data;
 
 namespace Pip.UI.ViewModel;
 
-public class AuctionsViewModel : ViewModelBase
+public partial class AuctionsViewModel(ITreasuryDataProvider treasuryDataProvider) : ViewModelBase
 {
-    private readonly ITreasuryDataProvider _treasuryDataProvider;
+    public ObservableCollection<Treasury> Treasuries { get; } = [];
 
-    public AuctionsViewModel(ITreasuryDataProvider treasuryDataProvider)
-    {
-        _treasuryDataProvider = treasuryDataProvider;
-        GroupedTreasuries = new CollectionViewSource { Source = Treasuries };
-        GroupedTreasuries.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TreasuryItemViewModel.Type)));
-    }
-
-    public CollectionViewSource GroupedTreasuries { get; }
-
-    private ObservableCollection<TreasuryItemViewModel> Treasuries { get; } = [];
-
+    [RelayCommand]
     public override async Task LoadAsync()
     {
         if (Treasuries.Any()) return;
 
-        var auctions = await _treasuryDataProvider.GetAuctionsAsync();
+        var auctions = await treasuryDataProvider.GetAuctionsAsync();
 
         if (auctions is not null)
             foreach (var auction in auctions)
-                Treasuries.Add(new TreasuryItemViewModel(auction));
+                Treasuries.Add(auction);
     }
 }
