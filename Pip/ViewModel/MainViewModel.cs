@@ -6,10 +6,17 @@ using Pip.UI.View.Services;
 namespace Pip.UI.ViewModel;
 
 public partial class MainViewModel(
-    INavigationService navigationService)
+    INavigationService navigationService,
+    SearchViewModel searchViewModel,
+    SavedTreasuriesViewModel savedTreasuriesViewModel,
+    UpcomingAuctionsViewModel upcomingAuctionsViewModel)
     : ViewModelBase, IRecipient<AfterTreasuryInsertMessage>
 {
     public INavigationService Navigation { get; } = navigationService;
+
+    public SearchViewModel SearchViewModel { get; } = searchViewModel;
+    public SavedTreasuriesViewModel SavedTreasuriesViewModel { get; } = savedTreasuriesViewModel;
+    public UpcomingAuctionsViewModel UpcomingAuctionsViewModel { get; } = upcomingAuctionsViewModel;
 
     public void Receive(AfterTreasuryInsertMessage message)
     {

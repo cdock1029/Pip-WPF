@@ -36,15 +36,6 @@
                   AutoGenerateColumns="False"
                   EnableRowVirtualization="True"
                   SelectionUnit="FullRow">
-            <DataGrid.Style>
-                <Style TargetType="DataGrid">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Treasuries.Count}" Value="0">
-                            <Setter Property="Visibility" Value="Hidden" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.Style>
             <DataGrid.GroupStyle>
                 <GroupStyle>
                     <GroupStyle.ContainerStyle>

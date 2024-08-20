@@ -21,8 +21,8 @@
                         <view:AuctionsView />
                     </DataTemplate>
                 </ResourceDictionary>
-                <!--<ResourceDictionary
-                    Source="pack://application:,,,/PresentationFramework.Fluent;component/Themes/Fluent.xaml" />-->
+                <ResourceDictionary
+                    Source="pack://application:,,,/PresentationFramework.Fluent;component/Themes/Fluent.xaml" />
                 <ResourceDictionary Source="/Resources/Converters.xaml" />
                 <ResourceDictionary Source="/Resources/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>

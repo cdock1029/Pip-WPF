@@ -34,7 +34,7 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Label VerticalContentAlignment="Center">Enter CUSIP:</Label>
@@ -43,7 +43,8 @@
                      Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      Width="250">
                 <TextBox.InputBindings>
-                    <KeyBinding Command="{Binding SearchCommand}" CommandParameter="{Binding SearchText}" Key="Return" />
+                    <KeyBinding Command="{Binding SearchCommand}" CommandParameter="{Binding SearchText}"
+                                Key="Return" />
                 </TextBox.InputBindings>
             </TextBox>
             <StackPanel Grid.Column="2" Orientation="Horizontal">
@@ -52,7 +53,8 @@
                 <Button Margin="0 0 10 0" Content="Clear" Command="{Binding ClearResultsCommand}" />
             </StackPanel>
         </Grid>
-        <ListBox HorizontalAlignment="Center" Grid.Row="1" Margin="0,20,0,0" ItemsSource="{Binding SearchResults}">
+        <ListBox HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="1" Margin="0,20,0,0"
+                 ItemsSource="{Binding SearchResults}">
             <ListBox.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Save"
