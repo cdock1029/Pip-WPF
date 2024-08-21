@@ -24,7 +24,7 @@ public partial class App : Application
     {
         base.OnStartup(e);
         // create SavedTreasuriesViewModel early so it can receive messages
-        _serviceProvider.GetRequiredService<SavedTreasuriesViewModel>();
+        //_serviceProvider.GetRequiredService<SavedTreasuriesViewModel>();
         var mainWindow = _serviceProvider.GetService<MainWindow>();
         mainWindow?.Show();
     }

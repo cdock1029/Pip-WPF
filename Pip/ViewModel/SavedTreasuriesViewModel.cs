@@ -10,7 +10,8 @@ using Pip.UI.View.Services;
 
 namespace Pip.UI.ViewModel;
 
-public partial class SavedTreasuriesViewModel : ViewModelBase, IRecipient<AfterTreasuryInsertMessage>
+public partial class SavedTreasuriesViewModel : ViewModelBase, IRecipient<AfterTreasuryInsertMessage>,
+    ITreasuriesViewModel
 {
     private readonly INavigationService _navigationService;
     private readonly ITreasuryDataProvider _treasuryDataProvider;

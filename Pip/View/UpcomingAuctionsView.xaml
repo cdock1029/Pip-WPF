@@ -16,7 +16,7 @@
         </b:EventTrigger>
     </b:Interaction.Triggers>
 
-    <Grid VerticalAlignment="Top" HorizontalAlignment="Left">
+    <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />

@@ -9,7 +9,8 @@ public partial class MainViewModel(
     INavigationService navigationService,
     SearchViewModel searchViewModel,
     SavedTreasuriesViewModel savedTreasuriesViewModel,
-    UpcomingAuctionsViewModel upcomingAuctionsViewModel)
+    UpcomingAuctionsViewModel upcomingAuctionsViewModel,
+    AuctionsViewModel auctionsViewModel)
     : ViewModelBase, IRecipient<AfterTreasuryInsertMessage>
 {
     public INavigationService Navigation { get; } = navigationService;
@@ -17,6 +18,7 @@ public partial class MainViewModel(
     public SearchViewModel SearchViewModel { get; } = searchViewModel;
     public SavedTreasuriesViewModel SavedTreasuriesViewModel { get; } = savedTreasuriesViewModel;
     public UpcomingAuctionsViewModel UpcomingAuctionsViewModel { get; } = upcomingAuctionsViewModel;
+    public AuctionsViewModel AuctionsViewModel { get; } = auctionsViewModel;
 
     public void Receive(AfterTreasuryInsertMessage message)
     {

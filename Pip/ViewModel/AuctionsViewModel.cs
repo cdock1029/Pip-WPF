@@ -5,9 +5,10 @@ using Pip.UI.Data;
 
 namespace Pip.UI.ViewModel;
 
-public partial class AuctionsViewModel(ITreasuryDataProvider treasuryDataProvider) : ViewModelBase
+public partial class AuctionsViewModel(ITreasuryDataProvider treasuryDataProvider) : ViewModelBase, ITreasuriesViewModel
 {
     public ObservableCollection<Treasury> Treasuries { get; } = [];
+    public Treasury? SelectedTreasury { get; set; }
 
     [RelayCommand]
     public override async Task LoadAsync()

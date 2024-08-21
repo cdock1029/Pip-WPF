@@ -5,16 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModel="clr-namespace:Pip.UI.ViewModel"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:view="clr-namespace:Pip.UI.View"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=viewModel:AuctionsViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.Resources>
-        <CollectionViewSource x:Key="CvsTreasuries" Source="{Binding Treasuries}">
-            <CollectionViewSource.GroupDescriptions>
-                <PropertyGroupDescription PropertyName="Type" />
-            </CollectionViewSource.GroupDescriptions>
-        </CollectionViewSource>
     </UserControl.Resources>
 
     <b:Interaction.Triggers>
@@ -23,62 +19,12 @@
         </b:EventTrigger>
     </b:Interaction.Triggers>
 
-    <Grid>
+    <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Margin="0,0,0,10">Auctions View</TextBlock>
-        <DataGrid Grid.Row="1"
-                  HorizontalAlignment="Left"
-                  VerticalAlignment="Top"
-                  ItemsSource="{Binding Source={StaticResource CvsTreasuries}}"
-                  AutoGenerateColumns="False"
-                  EnableRowVirtualization="True"
-                  SelectionUnit="FullRow">
-            <DataGrid.GroupStyle>
-                <GroupStyle>
-                    <GroupStyle.ContainerStyle>
-                        <Style TargetType="{x:Type GroupItem}">
-                            <Setter Property="Margin" Value="10,0,10,10" />
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type GroupItem}">
-                                        <Expander IsExpanded="True">
-                                            <Expander.Header>
-                                                <DockPanel>
-                                                    <TextBlock FontWeight="Bold" Text="{Binding Path=Name}" />
-                                                </DockPanel>
-                                            </Expander.Header>
-                                            <Expander.Content>
-                                                <ItemsPresenter />
-                                            </Expander.Content>
-                                        </Expander>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </GroupStyle.ContainerStyle>
-                </GroupStyle>
-                <GroupStyle>
-                    <GroupStyle.HeaderTemplate>
-                        <DataTemplate>
-                            <DockPanel>
-                                <TextBlock Margin="0,0,0, 0" Text="{Binding Name}" FontWeight="Bold" />
-                            </DockPanel>
-                        </DataTemplate>
-                    </GroupStyle.HeaderTemplate>
-                </GroupStyle>
-            </DataGrid.GroupStyle>
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path=Cusip}" Header="CUSIP" IsReadOnly="True" Width="Auto" />
-                <DataGridTextColumn Binding="{Binding Path=IssueDate}" Header="Issue Date" IsReadOnly="True"
-                                    Width="Auto" />
-                <DataGridTextColumn Binding="{Binding Path=MaturityDate}" Header="Maturity Date" Width="Auto"
-                                    IsReadOnly="True" />
-                <DataGridTextColumn Binding="{Binding Path=SecurityTerm}" Header="Term" Width="Auto"
-                                    IsReadOnly="True" />
-            </DataGrid.Columns>
-        </DataGrid>
+        <Label Grid.Row="0" Margin="0,0,0,10">Recent Auctions</Label>
+        <view:TreasuriesCollectionView Grid.Row="1" />
     </Grid>
 </UserControl>

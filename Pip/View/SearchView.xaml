@@ -29,9 +29,11 @@
     <Grid HorizontalAlignment="Center">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Grid>
+        <Label>Treasury Search</Label>
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -53,28 +55,19 @@
                 <Button Margin="0 0 10 0" Content="Clear" Command="{Binding ClearResultsCommand}" />
             </StackPanel>
         </Grid>
-        <ListBox HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="1" Margin="0,20,0,0"
-                 ItemsSource="{Binding SearchResults}">
-            <ListBox.ContextMenu>
+        <ListView HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="2" Margin="0,20,0,0"
+                  ItemsSource="{Binding SearchResults}">
+            <ListView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Save"
                               Command="{Binding SaveTreasuryCommand}"
                               CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItem}" />
                 </ContextMenu>
-            </ListBox.ContextMenu>
-            <ListBox.Resources>
+            </ListView.ContextMenu>
+            <ListView.Resources>
                 <system:String xml:space="preserve" x:Key="MaturityFormat">Maturity: {0:ddd d MMM yyyy}</system:String>
-            </ListBox.Resources>
-            <ListBox.Style>
-                <Style TargetType="ListBox">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding SearchResults.Count}" Value="0">
-                            <Setter Property="Visibility" Value="Hidden" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </ListBox.Style>
-            <ListBox.ItemTemplate>
+            </ListView.Resources>
+            <ListView.ItemTemplate>
                 <DataTemplate>
                     <Border Padding="20,10">
                         <StackPanel Width="360"
@@ -106,7 +99,7 @@
                         </StackPanel>
                     </Border>
                 </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </UserControl>
