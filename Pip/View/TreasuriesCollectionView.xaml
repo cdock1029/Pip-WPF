@@ -3,71 +3,29 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:viewModel="clr-namespace:Pip.UI.ViewModel"
-             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:view="clr-namespace:Pip.UI.View"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800"
-             d:DataContext="{d:DesignInstance Type=viewModel:ITreasuriesViewModel}">
+             d:DesignHeight="450" d:DesignWidth="800">
 
-    <UserControl.Resources>
-        <CollectionViewSource x:Key="CvsTreasuries" Source="{Binding Treasuries}">
-            <CollectionViewSource.GroupDescriptions>
-                <PropertyGroupDescription PropertyName="Type" />
-            </CollectionViewSource.GroupDescriptions>
-            <CollectionViewSource.SortDescriptions>
-                <scm:SortDescription PropertyName="Type" />
-                <scm:SortDescription PropertyName="MaturityDate" />
-            </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
-    </UserControl.Resources>
-    <DataGrid
-        AutoGenerateColumns="False"
-        ItemsSource="{Binding Source={StaticResource CvsTreasuries}}"
-        EnableRowVirtualization="True"
-        SelectedItem="{Binding SelectedTreasury}"
-        SelectionUnit="CellOrRowHeader">
-        <DataGrid.GroupStyle>
-            <GroupStyle>
-                <GroupStyle.ContainerStyle>
-                    <Style TargetType="{x:Type GroupItem}">
-                        <Setter Property="Margin" Value="10,0,10,10" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type GroupItem}">
-                                    <Expander IsExpanded="True">
-                                        <Expander.Header>
-                                            <DockPanel>
-                                                <TextBlock FontWeight="Bold" Text="{Binding Path=Name}" />
-                                            </DockPanel>
-                                        </Expander.Header>
-                                        <Expander.Content>
-                                            <ItemsPresenter />
-                                        </Expander.Content>
-                                    </Expander>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </GroupStyle.ContainerStyle>
-            </GroupStyle>
-            <GroupStyle>
-                <GroupStyle.HeaderTemplate>
-                    <DataTemplate>
-                        <DockPanel>
-                            <TextBlock Margin="0,0,0, 0" Text="{Binding Name}" FontWeight="Bold" />
-                        </DockPanel>
-                    </DataTemplate>
-                </GroupStyle.HeaderTemplate>
-            </GroupStyle>
-        </DataGrid.GroupStyle>
-        <DataGrid.Columns>
-            <DataGridTextColumn Binding="{Binding Path=Cusip}" Header="CUSIP" IsReadOnly="True" Width="Auto" />
-            <DataGridTextColumn Binding="{Binding Path=IssueDate}" Header="Issue Date" IsReadOnly="True"
-                                Width="Auto" />
-            <DataGridTextColumn Binding="{Binding Path=MaturityDate}" Header="Maturity Date" Width="Auto"
-                                IsReadOnly="True" />
-            <DataGridTextColumn Binding="{Binding Path=SecurityTerm}" Header="Term" Width="Auto"
-                                IsReadOnly="True" />
-        </DataGrid.Columns>
-    </DataGrid>
+    <UserControl.Template>
+        <ControlTemplate TargetType="{x:Type view:TreasuriesCollectionView}">
+            <dxg:GridControl
+                ItemsSource="{TemplateBinding Treasuries}"
+                SelectedItem="{TemplateBinding SelectedTreasury}" AutoExpandAllGroups="True">
+                <dxg:GridControl.View>
+                    <dxg:TableView AutoWidth="True" ShowGroupedColumns="False" AllowGrouping="True"
+                                   AllowBestFit="True"
+                                   BestFitMode="VisibleRows" />
+                </dxg:GridControl.View>
+                <dxg:GridControl.Columns>
+                    <dxg:GridColumn FieldName="Cusip" ReadOnly="True" Header="CUSIP" />
+                    <dxg:GridColumn FieldName="IssueDate" AllowCellMerge="True" ReadOnly="True" Header="Issue Date" />
+                    <dxg:GridColumn FieldName="MaturityDate" Header="Maturity Date" ReadOnly="True" />
+                    <dxg:GridColumn FieldName="SecurityTerm" Header="Term" ReadOnly="True" />
+                    <dxg:GridColumn FieldName="Type" GroupIndex="0" Header="Type" ReadOnly="True" />
+                </dxg:GridControl.Columns>
+            </dxg:GridControl>
+        </ControlTemplate>
+    </UserControl.Template>
 </UserControl>

@@ -57,7 +57,9 @@
             </StackPanel>
         </Grid>
 
-        <view:TreasuriesCollectionView Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left" />
+        <view:TreasuriesCollectionView Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Left"
+                                       Treasuries="{Binding Treasuries}"
+                                       SelectedTreasury="{Binding SelectedTreasury}" />
 
     </Grid>
 </UserControl>

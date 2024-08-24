@@ -33,12 +33,17 @@
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+		<PackageReference Include="DevExpress.Mvvm" Version="24.1.5" />
+		<PackageReference Include="DevExpress.Wpf.Core" Version="24.1.5" />
+		<PackageReference Include="DevExpress.Wpf.Grid.Core" Version="24.1.5" />
+		<PackageReference Include="DevExpress.Wpf.Themes.All" Version="24.1.5" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.AutoActivation" Version="8.8.0" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.122" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

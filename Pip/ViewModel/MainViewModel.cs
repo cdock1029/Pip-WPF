@@ -1,52 +1,37 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
-using Pip.UI.Messages;
 using Pip.UI.View.Services;
 
 namespace Pip.UI.ViewModel;
 
 public partial class MainViewModel(
-    INavigationService navigationService,
-    SearchViewModel searchViewModel,
-    SavedTreasuriesViewModel savedTreasuriesViewModel,
-    UpcomingAuctionsViewModel upcomingAuctionsViewModel,
-    AuctionsViewModel auctionsViewModel)
-    : ViewModelBase, IRecipient<AfterTreasuryInsertMessage>
+	INavigationService navigationService,
+	SearchViewModel searchViewModel,
+	SavedTreasuriesViewModel savedTreasuriesViewModel,
+	AuctionsViewModel auctionsViewModel)
+	: ViewModelBase
 {
-    public INavigationService Navigation { get; } = navigationService;
+	public INavigationService Navigation { get; } = navigationService;
 
-    public SearchViewModel SearchViewModel { get; } = searchViewModel;
-    public SavedTreasuriesViewModel SavedTreasuriesViewModel { get; } = savedTreasuriesViewModel;
-    public UpcomingAuctionsViewModel UpcomingAuctionsViewModel { get; } = upcomingAuctionsViewModel;
-    public AuctionsViewModel AuctionsViewModel { get; } = auctionsViewModel;
-
-    public void Receive(AfterTreasuryInsertMessage message)
-    {
-        //SelectViewModel(SavedTreasuriesViewModel);
-    }
+	public SearchViewModel SearchViewModel { get; } = searchViewModel;
+	public SavedTreasuriesViewModel SavedTreasuriesViewModel { get; } = savedTreasuriesViewModel;
+	public AuctionsViewModel AuctionsViewModel { get; } = auctionsViewModel;
 
 
-    [RelayCommand]
-    private void NavigateSearch()
-    {
-        Navigation.NavigateTo<SearchViewModel>();
-    }
+	[RelayCommand]
+	private void NavigateSearch()
+	{
+		Navigation.NavigateTo<SearchViewModel>();
+	}
 
-    [RelayCommand]
-    private void NavigateSaved()
-    {
-        Navigation.NavigateTo<SavedTreasuriesViewModel>();
-    }
+	[RelayCommand]
+	private void NavigateSaved()
+	{
+		Navigation.NavigateTo<SavedTreasuriesViewModel>();
+	}
 
-    [RelayCommand]
-    private void NavigateUpcoming()
-    {
-        Navigation.NavigateTo<UpcomingAuctionsViewModel>();
-    }
-
-    [RelayCommand]
-    private void NavigateAuctions()
-    {
-        Navigation.NavigateTo<AuctionsViewModel>();
-    }
+	[RelayCommand]
+	private void NavigateAuctions()
+	{
+		Navigation.NavigateTo<AuctionsViewModel>();
+	}
 }

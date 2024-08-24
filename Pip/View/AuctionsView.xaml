@@ -10,21 +10,26 @@
              d:DataContext="{d:DesignInstance Type=viewModel:AuctionsViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <UserControl.Resources>
-    </UserControl.Resources>
-
     <b:Interaction.Triggers>
         <b:EventTrigger EventName="Loaded">
             <b:InvokeCommandAction Command="{Binding LoadCommand}" />
         </b:EventTrigger>
     </b:Interaction.Triggers>
 
-    <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <Label Grid.Row="0" Margin="0,0,0,10">Recent Auctions</Label>
-        <view:TreasuriesCollectionView Grid.Row="1" />
+    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <DockPanel Margin="0, 0,10,0">
+            <Label DockPanel.Dock="Top" Margin="0,0,0,10">Recent Auctions</Label>
+            <view:TreasuriesCollectionView Treasuries="{Binding TreasuriesRecent}"
+                                           SelectedTreasury="{Binding SelectedTreasuryRecent}" />
+        </DockPanel>
+        <DockPanel Grid.Column="1" Margin="0,0,10,0">
+            <Label DockPanel.Dock="Top" Margin="0,0,0,10">Upcoming Auctions</Label>
+            <view:TreasuriesCollectionView Treasuries="{Binding TreasuriesUpcoming}"
+                                           SelectedTreasury="{Binding SelectedTreasuryUpcoming}" />
+        </DockPanel>
     </Grid>
 </UserControl>
