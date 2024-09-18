@@ -4,17 +4,10 @@ using Pip.UI.View.Services;
 namespace Pip.UI.ViewModel;
 
 public partial class MainViewModel(
-	INavigationService navigationService,
-	SearchViewModel searchViewModel,
-	SavedTreasuriesViewModel savedTreasuriesViewModel,
-	AuctionsViewModel auctionsViewModel)
+	INavigationService navigationService)
 	: ViewModelBase
 {
 	public INavigationService Navigation { get; } = navigationService;
-
-	public SearchViewModel SearchViewModel { get; } = searchViewModel;
-	public SavedTreasuriesViewModel SavedTreasuriesViewModel { get; } = savedTreasuriesViewModel;
-	public AuctionsViewModel AuctionsViewModel { get; } = auctionsViewModel;
 
 
 	[RelayCommand]
@@ -30,8 +23,40 @@ public partial class MainViewModel(
 	}
 
 	[RelayCommand]
+	private void NavigateInvestments()
+	{
+		Navigation.NavigateTo<InvestmentsViewModel>();
+	}
+
+	[RelayCommand]
 	private void NavigateAuctions()
 	{
 		Navigation.NavigateTo<AuctionsViewModel>();
 	}
+
+	/*
+	[RelayCommand]
+	private Task NavigateSearch()
+	{
+		await Navigation.NavigateToAsync<SearchViewModel>();
+	}
+
+	[RelayCommand]
+	private async Task NavigateSaved()
+	{
+		await Navigation.NavigateToAsync<SavedTreasuriesViewModel>();
+	}
+
+	[RelayCommand]
+	private async Task NavigateInvestments()
+	{
+		await Navigation.NavigateToAsync<InvestmentsViewModel>();
+	}
+
+	[RelayCommand]
+	private async Task NavigateAuctions()
+	{
+		await Navigation.NavigateToAsync<AuctionsViewModel>();
+	}
+	*/
 }

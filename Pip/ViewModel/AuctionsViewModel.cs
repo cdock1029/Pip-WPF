@@ -1,4 +1,6 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows.Threading;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Pip.Model;
 using Pip.UI.Data;
@@ -7,27 +9,44 @@ namespace Pip.UI.ViewModel;
 
 public partial class AuctionsViewModel(ITreasuryDataProvider treasuryDataProvider) : ViewModelBase
 {
+	[ObservableProperty] private Treasury? _selectedTreasuryRecent;
+
+	[ObservableProperty] private Treasury? _selectedTreasuryUpcoming;
+
 	public ObservableCollection<Treasury> TreasuriesRecent { get; } = [];
-	public Treasury? SelectedTreasuryRecent { get; set; }
 	public ObservableCollection<Treasury> TreasuriesUpcoming { get; } = [];
-	public Treasury? SelectedTreasuryUpcoming { get; set; }
 
 	[RelayCommand]
 	public override async Task LoadAsync()
 	{
 		if (TreasuriesRecent.Any() || TreasuriesUpcoming.Any()) return;
+		var curr = Dispatcher.CurrentDispatcher;
+		await Task.WhenAll(Task.Run(async () =>
+		{
+			var recent = await treasuryDataProvider.GetAuctionsAsync().ConfigureAwait(false);
+			if (recent is not null)
+				MaybeDispatchAsync(curr, () =>
+				{
+					foreach (var treasury in recent)
+						TreasuriesRecent.Add(treasury);
+				});
+		}), Task.Run(async () =>
+		{
+			var upcoming = await treasuryDataProvider.GetUpcomingAsync().ConfigureAwait(false);
+			if (upcoming is not null)
+				MaybeDispatchAsync(curr, () =>
+				{
+					foreach (var treasury in upcoming)
+						TreasuriesUpcoming.Add(treasury);
+				});
+		})).ConfigureAwait(false);
+	}
 
-		var recentTask = treasuryDataProvider.GetAuctionsAsync();
-		var upcomingTask = treasuryDataProvider.GetUpcomingAsync();
-		var tasks = await Task.WhenAll(recentTask, upcomingTask);
-		var recent = tasks[0];
-		var upcoming = tasks[1];
-
-		if (recent is not null)
-			foreach (var auction in recent)
-				TreasuriesRecent.Add(auction);
-		if (upcoming is not null)
-			foreach (var auction in upcoming)
-				TreasuriesUpcoming.Add(auction);
+	private static void MaybeDispatchAsync(Dispatcher dispatcher, Action action)
+	{
+		if (dispatcher.CheckAccess())
+			action.Invoke();
+		else
+			dispatcher.InvokeAsync(action);
 	}
 }

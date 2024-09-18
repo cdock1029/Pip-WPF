@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System.Configuration;
+using System.Windows;
 using System.Windows.Threading;
+using DevExpress.Mvvm;
 using DevExpress.Xpf.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,6 +10,8 @@ using Pip.UI.Data;
 using Pip.UI.View.Services;
 using Pip.UI.ViewModel;
 using Application = System.Windows.Application;
+using INavigationService = Pip.UI.View.Services.INavigationService;
+using ViewModelBase = Pip.UI.ViewModel.ViewModelBase;
 
 namespace Pip.UI;
 
@@ -17,6 +21,9 @@ public partial class App : Application
 
 	public App()
 	{
+		CompatibilitySettings.UseLightweightThemes = true;
+		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win10System.Name;
+		//ApplicationThemeHelper.Preload(PreloadCategories.Core);
 		ServiceCollection serviceCollection = [];
 		ConfigureServices(serviceCollection);
 		_serviceProvider = serviceCollection.BuildServiceProvider();
@@ -24,8 +31,9 @@ public partial class App : Application
 
 	protected override void OnStartup(StartupEventArgs e)
 	{
-		ApplicationThemeHelper.ApplicationThemeName = Theme.Office2019SystemName;
 		base.OnStartup(e);
+		var saved = _serviceProvider.GetRequiredService<SavedTreasuriesViewModel>();
+		saved.IsActive = true;
 		var mainWindow = _serviceProvider.GetService<MainWindow>();
 		mainWindow?.Show();
 	}
@@ -34,22 +42,25 @@ public partial class App : Application
 	{
 		serviceCollection
 			.AddSingleton<INavigationService, NavigationService>()
-			.AddSingleton<IMessageDialogService, MessageDialogService>()
+			.AddSingleton<IMessageBoxService, DXMessageBoxService>()
 			.AddSingleton<ITreasuryDataProvider, TreasuryDataProvider>()
 			.AddSingleton<MainViewModel>()
 			.AddSingleton<SearchViewModel>()
 			.AddActivatedSingleton<SavedTreasuriesViewModel>()
-			.AddSingleton<UpcomingAuctionsViewModel>()
+			.AddSingleton<InvestmentsViewModel>()
 			.AddSingleton<AuctionsViewModel>()
 			.AddSingleton(p => new MainWindow { DataContext = p.GetRequiredService<MainViewModel>() })
 			.AddSingleton<Func<Type, ViewModelBase>>(p =>
 				viewModelType => (ViewModelBase)p.GetRequiredService(viewModelType))
-			.AddHttpClient()
 			.AddDbContextFactory<PipDbContext>(optionsBuilder =>
 			{
-				//var connString = ConfigurationManager.ConnectionStrings["PipDbLocal"].ConnectionString;
-				//optionsBuilder.UseSqlServer(connString);
-				optionsBuilder.UseSqlite("Data Source=pip.db");
+				var connString = ConfigurationManager.ConnectionStrings["PipDbLocal"].ConnectionString;
+				optionsBuilder.UseSqlServer(connString);
+				//optionsBuilder.UseSqlite("Data Source=pip.db");
+			})
+			.AddHttpClient<ITreasuryDataProvider, TreasuryDataProvider>(c =>
+			{
+				c.BaseAddress = new Uri("https://www.treasurydirect.gov/TA_WS/");
 			});
 	}
 

@@ -7,7 +7,7 @@ using Pip.UI.View.Types;
 
 namespace Pip.UI;
 
-public partial class MainWindow : DXWindow
+public partial class MainWindow : ThemedWindow
 {
 	private const int SwShownormal = 1;
 	private const int SwShowminimized = 2;
