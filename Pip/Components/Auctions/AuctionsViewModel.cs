@@ -3,9 +3,10 @@ using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Pip.Model;
-using Pip.UI.Data;
+using Pip.UI.Services;
+using Pip.UI.ViewModel;
 
-namespace Pip.UI.ViewModel;
+namespace Pip.UI.Components.Auctions;
 
 public partial class AuctionsViewModel(ITreasuryDataProvider treasuryDataProvider) : ViewModelBase
 {
@@ -20,33 +21,28 @@ public partial class AuctionsViewModel(ITreasuryDataProvider treasuryDataProvide
 	public override async Task LoadAsync()
 	{
 		if (TreasuriesRecent.Any() || TreasuriesUpcoming.Any()) return;
-		var curr = Dispatcher.CurrentDispatcher;
-		await Task.WhenAll(Task.Run(async () =>
+		var dispatcher = Dispatcher.CurrentDispatcher;
+
+		var taskRecent = Task.Run(async () =>
 		{
 			var recent = await treasuryDataProvider.GetAuctionsAsync().ConfigureAwait(false);
 			if (recent is not null)
-				MaybeDispatchAsync(curr, () =>
+				dispatcher.BeginInvoke(() =>
 				{
 					foreach (var treasury in recent)
 						TreasuriesRecent.Add(treasury);
 				});
-		}), Task.Run(async () =>
+		});
+		var taskUpcoming = Task.Run(async () =>
 		{
 			var upcoming = await treasuryDataProvider.GetUpcomingAsync().ConfigureAwait(false);
 			if (upcoming is not null)
-				MaybeDispatchAsync(curr, () =>
+				dispatcher.BeginInvoke(() =>
 				{
 					foreach (var treasury in upcoming)
 						TreasuriesUpcoming.Add(treasury);
 				});
-		})).ConfigureAwait(false);
-	}
-
-	private static void MaybeDispatchAsync(Dispatcher dispatcher, Action action)
-	{
-		if (dispatcher.CheckAccess())
-			action.Invoke();
-		else
-			dispatcher.InvokeAsync(action);
+		});
+		await Task.WhenAll(taskRecent, taskUpcoming).ConfigureAwait(false);
 	}
 }

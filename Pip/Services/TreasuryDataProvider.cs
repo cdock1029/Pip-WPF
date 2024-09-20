@@ -4,11 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Pip.DataAccess;
 using Pip.Model;
 
-namespace Pip.UI.Data;
+namespace Pip.UI.Services;
 
 public class TreasuryDataProvider(HttpClient client, PipDbContext dbContext)
 	: ITreasuryDataProvider
 {
+	#region TDApi
+
 	public async Task<IEnumerable<Treasury>?> SearchTreasuriesAsync(string cusip)
 	{
 		return await client.GetFromJsonAsync<IEnumerable<Treasury>>(
@@ -31,39 +33,56 @@ public class TreasuryDataProvider(HttpClient client, PipDbContext dbContext)
 			"securities/auctioned?format=json&limitByTerm=true&days=720").ConfigureAwait(false);
 	}
 
+	#endregion
+
 
 	#region DB
 
 	// If using SQLite, the underlying database operations are not async but sync even with async EF calls.
 	// Must wrap sync calls inside Task.Run
-	public async Task<List<Treasury>> GetSavedAsync()
+	public Task<List<Treasury>> GetSavedAsync()
 	{
-		return await dbContext.Treasuries.AsNoTracking().ToListAsync().ConfigureAwait(false);
+		return Task.Run(() => dbContext.Treasuries.ToList());
 	}
 
-	public List<Treasury> GetSaved()
+	public Task<List<Investment>> GetInvestmentsAsync()
 	{
-		return dbContext.Treasuries.AsNoTracking().ToList();
-	}
-
-	public async Task<List<Investment>> GetInvestmentsAsync()
-	{
-		return await dbContext
+		return Task.Run(() => dbContext
 			.Investments
 			.Include(i => i.Treasury)
-			.ToListAsync()
-			.ConfigureAwait(false);
+			.ToList());
 	}
 
-	public List<Investment> GetInvestments()
-	{
-		return dbContext.Investments.Include(i => i.Treasury).ToList();
-	}
-
-	public Task InsertAsync(Treasury treasury)
+	public Task<int> InsertAsync(Treasury treasury)
 	{
 		dbContext.Add(treasury);
-		return Task.Run(dbContext.SaveChanges);
+		return dbContext.SaveChangesAsync();
+	}
+
+	public async Task InsertInvestmentAsync(Investment investment)
+	{
+		var treasury = await dbContext.Treasuries.FirstOrDefaultAsync(t =>
+			t.Cusip == investment.Treasury.Cusip && t.IssueDate == investment.Treasury.IssueDate);
+
+		if (treasury is null)
+			dbContext.Entry(investment.Treasury).State = EntityState.Added;
+		else
+			investment.Treasury = treasury;
+
+		dbContext.Investments.Add(investment);
+		await dbContext.SaveChangesAsync();
+	}
+
+	public Task DeleteInvestmentsAsync(IEnumerable<Investment> investments)
+	{
+		dbContext.Investments.RemoveRange(investments);
+		return dbContext.SaveChangesAsync();
+	}
+
+	public Task DeleteTreasuriesAsync(IEnumerable<Treasury> rows)
+	{
+		dbContext.Treasuries.RemoveRange(rows);
+		return dbContext.SaveChangesAsync();
 	}
 
 	public void Add(Treasury treasury)

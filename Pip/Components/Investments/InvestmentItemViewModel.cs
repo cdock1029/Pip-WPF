@@ -1,11 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Pip.Model;
+using Pip.UI.ViewModel;
 
-namespace Pip.UI.ViewModel;
+namespace Pip.UI.Components.Investments;
 
-internal partial class InvestmentItemViewModel(Investment investment) : ViewModelBase
+public partial class InvestmentItemViewModel(Investment investment) : ViewModelBase
 {
-	[ObservableProperty] private string _confirmation = investment.Confirmation;
+	[ObservableProperty] private string? _confirmation = investment.Confirmation;
 	[ObservableProperty] private string _cusip = investment.TreasuryCusip;
 	[ObservableProperty] private int _id = investment.Id;
 

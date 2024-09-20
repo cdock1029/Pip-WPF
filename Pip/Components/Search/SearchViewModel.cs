@@ -6,10 +6,11 @@ using CommunityToolkit.Mvvm.Messaging;
 using DevExpress.Mvvm;
 using Microsoft.EntityFrameworkCore;
 using Pip.Model;
-using Pip.UI.Data;
 using Pip.UI.Messages;
+using Pip.UI.Services;
+using ViewModelBase = Pip.UI.ViewModel.ViewModelBase;
 
-namespace Pip.UI.ViewModel;
+namespace Pip.UI.Components.Search;
 
 public partial class SearchViewModel : ViewModelBase
 {
@@ -65,12 +66,6 @@ public partial class SearchViewModel : ViewModelBase
 			MessageIcon.Question
 		);
 
-		/*
-	var result = _messageDialogService.ShowOkCancelDialog(
-		$"CUSIP: [{treasury.Cusip}]\nIssue Date: [{treasury.IssueDate.ToLongDateString()}]\nMaturity Date: [{treasury.MaturityDate?.ToLongDateString()}]",
-		"Do you want to save Treasury?");
-		*/
-
 		if (result == MessageResult.OK)
 			try
 			{
@@ -82,6 +77,40 @@ public partial class SearchViewModel : ViewModelBase
 			{
 				_ = _messageBoxService.ShowMessage(
 					$"Error saving UST: {e.Message}\nInner error: {e.InnerException?.Message}", "Error",
+					MessageButton.OK, MessageIcon.Error);
+			}
+	}
+
+	[RelayCommand]
+	private async Task CreateInvestment(Treasury? treasury)
+	{
+		ArgumentNullException.ThrowIfNull(treasury);
+
+		var result = _messageBoxService.ShowMessage(
+			$"CUSIP: [{treasury.Cusip}]\nIssue Date: [{treasury.IssueDate.ToLongDateString()}]\nMaturity Date: [{treasury.MaturityDate?.ToLongDateString()}]",
+			"Do you want to create investment?",
+			MessageButton.OKCancel,
+			MessageIcon.Question
+		);
+
+		if (result == MessageResult.OK)
+			try
+			{
+				var investment = new Investment
+				{
+					TreasuryCusip = treasury.Cusip,
+					TreasuryIssueDate = treasury.IssueDate,
+					Treasury = treasury
+				};
+				await _treasuryDataProvider.InsertInvestmentAsync(investment);
+				WeakReferenceMessenger.Default.Send(
+					new AfterInsertInvestmentMessage(new AfterInsertInvestmentArgs(investment.Id, treasury.Cusip,
+						treasury.IssueDate)));
+			}
+			catch (DbUpdateException e)
+			{
+				_ = _messageBoxService.ShowMessage(
+					$"Error saving Investment: {e.Message}\nInner error: {e.InnerException?.Message}", "Error",
 					MessageButton.OK, MessageIcon.Error);
 			}
 	}

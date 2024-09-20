@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Pip.UI.ViewModel;
 
-namespace Pip.UI.View.Services;
+namespace Pip.UI.Services;
 
 public partial class NavigationService(Func<Type, ViewModelBase> viewModelFactory)
 	: ObservableObject, INavigationService

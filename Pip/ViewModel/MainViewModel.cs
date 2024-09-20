@@ -1,5 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using Pip.UI.View.Services;
+using Pip.UI.Components.Auctions;
+using Pip.UI.Components.Investments;
+using Pip.UI.Components.SavedTreasuries;
+using Pip.UI.Components.Search;
+using Pip.UI.Services;
 
 namespace Pip.UI.ViewModel;
 

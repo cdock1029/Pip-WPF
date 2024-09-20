@@ -1,16 +1,18 @@
-﻿using System.Configuration;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Threading;
 using DevExpress.Mvvm;
 using DevExpress.Xpf.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Pip.DataAccess;
-using Pip.UI.Data;
-using Pip.UI.View.Services;
+using Pip.UI.Components.Auctions;
+using Pip.UI.Components.Investments;
+using Pip.UI.Components.SavedTreasuries;
+using Pip.UI.Components.Search;
+using Pip.UI.Services;
 using Pip.UI.ViewModel;
 using Application = System.Windows.Application;
-using INavigationService = Pip.UI.View.Services.INavigationService;
+using INavigationService = Pip.UI.Services.INavigationService;
 using ViewModelBase = Pip.UI.ViewModel.ViewModelBase;
 
 namespace Pip.UI;
@@ -23,7 +25,6 @@ public partial class App : Application
 	{
 		CompatibilitySettings.UseLightweightThemes = true;
 		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win10System.Name;
-		//ApplicationThemeHelper.Preload(PreloadCategories.Core);
 		ServiceCollection serviceCollection = [];
 		ConfigureServices(serviceCollection);
 		_serviceProvider = serviceCollection.BuildServiceProvider();
@@ -32,8 +33,10 @@ public partial class App : Application
 	protected override void OnStartup(StartupEventArgs e)
 	{
 		base.OnStartup(e);
-		var saved = _serviceProvider.GetRequiredService<SavedTreasuriesViewModel>();
-		saved.IsActive = true;
+		var dbContext = _serviceProvider.GetRequiredService<PipDbContext>();
+		dbContext.Database.Migrate();
+		_serviceProvider.GetRequiredService<SavedTreasuriesViewModel>().IsActive = true;
+		_serviceProvider.GetRequiredService<InvestmentsViewModel>().IsActive = true;
 		var mainWindow = _serviceProvider.GetService<MainWindow>();
 		mainWindow?.Show();
 	}
@@ -54,9 +57,9 @@ public partial class App : Application
 				viewModelType => (ViewModelBase)p.GetRequiredService(viewModelType))
 			.AddDbContextFactory<PipDbContext>(optionsBuilder =>
 			{
-				var connString = ConfigurationManager.ConnectionStrings["PipDbLocal"].ConnectionString;
-				optionsBuilder.UseSqlServer(connString);
-				//optionsBuilder.UseSqlite("Data Source=pip.db");
+				//var connString = ConfigurationManager.ConnectionStrings["PipDbLocal"].ConnectionString;
+				//optionsBuilder.UseSqlServer(connString);
+				optionsBuilder.UseSqlite("Data Source=pip.db");
 			})
 			.AddHttpClient<ITreasuryDataProvider, TreasuryDataProvider>(c =>
 			{
@@ -67,8 +70,8 @@ public partial class App : Application
 	private void App_OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
 	{
 		e.Handled = true;
-		var messageDialogService = _serviceProvider.GetService<IMessageDialogService>();
-		messageDialogService?.ShowOkCancelDialog($"Unhandled Exception. Contact administrator: [{e.Exception}]",
-			"Error");
+		var messageBoxService = _serviceProvider.GetRequiredService<IMessageBoxService>();
+		messageBoxService.Show($"Unhandled Exception. Contact administrator: [{e.Exception}]", "Error",
+			MessageBoxButton.OK);
 	}
 }

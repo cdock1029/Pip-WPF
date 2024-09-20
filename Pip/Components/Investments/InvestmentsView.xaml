@@ -1,0 +1,101 @@
+﻿<UserControl
+    x:Class="Pip.UI.Components.Investments.InvestmentsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+    xmlns:investments="clr-namespace:Pip.UI.Components.Investments"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance Type=investments:InvestmentsViewModel}"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    mc:Ignorable="d">
+
+    <dxmvvm:Interaction.Behaviors>
+        <dxmvvm:EventToCommand Command="{Binding LoadCommand}" EventName="Loaded" />
+    </dxmvvm:Interaction.Behaviors>
+
+    <DockPanel Height="300" VerticalAlignment="Top">
+        <Label Margin="0,0,0,10" DockPanel.Dock="Top">Investments</Label>
+        <dxg:GridControl
+            AutoExpandAllGroups="True"
+            DeleteKeyBehavior="DeleteFocusedRow"
+            EnableSmartColumnsGeneration="False"
+            ItemsSource="{Binding Investments}"
+            SelectedItem="{Binding SelectedInvestment}">
+            <dxg:GridControl.View>
+                <dxg:TableView
+                    AllowBestFit="True"
+                    AutoWidth="True"
+                    BestFitMode="VisibleRows"
+                    ShowUpdateRowButtons="OnCellEditorOpen">
+                    <dxmvvm:Interaction.Behaviors>
+                        <dxmvvm:EventToCommand
+                            Command="{Binding ValidateRowCommand}"
+                            EventName="ValidateRow"
+                            PassEventArgsToCommand="True" />
+                        <dxmvvm:EventToCommand
+                            Command="{Binding DataSourceRefreshCommand}"
+                            EventName="DataViewBase.DataSourceRefresh"
+                            PassEventArgsToCommand="True" />
+
+                        <dxmvvm:EventToCommand
+                            Command="{Binding ValidateRowDeletionCommand}"
+                            EventName="ValidateRowDeletion"
+                            PassEventArgsToCommand="True" />
+                    </dxmvvm:Interaction.Behaviors>
+                    <dxg:TableView.RowCellMenuCustomizations>
+                        <dxb:BarButtonItem Command="{x:Static dxg:GridCommands.DeleteFocusedRow}" Content="Delete" />
+                    </dxg:TableView.RowCellMenuCustomizations>
+                </dxg:TableView>
+            </dxg:GridControl.View>
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn
+                    d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
+                    Binding="{Binding Cusip}"
+                    Header="CUSIP"
+                    ReadOnly="True" />
+                <dxg:GridColumn
+                    d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
+                    AllowCellMerge="True"
+                    Binding="{Binding IssueDate}"
+                    Header="Issue Date"
+                    ReadOnly="True" />
+                <dxg:GridColumn
+                    d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
+                    Binding="{Binding MaturityDate, FallbackValue=''}"
+                    Header="Maturity Date"
+                    ReadOnly="True" />
+                <dxg:GridColumn
+                    d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
+                    Binding="{Binding Term}"
+                    Header="Term"
+                    ReadOnly="True" />
+                <dxg:GridColumn
+                    d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
+                    Binding="{Binding Type}"
+                    GroupIndex="0"
+                    Header="Type"
+                    ReadOnly="True" />
+
+                <dxg:GridColumn d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}" FieldName="Par">
+                    <dxg:GridColumn.EditSettings>
+                        <dxe:TextEditSettings DisplayFormat="c" />
+                    </dxg:GridColumn.EditSettings>
+                </dxg:GridColumn>
+                <dxg:GridColumn
+                    d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
+                    FieldName="Confirmation"
+                    ReadOnly="True" />
+                <dxg:GridColumn
+                    d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
+                    FieldName="Reinvestments"
+                    ReadOnly="True" />
+            </dxg:GridControl.Columns>
+        </dxg:GridControl>
+
+    </DockPanel>
+</UserControl>
