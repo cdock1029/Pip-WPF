@@ -21,75 +21,72 @@
             <b:InvokeCommandAction Command="{Binding LoadCommand}" />
         </b:EventTrigger>
     </b:Interaction.Triggers>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="2*" />
-            <RowDefinition Height="3*" />
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="1" Margin="0,0,0,10">
+    <DockPanel>
+        <Label
+            Margin="0,0,0,10"
+            DockPanel.Dock="Top"
+            FontSize="18">
+            Saved Treasuries
+        </Label>
+        <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
+            <Grid
+                Grid.Column="1"
+                Margin="10,0,0,0"
+                VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-            <StackPanel Orientation="Horizontal">
-                <Label
-                    Margin="0,0,10,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    FontWeight="SemiBold">
-                    Cusip:
-                </Label>
-                <TextBlock
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    Text="{Binding SelectedTreasury.Cusip, FallbackValue='', Mode=OneWay}" />
-            </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        FontWeight="SemiBold">
+                        Cusip:
+                    </Label>
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="{Binding SelectedTreasury.Cusip, FallbackValue='', Mode=OneWay}" />
+                </StackPanel>
 
-            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <Label
-                    Margin="0,0,10,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    FontWeight="SemiBold">
-                    Issue Date:
-                </Label>
-                <TextBlock
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    Text="{Binding SelectedTreasury.IssueDate, FallbackValue=''}" />
-            </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Label
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        FontWeight="SemiBold">
+                        Issue Date:
+                    </Label>
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="{Binding SelectedTreasury.IssueDate, FallbackValue=''}" />
+                </StackPanel>
 
-            <StackPanel Grid.Column="2" Orientation="Horizontal">
-                <Label
-                    Margin="0,0,10,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    FontWeight="SemiBold">
-                    Maturity Date:
-                </Label>
-                <TextBlock
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    Text="{Binding SelectedTreasury.MaturityDate, FallbackValue=''}" />
-            </StackPanel>
-        </Grid>
-
-        <Grid Grid.Row="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Label
-                Grid.Row="0"
-                Margin="0,0,0,10"
-                FontSize="18">
-                Saved Treasuries
-            </Label>
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <Label
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        FontWeight="SemiBold">
+                        Maturity Date:
+                    </Label>
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="{Binding SelectedTreasury.MaturityDate, FallbackValue=''}" />
+                </StackPanel>
+            </Grid>
             <dxg:GridControl
-                Grid.Row="1"
-                HorizontalAlignment="Left"
+                Grid.Column="0"
                 AutoExpandAllGroups="True"
                 ItemsSource="{Binding Treasuries}"
                 SelectedItem="{Binding SelectedTreasury}"
@@ -143,5 +140,5 @@
                 </dxg:GridControl.Columns>
             </dxg:GridControl>
         </Grid>
-    </Grid>
+    </DockPanel>
 </UserControl>

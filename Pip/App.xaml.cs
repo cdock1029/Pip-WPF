@@ -46,7 +46,7 @@ public partial class App : System.Windows.Application
 			.AddTransient<ITreasuryDataProvider, TreasuryDataProvider>()
 			.AddSingleton<MainViewModel>()
 			.AddSingleton<SearchViewModel>()
-			.AddActivatedSingleton<SavedTreasuriesViewModel>()
+			.AddSingleton<SavedTreasuriesViewModel>()
 			.AddSingleton<InvestmentsViewModel>()
 			.AddSingleton<AuctionsViewModel>()
 			.AddSingleton(p => Dispatcher.CurrentDispatcher)

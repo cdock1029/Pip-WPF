@@ -18,25 +18,29 @@
         <dxmvvm:EventToCommand Command="{Binding LoadCommand}" EventName="Loaded" />
     </dxmvvm:Interaction.Behaviors>
 
-    <DockPanel Height="300" VerticalAlignment="Top">
+    <DockPanel>
         <Label
             Margin="0,0,0,10"
             DockPanel.Dock="Top"
             FontSize="18">
             Investments
         </Label>
+        <!--  SelectionMode None,NavigationStyle Row needed to maintain selection across navigation  -->
         <dxg:GridControl
             AutoExpandAllGroups="True"
             DeleteKeyBehavior="DeleteFocusedRow"
-            EnableSmartColumnsGeneration="False"
             ItemsSource="{Binding Investments}"
-            SelectedItem="{Binding SelectedInvestment}">
+            SelectedItem="{Binding SelectedInvestment, Mode=TwoWay}"
+            SelectionMode="Row">
             <dxg:GridControl.View>
                 <dxg:TableView
                     AllowBestFit="True"
                     AutoWidth="True"
                     BestFitMode="VisibleRows"
-                    ShowUpdateRowButtons="OnCellEditorOpen">
+                    IsTotalSummaryMenuEnabled="True"
+                    ShowEditFormOnDoubleClick="True"
+                    ShowUpdateRowButtons="OnCellEditorOpen"
+                    TotalSummaryPosition="Bottom">
                     <dxmvvm:Interaction.Behaviors>
                         <dxmvvm:EventToCommand
                             Command="{Binding ValidateRowCommand}"
@@ -57,6 +61,18 @@
                     </dxg:TableView.RowCellMenuCustomizations>
                 </dxg:TableView>
             </dxg:GridControl.View>
+            <dxg:GridControl.TotalSummary>
+                <dxg:GridSummaryItem
+                    DisplayFormat="Total: {0:c}"
+                    FieldName="Par"
+                    SummaryType="Sum" />
+            </dxg:GridControl.TotalSummary>
+            <dxg:GridControl.GroupSummary>
+                <dxg:GridSummaryItem
+                    DisplayFormat="{}{0:c}"
+                    FieldName="Par"
+                    SummaryType="Sum" />
+            </dxg:GridControl.GroupSummary>
             <dxg:GridControl.Columns>
                 <dxg:GridColumn
                     d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
@@ -85,7 +101,6 @@
                     GroupIndex="0"
                     Header="Type"
                     ReadOnly="True" />
-
                 <dxg:GridColumn d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}" FieldName="Par">
                     <dxg:GridColumn.EditSettings>
                         <dxe:TextEditSettings DisplayFormat="c" />
@@ -101,6 +116,5 @@
                     ReadOnly="True" />
             </dxg:GridControl.Columns>
         </dxg:GridControl>
-
     </DockPanel>
 </UserControl>
