@@ -1,8 +1,8 @@
-﻿using System.Net.Http;
-using System.Net.Http.Json;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Pip.DataAccess;
 using Pip.Model;
+using System.Net.Http;
+using System.Net.Http.Json;
 
 namespace Pip.UI.Services;
 
@@ -35,34 +35,35 @@ public class TreasuryDataProvider(HttpClient client, PipDbContext dbContext)
 
 	#endregion
 
-
 	#region DB
 
 	// If using SQLite, the underlying database operations are not async but sync even with async EF calls.
 	// Must wrap sync calls inside Task.Run
-	public Task<List<Treasury>> GetSavedAsync()
+	public async Task<List<Treasury>> GetSavedAsync()
 	{
-		return Task.Run(() => dbContext.Treasuries.ToList());
+		var treasuries = await Task.Run(() => dbContext.Treasuries.ToList());
+		return treasuries;
 	}
 
-	public Task<List<Investment>> GetInvestmentsAsync()
+	public async Task<List<Investment>> GetInvestmentsAsync()
 	{
-		return Task.Run(() => dbContext
+		var investments = await Task.Run(() => dbContext
 			.Investments
 			.Include(i => i.Treasury)
 			.ToList());
+		return investments;
 	}
 
-	public Task<int> InsertAsync(Treasury treasury)
+	public async Task InsertAsync(Treasury treasury)
 	{
 		dbContext.Add(treasury);
-		return dbContext.SaveChangesAsync();
+		await Task.Run(dbContext.SaveChanges);
 	}
 
 	public async Task InsertInvestmentAsync(Investment investment)
 	{
-		var treasury = await dbContext.Treasuries.FirstOrDefaultAsync(t =>
-			t.Cusip == investment.Treasury.Cusip && t.IssueDate == investment.Treasury.IssueDate);
+		var treasury = await Task.Run(() => dbContext.Treasuries.FirstOrDefault(t =>
+			t.Cusip == investment.Treasury.Cusip && t.IssueDate == investment.Treasury.IssueDate));
 
 		if (treasury is null)
 			dbContext.Entry(investment.Treasury).State = EntityState.Added;
@@ -70,19 +71,19 @@ public class TreasuryDataProvider(HttpClient client, PipDbContext dbContext)
 			investment.Treasury = treasury;
 
 		dbContext.Investments.Add(investment);
-		await dbContext.SaveChangesAsync();
+		await Task.Run(dbContext.SaveChanges);
 	}
 
-	public Task DeleteInvestmentsAsync(IEnumerable<Investment> investments)
+	public async Task DeleteInvestmentsAsync(IEnumerable<Investment> investments)
 	{
 		dbContext.Investments.RemoveRange(investments);
-		return dbContext.SaveChangesAsync();
+		await Task.Run(dbContext.SaveChanges);
 	}
 
-	public Task DeleteTreasuriesAsync(IEnumerable<Treasury> rows)
+	public async Task DeleteTreasuriesAsync(IEnumerable<Treasury> rows)
 	{
 		dbContext.Treasuries.RemoveRange(rows);
-		return dbContext.SaveChangesAsync();
+		await Task.Run(dbContext.SaveChanges);
 	}
 
 	public void Add(Treasury treasury)
@@ -95,9 +96,9 @@ public class TreasuryDataProvider(HttpClient client, PipDbContext dbContext)
 		dbContext.Investments.Add(investment);
 	}
 
-	public Task<int> SaveAsync()
+	public async Task SaveAsync()
 	{
-		return Task.Run(dbContext.SaveChanges);
+		await Task.Run(dbContext.SaveChanges);
 	}
 
 	#endregion DB

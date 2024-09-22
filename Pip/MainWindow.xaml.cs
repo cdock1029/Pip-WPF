@@ -1,16 +1,16 @@
-﻿using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Windows.Interop;
-using DevExpress.Xpf.Core;
+﻿using DevExpress.Xpf.Core;
 using Pip.UI.Properties;
 using Pip.UI.View.Types;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Windows.Interop;
 
 namespace Pip.UI;
 
 public partial class MainWindow : ThemedWindow
 {
-	private const int SwShownormal = 1;
-	private const int SwShowminimized = 2;
+	private const int _showNormal = 1;
+	private const int _showMinimized = 2;
 
 	private readonly PipSettings _pipSettings;
 
@@ -30,12 +30,10 @@ public partial class MainWindow : ThemedWindow
 			// Load window placement details for previous application session from application settings
 			// Note - if window was closed on a monitor that is now disconnected from the computer,
 			//        SetWindowPlacement will place the window onto a visible monitor.
-			//var wp = Settings.Default.WindowPlacement;
-			//_pipSettings.Reload();
 			var wp = _pipSettings.WindowPlacement;
 			wp.length = Marshal.SizeOf(typeof(WindowPlacement));
 			wp.flags = 0;
-			wp.showCmd = wp.showCmd == SwShowminimized ? SwShownormal : wp.showCmd;
+			wp.showCmd = wp.showCmd == _showMinimized ? _showNormal : wp.showCmd;
 			var hwnd = new WindowInteropHelper(this).Handle;
 			SetWindowPlacement(hwnd, ref wp);
 		}
@@ -51,9 +49,8 @@ public partial class MainWindow : ThemedWindow
 		try
 		{
 			// Persist window placement details to application settings
-			WindowPlacement wp;
 			var hwnd = new WindowInteropHelper(this).Handle;
-			GetWindowPlacement(hwnd, out wp);
+			GetWindowPlacement(hwnd, out var wp);
 
 			/*
 			Settings.Default.WindowPlacement = wp;
@@ -68,9 +65,11 @@ public partial class MainWindow : ThemedWindow
 		}
 	}
 
-	[DllImport("user32.dll")]
-	private static extern bool SetWindowPlacement(IntPtr hWnd, [In] ref WindowPlacement lpwndpl);
+	[LibraryImport("user32.dll")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static partial bool SetWindowPlacement(IntPtr hWnd, ref WindowPlacement windowPlacement);
 
-	[DllImport("user32.dll")]
-	private static extern bool GetWindowPlacement(IntPtr hWnd, out WindowPlacement lpwndpl);
+	[LibraryImport("user32.dll")]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static partial bool GetWindowPlacement(IntPtr hWnd, out WindowPlacement windowPlacement);
 }

@@ -1,7 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Windows.Threading;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using DevExpress.Mvvm.Xpf;
@@ -9,10 +6,12 @@ using DevExpress.Xpf.Grid;
 using Pip.UI.Messages;
 using Pip.UI.Services;
 using Pip.UI.ViewModel;
+using System.Collections.ObjectModel;
+using System.Windows.Threading;
 
 namespace Pip.UI.Components.Investments;
 
-public partial class InvestmentsViewModel(ITreasuryDataProvider treasuryDataProvider, INavigationService navigation)
+public partial class InvestmentsViewModel(ITreasuryDataProvider treasuryDataProvider, INavigationService navigation, Dispatcher dispatcher)
 	: ViewModelBase, IRecipient<AfterInsertInvestmentMessage>, IRecipient<AfterTreasuryDeleteMessage>
 {
 	[ObservableProperty] private InvestmentItemViewModel? _selectedInvestment;
@@ -30,13 +29,15 @@ public partial class InvestmentsViewModel(ITreasuryDataProvider treasuryDataProv
 		Task.Run(LoadAsync);
 	}
 
-
 	[RelayCommand]
 	public override async Task LoadAsync()
 	{
 		if (Investments.Any()) return;
 		var investments = await treasuryDataProvider.GetInvestmentsAsync();
-		foreach (var investment in investments) Investments.Add(new InvestmentItemViewModel(investment));
+		foreach (var investment in investments)
+		{
+			Investments.Add(new InvestmentItemViewModel(investment));
+		}
 	}
 
 	[RelayCommand]
@@ -52,7 +53,7 @@ public partial class InvestmentsViewModel(ITreasuryDataProvider treasuryDataProv
 		var investmentItem = (InvestmentItemViewModel)args.Row;
 		if (args.IsNewItem)
 			treasuryDataProvider.Add(investmentItem.Investment);
-		_ = await treasuryDataProvider.SaveAsync();
+		await treasuryDataProvider.SaveAsync();
 	}
 
 	[RelayCommand]
@@ -73,18 +74,9 @@ public partial class InvestmentsViewModel(ITreasuryDataProvider treasuryDataProv
 	{
 		Investments.Clear();
 		await LoadAsync();
-		var args = message.Value;
-		var insertedId = args.Id;
-		Debug.WriteLine($"insertedId: {insertedId}");
-		var dispatcher = Dispatcher.CurrentDispatcher;
-
+		var insertedId = message.Value.Id;
 		var found = Investments.FirstOrDefault(i => i.Id == insertedId);
-		SelectedInvestment = found;
-		//await Task.Run(() =>
-		//{
-		//	var found = Investments.FirstOrDefault(i => i.Id == insertedId);
-		//	dispatcher.BeginInvoke(() => SelectedInvestment = found);
-		//}).ConfigureAwait(false);
+		await dispatcher.BeginInvoke(() => SelectedInvestment = found);
 		await navigation.NavigateToAsync<InvestmentsViewModel>();
 	}
 }

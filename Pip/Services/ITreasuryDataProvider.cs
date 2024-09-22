@@ -10,8 +10,8 @@ public interface ITreasuryDataProvider
 	Task<IEnumerable<Treasury>?> GetUpcomingAsync();
 	Task<IEnumerable<Treasury>?> GetAuctionsAsync();
 	void Add(Treasury treasury);
-	Task<int> SaveAsync();
-	Task<int> InsertAsync(Treasury treasury);
+	Task SaveAsync();
+	Task InsertAsync(Treasury treasury);
 	Task InsertInvestmentAsync(Investment investment);
 	Task<List<Investment>> GetInvestmentsAsync();
 	void Add(Investment investment);

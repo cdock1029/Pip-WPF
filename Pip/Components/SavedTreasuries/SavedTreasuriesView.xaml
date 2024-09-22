@@ -1,17 +1,19 @@
-﻿<UserControl x:Class="Pip.UI.Components.SavedTreasuries.SavedTreasuriesView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:savedTreasuries="clr-namespace:Pip.UI.Components.SavedTreasuries"
-             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
-             xmlns:model="clr-namespace:Pip.Model;assembly=Pip.Model"
-             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
-             d:DataContext="{d:DesignInstance Type=savedTreasuries:SavedTreasuriesViewModel}"
-             mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="500">
+﻿<UserControl
+    x:Class="Pip.UI.Components.SavedTreasuries.SavedTreasuriesView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:Pip.Model;assembly=Pip.Model"
+    xmlns:savedTreasuries="clr-namespace:Pip.UI.Components.SavedTreasuries"
+    d:DataContext="{d:DesignInstance Type=savedTreasuries:SavedTreasuriesViewModel}"
+    d:DesignHeight="300"
+    d:DesignWidth="500"
+    mc:Ignorable="d">
 
 
     <b:Interaction.Triggers>
@@ -19,8 +21,12 @@
             <b:InvokeCommandAction Command="{Binding LoadCommand}" />
         </b:EventTrigger>
     </b:Interaction.Triggers>
-    <DockPanel>
-        <Grid DockPanel.Dock="Top" Margin="0,0,0,10">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="3*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="1" Margin="0,0,0,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -28,73 +34,114 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Orientation="Horizontal">
-                <Label FontWeight="SemiBold" Margin="0 0 10 0" VerticalAlignment="Center" HorizontalAlignment="Right">Cusip:</Label>
-                <TextBlock Text="{Binding SelectedTreasury.Cusip, FallbackValue='', Mode=OneWay}"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Left" />
+                <Label
+                    Margin="0,0,10,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    FontWeight="SemiBold">
+                    Cusip:
+                </Label>
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Text="{Binding SelectedTreasury.Cusip, FallbackValue='', Mode=OneWay}" />
             </StackPanel>
 
             <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <Label FontWeight="SemiBold" Margin="0 0 10 0" VerticalAlignment="Center"
-                       HorizontalAlignment="Right">
+                <Label
+                    Margin="0,0,10,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    FontWeight="SemiBold">
                     Issue Date:
                 </Label>
-                <TextBlock Text="{Binding SelectedTreasury.IssueDate, FallbackValue=''}"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Left" />
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Text="{Binding SelectedTreasury.IssueDate, FallbackValue=''}" />
             </StackPanel>
 
             <StackPanel Grid.Column="2" Orientation="Horizontal">
-                <Label FontWeight="SemiBold" Margin="0 0 10 0" VerticalAlignment="Center"
-                       HorizontalAlignment="Right">
+                <Label
+                    Margin="0,0,10,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    FontWeight="SemiBold">
                     Maturity Date:
                 </Label>
-                <TextBlock Text="{Binding SelectedTreasury.MaturityDate, FallbackValue=''}"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Left" />
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Text="{Binding SelectedTreasury.MaturityDate, FallbackValue=''}" />
             </StackPanel>
         </Grid>
 
-        <!--<view:TreasuriesCollectionView HorizontalAlignment="Left"
-                                       Treasuries="{Binding Treasuries}"
-                                       SelectedTreasury="{Binding SelectedTreasury}" />-->
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Label
+                Grid.Row="0"
+                Margin="0,0,0,10"
+                FontSize="18">
+                Saved Treasuries
+            </Label>
+            <dxg:GridControl
+                Grid.Row="1"
+                HorizontalAlignment="Left"
+                AutoExpandAllGroups="True"
+                ItemsSource="{Binding Treasuries}"
+                SelectedItem="{Binding SelectedTreasury}"
+                SelectionMode="Row">
+                <dxg:GridControl.View>
+                    <dxg:TableView
+                        AllowBestFit="True"
+                        AllowGrouping="True"
+                        AutoWidth="True"
+                        BestFitMode="VisibleRows"
+                        ShowGroupedColumns="False">
+                        <dxmvvm:Interaction.Behaviors>
+                            <dxmvvm:EventToCommand
+                                Command="{Binding DataSourceRefreshCommand}"
+                                EventName="DataViewBase.DataSourceRefresh"
+                                PassEventArgsToCommand="True" />
 
-        <dxg:GridControl
-            HorizontalAlignment="Left"
-            ItemsSource="{Binding Treasuries}"
-            SelectedItem="{Binding SelectedTreasury}" AutoExpandAllGroups="True" SelectionMode="Row">
-            <dxg:GridControl.View>
-                <dxg:TableView AutoWidth="True" ShowGroupedColumns="False" AllowGrouping="True"
-                               AllowBestFit="True"
-                               BestFitMode="VisibleRows">
-                    <dxmvvm:Interaction.Behaviors>
-                        <dxmvvm:EventToCommand
-                            EventName="DataViewBase.DataSourceRefresh"
-                            PassEventArgsToCommand="True"
-                            Command="{Binding DataSourceRefreshCommand}" />
-
-                        <dxmvvm:EventToCommand
-                            EventName="ValidateRowDeletion"
-                            PassEventArgsToCommand="True"
-                            Command="{Binding ValidateRowDeletionCommand}" />
-                    </dxmvvm:Interaction.Behaviors>
-                    <dxg:TableView.RowCellMenuCustomizations>
-                        <dxb:BarButtonItem Content="Delete" Command="{x:Static dxg:GridCommands.DeleteFocusedRow}" />
-                    </dxg:TableView.RowCellMenuCustomizations>
-                </dxg:TableView>
-            </dxg:GridControl.View>
-            <dxg:GridControl.Columns>
-                <dxg:GridColumn Binding="{Binding Path=(model:Treasury.Cusip)}" ReadOnly="True" Header="CUSIP" />
-                <dxg:GridColumn Binding="{Binding Path=(model:Treasury.IssueDate)}" AllowCellMerge="True"
-                                ReadOnly="True" Header="Issue Date" />
-                <dxg:GridColumn Binding="{Binding Path=(model:Treasury.MaturingDate), FallbackValue=''}"
-                                Header="Maturity Date" ReadOnly="True" />
-                <dxg:GridColumn Binding="{Binding Path=(model:Treasury.SecurityTerm)}" Header="Term"
-                                ReadOnly="True" />
-                <dxg:GridColumn Binding="{Binding Path=(model:Treasury.Type)}" GroupIndex="0" Header="Type"
-                                ReadOnly="True" />
-            </dxg:GridControl.Columns>
-        </dxg:GridControl>
-
-    </DockPanel>
+                            <dxmvvm:EventToCommand
+                                Command="{Binding ValidateRowDeletionCommand}"
+                                EventName="ValidateRowDeletion"
+                                PassEventArgsToCommand="True" />
+                        </dxmvvm:Interaction.Behaviors>
+                        <dxg:TableView.RowCellMenuCustomizations>
+                            <dxb:BarButtonItem Command="{x:Static dxg:GridCommands.DeleteFocusedRow}" Content="Delete" />
+                        </dxg:TableView.RowCellMenuCustomizations>
+                    </dxg:TableView>
+                </dxg:GridControl.View>
+                <dxg:GridControl.Columns>
+                    <dxg:GridColumn
+                        Binding="{Binding Path=(model:Treasury.Cusip)}"
+                        Header="CUSIP"
+                        ReadOnly="True" />
+                    <dxg:GridColumn
+                        AllowCellMerge="True"
+                        Binding="{Binding Path=(model:Treasury.IssueDate)}"
+                        Header="Issue Date"
+                        ReadOnly="True" />
+                    <dxg:GridColumn
+                        Binding="{Binding Path=(model:Treasury.MaturingDate), FallbackValue=''}"
+                        Header="Maturity Date"
+                        ReadOnly="True" />
+                    <dxg:GridColumn
+                        Binding="{Binding Path=(model:Treasury.SecurityTerm)}"
+                        Header="Term"
+                        ReadOnly="True" />
+                    <dxg:GridColumn
+                        Binding="{Binding Path=(model:Treasury.Type)}"
+                        GroupIndex="0"
+                        Header="Type"
+                        ReadOnly="True" />
+                </dxg:GridControl.Columns>
+            </dxg:GridControl>
+        </Grid>
+    </Grid>
 </UserControl>

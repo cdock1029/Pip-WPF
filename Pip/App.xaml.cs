@@ -1,6 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Threading;
-using DevExpress.Mvvm;
+﻿using DevExpress.Mvvm;
 using DevExpress.Xpf.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,13 +9,12 @@ using Pip.UI.Components.SavedTreasuries;
 using Pip.UI.Components.Search;
 using Pip.UI.Services;
 using Pip.UI.ViewModel;
-using Application = System.Windows.Application;
-using INavigationService = Pip.UI.Services.INavigationService;
-using ViewModelBase = Pip.UI.ViewModel.ViewModelBase;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace Pip.UI;
 
-public partial class App : Application
+public partial class App : System.Windows.Application
 {
 	private readonly ServiceProvider _serviceProvider;
 
@@ -44,23 +41,22 @@ public partial class App : Application
 	private static void ConfigureServices(ServiceCollection serviceCollection)
 	{
 		serviceCollection
-			.AddSingleton<INavigationService, NavigationService>()
+			.AddSingleton<Services.INavigationService, NavigationService>()
 			.AddSingleton<IMessageBoxService, DXMessageBoxService>()
-			.AddSingleton<ITreasuryDataProvider, TreasuryDataProvider>()
+			.AddTransient<ITreasuryDataProvider, TreasuryDataProvider>()
 			.AddSingleton<MainViewModel>()
 			.AddSingleton<SearchViewModel>()
 			.AddActivatedSingleton<SavedTreasuriesViewModel>()
 			.AddSingleton<InvestmentsViewModel>()
 			.AddSingleton<AuctionsViewModel>()
+			.AddSingleton(p => Dispatcher.CurrentDispatcher)
 			.AddSingleton(p => new MainWindow { DataContext = p.GetRequiredService<MainViewModel>() })
-			.AddSingleton<Func<Type, ViewModelBase>>(p =>
-				viewModelType => (ViewModelBase)p.GetRequiredService(viewModelType))
+			.AddSingleton<Func<Type, ViewModel.ViewModelBase>>(p =>
+				viewModelType => (ViewModel.ViewModelBase)p.GetRequiredService(viewModelType))
 			.AddDbContextFactory<PipDbContext>(optionsBuilder =>
 			{
-				//var connString = ConfigurationManager.ConnectionStrings["PipDbLocal"].ConnectionString;
-				//optionsBuilder.UseSqlServer(connString);
 				optionsBuilder.UseSqlite("Data Source=pip.db");
-			})
+			}, ServiceLifetime.Transient)
 			.AddHttpClient<ITreasuryDataProvider, TreasuryDataProvider>(c =>
 			{
 				c.BaseAddress = new Uri("https://www.treasurydirect.gov/TA_WS/");

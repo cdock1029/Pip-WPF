@@ -19,7 +19,12 @@
     </dxmvvm:Interaction.Behaviors>
 
     <DockPanel Height="300" VerticalAlignment="Top">
-        <Label Margin="0,0,0,10" DockPanel.Dock="Top">Investments</Label>
+        <Label
+            Margin="0,0,0,10"
+            DockPanel.Dock="Top"
+            FontSize="18">
+            Investments
+        </Label>
         <dxg:GridControl
             AutoExpandAllGroups="True"
             DeleteKeyBehavior="DeleteFocusedRow"
