@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 using DevExpress.Mvvm;
 using Microsoft.EntityFrameworkCore;
 using Pip.Model;
@@ -61,7 +60,7 @@ public partial class SearchViewModel : ViewModelBase
 	{
 		ArgumentNullException.ThrowIfNull(treasury);
 		var result = _messageBoxService.ShowMessage(
-			$"CUSIP: [{treasury.Cusip}]\nIssue Date: [{treasury.IssueDate.ToLongDateString()}]\nMaturity Date: [{treasury.MaturityDate?.ToLongDateString()}]",
+			$"CUSIP: [{treasury.Cusip}]\nIssue Date: [{treasury.IssueDate?.ToLongDateString()}]\nMaturity Date: [{treasury.MaturityDate?.ToLongDateString()}]",
 			"Do you want to save Treasury?",
 			MessageButton.OKCancel,
 			MessageIcon.Question
@@ -71,7 +70,7 @@ public partial class SearchViewModel : ViewModelBase
 			try
 			{
 				await _treasuryDataProvider.InsertAsync(treasury);
-				WeakReferenceMessenger.Default.Send(
+				Messenger.Default.Send(
 					new AfterTreasuryInsertMessage(new AfterTreasuryInsertArgs(treasury.Cusip, treasury.IssueDate)));
 			}
 			catch (DbUpdateException e)
@@ -88,7 +87,7 @@ public partial class SearchViewModel : ViewModelBase
 		ArgumentNullException.ThrowIfNull(treasury);
 
 		var result = _messageBoxService.ShowMessage(
-			$"CUSIP: [{treasury.Cusip}]\nIssue Date: [{treasury.IssueDate.ToLongDateString()}]\nMaturity Date: [{treasury.MaturityDate?.ToLongDateString()}]",
+			$"CUSIP: [{treasury.Cusip}]\nIssue Date: [{treasury.IssueDate?.ToLongDateString()}]\nMaturity Date: [{treasury.MaturityDate?.ToLongDateString()}]",
 			"Do you want to create investment?",
 			MessageButton.OKCancel,
 			MessageIcon.Question
@@ -100,11 +99,11 @@ public partial class SearchViewModel : ViewModelBase
 				var investment = new Investment
 				{
 					TreasuryCusip = treasury.Cusip,
-					TreasuryIssueDate = treasury.IssueDate,
+					TreasuryIssueDate = treasury.IssueDate ?? default,
 					Treasury = treasury
 				};
 				await _treasuryDataProvider.InsertInvestmentAsync(investment);
-				WeakReferenceMessenger.Default.Send(
+				Messenger.Default.Send(
 					new AfterInsertInvestmentMessage(new AfterInsertInvestmentArgs(investment.Id, treasury.Cusip,
 						treasury.IssueDate)));
 			}

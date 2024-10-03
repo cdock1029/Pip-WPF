@@ -1,13 +1,10 @@
-﻿using System.Collections.ObjectModel;
+﻿using Pip.Model;
+using System.Collections.ObjectModel;
 using System.Windows;
-using DevExpress.Xpf.Core.Native;
-using DevExpress.Xpf.Grid;
-using Pip.Model;
-using UserControl = System.Windows.Controls.UserControl;
 
 namespace Pip.UI.View;
 
-public partial class TreasuriesCollectionView : UserControl
+public partial class TreasuriesCollectionView
 {
 	public static readonly DependencyProperty TreasuriesProperty = DependencyProperty.Register(
 		nameof(Treasuries), typeof(ObservableCollection<Treasury>), typeof(TreasuriesCollectionView),
@@ -32,12 +29,5 @@ public partial class TreasuriesCollectionView : UserControl
 	{
 		get => (ObservableCollection<Treasury>)GetValue(TreasuriesProperty);
 		set => SetValue(TreasuriesProperty, value);
-	}
-
-	private void GridControl_OnLoaded(object sender, RoutedEventArgs e)
-	{
-		if (sender is not GridControl gridControl) return;
-		var tv = gridControl.VisualChildren().OfType<TableView>().FirstOrDefault();
-		tv?.BestFitColumns();
 	}
 }

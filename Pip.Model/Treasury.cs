@@ -72,7 +72,7 @@ public class Treasury : IEquatable<Treasury>
 	public DateOnly? CalledDate { get; init; }
 
 	[JsonPropertyName("cashManagementBillCMB")]
-	public string? CashManagementBillCMB { get; init; }
+	public string? CashManagementBillCmb { get; init; }
 
 	[JsonPropertyName("closingTimeCompetitive")]
 	public string? ClosingTimeCompetitive { get; init; }
@@ -167,7 +167,7 @@ public class Treasury : IEquatable<Treasury>
 
 	[JsonConverter(typeof(DateOnlyConverter))]
 	[JsonPropertyName("issueDate")]
-	public DateOnly IssueDate { get; init; }
+	public DateOnly? IssueDate { get; init; }
 
 	[JsonPropertyName("lowDiscountRate")] public string? LowDiscountRate { get; init; }
 
@@ -256,7 +256,7 @@ public class Treasury : IEquatable<Treasury>
 	public string? PrimaryDealerTendered { get; init; }
 
 	[JsonPropertyName("refCPIOnDatedDate")]
-	public string? RefCPIOnDatedDate { get; init; }
+	public string? RefCpiOnDatedDate { get; init; }
 
 	[JsonPropertyName("refCpiOnIssueDate")]
 	public string? RefCpiOnIssueDate { get; init; }
@@ -328,13 +328,14 @@ public class Treasury : IEquatable<Treasury>
 
 	public bool Equals(Treasury? other)
 	{
-		return other is not null && (ReferenceEquals(this, other) || (Cusip == other.Cusip && IssueDate.Equals(other.IssueDate)));
+		return other is not null &&
+			   (ReferenceEquals(this, other) || (Cusip == other.Cusip && IssueDate.Equals(other.IssueDate)));
 	}
 
 	public override bool Equals(object? obj)
 	{
 		if (obj is null) return false;
-		return ReferenceEquals(this, obj) || obj.GetType() == GetType() && Equals((Treasury)obj);
+		return ReferenceEquals(this, obj) || (obj.GetType() == GetType() && Equals((Treasury)obj));
 	}
 
 	public override int GetHashCode()

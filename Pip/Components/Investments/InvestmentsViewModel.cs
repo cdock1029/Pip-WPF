@@ -1,23 +1,34 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
+using DevExpress.Mvvm;
 using DevExpress.Mvvm.Xpf;
 using DevExpress.Xpf.Grid;
 using Pip.UI.Messages;
 using Pip.UI.Services;
-using Pip.UI.ViewModel;
 using System.Collections.ObjectModel;
 using System.Windows.Threading;
+using INavigationService = Pip.UI.Services.INavigationService;
+using ViewModelBase = Pip.UI.ViewModel.ViewModelBase;
 
 namespace Pip.UI.Components.Investments;
 
-public partial class InvestmentsViewModel(
-	ITreasuryDataProvider treasuryDataProvider,
-	INavigationService navigation,
-	Dispatcher dispatcher)
-	: ViewModelBase, IRecipient<AfterInsertInvestmentMessage>, IRecipient<AfterTreasuryDeleteMessage>
+public partial class InvestmentsViewModel : ViewModelBase
 {
+	private readonly Dispatcher _dispatcher;
+	private readonly INavigationService _navigation;
+	private readonly ITreasuryDataProvider _treasuryDataProvider;
 	[ObservableProperty] private InvestmentItemViewModel? _selectedInvestment;
+
+	public InvestmentsViewModel(ITreasuryDataProvider treasuryDataProvider,
+		INavigationService navigation,
+		Dispatcher dispatcher)
+	{
+		_treasuryDataProvider = treasuryDataProvider;
+		_navigation = navigation;
+		_dispatcher = dispatcher;
+		Messenger.Default.Register<AfterInsertInvestmentMessage>(this, Receive);
+		Messenger.Default.Register<AfterTreasuryDeleteMessage>(this, Receive);
+	}
 
 	public ObservableCollection<InvestmentItemViewModel> Investments { get; } = [];
 
@@ -36,7 +47,7 @@ public partial class InvestmentsViewModel(
 	public override async Task LoadAsync()
 	{
 		if (Investments.Any()) return;
-		var investments = await treasuryDataProvider.GetInvestmentsAsync();
+		var investments = await _treasuryDataProvider.GetInvestmentsAsync();
 		foreach (var investment in investments) Investments.Add(new InvestmentItemViewModel(investment));
 	}
 
@@ -52,8 +63,8 @@ public partial class InvestmentsViewModel(
 	{
 		var investmentItem = (InvestmentItemViewModel)args.Row;
 		if (args.IsNewItem)
-			treasuryDataProvider.Add(investmentItem.Investment);
-		await treasuryDataProvider.SaveAsync();
+			_treasuryDataProvider.Add(investmentItem.Investment);
+		await _treasuryDataProvider.SaveAsync();
 	}
 
 	[RelayCommand]
@@ -62,7 +73,7 @@ public partial class InvestmentsViewModel(
 		try
 		{
 			var rows = Array.ConvertAll(args.Rows, o => ((InvestmentItemViewModel)o).Investment);
-			await treasuryDataProvider.DeleteInvestmentsAsync(rows);
+			await _treasuryDataProvider.DeleteInvestmentsAsync(rows);
 		}
 		catch (Exception e)
 		{
@@ -76,7 +87,7 @@ public partial class InvestmentsViewModel(
 		await LoadAsync();
 		var insertedId = message.Value.Id;
 		var found = Investments.FirstOrDefault(i => i.Id == insertedId);
-		await dispatcher.BeginInvoke(() => SelectedInvestment = found);
-		await navigation.NavigateToAsync<InvestmentsViewModel>();
+		await _dispatcher.BeginInvoke(() => SelectedInvestment = found);
+		await _navigation.NavigateToAsync<InvestmentsViewModel>();
 	}
 }

@@ -1,5 +1,4 @@
-﻿using DevExpress.Xpf.Core;
-using Pip.UI.Properties;
+﻿using Pip.UI.Properties;
 using Pip.UI.View.Types;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -7,10 +6,10 @@ using System.Windows.Interop;
 
 namespace Pip.UI;
 
-public partial class MainWindow : ThemedWindow
+public partial class MainWindow
 {
-	private const int _showNormal = 1;
-	private const int _showMinimized = 2;
+	private const int ShowNormal = 1;
+	private const int ShowMinimized = 2;
 
 	private readonly PipSettings _pipSettings;
 
@@ -33,7 +32,7 @@ public partial class MainWindow : ThemedWindow
 			var wp = _pipSettings.WindowPlacement;
 			wp.length = Marshal.SizeOf(typeof(WindowPlacement));
 			wp.flags = 0;
-			wp.showCmd = wp.showCmd == _showMinimized ? _showNormal : wp.showCmd;
+			wp.showCmd = wp.showCmd == ShowMinimized ? ShowNormal : wp.showCmd;
 			var hwnd = new WindowInteropHelper(this).Handle;
 			SetWindowPlacement(hwnd, ref wp);
 		}

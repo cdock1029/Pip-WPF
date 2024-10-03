@@ -2,10 +2,10 @@
 
 namespace Pip.UI.ViewModel;
 
-public abstract class ViewModelBase : ObservableRecipient
+public abstract class ViewModelBase : ObservableObject
 {
-    public virtual Task LoadAsync()
-    {
-        return Task.CompletedTask;
-    }
+	public virtual Task LoadAsync()
+	{
+		return Task.CompletedTask;
+	}
 }

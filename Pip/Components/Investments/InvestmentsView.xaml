@@ -14,9 +14,6 @@
     d:DesignWidth="400"
     mc:Ignorable="d">
 
-    <dxmvvm:Interaction.Behaviors>
-        <dxmvvm:EventToCommand Command="{Binding LoadCommand}" EventName="Initialized" />
-    </dxmvvm:Interaction.Behaviors>
 
     <DockPanel>
         <Label
@@ -103,7 +100,8 @@
                     GroupIndex="0"
                     Header="Type"
                     ReadOnly="True" />
-                <dxg:GridColumn d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}" FieldName="Par">
+                <dxg:GridColumn d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
+                                FieldName="Par">
                     <dxg:GridColumn.EditSettings>
                         <dxe:TextEditSettings DisplayFormat="c" />
                     </dxg:GridColumn.EditSettings>

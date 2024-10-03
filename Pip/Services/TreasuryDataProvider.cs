@@ -39,13 +39,13 @@ public class TreasuryDataProvider(HttpClient client, PipDbContext dbContext)
 
 	public async Task<List<Treasury>> GetSavedAsync()
 	{
-		var treasuries = await Task.Run(() => dbContext.Treasuries.ToList()).ConfigureAwait(false);
+		//var treasuries = await Task.Run(() => dbContext.Treasuries.ToList()).ConfigureAwait(false);
+		var treasuries = await dbContext.Treasuries.ToListAsync().ConfigureAwait(false);
 		return treasuries;
 	}
 
 	public async Task<List<Investment>> GetInvestmentsAsync()
 	{
-
 		var investments = await Task.Run(() => dbContext
 			.Investments
 			.Include(i => i.Treasury)

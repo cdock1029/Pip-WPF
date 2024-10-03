@@ -1,8 +1,6 @@
-﻿using UserControl = System.Windows.Controls.UserControl;
+﻿namespace Pip.UI.Components.Auctions;
 
-namespace Pip.UI.Components.Auctions;
-
-public partial class AuctionsView : UserControl
+public partial class AuctionsView
 {
 	public AuctionsView()
 	{

@@ -12,13 +12,12 @@ using Pip.UI.ViewModel;
 using System.Configuration;
 using System.Windows;
 using System.Windows.Threading;
-using Application = System.Windows.Application;
 using INavigationService = Pip.UI.Services.INavigationService;
 using ViewModelBase = Pip.UI.ViewModel.ViewModelBase;
 
 namespace Pip.UI;
 
-public partial class App : Application
+public partial class App
 {
 	private readonly ServiceProvider _serviceProvider;
 
@@ -37,8 +36,6 @@ public partial class App : Application
 		base.OnStartup(e);
 		var dbContext = _serviceProvider.GetRequiredService<PipDbContext>();
 		dbContext.Database.Migrate();
-		_serviceProvider.GetRequiredService<SavedTreasuriesViewModel>().IsActive = true;
-		_serviceProvider.GetRequiredService<InvestmentsViewModel>().IsActive = true;
 		var mainWindow = _serviceProvider.GetService<MainWindow>();
 		mainWindow?.Show();
 	}
@@ -54,7 +51,7 @@ public partial class App : Application
 			.AddSingleton<SavedTreasuriesViewModel>()
 			.AddSingleton<InvestmentsViewModel>()
 			.AddSingleton<AuctionsViewModel>()
-			.AddSingleton(p => Dispatcher.CurrentDispatcher)
+			.AddSingleton(_ => Dispatcher.CurrentDispatcher)
 			.AddSingleton(p => new MainWindow { DataContext = p.GetRequiredService<MainViewModel>() })
 			.AddSingleton<Func<Type, ViewModelBase>>(p =>
 				viewModelType => (ViewModelBase)p.GetRequiredService(viewModelType))

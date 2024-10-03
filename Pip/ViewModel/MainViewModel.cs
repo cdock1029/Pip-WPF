@@ -15,32 +15,7 @@ public partial class MainViewModel(
 
 
 	[RelayCommand]
-	private void NavigateSearch()
-	{
-		Navigation.NavigateTo<SearchViewModel>();
-	}
-
-	[RelayCommand]
-	private void NavigateSaved()
-	{
-		Navigation.NavigateTo<SavedTreasuriesViewModel>();
-	}
-
-	[RelayCommand]
-	private void NavigateInvestments()
-	{
-		Navigation.NavigateTo<InvestmentsViewModel>();
-	}
-
-	[RelayCommand]
-	private void NavigateAuctions()
-	{
-		Navigation.NavigateTo<AuctionsViewModel>();
-	}
-
-	/*
-	[RelayCommand]
-	private Task NavigateSearch()
+	private async Task NavigateSearch()
 	{
 		await Navigation.NavigateToAsync<SearchViewModel>();
 	}
@@ -62,5 +37,4 @@ public partial class MainViewModel(
 	{
 		await Navigation.NavigateToAsync<AuctionsViewModel>();
 	}
-	*/
 }
