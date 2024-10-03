@@ -1,34 +1,54 @@
-﻿<UserControl x:Class="Pip.UI.View.TreasuriesCollectionView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
-             xmlns:view="clr-namespace:Pip.UI.View"
-             xmlns:model="clr-namespace:Pip.Model;assembly=Pip.Model"
-             mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800">
+﻿<UserControl
+    x:Class="Pip.UI.View.TreasuriesCollectionView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:Pip.Model;assembly=Pip.Model"
+    xmlns:view="clr-namespace:Pip.UI.View"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
 
     <UserControl.Template>
         <ControlTemplate TargetType="{x:Type view:TreasuriesCollectionView}">
             <dxg:GridControl
+                AutoExpandAllGroups="True"
                 ItemsSource="{TemplateBinding Treasuries}"
-                SelectedItem="{TemplateBinding SelectedTreasury}" AutoExpandAllGroups="True" SelectionMode="Row">
+                SelectedItem="{TemplateBinding SelectedTreasury}"
+                SelectionMode="Row">
                 <dxg:GridControl.View>
-                    <dxg:TableView AutoWidth="True" ShowGroupedColumns="False" AllowGrouping="True"
-                                   AllowBestFit="True"
-                                   BestFitMode="VisibleRows" />
+                    <dxg:TableView
+                        AllowBestFit="True"
+                        AllowGrouping="True"
+                        AutoWidth="True"
+                        BestFitMode="VisibleRows"
+                        ShowGroupedColumns="False" />
                 </dxg:GridControl.View>
                 <dxg:GridControl.Columns>
-                    <dxg:GridColumn Binding="{Binding Path=(model:Treasury.Cusip)}" ReadOnly="True" Header="CUSIP" />
-                    <dxg:GridColumn Binding="{Binding Path=(model:Treasury.IssueDate)}" AllowCellMerge="True"
-                                    ReadOnly="True" Header="Issue Date" />
-                    <dxg:GridColumn Binding="{Binding Path=(model:Treasury.MaturingDate), FallbackValue=''}"
-                                    Header="Maturity Date" ReadOnly="True" />
-                    <dxg:GridColumn Binding="{Binding Path=(model:Treasury.SecurityTerm)}" Header="Term"
-                                    ReadOnly="True" />
-                    <dxg:GridColumn Binding="{Binding Path=(model:Treasury.Type)}" GroupIndex="0" Header="Type"
-                                    ReadOnly="True" />
+                    <dxg:GridColumn
+                        Binding="{Binding Path=(model:Treasury.Cusip)}"
+                        Header="CUSIP"
+                        ReadOnly="True" />
+                    <dxg:GridColumn
+                        AllowCellMerge="True"
+                        Binding="{Binding Path=(model:Treasury.IssueDate)}"
+                        Header="Issue Date"
+                        ReadOnly="True" />
+                    <dxg:GridColumn
+                        Binding="{Binding Path=(model:Treasury.MaturingDate), FallbackValue=''}"
+                        Header="Maturity Date"
+                        ReadOnly="True" />
+                    <dxg:GridColumn
+                        Binding="{Binding Path=(model:Treasury.SecurityTerm)}"
+                        Header="Term"
+                        ReadOnly="True" />
+                    <dxg:GridColumn
+                        Binding="{Binding Path=(model:Treasury.Type)}"
+                        GroupIndex="0"
+                        Header="Type"
+                        ReadOnly="True" />
                 </dxg:GridControl.Columns>
             </dxg:GridControl>
         </ControlTemplate>

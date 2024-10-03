@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using DevExpress.Mvvm;
@@ -8,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Pip.Model;
 using Pip.UI.Messages;
 using Pip.UI.Services;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using ViewModelBase = Pip.UI.ViewModel.ViewModelBase;
 
 namespace Pip.UI.Components.Search;
@@ -18,7 +18,8 @@ public partial class SearchViewModel : ViewModelBase
 
 	private readonly ITreasuryDataProvider _treasuryDataProvider;
 
-	[ObservableProperty] [NotifyCanExecuteChangedFor(nameof(SearchCommand))]
+	[ObservableProperty]
+	[NotifyCanExecuteChangedFor(nameof(SearchCommand))]
 	private string? _searchText;
 
 	public SearchViewModel(ITreasuryDataProvider treasuryDataProvider,
@@ -119,6 +120,7 @@ public partial class SearchViewModel : ViewModelBase
 	private void ClearResults()
 	{
 		SearchResults.Clear();
+		SearchText = string.Empty;
 	}
 
 	private bool CanClearResults()

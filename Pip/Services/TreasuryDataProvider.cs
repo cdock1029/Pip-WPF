@@ -37,20 +37,19 @@ public class TreasuryDataProvider(HttpClient client, PipDbContext dbContext)
 
 	#region DB
 
-	// If using SQLite, the underlying database operations are not async but sync even with async EF calls.
-	// Must wrap sync calls inside Task.Run
 	public async Task<List<Treasury>> GetSavedAsync()
 	{
-		var treasuries = await Task.Run(() => dbContext.Treasuries.ToList());
+		var treasuries = await Task.Run(() => dbContext.Treasuries.ToList()).ConfigureAwait(false);
 		return treasuries;
 	}
 
 	public async Task<List<Investment>> GetInvestmentsAsync()
 	{
+
 		var investments = await Task.Run(() => dbContext
 			.Investments
 			.Include(i => i.Treasury)
-			.ToList());
+			.ToList()).ConfigureAwait(false);
 		return investments;
 	}
 

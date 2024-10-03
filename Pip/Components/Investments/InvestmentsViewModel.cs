@@ -11,7 +11,10 @@ using System.Windows.Threading;
 
 namespace Pip.UI.Components.Investments;
 
-public partial class InvestmentsViewModel(ITreasuryDataProvider treasuryDataProvider, INavigationService navigation, Dispatcher dispatcher)
+public partial class InvestmentsViewModel(
+	ITreasuryDataProvider treasuryDataProvider,
+	INavigationService navigation,
+	Dispatcher dispatcher)
 	: ViewModelBase, IRecipient<AfterInsertInvestmentMessage>, IRecipient<AfterTreasuryDeleteMessage>
 {
 	[ObservableProperty] private InvestmentItemViewModel? _selectedInvestment;
@@ -34,10 +37,7 @@ public partial class InvestmentsViewModel(ITreasuryDataProvider treasuryDataProv
 	{
 		if (Investments.Any()) return;
 		var investments = await treasuryDataProvider.GetInvestmentsAsync();
-		foreach (var investment in investments)
-		{
-			Investments.Add(new InvestmentItemViewModel(investment));
-		}
+		foreach (var investment in investments) Investments.Add(new InvestmentItemViewModel(investment));
 	}
 
 	[RelayCommand]

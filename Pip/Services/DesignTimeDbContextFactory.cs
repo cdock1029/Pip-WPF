@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Pip.DataAccess;
+using System.Configuration;
 
 namespace Pip.UI.Services;
 
@@ -9,9 +10,9 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<PipDbConte
 	public PipDbContext CreateDbContext(string[] args)
 	{
 		var optionsBuilder = new DbContextOptionsBuilder<PipDbContext>();
-		//var connectionString = ConfigurationManager.ConnectionStrings["PipDbLocal"].ConnectionString;
-		//optionsBuilder.UseSqlServer(connectionString, ob => ob.MigrationsAssembly("Pip.DataAccess"));
-		optionsBuilder.UseSqlite("Data Source=pip.db", ob => ob.MigrationsAssembly("Pip.DataAccess"));
+		var connectionString = ConfigurationManager.ConnectionStrings["PipDbLocal"].ConnectionString;
+		optionsBuilder.UseSqlServer(connectionString, ob => ob.MigrationsAssembly("Pip.DataAccess"));
+		//optionsBuilder.UseSqlite("Data Source=pip.db", ob => ob.MigrationsAssembly("Pip.DataAccess"));
 		return new PipDbContext(optionsBuilder.Options);
 	}
 }

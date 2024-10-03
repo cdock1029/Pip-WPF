@@ -26,7 +26,8 @@
                     <dxb:BarButtonItem Content="_Quit" Glyph="{dx:DXImage Images/Actions/Close_32x32.png}">
                         <b:Interaction.Triggers>
                             <b:EventTrigger EventName="ItemClick">
-                                <b:CallMethodAction MethodName="Close" TargetObject="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
+                                <b:CallMethodAction MethodName="Close"
+                                                    TargetObject="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
                             </b:EventTrigger>
                         </b:Interaction.Triggers>
                     </dxb:BarButtonItem>

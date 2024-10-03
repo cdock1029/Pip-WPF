@@ -6,7 +6,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:Pip.Model;assembly=Pip.Model"
     xmlns:search="clr-namespace:Pip.UI.Components.Search"
-    xmlns:system="clr-namespace:System;assembly=System.Runtime"
     x:Name="SearchViewControl"
     d:DataContext="{d:DesignInstance Type=search:SearchViewModel}"
     d:DesignHeight="450"
@@ -69,13 +68,14 @@
                     Content="Clear" />
             </StackPanel>
         </Grid>
-        <ListView
+        <ListBox
             Grid.Row="2"
             Margin="0,20,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
+            MinWidth="300"
             ItemsSource="{Binding SearchResults}">
-            <ListView.ContextMenu>
+            <ListBox.ContextMenu>
                 <ContextMenu>
                     <MenuItem
                         Command="{Binding SaveTreasuryCommand}"
@@ -86,9 +86,9 @@
                         CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent.PlacementTarget.SelectedItem}"
                         Header="Create investment" />
                 </ContextMenu>
-            </ListView.ContextMenu>
-            <ListView.Style>
-                <Style TargetType="{x:Type ListView}">
+            </ListBox.ContextMenu>
+            <ListBox.Style>
+                <Style TargetType="{x:Type ListBox}">
                     <Setter Property="Visibility" Value="Hidden" />
                     <Style.Triggers>
                         <Trigger Property="HasItems" Value="True">
@@ -96,46 +96,7 @@
                         </Trigger>
                     </Style.Triggers>
                 </Style>
-            </ListView.Style>
-            <ListView.Resources>
-                <system:String x:Key="MaturityFormat" xml:space="preserve">Maturity: {0:ddd d MMM yyyy}</system:String>
-            </ListView.Resources>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel
-                        Width="360"
-                        Height="90"
-                        Orientation="Horizontal">
-                        <ContentPresenter
-                            Width="50"
-                            Height="50"
-                            Margin="0,0,8,0"
-                            Content="{Binding Type}" />
-                        <StackPanel VerticalAlignment="Center" Orientation="Vertical">
-                            <TextBlock
-                                Margin="10,0,0,0"
-                                AutomationProperties.HeadingLevel="Level3"
-                                Style="{StaticResource BodyStrongTextBlockStyle}"
-                                Text="{Binding Cusip}" />
-                            <TextBlock
-                                Width="240"
-                                Margin="10,0,0,0"
-                                Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                                Opacity="0.7"
-                                Style="{StaticResource CaptionTextBlockStyle}"
-                                Text="{Binding IssueDate, StringFormat='Issued: {0:ddd d MMM yyyy}'}" />
-
-                            <TextBlock
-                                Margin="10,0,0,0"
-                                Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                                Opacity="0.7"
-                                Style="{StaticResource CaptionTextBlockStyle}"
-                                Text="{Binding MaturityDate, StringFormat={StaticResource MaturityFormat}}" />
-                        </StackPanel>
-
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </ListBox.Style>
+        </ListBox>
     </Grid>
 </UserControl>

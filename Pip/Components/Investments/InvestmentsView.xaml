@@ -15,7 +15,7 @@
     mc:Ignorable="d">
 
     <dxmvvm:Interaction.Behaviors>
-        <dxmvvm:EventToCommand Command="{Binding LoadCommand}" EventName="Loaded" />
+        <dxmvvm:EventToCommand Command="{Binding LoadCommand}" EventName="Initialized" />
     </dxmvvm:Interaction.Behaviors>
 
     <DockPanel>
@@ -25,9 +25,9 @@
             FontSize="18">
             Investments
         </Label>
-        <!--  SelectionMode None,NavigationStyle Row needed to maintain selection across navigation  -->
         <dxg:GridControl
             AutoExpandAllGroups="True"
+            AutoGenerateColumns="None"
             DeleteKeyBehavior="DeleteFocusedRow"
             ItemsSource="{Binding Investments}"
             SelectedItem="{Binding SelectedInvestment, Mode=TwoWay}"
@@ -35,10 +35,12 @@
             <dxg:GridControl.View>
                 <dxg:TableView
                     AllowBestFit="True"
+                    AllowGrouping="True"
                     AutoWidth="True"
                     BestFitMode="VisibleRows"
                     IsTotalSummaryMenuEnabled="True"
                     ShowEditFormOnDoubleClick="True"
+                    ShowGroupedColumns="False"
                     ShowUpdateRowButtons="OnCellEditorOpen"
                     TotalSummaryPosition="Bottom">
                     <dxmvvm:Interaction.Behaviors>

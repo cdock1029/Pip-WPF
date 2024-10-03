@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Pip.DataAccess;
 
@@ -15,29 +16,35 @@ namespace Pip.DataAccess.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "9.0.0-rc.1.24451.1")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("Pip.Model.Investment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Confirmation")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Par")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int>("Reinvestments")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("TreasuryCusip")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateOnly>("TreasuryIssueDate")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("date");
 
                     b.HasKey("Id");
 
@@ -78,468 +85,468 @@ namespace Pip.DataAccess.Migrations
             modelBuilder.Entity("Pip.Model.Treasury", b =>
                 {
                     b.Property<string>("Cusip")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(450)")
                         .HasAnnotation("Relational:JsonPropertyName", "cusip");
 
                     b.Property<DateOnly>("IssueDate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("date")
                         .HasAnnotation("Relational:JsonPropertyName", "issueDate");
 
                     b.Property<string>("AccruedInterestPer100")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "accruedInterestPer100");
 
                     b.Property<string>("AccruedInterestPer1000")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "accruedInterestPer1000");
 
                     b.Property<string>("AdjustedAccruedInterestPer1000")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "adjustedAccruedInterestPer1000");
 
                     b.Property<string>("AdjustedPrice")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "adjustedPrice");
 
                     b.Property<string>("AllocationPercentage")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "allocationPercentage");
 
                     b.Property<string>("AllocationPercentageDecimals")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "allocationPercentageDecimals");
 
                     b.Property<string>("AnnouncedCusip")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "announcedCusip");
 
                     b.Property<DateOnly?>("AnnouncementDate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("date")
                         .HasAnnotation("Relational:JsonPropertyName", "announcementDate");
 
                     b.Property<DateOnly?>("AuctionDate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("date")
                         .HasAnnotation("Relational:JsonPropertyName", "auctionDate");
 
                     b.Property<string>("AuctionDateYear")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "auctionDateYear");
 
                     b.Property<string>("AuctionFormat")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "auctionFormat");
 
                     b.Property<string>("AverageMedianDiscountMargin")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "averageMedianDiscountMargin");
 
                     b.Property<string>("AverageMedianDiscountRate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "averageMedianDiscountRate");
 
                     b.Property<string>("AverageMedianInvestmentRate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "averageMedianInvestmentRate");
 
                     b.Property<string>("AverageMedianPrice")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "averageMedianPrice");
 
                     b.Property<string>("AverageMedianYield")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "averageMedianYield");
 
                     b.Property<string>("BackDated")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "backDated");
 
                     b.Property<DateOnly?>("BackDatedDate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("date")
                         .HasAnnotation("Relational:JsonPropertyName", "backDatedDate");
 
                     b.Property<string>("BidToCoverRatio")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "bidToCoverRatio");
 
                     b.Property<DateOnly?>("CallDate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("date")
                         .HasAnnotation("Relational:JsonPropertyName", "callDate");
 
                     b.Property<string>("Callable")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "callable");
 
                     b.Property<DateOnly?>("CalledDate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("date")
                         .HasAnnotation("Relational:JsonPropertyName", "calledDate");
 
                     b.Property<string>("CashManagementBillCMB")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "cashManagementBillCMB");
 
                     b.Property<string>("ClosingTimeCompetitive")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "closingTimeCompetitive");
 
                     b.Property<string>("ClosingTimeNoncompetitive")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "closingTimeNoncompetitive");
 
                     b.Property<string>("CompetitiveAccepted")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "competitiveAccepted");
 
                     b.Property<string>("CompetitiveBidDecimals")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "competitiveBidDecimals");
 
                     b.Property<string>("CompetitiveTendered")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "competitiveTendered");
 
                     b.Property<string>("CompetitiveTendersAccepted")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "competitiveTendersAccepted");
 
                     b.Property<string>("CorpusCusip")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "corpusCusip");
 
                     b.Property<string>("CpiBaseReferencePeriod")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "cpiBaseReferencePeriod");
 
                     b.Property<string>("CurrentlyOutstanding")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "currentlyOutstanding");
 
                     b.Property<DateOnly?>("DatedDate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("date")
                         .HasAnnotation("Relational:JsonPropertyName", "datedDate");
 
                     b.Property<string>("DirectBidderAccepted")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "directBidderAccepted");
 
                     b.Property<string>("DirectBidderTendered")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "directBidderTendered");
 
                     b.Property<string>("EstimatedAmountOfPubliclyHeldMaturingSecuritiesByType")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "estimatedAmountOfPubliclyHeldMaturingSecuritiesByType");
 
                     b.Property<string>("FimaIncluded")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "fimaIncluded");
 
                     b.Property<string>("FimaNoncompetitiveAccepted")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "fimaNoncompetitiveAccepted");
 
                     b.Property<string>("FimaNoncompetitiveTendered")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "fimaNoncompetitiveTendered");
 
                     b.Property<DateOnly?>("FirstInterestPaymentDate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("date")
                         .HasAnnotation("Relational:JsonPropertyName", "firstInterestPaymentDate");
 
                     b.Property<string>("FirstInterestPeriod")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "firstInterestPeriod");
 
                     b.Property<string>("FloatingRate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "floatingRate");
 
                     b.Property<DateOnly?>("FrnIndexDeterminationDate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("date")
                         .HasAnnotation("Relational:JsonPropertyName", "frnIndexDeterminationDate");
 
                     b.Property<string>("FrnIndexDeterminationRate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "frnIndexDeterminationRate");
 
                     b.Property<string>("HighDiscountMargin")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "highDiscountMargin");
 
                     b.Property<string>("HighDiscountRate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "highDiscountRate");
 
                     b.Property<string>("HighInvestmentRate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "highInvestmentRate");
 
                     b.Property<string>("HighPrice")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "highPrice");
 
                     b.Property<string>("HighYield")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "highYield");
 
                     b.Property<string>("IndexRatioOnIssueDate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "indexRatioOnIssueDate");
 
                     b.Property<string>("IndirectBidderAccepted")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "indirectBidderAccepted");
 
                     b.Property<string>("IndirectBidderTendered")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "indirectBidderTendered");
 
                     b.Property<string>("InterestPaymentFrequency")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "interestPaymentFrequency");
 
                     b.Property<string>("InterestRate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "interestRate");
 
                     b.Property<string>("LowDiscountMargin")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "lowDiscountMargin");
 
                     b.Property<string>("LowDiscountRate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "lowDiscountRate");
 
                     b.Property<string>("LowInvestmentRate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "lowInvestmentRate");
 
                     b.Property<string>("LowPrice")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "lowPrice");
 
                     b.Property<string>("LowYield")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "lowYield");
 
                     b.Property<DateOnly?>("MaturingDate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("date")
                         .HasAnnotation("Relational:JsonPropertyName", "maturingDate");
 
                     b.Property<DateOnly?>("MaturityDate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("date")
                         .HasAnnotation("Relational:JsonPropertyName", "maturityDate");
 
                     b.Property<string>("MaximumCompetitiveAward")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "maximumCompetitiveAward");
 
                     b.Property<string>("MaximumNoncompetitiveAward")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "maximumNoncompetitiveAward");
 
                     b.Property<string>("MaximumSingleBid")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "maximumSingleBid");
 
                     b.Property<string>("MinimumBidAmount")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "minimumBidAmount");
 
                     b.Property<string>("MinimumStripAmount")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "minimumStripAmount");
 
                     b.Property<string>("MinimumToIssue")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "minimumToIssue");
 
                     b.Property<string>("MultiplesToBid")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "multiplesToBid");
 
                     b.Property<string>("MultiplesToIssue")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "multiplesToIssue");
 
                     b.Property<string>("NlpExclusionAmount")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "nlpExclusionAmount");
 
                     b.Property<string>("NlpReportingThreshold")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "nlpReportingThreshold");
 
                     b.Property<string>("NoncompetitiveAccepted")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "noncompetitiveAccepted");
 
                     b.Property<string>("NoncompetitiveTendersAccepted")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "noncompetitiveTendersAccepted");
 
                     b.Property<string>("OfferingAmount")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "offeringAmount");
 
                     b.Property<string>("OriginalCusip")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "originalCusip");
 
                     b.Property<DateOnly?>("OriginalDatedDate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("date")
                         .HasAnnotation("Relational:JsonPropertyName", "originalDatedDate");
 
                     b.Property<DateOnly?>("OriginalIssueDate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("date")
                         .HasAnnotation("Relational:JsonPropertyName", "originalIssueDate");
 
                     b.Property<string>("OriginalSecurityTerm")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "originalSecurityTerm");
 
                     b.Property<string>("PdfFilenameAnnouncement")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "pdfFilenameAnnouncement");
 
                     b.Property<string>("PdfFilenameCompetitiveResults")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "pdfFilenameCompetitiveResults");
 
                     b.Property<string>("PdfFilenameNoncompetitiveResults")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "pdfFilenameNoncompetitiveResults");
 
                     b.Property<string>("PdfFilenameSpecialAnnouncement")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "pdfFilenameSpecialAnnouncement");
 
                     b.Property<string>("PricePer100")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "pricePer100");
 
                     b.Property<string>("PrimaryDealerAccepted")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "primaryDealerAccepted");
 
                     b.Property<string>("PrimaryDealerTendered")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "primaryDealerTendered");
 
                     b.Property<string>("RefCPIOnDatedDate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "refCPIOnDatedDate");
 
                     b.Property<string>("RefCpiOnIssueDate")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "refCpiOnIssueDate");
 
                     b.Property<string>("Reopening")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "reopening");
 
                     b.Property<string>("SecurityTerm")
                         .IsRequired()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "securityTerm");
 
                     b.Property<string>("SecurityTermDayMonth")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "securityTermDayMonth");
 
                     b.Property<string>("SecurityTermWeekYear")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "securityTermWeekYear");
 
                     b.Property<int>("SecurityType")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("int")
                         .HasAnnotation("Relational:JsonPropertyName", "securityType");
 
                     b.Property<string>("Series")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "series");
 
                     b.Property<string>("SomaAccepted")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "somaAccepted");
 
                     b.Property<string>("SomaHoldings")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "somaHoldings");
 
                     b.Property<string>("SomaIncluded")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "somaIncluded");
 
                     b.Property<string>("SomaTendered")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "somaTendered");
 
                     b.Property<string>("Spread")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "spread");
 
                     b.Property<string>("StandardInterestPaymentPer1000")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "standardInterestPaymentPer1000");
 
                     b.Property<string>("Strippable")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "strippable");
 
                     b.Property<string>("Term")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "term");
 
                     b.Property<string>("TiinConversionFactorPer1000")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "tiinConversionFactorPer1000");
 
                     b.Property<string>("TintCusip1")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "tintCusip1");
 
                     b.Property<string>("TintCusip2")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "tintCusip2");
 
                     b.Property<string>("Tips")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "tips");
 
                     b.Property<string>("TotalAccepted")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "totalAccepted");
 
                     b.Property<string>("TotalTendered")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "totalTendered");
 
                     b.Property<string>("TreasuryDirectAccepted")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "treasuryDirectAccepted");
 
                     b.Property<string>("TreasuryDirectTendersAccepted")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "treasuryDirectTendersAccepted");
 
                     b.Property<int>("Type")
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("int")
                         .HasAnnotation("Relational:JsonPropertyName", "type");
 
                     b.Property<string>("UnadjustedAccruedInterestPer1000")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "unadjustedAccruedInterestPer1000");
 
                     b.Property<string>("UnadjustedPrice")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "unadjustedPrice");
 
                     b.Property<string>("XmlFilenameAnnouncement")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "xmlFilenameAnnouncement");
 
                     b.Property<string>("XmlFilenameCompetitiveResults")
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "xmlFilenameCompetitiveResults");
 
                     b.HasKey("Cusip", "IssueDate");
