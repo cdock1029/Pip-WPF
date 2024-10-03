@@ -79,11 +79,11 @@
                 <ContextMenu>
                     <MenuItem
                         Command="{Binding SaveTreasuryCommand}"
-                        CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent.PlacementTarget.SelectedItem}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.(ListBox.SelectedItem)}"
                         Header="Save" />
                     <MenuItem
                         Command="{Binding CreateInvestmentCommand}"
-                        CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent.PlacementTarget.SelectedItem}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.(ListBox.SelectedItem)}"
                         Header="Create investment" />
                 </ContextMenu>
             </ListBox.ContextMenu>
