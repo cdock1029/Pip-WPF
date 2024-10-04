@@ -9,11 +9,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:Pip.Model;assembly=Pip.Model"
     xmlns:savedTreasuries="clr-namespace:Pip.UI.Components.SavedTreasuries"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     d:DataContext="{d:DesignInstance Type=savedTreasuries:SavedTreasuriesViewModel}"
     d:DesignHeight="300"
     d:DesignWidth="500"
     mc:Ignorable="d">
-
     <DockPanel>
         <Label
             Margin="0,0,0,10"
@@ -78,60 +78,74 @@
                         Text="{Binding SelectedTreasury.MaturityDate, FallbackValue=''}" />
                 </StackPanel>
             </Grid>
-            <dxg:GridControl
-                Grid.Column="0"
-                AutoExpandAllGroups="True"
-                ItemsSource="{Binding Treasuries}"
-                SelectedItem="{Binding SelectedTreasury}"
-                SelectionMode="Row">
-                <dxg:GridControl.View>
-                    <dxg:TableView
-                        AllowBestFit="True"
-                        AllowGrouping="True"
-                        AutoWidth="True"
-                        BestFitMode="VisibleRows"
-                        ShowGroupedColumns="False">
-                        <dxmvvm:Interaction.Behaviors>
-                            <dxmvvm:EventToCommand
-                                Command="{Binding DataSourceRefreshCommand}"
-                                EventName="DataViewBase.DataSourceRefresh"
-                                PassEventArgsToCommand="True" />
+            <Grid Grid.Column="0">
+                <dxg:GridControl
 
-                            <dxmvvm:EventToCommand
-                                Command="{Binding ValidateRowDeletionCommand}"
-                                EventName="ValidateRowDeletion"
-                                PassEventArgsToCommand="True" />
-                        </dxmvvm:Interaction.Behaviors>
-                        <dxg:TableView.RowCellMenuCustomizations>
-                            <dxb:BarButtonItem Command="{x:Static dxg:GridCommands.DeleteFocusedRow}" Content="Delete" />
-                        </dxg:TableView.RowCellMenuCustomizations>
-                    </dxg:TableView>
-                </dxg:GridControl.View>
-                <dxg:GridControl.Columns>
-                    <dxg:GridColumn
-                        Binding="{Binding Path=(model:Treasury.Cusip)}"
-                        Header="CUSIP"
-                        ReadOnly="True" />
-                    <dxg:GridColumn
-                        AllowCellMerge="True"
-                        Binding="{Binding Path=(model:Treasury.IssueDate)}"
-                        Header="Issue Date"
-                        ReadOnly="True" />
-                    <dxg:GridColumn
-                        Binding="{Binding Path=(model:Treasury.MaturingDate), FallbackValue=''}"
-                        Header="Maturity Date"
-                        ReadOnly="True" />
-                    <dxg:GridColumn
-                        Binding="{Binding Path=(model:Treasury.SecurityTerm)}"
-                        Header="Term"
-                        ReadOnly="True" />
-                    <dxg:GridColumn
-                        Binding="{Binding Path=(model:Treasury.Type)}"
-                        GroupIndex="0"
-                        Header="Type"
-                        ReadOnly="True" />
-                </dxg:GridControl.Columns>
-            </dxg:GridControl>
+                    AutoExpandAllGroups="True"
+                    ItemsSource="{Binding Treasuries}"
+                    SelectedItem="{Binding SelectedTreasury}"
+                    SelectionMode="Row">
+                    <dxg:GridControl.View>
+                        <dxg:TableView
+                            AllowBestFit="True"
+                            AllowGrouping="True"
+                            AutoWidth="True"
+                            BestFitMode="VisibleRows"
+                            ShowGroupedColumns="False">
+                            <dxmvvm:Interaction.Behaviors>
+                                <dxmvvm:EventToCommand
+                                    Command="{Binding DataSourceRefreshCommand}"
+                                    EventName="DataViewBase.DataSourceRefresh"
+                                    PassEventArgsToCommand="True" />
+
+                                <dxmvvm:EventToCommand
+                                    Command="{Binding ValidateRowDeletionCommand}"
+                                    EventName="ValidateRowDeletion"
+                                    PassEventArgsToCommand="True" />
+                            </dxmvvm:Interaction.Behaviors>
+                            <dxg:TableView.RowCellMenuCustomizations>
+                                <dxb:BarButtonItem Command="{x:Static dxg:GridCommands.DeleteFocusedRow}"
+                                                   Content="Delete" />
+                            </dxg:TableView.RowCellMenuCustomizations>
+                        </dxg:TableView>
+                    </dxg:GridControl.View>
+                    <dxg:GridControl.Columns>
+                        <dxg:GridColumn
+                            Binding="{Binding Path=(model:Treasury.Cusip)}"
+                            Header="CUSIP"
+                            ReadOnly="True" />
+                        <dxg:GridColumn
+                            AllowCellMerge="True"
+                            Binding="{Binding Path=(model:Treasury.IssueDate)}"
+                            Header="Issue Date"
+                            ReadOnly="True" />
+                        <dxg:GridColumn
+                            Binding="{Binding Path=(model:Treasury.MaturingDate), FallbackValue=''}"
+                            Header="Maturity Date"
+                            ReadOnly="True" />
+                        <dxg:GridColumn
+                            Binding="{Binding Path=(model:Treasury.SecurityTerm)}"
+                            Header="Term"
+                            ReadOnly="True" />
+                        <dxg:GridColumn
+                            Binding="{Binding Path=(model:Treasury.Type)}"
+                            GroupIndex="0"
+                            Header="Type"
+                            ReadOnly="True" />
+                    </dxg:GridControl.Columns>
+                </dxg:GridControl>
+                <dx:WaitIndicator DeferedVisibility="{Binding IsWaitIndicatorVisible}" Content="Loading...">
+                    <dx:WaitIndicator.ContentTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="Please Wait" FontSize="20" />
+                                <TextBlock Text="{Binding}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </dx:WaitIndicator.ContentTemplate>
+                </dx:WaitIndicator>
+
+            </Grid>
         </Grid>
     </DockPanel>
 </UserControl>

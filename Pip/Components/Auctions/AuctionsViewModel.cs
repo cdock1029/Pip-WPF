@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using DevExpress.Mvvm.CodeGenerators;
 using Pip.Model;
 using Pip.UI.Services;
 using Pip.UI.ViewModel;
@@ -7,16 +6,17 @@ using System.Collections.ObjectModel;
 
 namespace Pip.UI.Components.Auctions;
 
-public partial class AuctionsViewModel(ITreasuryDataProvider treasuryDataProvider) : ViewModelBase
+[GenerateViewModel]
+public partial class AuctionsViewModel(ITreasuryDataProvider treasuryDataProvider) : PipViewModel
 {
-	[ObservableProperty] private Treasury? _selectedTreasuryRecent;
+	[GenerateProperty] private Treasury? _selectedTreasuryRecent;
 
-	[ObservableProperty] private Treasury? _selectedTreasuryUpcoming;
+	[GenerateProperty] private Treasury? _selectedTreasuryUpcoming;
 
 	public ObservableCollection<Treasury> TreasuriesRecent { get; } = [];
 	public ObservableCollection<Treasury> TreasuriesUpcoming { get; } = [];
 
-	[RelayCommand]
+	[GenerateCommand]
 	public override async Task LoadAsync()
 	{
 		await Task.WhenAll(LoadRecent(), LoadUpcoming());

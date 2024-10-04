@@ -1,25 +1,23 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using DevExpress.Mvvm;
+﻿using DevExpress.Mvvm;
+using DevExpress.Mvvm.CodeGenerators;
 using Microsoft.EntityFrameworkCore;
 using Pip.Model;
 using Pip.UI.Messages;
 using Pip.UI.Services;
+using Pip.UI.ViewModel;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using ViewModelBase = Pip.UI.ViewModel.ViewModelBase;
 
 namespace Pip.UI.Components.Search;
 
-public partial class SearchViewModel : ViewModelBase
+[GenerateViewModel]
+public partial class SearchViewModel : PipViewModel
 {
 	private readonly IMessageBoxService _messageBoxService;
 
 	private readonly ITreasuryDataProvider _treasuryDataProvider;
 
-	[ObservableProperty]
-	[NotifyCanExecuteChangedFor(nameof(SearchCommand))]
-	private string? _searchText;
+	[GenerateProperty] private string? _searchText;
 
 	public SearchViewModel(ITreasuryDataProvider treasuryDataProvider,
 		IMessageBoxService messageBoxService)
@@ -33,16 +31,15 @@ public partial class SearchViewModel : ViewModelBase
 
 	private void SearchResults_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
 	{
-		ClearResultsCommand.NotifyCanExecuteChanged();
+		ClearResultsCommand.RaiseCanExecuteChanged();
 	}
 
-
-	[RelayCommand(CanExecute = nameof(CanSearch))]
-	private async Task Search(string? cusip)
+	[GenerateCommand(CanExecuteMethod = nameof(CanSearch))]
+	private async Task Search()
 	{
-		ArgumentNullException.ThrowIfNull(cusip);
+		ArgumentNullException.ThrowIfNull(SearchText);
 
-		var treasuries = await _treasuryDataProvider.SearchTreasuriesAsync(cusip.Trim());
+		var treasuries = await _treasuryDataProvider.SearchTreasuriesAsync(SearchText.Trim());
 
 		SearchResults.Clear();
 		if (treasuries == null) return;
@@ -55,7 +52,7 @@ public partial class SearchViewModel : ViewModelBase
 		return !string.IsNullOrWhiteSpace(SearchText);
 	}
 
-	[RelayCommand]
+	[GenerateCommand]
 	private async Task SaveTreasury(Treasury? treasury)
 	{
 		ArgumentNullException.ThrowIfNull(treasury);
@@ -81,7 +78,7 @@ public partial class SearchViewModel : ViewModelBase
 			}
 	}
 
-	[RelayCommand]
+	[GenerateCommand]
 	private async Task CreateInvestment(Treasury? treasury)
 	{
 		ArgumentNullException.ThrowIfNull(treasury);
@@ -115,7 +112,7 @@ public partial class SearchViewModel : ViewModelBase
 			}
 	}
 
-	[RelayCommand(CanExecute = nameof(CanClearResults))]
+	[GenerateCommand]
 	private void ClearResults()
 	{
 		SearchResults.Clear();

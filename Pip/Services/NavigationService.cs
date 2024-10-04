@@ -3,12 +3,12 @@ using Pip.UI.ViewModel;
 
 namespace Pip.UI.Services;
 
-public partial class NavigationService(Func<Type, ViewModelBase> viewModelFactory)
+public partial class NavigationService(Func<Type, PipViewModel> viewModelFactory)
 	: ObservableObject, INavigationService
 {
-	[ObservableProperty] private ViewModelBase? _currentView;
+	[ObservableProperty] private PipViewModel? _currentView;
 
-	public async Task NavigateToAsync<TViewModelBase>() where TViewModelBase : ViewModelBase
+	public async Task NavigateToAsync<TViewModelBase>() where TViewModelBase : PipViewModel
 	{
 		CurrentView = viewModelFactory.Invoke(typeof(TViewModelBase));
 		await CurrentView.LoadAsync();
@@ -17,7 +17,7 @@ public partial class NavigationService(Func<Type, ViewModelBase> viewModelFactor
 
 public interface INavigationService
 {
-	ViewModelBase CurrentView { get; }
+	PipViewModel CurrentView { get; }
 
-	Task NavigateToAsync<T>() where T : ViewModelBase;
+	Task NavigateToAsync<T>() where T : PipViewModel;
 }

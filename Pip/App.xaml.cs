@@ -9,11 +9,9 @@ using Pip.UI.Components.SavedTreasuries;
 using Pip.UI.Components.Search;
 using Pip.UI.Services;
 using Pip.UI.ViewModel;
-using System.Configuration;
 using System.Windows;
 using System.Windows.Threading;
 using INavigationService = Pip.UI.Services.INavigationService;
-using ViewModelBase = Pip.UI.ViewModel.ViewModelBase;
 
 namespace Pip.UI;
 
@@ -53,13 +51,13 @@ public partial class App
 			.AddSingleton<AuctionsViewModel>()
 			.AddSingleton(_ => Dispatcher.CurrentDispatcher)
 			.AddSingleton(p => new MainWindow { DataContext = p.GetRequiredService<MainViewModel>() })
-			.AddSingleton<Func<Type, ViewModelBase>>(p =>
-				viewModelType => (ViewModelBase)p.GetRequiredService(viewModelType))
+			.AddSingleton<Func<Type, PipViewModel>>(p =>
+				viewModelType => (PipViewModel)p.GetRequiredService(viewModelType))
 			.AddDbContextFactory<PipDbContext>(optionsBuilder =>
 			{
-				var connectionString = ConfigurationManager.ConnectionStrings["PipDbLocal"].ConnectionString;
-				optionsBuilder.UseSqlServer(connectionString, ob => ob.MigrationsAssembly("Pip.DataAccess"));
-				//optionsBuilder.UseSqlite("Data Source=pip.db");
+				//var connectionString = ConfigurationManager.ConnectionStrings["PipDbLocal"].ConnectionString;
+				//optionsBuilder.UseSqlServer(connectionString, ob => ob.MigrationsAssembly("Pip.DataAccess"));
+				optionsBuilder.UseSqlite("Data Source=pip.db");
 			}, ServiceLifetime.Transient)
 			.AddHttpClient<ITreasuryDataProvider, TreasuryDataProvider>(c =>
 			{
@@ -69,9 +67,9 @@ public partial class App
 
 	private void App_OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
 	{
-		//e.Handled = true;
-		//var messageBoxService = _serviceProvider.GetRequiredService<IMessageBoxService>();
-		//messageBoxService.Show($"Unhandled Exception. Contact administrator: [{e.Exception}]", "Error",
-		//	System.Windows.MessageBoxButton.OK);
+		e.Handled = true;
+		var messageBoxService = _serviceProvider.GetRequiredService<IMessageBoxService>();
+		messageBoxService.Show($"Unhandled Exception. Contact administrator: [{e.Exception}]", "Error",
+			MessageBoxButton.OK);
 	}
 }

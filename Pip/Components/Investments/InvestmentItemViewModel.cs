@@ -1,27 +1,32 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using DevExpress.Mvvm.CodeGenerators;
 using Pip.Model;
 using Pip.UI.ViewModel;
 
 namespace Pip.UI.Components.Investments;
 
-public partial class InvestmentItemViewModel(Investment investment) : ViewModelBase
+[GenerateViewModel]
+public partial class InvestmentItemViewModel(Investment investment) : PipViewModel
 {
-	[ObservableProperty] private string? _confirmation = investment.Confirmation;
-	[ObservableProperty] private string _cusip = investment.TreasuryCusip;
-	[ObservableProperty] private int _id = investment.Id;
+	[GenerateProperty] private string? _confirmation = investment.Confirmation;
+	[GenerateProperty] private string _cusip = investment.TreasuryCusip;
+	[GenerateProperty] private int _id = investment.Id;
 
-	[ObservableProperty] private DateOnly _issueDate = investment.TreasuryIssueDate;
-	[ObservableProperty] private DateOnly? _maturityDate = investment.Treasury.MaturityDate;
+	[GenerateProperty] private DateOnly _issueDate = investment.TreasuryIssueDate;
+	[GenerateProperty] private DateOnly? _maturityDate = investment.Treasury.MaturityDate;
 
-	[ObservableProperty] private int _reinvestments = investment.Reinvestments;
-	[ObservableProperty] private string _term = investment.Treasury.SecurityTerm;
-	[ObservableProperty] private TreasuryType _type = investment.Treasury.Type;
+	[GenerateProperty] private int _reinvestments = investment.Reinvestments;
+	[GenerateProperty] private string _term = investment.Treasury.SecurityTerm;
+	[GenerateProperty] private TreasuryType _type = investment.Treasury.Type;
 
 	public Investment Investment => investment;
 
 	public int Par
 	{
 		get => investment.Par;
-		set => SetProperty(investment.Par, value, investment, (i, n) => i.Par = n);
+		set
+		{
+			investment.Par = value;
+			RaisePropertyChanged();
+		}
 	}
 }

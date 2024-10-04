@@ -1,22 +1,23 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using DevExpress.Mvvm;
+﻿using DevExpress.Mvvm;
+using DevExpress.Mvvm.CodeGenerators;
 using DevExpress.Mvvm.Xpf;
 using DevExpress.Xpf.Grid;
 using Pip.Model;
 using Pip.UI.Messages;
 using Pip.UI.Services;
+using Pip.UI.ViewModel;
 using System.Collections.ObjectModel;
 using INavigationService = Pip.UI.Services.INavigationService;
-using ViewModelBase = Pip.UI.ViewModel.ViewModelBase;
 
 namespace Pip.UI.Components.SavedTreasuries;
 
-public partial class SavedTreasuriesViewModel : ViewModelBase
+[GenerateViewModel]
+public partial class SavedTreasuriesViewModel : PipViewModel
 {
 	private readonly INavigationService _navigationService;
 	private readonly ITreasuryDataProvider _treasuryDataProvider;
-	[ObservableProperty] private Treasury? _selectedTreasury;
+	[GenerateProperty] private bool _isWaitIndicatorVisible;
+	[GenerateProperty] private Treasury? _selectedTreasury;
 
 	public SavedTreasuriesViewModel(ITreasuryDataProvider treasuryDataProvider,
 		INavigationService navigationService)
@@ -29,33 +30,37 @@ public partial class SavedTreasuriesViewModel : ViewModelBase
 
 	public ObservableCollection<Treasury> Treasuries { get; } = [];
 
-	public void Receive(AfterInsertInvestmentMessage message)
+	public override async Task LoadAsync()
+	{
+		if (Treasuries.Any()) return;
+		IsWaitIndicatorVisible = true;
+
+		var treasuriesTask = _treasuryDataProvider.GetSavedAsync();
+		var delay = Task.Delay(1200);
+		await Task.WhenAll(treasuriesTask, delay);
+		foreach (var treasury in treasuriesTask.Result) Treasuries.Add(treasury);
+		IsWaitIndicatorVisible = false;
+	}
+
+	private void Receive(AfterInsertInvestmentMessage message)
 	{
 		Treasuries.Clear();
 		Task.Run(LoadAsync);
 	}
 
-	public void Receive(AfterTreasuryInsertMessage message)
+	private void Receive(AfterTreasuryInsertMessage message)
 	{
 		Task.Run(() => HandleMessage(message));
 	}
 
-	[RelayCommand]
-	public override async Task LoadAsync()
-	{
-		if (Treasuries.Any()) return;
-		var treasuries = await _treasuryDataProvider.GetSavedAsync();
-		foreach (var treasury in treasuries) Treasuries.Add(treasury);
-	}
-
-	[RelayCommand]
+	[GenerateCommand]
 	private async Task DataSourceRefresh(DataSourceRefreshArgs args)
 	{
 		Treasuries.Clear();
 		await LoadAsync();
 	}
 
-	[RelayCommand]
+	[GenerateCommand]
 	private async Task ValidateRowDeletion(GridValidateRowDeletionEventArgs args)
 	{
 		try

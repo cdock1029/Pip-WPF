@@ -52,8 +52,7 @@
                 <TextBox.InputBindings>
                     <KeyBinding
                         Key="Return"
-                        Command="{Binding SearchCommand}"
-                        CommandParameter="{Binding SearchText}" />
+                        Command="{Binding SearchCommand}" />
                 </TextBox.InputBindings>
             </TextBox>
             <StackPanel Grid.Column="2" Orientation="Horizontal">

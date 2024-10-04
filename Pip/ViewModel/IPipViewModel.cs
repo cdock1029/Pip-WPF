@@ -1,8 +1,8 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using DevExpress.Mvvm;
 
 namespace Pip.UI.ViewModel;
 
-public abstract class ViewModelBase : ObservableObject
+public abstract class PipViewModel : BindableBase
 {
 	public virtual Task LoadAsync()
 	{

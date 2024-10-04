@@ -39,8 +39,7 @@ public class TreasuryDataProvider(HttpClient client, PipDbContext dbContext)
 
 	public async Task<List<Treasury>> GetSavedAsync()
 	{
-		//var treasuries = await Task.Run(() => dbContext.Treasuries.ToList()).ConfigureAwait(false);
-		var treasuries = await dbContext.Treasuries.ToListAsync().ConfigureAwait(false);
+		var treasuries = await Task.Run(() => dbContext.Treasuries.ToList()).ConfigureAwait(false);
 		return treasuries;
 	}
 
@@ -56,13 +55,14 @@ public class TreasuryDataProvider(HttpClient client, PipDbContext dbContext)
 	public async Task InsertAsync(Treasury treasury)
 	{
 		dbContext.Add(treasury);
-		await Task.Run(dbContext.SaveChanges);
+		await Task.Run(dbContext.SaveChanges).ConfigureAwait(false);
 	}
 
 	public async Task InsertInvestmentAsync(Investment investment)
 	{
 		var treasury = await Task.Run(() => dbContext.Treasuries.FirstOrDefault(t =>
-			t.Cusip == investment.Treasury.Cusip && t.IssueDate == investment.Treasury.IssueDate));
+				t.Cusip == investment.Treasury.Cusip && t.IssueDate == investment.Treasury.IssueDate))
+			.ConfigureAwait(false);
 
 		if (treasury is null)
 			dbContext.Entry(investment.Treasury).State = EntityState.Added;
@@ -70,19 +70,19 @@ public class TreasuryDataProvider(HttpClient client, PipDbContext dbContext)
 			investment.Treasury = treasury;
 
 		dbContext.Investments.Add(investment);
-		await Task.Run(dbContext.SaveChanges);
+		await Task.Run(dbContext.SaveChanges).ConfigureAwait(false);
 	}
 
 	public async Task DeleteInvestmentsAsync(IEnumerable<Investment> investments)
 	{
 		dbContext.Investments.RemoveRange(investments);
-		await Task.Run(dbContext.SaveChanges);
+		await Task.Run(dbContext.SaveChanges).ConfigureAwait(false);
 	}
 
 	public async Task DeleteTreasuriesAsync(IEnumerable<Treasury> rows)
 	{
 		dbContext.Treasuries.RemoveRange(rows);
-		await Task.Run(dbContext.SaveChanges);
+		await Task.Run(dbContext.SaveChanges).ConfigureAwait(false);
 	}
 
 	public void Add(Treasury treasury)
@@ -97,7 +97,7 @@ public class TreasuryDataProvider(HttpClient client, PipDbContext dbContext)
 
 	public async Task SaveAsync()
 	{
-		await Task.Run(dbContext.SaveChanges);
+		await Task.Run(dbContext.SaveChanges).ConfigureAwait(false);
 	}
 
 	#endregion DB
