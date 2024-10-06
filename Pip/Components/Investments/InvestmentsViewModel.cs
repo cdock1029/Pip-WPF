@@ -28,7 +28,6 @@ public partial class InvestmentsViewModel : PipViewModel
 		_navigation = navigation;
 		_dispatcher = dispatcher;
 		Messenger.Default.Register<AfterInsertInvestmentMessage>(this, Receive);
-		Messenger.Default.Register<AfterTreasuryDeleteMessage>(this, Receive);
 	}
 
 	public ObservableCollection<InvestmentItemViewModel> Investments { get; } = [];
@@ -48,12 +47,6 @@ public partial class InvestmentsViewModel : PipViewModel
 	private void Receive(AfterInsertInvestmentMessage message)
 	{
 		Task.Run(() => HandleMessage(message));
-	}
-
-	private void Receive(AfterTreasuryDeleteMessage message)
-	{
-		Investments.Clear();
-		Task.Run(LoadAsync);
 	}
 
 	[GenerateCommand]

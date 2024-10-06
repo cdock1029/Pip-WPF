@@ -1,11 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Pip.Model.Converters;
+﻿using Pip.Model.Converters;
 using System.Text.Json.Serialization;
 
 namespace Pip.Model;
 
-[PrimaryKey(nameof(Cusip), nameof(IssueDate))]
-public class Treasury : IEquatable<Treasury>
+public class Treasury
 {
 	[JsonPropertyName("accruedInterestPer1000")]
 	public string? AccruedInterestPer1000 { get; init; }
@@ -323,25 +321,6 @@ public class Treasury : IEquatable<Treasury>
 	[JsonPropertyName("type")] public required TreasuryType Type { get; init; }
 
 	[JsonPropertyName("term")] public string? Term { get; init; }
-
-	public ICollection<Investment>? Investments { get; init; }
-
-	public bool Equals(Treasury? other)
-	{
-		return other is not null &&
-			   (ReferenceEquals(this, other) || (Cusip == other.Cusip && IssueDate.Equals(other.IssueDate)));
-	}
-
-	public override bool Equals(object? obj)
-	{
-		if (obj is null) return false;
-		return ReferenceEquals(this, obj) || (obj.GetType() == GetType() && Equals((Treasury)obj));
-	}
-
-	public override int GetHashCode()
-	{
-		return HashCode.Combine(Cusip, IssueDate);
-	}
 }
 
 [JsonConverter(typeof(JsonStringEnumConverter<TreasuryType>))]

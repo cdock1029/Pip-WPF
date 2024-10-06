@@ -40,11 +40,11 @@
                     Command="{Binding NavigateSearchCommand}"
                     Content="Search"
                     Glyph="{dx:DXImage Images/Find/Find_32x32.png}" />
-                <dxb:BarButtonItem
+                <!--<dxb:BarButtonItem
                     Margin="0,0,5,0"
                     Command="{Binding NavigateSavedCommand}"
                     Content="Saved Treasuries"
-                    Glyph="{dx:DXImage Images/XAF/Action_SaveScript_32x32.png}" />
+                    Glyph="{dx:DXImage Images/XAF/Action_SaveScript_32x32.png}" />-->
                 <dxb:BarButtonItem
                     Margin="0,0,5,0"
                     Command="{Binding NavigateInvestmentsCommand}"

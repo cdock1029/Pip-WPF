@@ -15,14 +15,16 @@
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type model:Treasury}">
             <StackPanel Orientation="Horizontal">
-                <TextBlock>
+                <TextBlock FontFamily="Consolas">
                     <TextBlock.Text>
-                        <MultiBinding StringFormat="Cusip: {0}, Issue Date: {1}">
+                        <MultiBinding StringFormat="Cusip: {0}    Issue Date: {1:yyyy MMM dd}    Term: ">
                             <Binding Path="Cusip" />
                             <Binding Path="IssueDate" />
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
+                <TextBlock MinWidth="48" Text="{Binding SecurityTerm}" FontFamily="Consolas" TextAlignment="Right"
+                           HorizontalAlignment="Right" />
             </StackPanel>
         </DataTemplate>
     </UserControl.Resources>
@@ -76,10 +78,6 @@
             ItemsSource="{Binding SearchResults}">
             <ListBox.ContextMenu>
                 <ContextMenu>
-                    <MenuItem
-                        Command="{Binding SaveTreasuryCommand}"
-                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.(ListBox.SelectedItem)}"
-                        Header="Save" />
                     <MenuItem
                         Command="{Binding CreateInvestmentCommand}"
                         CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.(ListBox.SelectedItem)}"

@@ -37,57 +37,24 @@ public class TreasuryDataProvider(HttpClient client, PipDbContext dbContext)
 
 	#region DB
 
-	public async Task<List<Treasury>> GetSavedAsync()
-	{
-		var treasuries = await Task.Run(() => dbContext.Treasuries.ToList()).ConfigureAwait(false);
-		return treasuries;
-	}
-
 	public async Task<List<Investment>> GetInvestmentsAsync()
 	{
 		var investments = await Task.Run(() => dbContext
 			.Investments
-			.Include(i => i.Treasury)
-			.ToList()).ConfigureAwait(false);
+			.ToListAsync()).ConfigureAwait(false);
 		return investments;
-	}
-
-	public async Task InsertAsync(Treasury treasury)
-	{
-		dbContext.Add(treasury);
-		await Task.Run(dbContext.SaveChanges).ConfigureAwait(false);
 	}
 
 	public async Task InsertInvestmentAsync(Investment investment)
 	{
-		var treasury = await Task.Run(() => dbContext.Treasuries.FirstOrDefault(t =>
-				t.Cusip == investment.Treasury.Cusip && t.IssueDate == investment.Treasury.IssueDate))
-			.ConfigureAwait(false);
-
-		if (treasury is null)
-			dbContext.Entry(investment.Treasury).State = EntityState.Added;
-		else
-			investment.Treasury = treasury;
-
 		dbContext.Investments.Add(investment);
-		await Task.Run(dbContext.SaveChanges).ConfigureAwait(false);
+		await Task.Run(() => dbContext.SaveChangesAsync()).ConfigureAwait(false);
 	}
 
 	public async Task DeleteInvestmentsAsync(IEnumerable<Investment> investments)
 	{
 		dbContext.Investments.RemoveRange(investments);
-		await Task.Run(dbContext.SaveChanges).ConfigureAwait(false);
-	}
-
-	public async Task DeleteTreasuriesAsync(IEnumerable<Treasury> rows)
-	{
-		dbContext.Treasuries.RemoveRange(rows);
-		await Task.Run(dbContext.SaveChanges).ConfigureAwait(false);
-	}
-
-	public void Add(Treasury treasury)
-	{
-		dbContext.Treasuries.Add(treasury);
+		await Task.Run(() => dbContext.SaveChangesAsync()).ConfigureAwait(false);
 	}
 
 	public void Add(Investment investment)
@@ -97,7 +64,7 @@ public class TreasuryDataProvider(HttpClient client, PipDbContext dbContext)
 
 	public async Task SaveAsync()
 	{
-		await Task.Run(dbContext.SaveChanges).ConfigureAwait(false);
+		await Task.Run(() => dbContext.SaveChangesAsync()).ConfigureAwait(false);
 	}
 
 	#endregion DB

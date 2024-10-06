@@ -29,18 +29,20 @@
                 AutoGenerateColumns="None"
                 DeleteKeyBehavior="DeleteFocusedRow"
                 ItemsSource="{Binding Investments}"
-                SelectedItem="{Binding SelectedInvestment, Mode=TwoWay}"
-                SelectionMode="Row">
+                SelectedItem="{Binding SelectedInvestment, Mode=TwoWay}">
                 <dxg:GridControl.View>
                     <dxg:TableView
+                        AllowEditing="False"
+                        NavigationStyle="Cell"
+                        AllowCellMerge="True"
                         AllowBestFit="True"
                         AllowGrouping="True"
                         AutoWidth="True"
-                        BestFitMode="VisibleRows"
+                        BestFitMode="Smart"
                         IsTotalSummaryMenuEnabled="True"
-                        ShowEditFormOnDoubleClick="True"
+                        ShowEditFormOnDoubleClick="False"
                         ShowGroupedColumns="False"
-                        ShowUpdateRowButtons="OnCellEditorOpen"
+                        ShowUpdateRowButtons="Never"
                         TotalSummaryPosition="Bottom">
                         <dxmvvm:Interaction.Behaviors>
                             <dxmvvm:EventToCommand
@@ -82,7 +84,6 @@
                         ReadOnly="True" />
                     <dxg:GridColumn
                         d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
-                        AllowCellMerge="True"
                         Binding="{Binding IssueDate}"
                         Header="Issue Date"
                         ReadOnly="True" />
@@ -102,7 +103,8 @@
                         GroupIndex="0"
                         Header="Type"
                         ReadOnly="True" />
-                    <dxg:GridColumn d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
+                    <dxg:GridColumn AllowCellMerge="False" AllowEditing="True"
+                                    d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
                                     FieldName="Par">
                         <dxg:GridColumn.EditSettings>
                             <dxe:TextEditSettings DisplayFormat="c" />
@@ -111,10 +113,12 @@
                     <dxg:GridColumn
                         d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
                         FieldName="Confirmation"
+                        AllowCellMerge="False"
                         ReadOnly="True" />
                     <dxg:GridColumn
                         d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
                         FieldName="Reinvestments"
+                        AllowCellMerge="False"
                         ReadOnly="True" />
                 </dxg:GridControl.Columns>
             </dxg:GridControl>

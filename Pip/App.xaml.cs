@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Pip.DataAccess;
 using Pip.UI.Components.Auctions;
 using Pip.UI.Components.Investments;
-using Pip.UI.Components.SavedTreasuries;
 using Pip.UI.Components.Search;
 using Pip.UI.Services;
 using Pip.UI.ViewModel;
@@ -22,7 +21,7 @@ public partial class App
 	public App()
 	{
 		CompatibilitySettings.UseLightweightThemes = true;
-		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
+		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win10System.Name;
 		ThemedWindow.UseNativeWindow = true;
 		ServiceCollection serviceCollection = [];
 		ConfigureServices(serviceCollection);
@@ -46,7 +45,6 @@ public partial class App
 			.AddTransient<ITreasuryDataProvider, TreasuryDataProvider>()
 			.AddSingleton<MainViewModel>()
 			.AddSingleton<SearchViewModel>()
-			.AddSingleton<SavedTreasuriesViewModel>()
 			.AddSingleton<InvestmentsViewModel>()
 			.AddSingleton<AuctionsViewModel>()
 			.AddSingleton(_ => Dispatcher.CurrentDispatcher)

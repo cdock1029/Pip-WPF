@@ -2,7 +2,6 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:search="clr-namespace:Pip.UI.Components.Search"
-             xmlns:savedTreasuries="clr-namespace:Pip.UI.Components.SavedTreasuries"
              xmlns:auctions="clr-namespace:Pip.UI.Components.Auctions"
              xmlns:investments="clr-namespace:Pip.UI.Components.Investments"
              DispatcherUnhandledException="App_OnDispatcherUnhandledException">
@@ -12,9 +11,6 @@
                 <ResourceDictionary>
                     <DataTemplate DataType="{x:Type search:SearchViewModel}">
                         <search:SearchView />
-                    </DataTemplate>
-                    <DataTemplate DataType="{x:Type savedTreasuries:SavedTreasuriesViewModel}">
-                        <savedTreasuries:SavedTreasuriesView />
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type auctions:AuctionsViewModel}">
                         <auctions:AuctionsView />

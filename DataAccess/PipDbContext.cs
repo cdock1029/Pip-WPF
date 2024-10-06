@@ -5,7 +5,6 @@ namespace Pip.DataAccess;
 
 public class PipDbContext(DbContextOptions<PipDbContext> options) : DbContext(options)
 {
-	public DbSet<Treasury> Treasuries { get; init; }
 	public DbSet<Investment> Investments { get; init; }
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -52,8 +51,11 @@ public class PipDbContext(DbContextOptions<PipDbContext> options) : DbContext(op
 				Id = 1,
 				Confirmation = "FOO",
 				Par = 100_000,
-				TreasuryCusip = treasuries[0].Cusip,
-				TreasuryIssueDate = treasuries[0].IssueDate ?? default
+				Cusip = treasuries[0].Cusip,
+				IssueDate = treasuries[0].IssueDate ?? default,
+				MaturityDate = treasuries[0].MaturityDate,
+				SecurityTerm = treasuries[0].SecurityTerm,
+				Type = treasuries[0].Type
 			},
 			new()
 			{
@@ -61,20 +63,25 @@ public class PipDbContext(DbContextOptions<PipDbContext> options) : DbContext(op
 
 				Confirmation = "BAR",
 				Par = 55_000,
-				TreasuryCusip = treasuries[1].Cusip,
-				TreasuryIssueDate = treasuries[1].IssueDate ?? default
+				Cusip = treasuries[1].Cusip,
+				IssueDate = treasuries[1].IssueDate ?? default,
+				MaturityDate = treasuries[1].MaturityDate,
+				SecurityTerm = treasuries[1].SecurityTerm,
+				Type = treasuries[1].Type
 			},
 			new()
 			{
 				Id = 3,
 				Confirmation = "BAZ",
 				Par = 2000_400,
-				TreasuryCusip = treasuries[2].Cusip,
-				TreasuryIssueDate = treasuries[2].IssueDate ?? default
+				Cusip = treasuries[2].Cusip,
+				IssueDate = treasuries[2].IssueDate ?? default,
+				MaturityDate = treasuries[2].MaturityDate,
+				SecurityTerm = treasuries[2].SecurityTerm,
+				Type = treasuries[2].Type
 			}
 		];
 
-		modelBuilder.Entity<Treasury>().HasData(treasuries);
 		modelBuilder.Entity<Investment>().HasData(investments);
 	}
 }

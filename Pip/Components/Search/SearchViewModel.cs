@@ -53,32 +53,6 @@ public partial class SearchViewModel : PipViewModel
 	}
 
 	[GenerateCommand]
-	private async Task SaveTreasury(Treasury? treasury)
-	{
-		ArgumentNullException.ThrowIfNull(treasury);
-		var result = _messageBoxService.ShowMessage(
-			$"CUSIP: [{treasury.Cusip}]\nIssue Date: [{treasury.IssueDate?.ToLongDateString()}]\nMaturity Date: [{treasury.MaturityDate?.ToLongDateString()}]",
-			"Do you want to save Treasury?",
-			MessageButton.OKCancel,
-			MessageIcon.Question
-		);
-
-		if (result == MessageResult.OK)
-			try
-			{
-				await _treasuryDataProvider.InsertAsync(treasury);
-				Messenger.Default.Send(
-					new AfterTreasuryInsertMessage(new AfterTreasuryInsertArgs(treasury.Cusip, treasury.IssueDate)));
-			}
-			catch (DbUpdateException e)
-			{
-				_ = _messageBoxService.ShowMessage(
-					$"Error saving UST: {e.Message}\nInner error: {e.InnerException?.Message}", "Error",
-					MessageButton.OK, MessageIcon.Error);
-			}
-	}
-
-	[GenerateCommand]
 	private async Task CreateInvestment(Treasury? treasury)
 	{
 		ArgumentNullException.ThrowIfNull(treasury);
@@ -95,9 +69,11 @@ public partial class SearchViewModel : PipViewModel
 			{
 				var investment = new Investment
 				{
-					TreasuryCusip = treasury.Cusip,
-					TreasuryIssueDate = treasury.IssueDate ?? default,
-					Treasury = treasury
+					Cusip = treasury.Cusip,
+					IssueDate = treasury.IssueDate ?? default,
+					MaturityDate = treasury.MaturityDate,
+					SecurityTerm = treasury.SecurityTerm,
+					Type = treasury.Type
 				};
 				await _treasuryDataProvider.InsertInvestmentAsync(investment);
 				Messenger.Default.Send(

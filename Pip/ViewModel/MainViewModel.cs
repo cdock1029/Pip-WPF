@@ -1,7 +1,6 @@
 ﻿using DevExpress.Mvvm.CodeGenerators;
 using Pip.UI.Components.Auctions;
 using Pip.UI.Components.Investments;
-using Pip.UI.Components.SavedTreasuries;
 using Pip.UI.Components.Search;
 using Pip.UI.Services;
 
@@ -19,12 +18,6 @@ public partial class MainViewModel(
 	private async Task NavigateSearch()
 	{
 		await Navigation.NavigateToAsync<SearchViewModel>();
-	}
-
-	[GenerateCommand]
-	private async Task NavigateSaved()
-	{
-		await Navigation.NavigateToAsync<SavedTreasuriesViewModel>();
 	}
 
 	[GenerateCommand]
