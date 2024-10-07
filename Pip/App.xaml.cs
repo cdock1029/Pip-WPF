@@ -1,4 +1,6 @@
-﻿using DevExpress.Mvvm;
+﻿using System.Windows;
+using System.Windows.Threading;
+using DevExpress.Mvvm;
 using DevExpress.Xpf.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,8 +10,6 @@ using Pip.UI.Components.Investments;
 using Pip.UI.Components.Search;
 using Pip.UI.Services;
 using Pip.UI.ViewModel;
-using System.Windows;
-using System.Windows.Threading;
 using INavigationService = Pip.UI.Services.INavigationService;
 
 namespace Pip.UI;
@@ -23,6 +23,7 @@ public partial class App
 		CompatibilitySettings.UseLightweightThemes = true;
 		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win10System.Name;
 		ThemedWindow.UseNativeWindow = true;
+		//ThemedWindow.RoundCorners = true;
 		ServiceCollection serviceCollection = [];
 		ConfigureServices(serviceCollection);
 		_serviceProvider = serviceCollection.BuildServiceProvider();

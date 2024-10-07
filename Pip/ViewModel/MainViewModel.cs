@@ -11,24 +11,23 @@ public partial class MainViewModel(
 	INavigationService navigationService)
 	: PipViewModel
 {
-	public INavigationService Navigation { get; } = navigationService;
-
+	public INavigationService NavigationService { get; } = navigationService;
 
 	[GenerateCommand]
 	private async Task NavigateSearch()
 	{
-		await Navigation.NavigateToAsync<SearchViewModel>();
+		await NavigationService.NavigateToAsync<SearchViewModel>();
 	}
 
 	[GenerateCommand]
 	private async Task NavigateInvestments()
 	{
-		await Navigation.NavigateToAsync<InvestmentsViewModel>();
+		await NavigationService.NavigateToAsync<InvestmentsViewModel>();
 	}
 
 	[GenerateCommand]
 	private async Task NavigateAuctions()
 	{
-		await Navigation.NavigateToAsync<AuctionsViewModel>();
+		await NavigationService.NavigateToAsync<AuctionsViewModel>();
 	}
 }

@@ -8,7 +8,9 @@
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="clr-namespace:Pip.UI.ViewModel"
-    Title="MainWindow"
+    xmlns:search="clr-namespace:Pip.UI.Components.Search"
+    xmlns:auctions="clr-namespace:Pip.UI.Components.Auctions"
+    xmlns:investments="clr-namespace:Pip.UI.Components.Investments"
     Width="800"
     Height="800"
     d:DataContext="{d:DesignInstance Type=viewModel:MainViewModel}"
@@ -16,45 +18,55 @@
     WindowStartupLocation="Manual"
     mc:Ignorable="d">
 
-    <DockPanel dxb:BarManager.ToolbarGlyphSize="Large" LastChildFill="True">
+    <dx:ThemedWindow.Resources>
+        <DataTemplate DataType="{x:Type search:SearchViewModel}">
+            <search:SearchView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type auctions:AuctionsViewModel}">
+            <auctions:AuctionsView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type investments:InvestmentsViewModel}">
+            <investments:InvestmentsView />
+        </DataTemplate>
+    </dx:ThemedWindow.Resources>
+
+    <dx:ThemedWindow.ToolbarItems>
+        <dxb:MainMenuControl VerticalAlignment="Center">
+            <dxb:BarSubItem Content="_File">
+                <dxb:BarButtonItem Content="_Quit" Glyph="{dx:DXImage SvgImages/XAF/Action_Close.svg}">
+                    <b:Interaction.Triggers>
+                        <b:EventTrigger EventName="ItemClick">
+                            <b:CallMethodAction MethodName="Close"
+                                                TargetObject="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
+                        </b:EventTrigger>
+                    </b:Interaction.Triggers>
+                </dxb:BarButtonItem>
+            </dxb:BarSubItem>
+            <dxb:BarSubItem Content="_About" />
+        </dxb:MainMenuControl>
+    </dx:ThemedWindow.ToolbarItems>
+
+    <DockPanel dxb:BarManager.ToolbarGlyphSize="Medium" LastChildFill="True">
         <dxb:BarContainerControl
             ContainerType="Top"
             DockPanel.Dock="Top"
             RenderOptions.BitmapScalingMode="HighQuality">
-            <dxb:MainMenuControl Caption="Main Menu">
-                <dxb:BarSubItem Content="_File">
-                    <dxb:BarButtonItem Content="_Quit" Glyph="{dx:DXImage Images/Actions/Close_32x32.png}">
-                        <b:Interaction.Triggers>
-                            <b:EventTrigger EventName="ItemClick">
-                                <b:CallMethodAction MethodName="Close"
-                                                    TargetObject="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
-                            </b:EventTrigger>
-                        </b:Interaction.Triggers>
-                    </dxb:BarButtonItem>
-                </dxb:BarSubItem>
-                <dxb:BarSubItem Content="_About" />
-            </dxb:MainMenuControl>
             <dxb:ToolBarControl BarItemDisplayMode="ContentAndGlyph" Caption="Navigation">
                 <dxb:BarButtonItem
                     Margin="0,0,5,0"
                     Command="{Binding NavigateSearchCommand}"
                     Content="Search"
-                    Glyph="{dx:DXImage Images/Find/Find_32x32.png}" />
-                <!--<dxb:BarButtonItem
-                    Margin="0,0,5,0"
-                    Command="{Binding NavigateSavedCommand}"
-                    Content="Saved Treasuries"
-                    Glyph="{dx:DXImage Images/XAF/Action_SaveScript_32x32.png}" />-->
+                    Glyph="{dx:DXImage 'SvgImages/XAF/Action_Search.svg'}" />
                 <dxb:BarButtonItem
                     Margin="0,0,5,0"
                     Command="{Binding NavigateInvestmentsCommand}"
                     Content="Investments"
-                    Glyph="{dx:DXImage Images/Function Library/Financial_32x32.png}" />
+                    Glyph="{dx:DXImage 'SvgImages/Spreadsheet/Financial.svg'}" />
                 <dxb:BarButtonItem
                     Margin="0,0,5,0"
                     Command="{Binding NavigateAuctionsCommand}"
                     Content="Auctions"
-                    Glyph="{dx:DXImage Images/Business Objects/BOSale_32x32.png}" />
+                    Glyph="{dx:DXImage 'SvgImages/Business Objects/BO_Sale.svg'}" />
             </dxb:ToolBarControl>
         </dxb:BarContainerControl>
         <dxb:StatusBarControl Caption="Status bar" DockPanel.Dock="Bottom">
@@ -70,7 +82,7 @@
                 ContainerType="Right"
                 DockPanel.Dock="Right"
                 Orientation="Vertical" />
-            <ContentControl Margin="10" Content="{Binding Navigation.CurrentView}" />
+            <ContentControl Margin="10" Content="{Binding NavigationService.CurrentView, Mode=OneWay}" />
         </DockPanel>
     </DockPanel>
 </dx:ThemedWindow>
