@@ -1,13 +1,12 @@
-﻿using DevExpress.Mvvm;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Threading;
+using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using DevExpress.Mvvm.Xpf;
 using DevExpress.Xpf.Grid;
 using Pip.UI.Messages;
 using Pip.UI.Services;
 using Pip.UI.ViewModel;
-using System.Collections.ObjectModel;
-using System.Windows.Threading;
-using INavigationService = Pip.UI.Services.INavigationService;
 
 namespace Pip.UI.Components.Investments;
 
@@ -15,17 +14,14 @@ namespace Pip.UI.Components.Investments;
 public partial class InvestmentsViewModel : PipViewModel
 {
 	private readonly Dispatcher _dispatcher;
-	private readonly INavigationService _navigation;
 	private readonly ITreasuryDataProvider _treasuryDataProvider;
 	[GenerateProperty] private bool _isWaitIndicatorVisible;
 	[GenerateProperty] private InvestmentItemViewModel? _selectedInvestment;
 
 	public InvestmentsViewModel(ITreasuryDataProvider treasuryDataProvider,
-		INavigationService navigation,
 		Dispatcher dispatcher)
 	{
 		_treasuryDataProvider = treasuryDataProvider;
-		_navigation = navigation;
 		_dispatcher = dispatcher;
 		Messenger.Default.Register<AfterInsertInvestmentMessage>(this, Receive);
 	}
@@ -38,7 +34,7 @@ public partial class InvestmentsViewModel : PipViewModel
 		IsWaitIndicatorVisible = true;
 
 		var investmentsTask = _treasuryDataProvider.GetInvestmentsAsync();
-		var delay = Task.Delay(1200);
+		var delay = Task.Delay(1000);
 		await Task.WhenAll(investmentsTask, delay);
 		foreach (var investment in investmentsTask.Result) Investments.Add(new InvestmentItemViewModel(investment));
 		IsWaitIndicatorVisible = false;
@@ -46,7 +42,14 @@ public partial class InvestmentsViewModel : PipViewModel
 
 	private void Receive(AfterInsertInvestmentMessage message)
 	{
-		Task.Run(() => HandleMessage(message));
+		_dispatcher.BeginInvoke(async () =>
+		{
+			Investments.Clear();
+			await LoadAsync();
+			var insertedId = message.Value.Id;
+			var found = Investments.FirstOrDefault(i => i.Id == insertedId);
+			SelectedInvestment = found;
+		});
 	}
 
 	[GenerateCommand]
@@ -77,15 +80,5 @@ public partial class InvestmentsViewModel : PipViewModel
 		{
 			args.ResultAsync = Task.FromResult(new ValidationErrorInfo($"Error Deleting:\n{e.Message}"));
 		}
-	}
-
-	private async Task HandleMessage(AfterInsertInvestmentMessage message)
-	{
-		Investments.Clear();
-		await LoadAsync();
-		var insertedId = message.Value.Id;
-		var found = Investments.FirstOrDefault(i => i.Id == insertedId);
-		await _dispatcher.BeginInvoke(() => SelectedInvestment = found);
-		await _navigation.NavigateToAsync<InvestmentsViewModel>();
 	}
 }

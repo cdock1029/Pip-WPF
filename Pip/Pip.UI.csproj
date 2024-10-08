@@ -28,6 +28,7 @@
 		<PackageReference Include="DevExpress.Mvvm" Version="24.1.6" />
 		<PackageReference Include="DevExpress.Mvvm.CodeGenerators" Version="22.1.1" />
 		<PackageReference Include="DevExpress.Wpf.Core" Version="24.1.6" />
+		<PackageReference Include="devexpress.wpf.docking" Version="24.1.6" />
 		<PackageReference Include="DevExpress.Wpf.Grid.Core" Version="24.1.6" />
 		<PackageReference Include="DevExpress.Wpf.Themes.All" Version="24.1.6" />
 		<PackageReference Include="DevExpress.Wpf.ThemesLW" Version="24.1.6" />

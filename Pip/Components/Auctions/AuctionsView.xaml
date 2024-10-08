@@ -6,36 +6,26 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:view="clr-namespace:Pip.UI.View"
+    xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
     d:DataContext="{d:DesignInstance Type=auctions:AuctionsViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    Loaded="{DXEvent Handler='LoadAsync()'}"
     mc:Ignorable="d">
 
+    <dxdo:DockLayoutManager>
+        <dxdo:LayoutGroup Caption="AuctionsRoot">
+            <dxdo:DocumentGroup Orientation="Vertical" Caption="Auctions">
+                <dxdo:DocumentPanel Caption="Recent">
+                    <view:TreasuriesCollectionView SelectedTreasury="{Binding SelectedTreasuryRecent}"
+                                                   Treasuries="{Binding TreasuriesRecent}" />
+                </dxdo:DocumentPanel>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <DockPanel Margin="0,0,10,0">
-            <Label
-                Margin="0,0,0,10"
-                DockPanel.Dock="Top"
-                FontSize="18">
-                Recent Auctions
-            </Label>
-            <view:TreasuriesCollectionView SelectedTreasury="{Binding SelectedTreasuryRecent}"
-                                           Treasuries="{Binding TreasuriesRecent}" />
-        </DockPanel>
-        <DockPanel Grid.Column="1" Margin="0,0,10,0">
-            <Label
-                Margin="0,0,0,10"
-                DockPanel.Dock="Top"
-                FontSize="18">
-                Upcoming Auctions
-            </Label>
-            <view:TreasuriesCollectionView SelectedTreasury="{Binding SelectedTreasuryUpcoming}"
-                                           Treasuries="{Binding TreasuriesUpcoming}" />
-        </DockPanel>
-    </Grid>
+                <dxdo:DocumentPanel Caption="Announced">
+                    <view:TreasuriesCollectionView SelectedTreasury="{Binding SelectedTreasuryUpcoming}"
+                                                   Treasuries="{Binding TreasuriesUpcoming}" />
+                </dxdo:DocumentPanel>
+            </dxdo:DocumentGroup>
+        </dxdo:LayoutGroup>
+    </dxdo:DockLayoutManager>
 </UserControl>

@@ -1,8 +1,8 @@
-﻿using DevExpress.Mvvm.CodeGenerators;
+﻿using System.Collections.ObjectModel;
+using DevExpress.Mvvm.CodeGenerators;
 using Pip.Model;
 using Pip.UI.Services;
 using Pip.UI.ViewModel;
-using System.Collections.ObjectModel;
 
 namespace Pip.UI.Components.Auctions;
 
@@ -16,7 +16,6 @@ public partial class AuctionsViewModel(ITreasuryDataProvider treasuryDataProvide
 	public ObservableCollection<Treasury> TreasuriesRecent { get; } = [];
 	public ObservableCollection<Treasury> TreasuriesUpcoming { get; } = [];
 
-	[GenerateCommand]
 	public override async Task LoadAsync()
 	{
 		await Task.WhenAll(LoadRecent(), LoadUpcoming());

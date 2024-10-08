@@ -1,12 +1,12 @@
-﻿using DevExpress.Mvvm;
+﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using Microsoft.EntityFrameworkCore;
 using Pip.Model;
 using Pip.UI.Messages;
 using Pip.UI.Services;
 using Pip.UI.ViewModel;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 
 namespace Pip.UI.Components.Search;
 

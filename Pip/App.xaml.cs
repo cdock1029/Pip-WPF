@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Threading;
 using DevExpress.Mvvm;
 using DevExpress.Xpf.Core;
@@ -21,7 +22,7 @@ public partial class App
 	public App()
 	{
 		CompatibilitySettings.UseLightweightThemes = true;
-		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win10System.Name;
+		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.VS2019System.Name;
 		ThemedWindow.UseNativeWindow = true;
 		//ThemedWindow.RoundCorners = true;
 		ServiceCollection serviceCollection = [];
@@ -67,6 +68,7 @@ public partial class App
 	private void App_OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
 	{
 		e.Handled = true;
+		Debug.WriteLine(e.Exception);
 		var messageBoxService = _serviceProvider.GetRequiredService<IMessageBoxService>();
 		messageBoxService.Show($"Unhandled Exception. Contact administrator: [{e.Exception}]", "Error",
 			MessageBoxButton.OK);

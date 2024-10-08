@@ -29,27 +29,28 @@
         </DataTemplate>
     </UserControl.Resources>
 
-    <Grid HorizontalAlignment="Left">
+    <Grid HorizontalAlignment="Stretch">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Label
-            Margin="0,0,0,10"
-            Content="Treasury Search"
-            FontSize="18" />
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="0" VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Label VerticalContentAlignment="Center">Enter CUSIP:</Label>
+            <!--<dxe:SearchControl Grid.Column="0" Width="150" NullText="CUSIP"
+                               SearchText="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}">
+                <dxe:SearchControl.InputBindings>
+                    <KeyBinding
+                        Key="Return"
+                        Command="{Binding SearchCommand}" />
+                </dxe:SearchControl.InputBindings>
+            </dxe:SearchControl>-->
+
             <TextBox
-                Grid.Column="1"
-                Width="250"
-                Margin="10,0"
+                Grid.Column="0"
+                Width="150"
                 Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <TextBox.InputBindings>
                     <KeyBinding
@@ -57,7 +58,7 @@
                         Command="{Binding SearchCommand}" />
                 </TextBox.InputBindings>
             </TextBox>
-            <StackPanel Grid.Column="2" Orientation="Horizontal">
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                 <Button
                     Margin="0,0,10,0"
                     Command="{Binding SearchCommand}"
@@ -70,10 +71,10 @@
             </StackPanel>
         </Grid>
         <ListBox
-            Grid.Row="2"
+            Grid.Row="1"
             Margin="0,20,0,0"
             HorizontalAlignment="Left"
-            VerticalAlignment="Top"
+            VerticalAlignment="Stretch"
             MinWidth="300"
             ItemsSource="{Binding SearchResults}">
             <ListBox.ContextMenu>
