@@ -76,7 +76,8 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Stretch"
             MinWidth="300"
-            ItemsSource="{Binding SearchResults}">
+            ItemsSource="{Binding SearchResults}" SelectionMode="Single"
+            SelectedItem="{Binding SelectedDetailsTreasury, Mode=OneWayToSource}">
             <ListBox.ContextMenu>
                 <ContextMenu>
                     <MenuItem

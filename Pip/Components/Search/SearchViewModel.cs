@@ -4,6 +4,7 @@ using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using Microsoft.EntityFrameworkCore;
 using Pip.Model;
+using Pip.UI.Components.Details;
 using Pip.UI.Messages;
 using Pip.UI.Services;
 using Pip.UI.ViewModel;
@@ -13,6 +14,7 @@ namespace Pip.UI.Components.Search;
 [GenerateViewModel]
 public partial class SearchViewModel : PipViewModel
 {
+	private readonly DetailsViewModel _detailsViewModel;
 	private readonly IMessageBoxService _messageBoxService;
 
 	private readonly ITreasuryDataProvider _treasuryDataProvider;
@@ -20,14 +22,24 @@ public partial class SearchViewModel : PipViewModel
 	[GenerateProperty] private string? _searchText;
 
 	public SearchViewModel(ITreasuryDataProvider treasuryDataProvider,
-		IMessageBoxService messageBoxService)
+		IMessageBoxService messageBoxService, DetailsViewModel detailsViewModel)
 	{
 		_treasuryDataProvider = treasuryDataProvider;
 		_messageBoxService = messageBoxService;
+		_detailsViewModel = detailsViewModel;
 		SearchResults.CollectionChanged += SearchResults_CollectionChanged;
 	}
 
 	public ObservableCollection<Treasury> SearchResults { get; } = [];
+
+	public Treasury SelectedDetailsTreasury
+	{
+		set
+		{
+			_detailsViewModel.TreasuryDetailsSelected = value;
+			RaisePropertyChanged();
+		}
+	}
 
 	private void SearchResults_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
 	{

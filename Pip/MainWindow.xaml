@@ -11,6 +11,7 @@
     xmlns:auctions="clr-namespace:Pip.UI.Components.Auctions"
     xmlns:investments="clr-namespace:Pip.UI.Components.Investments"
     xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
+    xmlns:details="clr-namespace:Pip.UI.Components.Details"
     x:Class="Pip.UI.MainWindow"
     Width="800"
     Height="800"
@@ -28,6 +29,9 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type investments:InvestmentsViewModel}">
             <investments:InvestmentsView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type details:DetailsViewModel}">
+            <details:DetailsView />
         </DataTemplate>
     </dx:ThemedWindow.Resources>
 
@@ -53,7 +57,9 @@
                 <dxdo:LayoutPanel dxdo:AutoHideGroup.AutoHideType="Left" Caption="Search">
                     <ContentControl Content="{Binding SearchViewModel}" />
                 </dxdo:LayoutPanel>
-                <dxdo:LayoutPanel dxdo:AutoHideGroup.AutoHideType="Left" Caption="Details" />
+                <dxdo:LayoutPanel dxdo:AutoHideGroup.AutoHideType="Left" Caption="Details">
+                    <ContentControl Content="{Binding DetailsViewModel}" />
+                </dxdo:LayoutPanel>
             </dxdo:LayoutGroup>
             <dxdo:LayoutPanel Caption="Investments" ItemWidth="*">
                 <ContentControl Content="{Binding InvestmentsViewModel}" />

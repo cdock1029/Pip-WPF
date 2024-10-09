@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Pip.DataAccess;
 using Pip.UI.Components.Auctions;
+using Pip.UI.Components.Details;
 using Pip.UI.Components.Investments;
 using Pip.UI.Components.Search;
 using Pip.UI.Services;
@@ -22,7 +23,7 @@ public partial class App
 	public App()
 	{
 		CompatibilitySettings.UseLightweightThemes = true;
-		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.VS2019System.Name;
+		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win10System.Name;
 		ThemedWindow.UseNativeWindow = true;
 		//ThemedWindow.RoundCorners = true;
 		ServiceCollection serviceCollection = [];
@@ -49,6 +50,7 @@ public partial class App
 			.AddSingleton<SearchViewModel>()
 			.AddSingleton<InvestmentsViewModel>()
 			.AddSingleton<AuctionsViewModel>()
+			.AddSingleton<DetailsViewModel>()
 			.AddSingleton(_ => Dispatcher.CurrentDispatcher)
 			.AddSingleton(p => new MainWindow { DataContext = p.GetRequiredService<MainViewModel>() })
 			.AddSingleton<Func<Type, PipViewModel>>(p =>
