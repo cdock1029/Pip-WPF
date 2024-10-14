@@ -12,4 +12,5 @@ public interface ITreasuryDataProvider
 	Task<List<Investment>> GetInvestmentsAsync();
 	void Add(Investment investment);
 	Task DeleteInvestmentsAsync(IEnumerable<Investment> investments);
+	ValueTask<Treasury?> LookupTreasuryAsync(string cusip, DateOnly issueDate, CancellationToken ct = default);
 }

@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:Pip.Model;assembly=Pip.Model"
     xmlns:search="clr-namespace:Pip.UI.Components.Search"
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
     x:Name="SearchViewControl"
     d:DataContext="{d:DesignInstance Type=search:SearchViewModel}"
     d:DesignHeight="450"
@@ -71,13 +72,18 @@
             </StackPanel>
         </Grid>
         <ListBox
+            Name="SearchList"
             Grid.Row="1"
             Margin="0,20,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Stretch"
             MinWidth="300"
-            ItemsSource="{Binding SearchResults}" SelectionMode="Single"
-            SelectedItem="{Binding SelectedDetailsTreasury, Mode=OneWayToSource}">
+            ItemsSource="{Binding SearchResults}" SelectionMode="Single">
+            <dxmvvm:Interaction.Behaviors>
+                <dxmvvm:EventToCommand EventName="SelectionChanged"
+                                       Command="{Binding DetailsViewModel.HandleSelectionChangedCommand}"
+                                       CommandParameter="{Binding ElementName=SearchList, Path=SelectedItem}" />
+            </dxmvvm:Interaction.Behaviors>
             <ListBox.ContextMenu>
                 <ContextMenu>
                     <MenuItem

@@ -13,19 +13,15 @@
     Loaded="{DXEvent Handler='LoadAsync()'}"
     mc:Ignorable="d">
 
-    <dxdo:DockLayoutManager>
-        <dxdo:LayoutGroup Caption="AuctionsRoot">
-            <dxdo:DocumentGroup Orientation="Vertical" Caption="Auctions">
-                <dxdo:DocumentPanel Caption="Recent">
-                    <view:TreasuriesCollectionView SelectedTreasury="{Binding SelectedTreasuryRecent}"
-                                                   Treasuries="{Binding TreasuriesRecent}" />
-                </dxdo:DocumentPanel>
+    <dxdo:DocumentGroup Caption="Auctions">
+        <dxdo:DocumentPanel Caption="Recent">
+            <view:TreasuriesCollectionView SelectedTreasury="{Binding SelectedTreasuryRecent}"
+                                           Treasuries="{Binding TreasuriesRecent}" />
+        </dxdo:DocumentPanel>
 
-                <dxdo:DocumentPanel Caption="Announced">
-                    <view:TreasuriesCollectionView SelectedTreasury="{Binding SelectedTreasuryUpcoming}"
-                                                   Treasuries="{Binding TreasuriesUpcoming}" />
-                </dxdo:DocumentPanel>
-            </dxdo:DocumentGroup>
-        </dxdo:LayoutGroup>
-    </dxdo:DockLayoutManager>
+        <dxdo:DocumentPanel Caption="Announced">
+            <view:TreasuriesCollectionView SelectedTreasury="{Binding SelectedTreasuryUpcoming}"
+                                           Treasuries="{Binding TreasuriesUpcoming}" />
+        </dxdo:DocumentPanel>
+    </dxdo:DocumentGroup>
 </UserControl>

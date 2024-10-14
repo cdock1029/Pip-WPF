@@ -23,9 +23,8 @@ public partial class App
 	public App()
 	{
 		CompatibilitySettings.UseLightweightThemes = true;
-		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win10System.Name;
+		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.VS2019System.Name;
 		ThemedWindow.UseNativeWindow = true;
-		//ThemedWindow.RoundCorners = true;
 		ServiceCollection serviceCollection = [];
 		ConfigureServices(serviceCollection);
 		_serviceProvider = serviceCollection.BuildServiceProvider();
@@ -43,6 +42,7 @@ public partial class App
 	private static void ConfigureServices(ServiceCollection serviceCollection)
 	{
 		serviceCollection
+			.AddMemoryCache()
 			.AddSingleton<INavigationService, NavigationService>()
 			.AddSingleton<IMessageBoxService, DXMessageBoxService>()
 			.AddTransient<ITreasuryDataProvider, TreasuryDataProvider>()

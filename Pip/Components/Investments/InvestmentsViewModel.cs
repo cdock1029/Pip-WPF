@@ -4,6 +4,7 @@ using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using DevExpress.Mvvm.Xpf;
 using DevExpress.Xpf.Grid;
+using Pip.UI.Components.Details;
 using Pip.UI.Messages;
 using Pip.UI.Services;
 using Pip.UI.ViewModel;
@@ -19,14 +20,17 @@ public partial class InvestmentsViewModel : PipViewModel
 	[GenerateProperty] private InvestmentItemViewModel? _selectedInvestment;
 
 	public InvestmentsViewModel(ITreasuryDataProvider treasuryDataProvider,
-		Dispatcher dispatcher)
+		Dispatcher dispatcher, DetailsViewModel detailsViewModel)
 	{
 		_treasuryDataProvider = treasuryDataProvider;
 		_dispatcher = dispatcher;
+		DetailsViewModel = detailsViewModel;
 		Messenger.Default.Register<AfterInsertInvestmentMessage>(this, Receive);
 	}
 
 	public ObservableCollection<InvestmentItemViewModel> Investments { get; } = [];
+
+	public DetailsViewModel DetailsViewModel { get; }
 
 	public override async Task LoadAsync()
 	{

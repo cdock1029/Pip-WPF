@@ -20,21 +20,6 @@
     WindowStartupLocation="Manual"
     mc:Ignorable="d">
 
-    <dx:ThemedWindow.Resources>
-        <DataTemplate DataType="{x:Type search:SearchViewModel}">
-            <search:SearchView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type auctions:AuctionsViewModel}">
-            <auctions:AuctionsView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type investments:InvestmentsViewModel}">
-            <investments:InvestmentsView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type details:DetailsViewModel}">
-            <details:DetailsView />
-        </DataTemplate>
-    </dx:ThemedWindow.Resources>
-
     <dx:ThemedWindow.ToolbarItems>
         <dxb:MainMenuControl VerticalAlignment="Center">
             <dxb:BarSubItem Content="_File">
@@ -55,59 +40,20 @@
         <dxdo:LayoutGroup Caption="LayoutRoot">
             <dxdo:LayoutGroup Orientation="Vertical" ItemWidth="250">
                 <dxdo:LayoutPanel dxdo:AutoHideGroup.AutoHideType="Left" Caption="Search">
-                    <ContentControl Content="{Binding SearchViewModel}" />
+                    <search:SearchView DataContext="{Binding SearchViewModel}" />
                 </dxdo:LayoutPanel>
                 <dxdo:LayoutPanel dxdo:AutoHideGroup.AutoHideType="Left" Caption="Details">
-                    <ContentControl Content="{Binding DetailsViewModel}" />
+                    <details:DetailsView DataContext="{Binding DetailsViewModel}" />
                 </dxdo:LayoutPanel>
             </dxdo:LayoutGroup>
             <dxdo:LayoutPanel Caption="Investments" ItemWidth="*">
-                <ContentControl Content="{Binding InvestmentsViewModel}" />
+                <investments:InvestmentsView DataContext="{Binding InvestmentsViewModel}" />
             </dxdo:LayoutPanel>
             <dxdo:LayoutPanel ItemWidth="*" Caption="Auctions">
-                <ContentControl Content="{Binding AuctionsViewModel}" />
+                <auctions:AuctionsView DataContext="{Binding AuctionsViewModel}" />
             </dxdo:LayoutPanel>
         </dxdo:LayoutGroup>
     </dxdo:DockLayoutManager>
 
 
-    <!--<DockPanel dxb:BarManager.ToolbarGlyphSize="Medium" LastChildFill="True">
-        <dxb:BarContainerControl
-            ContainerType="Top"
-            DockPanel.Dock="Top"
-            RenderOptions.BitmapScalingMode="HighQuality">
-            <dxb:ToolBarControl BarItemDisplayMode="ContentAndGlyph" Caption="Navigation">
-                <dxb:BarButtonItem
-                    Margin="0,0,5,0"
-                    Command="{Binding NavigateSearchCommand}"
-                    Content="Search"
-                    Glyph="{dx:DXImage 'SvgImages/XAF/Action_Search.svg'}" />
-                <dxb:BarButtonItem
-                    Margin="0,0,5,0"
-                    Command="{Binding NavigateInvestmentsCommand}"
-                    Content="Investments"
-                    Glyph="{dx:DXImage 'SvgImages/Spreadsheet/Financial.svg'}" />
-                <dxb:BarButtonItem
-                    Margin="0,0,5,0"
-                    Command="{Binding NavigateAuctionsCommand}"
-                    Content="Auctions"
-                    Glyph="{dx:DXImage 'SvgImages/Business Objects/BO_Sale.svg'}" />
-            </dxb:ToolBarControl>
-        </dxb:BarContainerControl>
-        <dxb:StatusBarControl Caption="Status bar" DockPanel.Dock="Bottom">
-            <dxb:BarStaticItem Content="Pip a rino" ShowBorder="False" />
-        </dxb:StatusBarControl>
-
-        <DockPanel LastChildFill="True">
-            <dxb:BarContainerControl
-                ContainerType="Left"
-                DockPanel.Dock="Left"
-                Orientation="Vertical" />
-            <dxb:BarContainerControl
-                ContainerType="Right"
-                DockPanel.Dock="Right"
-                Orientation="Vertical" />
-            <ContentControl Margin="10" Content="{Binding NavigationService.CurrentView, Mode=OneWay}" />
-        </DockPanel>
-    </DockPanel>-->
 </dx:ThemedWindow>

@@ -33,6 +33,7 @@
 		<PackageReference Include="devexpress.wpf.propertygrid" Version="24.1.6" />
 		<PackageReference Include="DevExpress.Wpf.Themes.All" Version="24.1.6" />
 		<PackageReference Include="DevExpress.Wpf.ThemesLW" Version="24.1.6" />
+		<PackageReference Include="JetBrains.Annotations" Version="2024.2.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0-rc.1.24451.1" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0-rc.1.24451.1">
 			<PrivateAssets>all</PrivateAssets>

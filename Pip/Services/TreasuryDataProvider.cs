@@ -1,12 +1,14 @@
-﻿using System.Net.Http;
+﻿using System.Globalization;
+using System.Net.Http;
 using System.Net.Http.Json;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Pip.DataAccess;
 using Pip.Model;
 
 namespace Pip.UI.Services;
 
-public class TreasuryDataProvider(HttpClient client, PipDbContext dbContext)
+public class TreasuryDataProvider(HttpClient client, PipDbContext dbContext, IMemoryCache cache)
 	: ITreasuryDataProvider
 {
 	#region TDApi
@@ -19,7 +21,9 @@ public class TreasuryDataProvider(HttpClient client, PipDbContext dbContext)
 
 	public async Task<IEnumerable<Treasury>?> GetUpcomingAsync()
 	{
-		return await client.GetFromJsonAsync<IEnumerable<Treasury>>("securities/upcoming/?format=json")
+		// TODO: caching here and inside viewmodel is duplicatation. Decide which to use.
+		return await cache.GetOrCreateAsync(nameof(GetUpcomingAsync),
+				_ => client.GetFromJsonAsync<IEnumerable<Treasury>>("securities/upcoming/?format=json"))
 			.ConfigureAwait(false);
 	}
 
@@ -29,8 +33,19 @@ public class TreasuryDataProvider(HttpClient client, PipDbContext dbContext)
 	public async Task<IEnumerable<Treasury>?> GetAuctionsAsync()
 	{
 		//type: Bill, Bond, FRN, Note, TIPS, CMB
-		return await client.GetFromJsonAsync<IEnumerable<Treasury>>(
-			"securities/auctioned?format=json&limitByTerm=true&days=720").ConfigureAwait(false);
+		return await cache.GetOrCreateAsync(nameof(GetAuctionsAsync), _ =>
+			client.GetFromJsonAsync<IEnumerable<Treasury>>(
+				"securities/auctioned?format=json&limitByTerm=true&days=720")).ConfigureAwait(false);
+	}
+
+	public ValueTask<Treasury?> LookupTreasuryAsync(string cusip, DateOnly issueDate, CancellationToken ct)
+	{
+		var key = (cusip, issueDate);
+		var datePath = issueDate.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
+		var path = $"securities/{cusip}/{datePath}";
+		// TODO: manage cache size, eviction etc
+		var task = cache.GetOrCreateAsync(key, _ => client.GetFromJsonAsync<Treasury>(path, ct));
+		return new ValueTask<Treasury?>(task);
 	}
 
 	#endregion
@@ -56,6 +71,7 @@ public class TreasuryDataProvider(HttpClient client, PipDbContext dbContext)
 		dbContext.Investments.RemoveRange(investments);
 		await Task.Run(() => dbContext.SaveChangesAsync()).ConfigureAwait(false);
 	}
+
 
 	public void Add(Investment investment)
 	{

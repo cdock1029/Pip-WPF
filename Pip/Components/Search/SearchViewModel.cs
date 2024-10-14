@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using Microsoft.EntityFrameworkCore;
@@ -14,9 +13,7 @@ namespace Pip.UI.Components.Search;
 [GenerateViewModel]
 public partial class SearchViewModel : PipViewModel
 {
-	private readonly DetailsViewModel _detailsViewModel;
 	private readonly IMessageBoxService _messageBoxService;
-
 	private readonly ITreasuryDataProvider _treasuryDataProvider;
 
 	[GenerateProperty] private string? _searchText;
@@ -26,25 +23,14 @@ public partial class SearchViewModel : PipViewModel
 	{
 		_treasuryDataProvider = treasuryDataProvider;
 		_messageBoxService = messageBoxService;
-		_detailsViewModel = detailsViewModel;
-		SearchResults.CollectionChanged += SearchResults_CollectionChanged;
+		DetailsViewModel = detailsViewModel;
+		SearchResults.CollectionChanged += (_, _) =>
+			ClearResultsCommand.RaiseCanExecuteChanged();
 	}
 
 	public ObservableCollection<Treasury> SearchResults { get; } = [];
 
-	public Treasury SelectedDetailsTreasury
-	{
-		set
-		{
-			_detailsViewModel.TreasuryDetailsSelected = value;
-			RaisePropertyChanged();
-		}
-	}
-
-	private void SearchResults_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-	{
-		ClearResultsCommand.RaiseCanExecuteChanged();
-	}
+	public DetailsViewModel DetailsViewModel { get; }
 
 	[GenerateCommand(CanExecuteMethod = nameof(CanSearch))]
 	private async Task Search()
