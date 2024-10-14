@@ -8,10 +8,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="clr-namespace:Pip.UI.ViewModel"
     xmlns:search="clr-namespace:Pip.UI.Components.Search"
-    xmlns:auctions="clr-namespace:Pip.UI.Components.Auctions"
     xmlns:investments="clr-namespace:Pip.UI.Components.Investments"
     xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
     xmlns:details="clr-namespace:Pip.UI.Components.Details"
+    xmlns:view="clr-namespace:Pip.UI.View"
     x:Class="Pip.UI.MainWindow"
     Width="800"
     Height="800"
@@ -38,7 +38,7 @@
 
     <dxdo:DockLayoutManager ClosedPanelsBarVisibility="Auto">
         <dxdo:LayoutGroup Caption="LayoutRoot">
-            <dxdo:LayoutGroup Orientation="Vertical" ItemWidth="250">
+            <dxdo:LayoutGroup Orientation="Vertical" ItemWidth="Auto">
                 <dxdo:LayoutPanel dxdo:AutoHideGroup.AutoHideType="Left" Caption="Search">
                     <search:SearchView DataContext="{Binding SearchViewModel}" />
                 </dxdo:LayoutPanel>
@@ -49,9 +49,21 @@
             <dxdo:LayoutPanel Caption="Investments" ItemWidth="*">
                 <investments:InvestmentsView DataContext="{Binding InvestmentsViewModel}" />
             </dxdo:LayoutPanel>
-            <dxdo:LayoutPanel ItemWidth="*" Caption="Auctions">
-                <auctions:AuctionsView DataContext="{Binding AuctionsViewModel}" />
-            </dxdo:LayoutPanel>
+            <dxdo:LayoutGroup ItemWidth="*" Caption="Auctions" ShowCaption="True"
+                              DataContext="{Binding AuctionsViewModel}"
+                              Loaded="{DXEvent Handler='LoadAsync()'}">
+                <dxdo:DocumentGroup Caption="Auctions">
+                    <dxdo:DocumentPanel Caption="Recent">
+                        <view:TreasuriesCollectionView SelectedTreasury="{Binding SelectedTreasuryRecent}"
+                                                       Treasuries="{Binding TreasuriesRecent}" />
+                    </dxdo:DocumentPanel>
+
+                    <dxdo:DocumentPanel Caption="Announced">
+                        <view:TreasuriesCollectionView SelectedTreasury="{Binding SelectedTreasuryUpcoming}"
+                                                       Treasuries="{Binding TreasuriesUpcoming}" />
+                    </dxdo:DocumentPanel>
+                </dxdo:DocumentGroup>
+            </dxdo:LayoutGroup>
         </dxdo:LayoutGroup>
     </dxdo:DockLayoutManager>
 

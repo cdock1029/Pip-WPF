@@ -23,7 +23,6 @@ public partial class DetailsViewModel(ITreasuryDataProvider treasuryDataProvider
 	private void HandleSelectedInvestmentChanged(InvestmentItemViewModel? selected)
 	{
 		_tokenSource?.Cancel();
-		_tokenSource = new CancellationTokenSource();
 
 		if (selected is null)
 		{
@@ -31,6 +30,7 @@ public partial class DetailsViewModel(ITreasuryDataProvider treasuryDataProvider
 			return;
 		}
 
+		_tokenSource = new CancellationTokenSource();
 		try
 		{
 			var ct = _tokenSource.Token;

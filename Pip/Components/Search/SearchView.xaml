@@ -4,9 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:model="clr-namespace:Pip.Model;assembly=Pip.Model"
     xmlns:search="clr-namespace:Pip.UI.Components.Search"
     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+    xmlns:model="clr-namespace:Pip.Model;assembly=Pip.Model"
     x:Name="SearchViewControl"
     d:DataContext="{d:DesignInstance Type=search:SearchViewModel}"
     d:DesignHeight="450"
@@ -14,44 +14,51 @@
     mc:Ignorable="d">
 
     <UserControl.Resources>
+        <!-- DataTemplate for ListBox item to render Treasury model -->
         <DataTemplate DataType="{x:Type model:Treasury}">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock FontFamily="Consolas">
-                    <TextBlock.Text>
-                        <MultiBinding StringFormat="Cusip: {0}    Issue Date: {1:yyyy MMM dd}    Term: ">
-                            <Binding Path="Cusip" />
-                            <Binding Path="IssueDate" />
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
-                <TextBlock MinWidth="48" Text="{Binding SecurityTerm}" FontFamily="Consolas" TextAlignment="Right"
-                           HorizontalAlignment="Right" />
-            </StackPanel>
+            <Grid>
+                <Grid.Resources>
+                    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+                        <Setter Property="Margin" Value="0,0,15,0" />
+                        <Setter Property="FontFamily" Value="Consolas" />
+                        <Setter Property="FontWeight" Value="Bold" />
+                        <Setter Property="FontSize" Value="13" />
+                    </Style>
+                    <Style TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}">
+                        <Setter Property="Margin" Value="0,0,15,0" />
+                        <Setter Property="Padding" Value="0,0,0,0" />
+                    </Style>
+                </Grid.Resources>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Grid.Row="0" Content="Cusip" />
+                <Label Grid.Column="1" Grid.Row="0" Content="Issue date" />
+                <Label Grid.Column="2" Grid.Row="0" Content="Term" />
+                <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding Cusip}" />
+                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding IssueDate, StringFormat='dd MMM yyyy'}" />
+                <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding SecurityTerm}" />
+            </Grid>
         </DataTemplate>
     </UserControl.Resources>
 
-    <Grid HorizontalAlignment="Stretch">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" VerticalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <!--<dxe:SearchControl Grid.Column="0" Width="150" NullText="CUSIP"
-                               SearchText="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}">
-                <dxe:SearchControl.InputBindings>
-                    <KeyBinding
-                        Key="Return"
-                        Command="{Binding SearchCommand}" />
-                </dxe:SearchControl.InputBindings>
-            </dxe:SearchControl>-->
 
+        <!-- Search Input and Clear Button -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="4">
             <TextBox
-                Grid.Column="0"
-                Width="150"
+                Width="100"
+                Margin="0,0,5,0"
                 Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <TextBox.InputBindings>
                     <KeyBinding
@@ -59,33 +66,31 @@
                         Command="{Binding SearchCommand}" />
                 </TextBox.InputBindings>
             </TextBox>
-            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                <Button
-                    Margin="0,0,10,0"
-                    Command="{Binding SearchCommand}"
-                    CommandParameter="{Binding SearchText}"
-                    Content="Search" />
-                <Button
-                    Margin="0,0,10,0"
-                    Command="{Binding ClearResultsCommand}"
-                    Content="Clear" />
-            </StackPanel>
-        </Grid>
+            <Button
+                Command="{Binding ClearResultsCommand}"
+                Content="Clear" />
+        </StackPanel>
+
+        <!-- Search Results ListBox -->
         <ListBox
             Name="SearchList"
             Grid.Row="1"
-            Margin="0,20,0,0"
-            HorizontalAlignment="Left"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Stretch"
             VerticalAlignment="Stretch"
-            MinWidth="300"
             ItemsSource="{Binding SearchResults}" SelectionMode="Single">
             <dxmvvm:Interaction.Behaviors>
                 <dxmvvm:EventToCommand EventName="SelectionChanged"
                                        Command="{Binding DetailsViewModel.HandleSelectionChangedCommand}"
-                                       CommandParameter="{Binding ElementName=SearchList, Path=SelectedItem}" />
+                                       CommandParameter="{Binding SelectedItem, ElementName=SearchList}" />
             </dxmvvm:Interaction.Behaviors>
             <ListBox.ContextMenu>
                 <ContextMenu>
+                    <!--
+                    PlacementTarget is unknown at compile time. At runtime it will refer to the element where the ContextMenu is rendered upon, which will be the ListBox.
+                    If we try to de-reference SelectedItem from PlacementTarget, Intellisense will show a warning in the editor. `PlacementTarget.(ListBox.SelectedItem)` removes
+                    this warning.
+                    -->
                     <MenuItem
                         Command="{Binding CreateInvestmentCommand}"
                         CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.(ListBox.SelectedItem)}"

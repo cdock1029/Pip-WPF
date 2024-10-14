@@ -21,7 +21,6 @@
         <dxg:GridControl
             Name="InvestmentsGrid"
             AutoExpandAllGroups="True"
-            AutoGenerateColumns="None"
             DeleteKeyBehavior="DeleteFocusedRow"
             SelectionMode="Row"
             ItemsSource="{Binding Investments}"
@@ -33,7 +32,6 @@
             </dxmvvm:Interaction.Behaviors>
             <dxg:GridControl.View>
                 <dxg:TableView
-                    AllowEditing="False"
                     NavigationStyle="Cell"
                     AllowCellMerge="True"
                     AllowBestFit="True"

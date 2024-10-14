@@ -33,19 +33,19 @@
 		<PackageReference Include="devexpress.wpf.propertygrid" Version="24.1.6" />
 		<PackageReference Include="DevExpress.Wpf.Themes.All" Version="24.1.6" />
 		<PackageReference Include="DevExpress.Wpf.ThemesLW" Version="24.1.6" />
-		<PackageReference Include="JetBrains.Annotations" Version="2024.2.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0-rc.1.24451.1" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0-rc.1.24451.1">
+		<PackageReference Include="JetBrains.Annotations" Version="2024.3.0-eap1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0-rc.2.24474.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0-rc.2.24474.1">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0-rc.1.24431.7" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.AutoActivation" Version="9.0.0-preview.8.24460.1" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0-rc.1.24431.7" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0-rc.2.24473.5" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.AutoActivation" Version="9.0.0-preview.9.24507.7" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0-rc.2.24473.5" />
 		<PackageReference Include="Microsoft.Identity.Client" Version="4.65.3-preview" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
-		<PackageReference Include="System.Formats.Asn1" Version="9.0.0-rc.1.24431.7" />
-		<PackageReference Include="System.Text.Json" Version="9.0.0-rc.1.24431.7" />
+		<PackageReference Include="System.Formats.Asn1" Version="9.0.0-rc.2.24473.5" />
+		<PackageReference Include="System.Text.Json" Version="9.0.0-rc.2.24473.5" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\DataAccess\Pip.DataAccess.csproj" />
