@@ -23,7 +23,7 @@ public partial class App
 	public App()
 	{
 		CompatibilitySettings.UseLightweightThemes = true;
-		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.VS2019System.Name;
+		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win10System.Name;
 		ThemedWindow.UseNativeWindow = true;
 		ServiceCollection serviceCollection = [];
 		ConfigureServices(serviceCollection);

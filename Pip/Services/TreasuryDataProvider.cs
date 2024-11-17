@@ -52,6 +52,15 @@ public class TreasuryDataProvider(HttpClient client, PipDbContext dbContext, IMe
 
 	#region DB
 
+	public List<Investment> GetInvestments()
+	{
+		var investments = dbContext
+			.Investments
+			.ToList();
+		return investments;
+	}
+
+	// TODO: sync I/O faster. https://x.com/davkean/status/1821875521954963742
 	public async Task<List<Investment>> GetInvestmentsAsync()
 	{
 		var investments = await Task.Run(() => dbContext

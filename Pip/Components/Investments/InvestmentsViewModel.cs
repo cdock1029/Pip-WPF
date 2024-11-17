@@ -32,9 +32,10 @@ public partial class InvestmentsViewModel : PipViewModel
 
 	public DetailsViewModel DetailsViewModel { get; }
 
-	public override async Task LoadAsync()
+	public override Task LoadAsync()
 	{
-		if (Investments.Any()) return;
+		if (Investments.Any()) return Task.CompletedTask;
+		/*
 		IsWaitIndicatorVisible = true;
 
 		var investmentsTask = _treasuryDataProvider.GetInvestmentsAsync();
@@ -42,6 +43,13 @@ public partial class InvestmentsViewModel : PipViewModel
 		await Task.WhenAll(investmentsTask, delay);
 		foreach (var investment in investmentsTask.Result) Investments.Add(new InvestmentItemViewModel(investment));
 		IsWaitIndicatorVisible = false;
+		*/
+
+		var investments = _treasuryDataProvider.GetInvestments();
+		foreach (var investment in investments)
+			Investments.Add(new InvestmentItemViewModel(investment));
+
+		return Task.CompletedTask;
 	}
 
 	private void Receive(AfterInsertInvestmentMessage message)
