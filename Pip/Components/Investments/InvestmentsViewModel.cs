@@ -4,9 +4,9 @@ using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using DevExpress.Mvvm.Xpf;
 using DevExpress.Xpf.Grid;
+using Pip.DataAccess.Services;
 using Pip.UI.Components.Details;
 using Pip.UI.Messages;
-using Pip.UI.Services;
 using Pip.UI.ViewModel;
 
 namespace Pip.UI.Components.Investments;

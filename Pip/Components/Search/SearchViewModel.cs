@@ -2,10 +2,10 @@
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using Microsoft.EntityFrameworkCore;
+using Pip.DataAccess.Services;
 using Pip.Model;
 using Pip.UI.Components.Details;
 using Pip.UI.Messages;
-using Pip.UI.Services;
 using Pip.UI.ViewModel;
 
 namespace Pip.UI.Components.Search;

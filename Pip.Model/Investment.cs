@@ -15,7 +15,7 @@ public class Investment
 	public string? Confirmation { get; init; }
 
 	public int Reinvestments { get; init; }
-	public DateOnly? MaturityDate { get; set; }
-	public string? SecurityTerm { get; set; }
-	public TreasuryType Type { get; set; }
+	public DateOnly? MaturityDate { get; init; }
+	public string? SecurityTerm { get; init; }
+	public TreasuryType Type { get; init; }
 }

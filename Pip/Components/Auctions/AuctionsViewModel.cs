@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using DevExpress.Mvvm.CodeGenerators;
+using Pip.DataAccess.Services;
 using Pip.Model;
-using Pip.UI.Services;
 using Pip.UI.ViewModel;
 
 namespace Pip.UI.Components.Auctions;

@@ -6,6 +6,7 @@ using DevExpress.Xpf.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Pip.DataAccess;
+using Pip.DataAccess.Services;
 using Pip.UI.Components.Auctions;
 using Pip.UI.Components.Details;
 using Pip.UI.Components.Investments;
