@@ -12,6 +12,7 @@
     xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
     xmlns:details="clr-namespace:Pip.UI.Components.Details"
     xmlns:view="clr-namespace:Pip.UI.View"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     x:Class="Pip.UI.MainWindow"
     Width="800"
     Height="800"
@@ -23,6 +24,8 @@
     <dx:ThemedWindow.ToolbarItems>
         <dxb:MainMenuControl VerticalAlignment="Center">
             <dxb:BarSubItem Content="_File">
+                <dxb:BarButtonItem x:Name="btnNew" Content="_New" Glyph="{dx:DXImage Image=New_16x16.png}" />
+                <dxb:BarButtonItem x:Name="btnOpen" Content="_Open" Glyph="{dx:DXImage Image=Open_16x16.png}" />
                 <dxb:BarButtonItem Content="_Quit" Glyph="{dx:DXImage SvgImages/XAF/Action_Close.svg}">
                     <b:Interaction.Triggers>
                         <b:EventTrigger EventName="ItemClick">
@@ -32,9 +35,21 @@
                     </b:Interaction.Triggers>
                 </dxb:BarButtonItem>
             </dxb:BarSubItem>
-            <dxb:BarSubItem Content="_About" />
+            <dxb:BarSubItem Content="_Edit">
+                <dxb:BarButtonItem x:Name="btnCut" Content="Cu_t" Glyph="{dx:DXImage Image=Cut_16x16.png}" />
+                <dxb:BarButtonItem x:Name="btnCopy" Content="_Copy" Glyph="{dx:DXImage Image=Copy_16x16.png}" />
+                <dxb:BarButtonItem x:Name="btnPaste" Content="_Paste" Glyph="{dx:DXImage Image=Paste_16x16.png}" />
+            </dxb:BarSubItem>
         </dxb:MainMenuControl>
     </dx:ThemedWindow.ToolbarItems>
+
+    <dx:ThemedWindow.HeaderItems>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <dxe:ButtonEdit Margin="0,0,40,0" Width="230" NullText="Search CUSIP" AllowDefaultButton="False">
+                <dxe:ButtonInfo IsLeft="False" GlyphKind="Search" />
+            </dxe:ButtonEdit>
+        </StackPanel>
+    </dx:ThemedWindow.HeaderItems>
 
     <dxdo:DockLayoutManager ClosedPanelsBarVisibility="Auto">
         <dxdo:LayoutGroup Caption="LayoutRoot">
