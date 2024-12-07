@@ -7,6 +7,11 @@ public class PipDbContext(DbContextOptions<PipDbContext> options) : DbContext(op
 {
 	public DbSet<Investment> Investments { get; init; }
 
+	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+	{
+		optionsBuilder.UseSqlite("Data Source=pip.db");
+	}
+
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
 		base.OnModelCreating(modelBuilder);

@@ -24,7 +24,7 @@ public partial class App
 	public App()
 	{
 		CompatibilitySettings.UseLightweightThemes = true;
-		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win10System.Name;
+		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Office2019BlackBrickwork.Name;
 		ThemedWindow.UseNativeWindow = true;
 		ServiceCollection serviceCollection = [];
 		ConfigureServices(serviceCollection);
@@ -56,16 +56,8 @@ public partial class App
 			.AddSingleton(p => new MainWindow { DataContext = p.GetRequiredService<MainViewModel>() })
 			.AddSingleton<Func<Type, PipViewModel>>(p =>
 				viewModelType => (PipViewModel)p.GetRequiredService(viewModelType))
-			.AddDbContextFactory<PipDbContext>(optionsBuilder =>
-			{
-				//var connectionString = ConfigurationManager.ConnectionStrings["PipDbLocal"].ConnectionString;
-				//optionsBuilder.UseSqlServer(connectionString, ob => ob.MigrationsAssembly("Pip.DataAccess"));
-				optionsBuilder.UseSqlite("Data Source=pip.db");
-			}, ServiceLifetime.Transient)
-			.AddHttpClient<ITreasuryDataProvider, TreasuryDataProvider>(c =>
-			{
-				c.BaseAddress = new Uri("https://www.treasurydirect.gov/TA_WS/");
-			});
+			.AddDbContext<PipDbContext>(ServiceLifetime.Transient)
+			.AddHttpClient<ITreasuryDataProvider, TreasuryDataProvider>();
 	}
 
 	private void App_OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
