@@ -3,7 +3,6 @@ using System.Windows.Threading;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using DevExpress.Mvvm.Xpf;
-using DevExpress.Xpf.Grid;
 using Pip.DataAccess.Services;
 using Pip.UI.Components.Details;
 using Pip.UI.Messages;
@@ -35,15 +34,6 @@ public partial class InvestmentsViewModel : PipViewModel
 	public override Task LoadAsync()
 	{
 		if (Investments.Any()) return Task.CompletedTask;
-		/*
-		IsWaitIndicatorVisible = true;
-
-		var investmentsTask = _treasuryDataProvider.GetInvestmentsAsync();
-		var delay = Task.Delay(1000);
-		await Task.WhenAll(investmentsTask, delay);
-		foreach (var investment in investmentsTask.Result) Investments.Add(new InvestmentItemViewModel(investment));
-		IsWaitIndicatorVisible = false;
-		*/
 
 		var investments = _treasuryDataProvider.GetInvestments();
 		foreach (var investment in investments)
@@ -72,21 +62,24 @@ public partial class InvestmentsViewModel : PipViewModel
 	}
 
 	[GenerateCommand]
-	private async Task ValidateRow(GridRowValidationEventArgs args)
+	private async Task ValidateRow(RowValidationArgs args)
 	{
-		var investmentItem = (InvestmentItemViewModel)args.Row;
 		if (args.IsNewItem)
+		{
+			var investmentItem = (InvestmentItemViewModel)args.Item;
 			_treasuryDataProvider.Add(investmentItem.Investment);
+		}
+
 		await _treasuryDataProvider.SaveAsync();
 	}
 
 	[GenerateCommand]
-	private async Task ValidateRowDeletion(GridValidateRowDeletionEventArgs args)
+	private async Task ValidateRowDeletion(ValidateRowDeletionArgs args)
 	{
 		try
 		{
-			var rows = Array.ConvertAll(args.Rows, o => ((InvestmentItemViewModel)o).Investment);
-			await _treasuryDataProvider.DeleteInvestmentsAsync(rows);
+			var investmentItem = (InvestmentItemViewModel)args.Items.Single();
+			await _treasuryDataProvider.DeleteInvestmentAsync(investmentItem.Investment);
 		}
 		catch (Exception e)
 		{

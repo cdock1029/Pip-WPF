@@ -13,9 +13,8 @@
     d:DataContext="{d:DesignInstance Type=investments:InvestmentsViewModel}"
     d:DesignHeight="300"
     d:DesignWidth="400"
-    Loaded="{DXEvent Handler='LoadAsync()'}"
-    mc:Ignorable="d">
-
+    mc:Ignorable="d"
+    Loaded="{DXEvent Handler='LoadAsync()'}">
 
     <Grid>
         <dxg:GridControl
@@ -39,27 +38,23 @@
                     AutoWidth="True"
                     BestFitMode="Smart"
                     IsTotalSummaryMenuEnabled="True"
-                    ShowEditFormOnDoubleClick="False"
+                    ShowEditFormOnDoubleClick="True"
                     ShowGroupedColumns="False"
-                    ShowUpdateRowButtons="Never"
+                    ShowUpdateRowButtons="OnCellEditorOpen"
+                    ValidateRowCommand="{Binding ValidateRowCommand}"
+                    ValidateRowDeletionCommand="{Binding ValidateRowDeletionCommand}"
+                    DataSourceRefreshCommand="{Binding DataSourceRefreshCommand }"
                     TotalSummaryPosition="Bottom">
-                    <dxmvvm:Interaction.Behaviors>
-                        <dxmvvm:EventToCommand
-                            Command="{Binding ValidateRowCommand}"
-                            EventName="ValidateRow"
-                            PassEventArgsToCommand="True" />
-                        <dxmvvm:EventToCommand
-                            Command="{Binding DataSourceRefreshCommand}"
-                            EventName="DataViewBase.DataSourceRefresh"
-                            PassEventArgsToCommand="True" />
-
-                        <dxmvvm:EventToCommand
-                            Command="{Binding ValidateRowDeletionCommand}"
-                            EventName="ValidateRowDeletion"
-                            PassEventArgsToCommand="True" />
-                    </dxmvvm:Interaction.Behaviors>
                     <dxg:TableView.RowCellMenuCustomizations>
-                        <dxb:BarButtonItem Command="{x:Static dxg:GridCommands.DeleteFocusedRow}" Content="Delete" />
+                        <dxb:BarButtonItem Content="Delete">
+                            <dxmvvm:Interaction.Behaviors>
+                                <dxmvvm:ConfirmationBehavior Command="{x:Static dxg:GridCommands.DeleteFocusedRow}"
+                                                             EnableConfirmationMessage="True"
+                                                             MessageIcon="Exclamation"
+                                                             MessageButton="YesNo"
+                                                             MessageText="Confirm Delete?" />
+                            </dxmvvm:Interaction.Behaviors>
+                        </dxb:BarButtonItem>
                     </dxg:TableView.RowCellMenuCustomizations>
                 </dxg:TableView>
             </dxg:GridControl.View>
@@ -80,21 +75,25 @@
                     d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
                     Binding="{Binding Cusip}"
                     Header="CUSIP"
+                    AllowEditing="False"
                     ReadOnly="True" />
                 <dxg:GridColumn
                     d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
                     Binding="{Binding IssueDate}"
                     Header="Issue Date"
+                    AllowEditing="False"
                     ReadOnly="True" />
                 <dxg:GridColumn
                     d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
                     Binding="{Binding MaturityDate, FallbackValue=''}"
                     Header="Maturity Date"
+                    AllowEditing="False"
                     ReadOnly="True" />
                 <dxg:GridColumn
                     d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
                     Binding="{Binding Term}"
                     Header="Term"
+                    AllowEditing="False"
                     ReadOnly="True" />
                 <dxg:GridColumn
                     d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
@@ -102,7 +101,7 @@
                     GroupIndex="0"
                     Header="Type"
                     ReadOnly="True" />
-                <dxg:GridColumn AllowCellMerge="False" AllowEditing="True"
+                <dxg:GridColumn AllowCellMerge="False"
                                 d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
                                 FieldName="Par">
                     <dxg:GridColumn.EditSettings>
@@ -112,13 +111,11 @@
                 <dxg:GridColumn
                     d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
                     FieldName="Confirmation"
-                    AllowCellMerge="False"
-                    ReadOnly="True" />
+                    AllowCellMerge="False" />
                 <dxg:GridColumn
                     d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
                     FieldName="Reinvestments"
-                    AllowCellMerge="False"
-                    ReadOnly="True" />
+                    AllowCellMerge="False" />
             </dxg:GridControl.Columns>
         </dxg:GridControl>
         <dx:WaitIndicator Grid.Row="0" DeferedVisibility="{Binding IsWaitIndicatorVisible}" Content="Loading...">

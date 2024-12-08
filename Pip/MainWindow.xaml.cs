@@ -1,8 +1,8 @@
-﻿using Pip.UI.Properties;
-using Pip.UI.View.Types;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
+using Pip.UI.Properties;
+using Pip.UI.View.Types;
 
 namespace Pip.UI;
 
