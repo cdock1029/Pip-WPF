@@ -1,5 +1,5 @@
-﻿using Pip.Model.Converters;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
+using Pip.Model.Converters;
 
 namespace Pip.Model;
 
@@ -17,10 +17,12 @@ public class Treasury
 	[JsonPropertyName("adjustedPrice")] public string? AdjustedPrice { get; init; }
 
 	[JsonPropertyName("allocationPercentage")]
-	public string? AllocationPercentage { get; init; }
+	[JsonConverter(typeof(EmptyStringNullableConverter<decimal>))]
+	public decimal? AllocationPercentage { get; init; }
 
 	[JsonPropertyName("allocationPercentageDecimals")]
-	public string? AllocationPercentageDecimals { get; init; }
+	[JsonConverter(typeof(EmptyStringNullableConverter<int>))]
+	public int? AllocationPercentageDecimals { get; init; }
 
 	[JsonPropertyName("announcedCusip")] public string? AnnouncedCusip { get; init; }
 
@@ -32,12 +34,15 @@ public class Treasury
 	[JsonPropertyName("auctionDate")]
 	public DateOnly? AuctionDate { get; init; }
 
-	[JsonPropertyName("auctionDateYear")] public string? AuctionDateYear { get; init; }
+	[JsonPropertyName("auctionDateYear")]
+	[JsonConverter(typeof(EmptyStringNullableConverter<int>))]
+	public int? AuctionDateYear { get; init; }
 
 	[JsonPropertyName("auctionFormat")] public string? AuctionFormat { get; init; }
 
 	[JsonPropertyName("averageMedianDiscountRate")]
-	public string? AverageMedianDiscountRate { get; init; }
+	[JsonConverter(typeof(EmptyStringNullableConverter<decimal>))]
+	public decimal? AverageMedianDiscountRate { get; init; }
 
 	[JsonPropertyName("averageMedianInvestmentRate")]
 	public string? AverageMedianInvestmentRate { get; init; }
@@ -142,7 +147,9 @@ public class Treasury
 	[JsonPropertyName("highInvestmentRate")]
 	public string? HighInvestmentRate { get; init; }
 
-	[JsonPropertyName("highPrice")] public string? HighPrice { get; init; }
+	[JsonPropertyName("highPrice")]
+	[JsonConverter(typeof(EmptyStringNullableConverter<decimal>))]
+	public decimal? HighPrice { get; init; }
 
 	[JsonPropertyName("highDiscountMargin")]
 	public string? HighDiscountMargin { get; init; }
@@ -245,7 +252,9 @@ public class Treasury
 	[JsonPropertyName("pdfFilenameSpecialAnnouncement")]
 	public string? PdfFilenameSpecialAnnouncement { get; init; }
 
-	[JsonPropertyName("pricePer100")] public string? PricePer100 { get; init; }
+	[JsonPropertyName("pricePer100")]
+	[JsonConverter(typeof(EmptyStringNullableConverter<decimal>))]
+	public decimal? PricePer100 { get; init; }
 
 	[JsonPropertyName("primaryDealerAccepted")]
 	public string? PrimaryDealerAccepted { get; init; }

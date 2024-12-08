@@ -90,6 +90,11 @@ public class TreasuryDataProvider : ITreasuryDataProvider
 		await Task.Run(() => _dbContext.SaveChangesAsync()).ConfigureAwait(false);
 	}
 
+	public async Task DeleteInvestmentAsync(Investment investment)
+	{
+		_dbContext.Investments.Remove(investment);
+		await Task.Run(() => _dbContext.SaveChangesAsync()).ConfigureAwait(false);
+	}
 
 	public void Add(Investment investment)
 	{

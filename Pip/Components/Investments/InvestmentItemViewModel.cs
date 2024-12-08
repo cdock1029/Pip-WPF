@@ -10,8 +10,27 @@ public class InvestmentItemViewModel(Investment investment) : PipViewModel
 	public DateOnly IssueDate { get; } = investment.IssueDate;
 	public DateOnly? MaturityDate { get; } = investment.MaturityDate;
 
-	public string? Confirmation { get; } = investment.Confirmation;
-	public int Reinvestments { get; } = investment.Reinvestments;
+
+	public string? Confirmation
+	{
+		get => investment.Confirmation;
+		set
+		{
+			investment.Confirmation = value;
+			RaisePropertyChanged();
+		}
+	}
+
+	public int Reinvestments
+	{
+		get => investment.Reinvestments;
+		set
+		{
+			investment.Reinvestments = value;
+			RaisePropertyChanged();
+		}
+	}
+
 	public string? Term { get; } = investment.SecurityTerm;
 	public TreasuryType Type { get; } = investment.Type;
 

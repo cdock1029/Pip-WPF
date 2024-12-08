@@ -24,8 +24,15 @@ public partial class App
 	public App()
 	{
 		CompatibilitySettings.UseLightweightThemes = true;
-		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Office2019BlackBrickwork.Name;
 		ThemedWindow.UseNativeWindow = true;
+		ApplicationThemeHelper.UpdateApplicationThemeName();
+		SplashScreenManager.CreateFluent(new DXSplashScreenViewModel
+		{
+			Copyright = "All rights reserved",
+			IsIndeterminate = true,
+			Title = "Treasury Director",
+			Subtitle = "Subtitle"
+		}).ShowOnStartup();
 		ServiceCollection serviceCollection = [];
 		ConfigureServices(serviceCollection);
 		_serviceProvider = serviceCollection.BuildServiceProvider();
@@ -33,11 +40,15 @@ public partial class App
 
 	protected override void OnStartup(StartupEventArgs e)
 	{
-		base.OnStartup(e);
 		var dbContext = _serviceProvider.GetRequiredService<PipDbContext>();
 		dbContext.Database.Migrate();
 		var mainWindow = _serviceProvider.GetService<MainWindow>();
 		mainWindow?.Show();
+	}
+
+	protected override void OnExit(ExitEventArgs e)
+	{
+		ApplicationThemeHelper.SaveApplicationThemeName();
 	}
 
 	private static void ConfigureServices(ServiceCollection serviceCollection)

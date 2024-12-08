@@ -7,12 +7,12 @@
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="clr-namespace:Pip.UI.ViewModel"
-    xmlns:search="clr-namespace:Pip.UI.Components.Search"
     xmlns:investments="clr-namespace:Pip.UI.Components.Investments"
     xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
     xmlns:details="clr-namespace:Pip.UI.Components.Details"
     xmlns:view="clr-namespace:Pip.UI.View"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
     x:Class="Pip.UI.MainWindow"
     Width="800"
     Height="800"
@@ -40,12 +40,19 @@
                 <dxb:BarButtonItem x:Name="btnCopy" Content="_Copy" Glyph="{dx:DXImage Image=Copy_16x16.png}" />
                 <dxb:BarButtonItem x:Name="btnPaste" Content="_Paste" Glyph="{dx:DXImage Image=Paste_16x16.png}" />
             </dxb:BarSubItem>
+            <dxb:BarSubItem Content="Theme">
+                <dxmvvm:Interaction.Behaviors>
+                    <dxb:BarSubItemThemeSelectorBehavior ShowTouchThemes="False" ShowWin10SystemColorTheme="True" />
+                </dxmvvm:Interaction.Behaviors>
+            </dxb:BarSubItem>
         </dxb:MainMenuControl>
     </dx:ThemedWindow.ToolbarItems>
 
     <dx:ThemedWindow.HeaderItems>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-            <dxe:ButtonEdit Margin="0,0,40,0" Width="230" NullText="Search CUSIP" AllowDefaultButton="False">
+            <dxe:ButtonEdit Margin="0,0,40,0" Width="230" NullText="Search CUSIP" AllowDefaultButton="False"
+                            ShowNullValueButtonOnFocusOnly="True"
+                            NullValueButtonPlacement="EditBox">
                 <dxe:ButtonInfo IsLeft="False" GlyphKind="Search" />
             </dxe:ButtonEdit>
         </StackPanel>
@@ -53,10 +60,7 @@
 
     <dxdo:DockLayoutManager ClosedPanelsBarVisibility="Auto">
         <dxdo:LayoutGroup Caption="LayoutRoot">
-            <dxdo:LayoutGroup Orientation="Vertical" ItemWidth="Auto">
-                <dxdo:LayoutPanel dxdo:AutoHideGroup.AutoHideType="Left" Caption="Search">
-                    <search:SearchView DataContext="{Binding SearchViewModel}" />
-                </dxdo:LayoutPanel>
+            <dxdo:LayoutGroup Orientation="Vertical" ItemWidth="Auto" MinWidth="400">
                 <dxdo:LayoutPanel dxdo:AutoHideGroup.AutoHideType="Left" Caption="Details">
                     <details:DetailsView DataContext="{Binding DetailsViewModel}" />
                 </dxdo:LayoutPanel>
