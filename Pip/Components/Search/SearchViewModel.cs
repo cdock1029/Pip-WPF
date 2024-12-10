@@ -28,11 +28,11 @@ public partial class SearchViewModel : PipViewModel
 			ClearResultsCommand.RaiseCanExecuteChanged();
 	}
 
-	public ObservableCollection<Treasury> SearchResults { get; } = [];
+	public ObservableCollection<TreasuryItemViewModel> SearchResults { get; } = [];
 
 	public DetailsViewModel DetailsViewModel { get; }
 
-	[GenerateCommand(CanExecuteMethod = nameof(CanSearch))]
+	[GenerateCommand]
 	private async Task Search()
 	{
 		ArgumentNullException.ThrowIfNull(SearchText);
@@ -42,13 +42,19 @@ public partial class SearchViewModel : PipViewModel
 		SearchResults.Clear();
 		if (treasuries == null) return;
 		foreach (var treasury in treasuries)
-			SearchResults.Add(treasury);
+			SearchResults.Add(new TreasuryItemViewModel
+			{
+				Cusip = treasury.Cusip,
+				IssueDate = treasury.IssueDate,
+				Type = treasury.Type,
+				Term = treasury.SecurityTerm
+			});
 	}
 
-	private bool CanSearch()
-	{
-		return !string.IsNullOrWhiteSpace(SearchText);
-	}
+	//private bool CanSearch()
+	//{
+	//	return !string.IsNullOrWhiteSpace(SearchText);
+	//}
 
 	[GenerateCommand]
 	private async Task CreateInvestment(Treasury? treasury)

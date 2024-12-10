@@ -11,8 +11,9 @@
     xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
     xmlns:details="clr-namespace:Pip.UI.Components.Details"
     xmlns:view="clr-namespace:Pip.UI.View"
-    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+
     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     x:Class="Pip.UI.MainWindow"
     Width="800"
     Height="800"
@@ -49,12 +50,22 @@
     </dx:ThemedWindow.ToolbarItems>
 
     <dx:ThemedWindow.HeaderItems>
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-            <dxe:ButtonEdit Margin="0,0,40,0" Width="230" NullText="Search CUSIP" AllowDefaultButton="False"
+        <StackPanel DataContext="{Binding SearchViewModel}" Orientation="Horizontal" VerticalAlignment="Center">
+            <!--<dxe:ButtonEdit Margin="0,0,40,0" Width="230" NullText="Search CUSIP" AllowDefaultButton="False"
                             ShowNullValueButtonOnFocusOnly="True"
                             NullValueButtonPlacement="EditBox">
                 <dxe:ButtonInfo IsLeft="False" GlyphKind="Search" />
-            </dxe:ButtonEdit>
+            </dxe:ButtonEdit>-->
+            <!--<dxg:LookUpEdit ItemsSource="{Binding SearchResults}" Width="230" DisplayMember="Cusip" ValueMember="Id" Buttons=""/>-->
+            <dxe:ComboBoxEdit x:Name="SearchComboBox" Width="330"
+                              ImmediatePopup="True"
+                              EditValue="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                              ItemsSource="{Binding SearchResults}">
+                <dxe:ComboBoxEdit.Buttons>
+                    <dxe:ButtonInfo IsLeft="False" GlyphKind="Search" Command="{Binding SearchCommand}"
+                                    CommandParameter="{Binding ElementName=SearchComboBox}" />
+                </dxe:ComboBoxEdit.Buttons>
+            </dxe:ComboBoxEdit>
         </StackPanel>
     </dx:ThemedWindow.HeaderItems>
 
