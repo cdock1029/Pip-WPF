@@ -44,7 +44,7 @@
                     ValidateRowCommand="{Binding ValidateRowCommand}"
                     ValidateRowDeletionCommand="{Binding ValidateRowDeletionCommand}"
                     DataSourceRefreshCommand="{Binding DataSourceRefreshCommand }"
-                    TotalSummaryPosition="Bottom">
+                    TotalSummaryPosition="Bottom" ShowFixedTotalSummary="True">
                     <dxg:TableView.RowCellMenuCustomizations>
                         <dxb:BarButtonItem Content="Delete">
                             <dxmvvm:Interaction.Behaviors>
@@ -61,6 +61,7 @@
             <dxg:GridControl.TotalSummary>
                 <dxg:GridSummaryItem
                     DisplayFormat="Total: {0:c}"
+                    Alignment="Right"
                     FieldName="Par"
                     SummaryType="Sum" />
             </dxg:GridControl.TotalSummary>
@@ -100,6 +101,7 @@
                     Binding="{Binding Type}"
                     GroupIndex="0"
                     Header="Type"
+                    AllowEditing="False"
                     ReadOnly="True" />
                 <dxg:GridColumn AllowCellMerge="False"
                                 d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
