@@ -69,33 +69,53 @@
         </StackPanel>
     </dx:ThemedWindow.HeaderItems>
 
-    <dxdo:DockLayoutManager ClosedPanelsBarVisibility="Auto">
-        <dxdo:LayoutGroup Caption="LayoutRoot">
-            <dxdo:LayoutGroup Orientation="Vertical" ItemWidth="Auto" MinWidth="400">
-                <dxdo:LayoutPanel dxdo:AutoHideGroup.AutoHideType="Left" Caption="Details">
-                    <details:DetailsView DataContext="{Binding DetailsViewModel}" />
+    <DockPanel>
+        <!--<dxr:RibbonControl DockPanel.Dock="Top" x:Name="RibbonControl" RibbonStyle="Office2019"
+                           AllowSimplifiedRibbon="True" IsSimplified="True">
+            <dxr:RibbonDefaultPageCategory>
+                <dxr:RibbonPage Caption="Settings" IsSelected="True">
+                    <dxr:RibbonPageGroup Caption="Themes">
+                        <dxr:RibbonGalleryBarItem>
+                            <dxmvvm:Interaction.Behaviors>
+                                <dxr:RibbonGalleryItemThemeSelectorBehavior ShowTouchThemes="False" />
+                            </dxmvvm:Interaction.Behaviors>
+                        </dxr:RibbonGalleryBarItem>
+                        <dxr:RibbonGalleryBarItem>
+                            <dxmvvm:Interaction.Behaviors>
+                                <dxr:RibbonGalleryItemThemePaletteSelectorBehavior />
+                            </dxmvvm:Interaction.Behaviors>
+                        </dxr:RibbonGalleryBarItem>
+                    </dxr:RibbonPageGroup>
+                </dxr:RibbonPage>
+            </dxr:RibbonDefaultPageCategory>
+        </dxr:RibbonControl>-->
+        <dxdo:DockLayoutManager ClosedPanelsBarVisibility="Auto">
+            <dxdo:LayoutGroup Caption="LayoutRoot">
+                <dxdo:LayoutGroup Orientation="Vertical" ItemWidth="Auto" MinWidth="400">
+                    <dxdo:LayoutPanel dxdo:AutoHideGroup.AutoHideType="Left" Caption="Details">
+                        <details:DetailsView DataContext="{Binding DetailsViewModel}" />
+                    </dxdo:LayoutPanel>
+                </dxdo:LayoutGroup>
+                <dxdo:LayoutPanel Caption="Investments" ItemWidth="*">
+                    <investments:InvestmentsView DataContext="{Binding InvestmentsViewModel}" />
                 </dxdo:LayoutPanel>
+                <dxdo:LayoutGroup ItemWidth="*" Caption="Auctions" ShowCaption="True"
+                                  DataContext="{Binding AuctionsViewModel}"
+                                  Loaded="{DXEvent Handler='LoadAsync()'}">
+                    <dxdo:DocumentGroup Caption="Auctions">
+                        <dxdo:DocumentPanel Caption="Recent">
+                            <view:TreasuriesCollectionView SelectedTreasury="{Binding SelectedTreasuryRecent}"
+                                                           Treasuries="{Binding TreasuriesRecent}" />
+                        </dxdo:DocumentPanel>
+
+                        <dxdo:DocumentPanel Caption="Announced">
+                            <view:TreasuriesCollectionView SelectedTreasury="{Binding SelectedTreasuryUpcoming}"
+                                                           Treasuries="{Binding TreasuriesUpcoming}" />
+                        </dxdo:DocumentPanel>
+                    </dxdo:DocumentGroup>
+                </dxdo:LayoutGroup>
             </dxdo:LayoutGroup>
-            <dxdo:LayoutPanel Caption="Investments" ItemWidth="*">
-                <investments:InvestmentsView DataContext="{Binding InvestmentsViewModel}" />
-            </dxdo:LayoutPanel>
-            <dxdo:LayoutGroup ItemWidth="*" Caption="Auctions" ShowCaption="True"
-                              DataContext="{Binding AuctionsViewModel}"
-                              Loaded="{DXEvent Handler='LoadAsync()'}">
-                <dxdo:DocumentGroup Caption="Auctions">
-                    <dxdo:DocumentPanel Caption="Recent">
-                        <view:TreasuriesCollectionView SelectedTreasury="{Binding SelectedTreasuryRecent}"
-                                                       Treasuries="{Binding TreasuriesRecent}" />
-                    </dxdo:DocumentPanel>
+        </dxdo:DockLayoutManager>
 
-                    <dxdo:DocumentPanel Caption="Announced">
-                        <view:TreasuriesCollectionView SelectedTreasury="{Binding SelectedTreasuryUpcoming}"
-                                                       Treasuries="{Binding TreasuriesUpcoming}" />
-                    </dxdo:DocumentPanel>
-                </dxdo:DocumentGroup>
-            </dxdo:LayoutGroup>
-        </dxdo:LayoutGroup>
-    </dxdo:DockLayoutManager>
-
-
+    </DockPanel>
 </dx:ThemedWindow>
