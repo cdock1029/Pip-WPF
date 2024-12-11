@@ -12,7 +12,6 @@
     xmlns:details="clr-namespace:Pip.UI.Components.Details"
     xmlns:view="clr-namespace:Pip.UI.View"
 
-    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     x:Class="Pip.UI.MainWindow"
     Width="800"
@@ -41,11 +40,6 @@
                 <dxb:BarButtonItem x:Name="btnCopy" Content="_Copy" Glyph="{dx:DXImage Image=Copy_16x16.png}" />
                 <dxb:BarButtonItem x:Name="btnPaste" Content="_Paste" Glyph="{dx:DXImage Image=Paste_16x16.png}" />
             </dxb:BarSubItem>
-            <dxb:BarSubItem Content="Theme">
-                <dxmvvm:Interaction.Behaviors>
-                    <dxb:BarSubItemThemeSelectorBehavior ShowTouchThemes="False" ShowWin10SystemColorTheme="True" />
-                </dxmvvm:Interaction.Behaviors>
-            </dxb:BarSubItem>
         </dxb:MainMenuControl>
     </dx:ThemedWindow.ToolbarItems>
 
@@ -70,25 +64,6 @@
     </dx:ThemedWindow.HeaderItems>
 
     <DockPanel>
-        <!--<dxr:RibbonControl DockPanel.Dock="Top" RibbonStyle="Office2019"
-                           AllowSimplifiedRibbon="True" IsSimplified="True">
-            <dxr:RibbonDefaultPageCategory>
-                <dxr:RibbonPage Caption="Settings" IsSelected="True">
-                    <dxr:RibbonPageGroup Caption="Themes">
-                        <dxr:RibbonGalleryBarItem>
-                            <dxmvvm:Interaction.Behaviors>
-                                <dxr:RibbonGalleryItemThemeSelectorBehavior ShowTouchThemes="False" />
-                            </dxmvvm:Interaction.Behaviors>
-                        </dxr:RibbonGalleryBarItem>
-                        <dxr:RibbonGalleryBarItem>
-                            <dxmvvm:Interaction.Behaviors>
-                                <dxr:RibbonGalleryItemThemePaletteSelectorBehavior />
-                            </dxmvvm:Interaction.Behaviors>
-                        </dxr:RibbonGalleryBarItem>
-                    </dxr:RibbonPageGroup>
-                </dxr:RibbonPage>
-            </dxr:RibbonDefaultPageCategory>
-        </dxr:RibbonControl>-->
         <dxdo:DockLayoutManager ClosedPanelsBarVisibility="Auto">
             <dxdo:LayoutGroup Caption="LayoutRoot">
                 <dxdo:LayoutGroup Orientation="Vertical" ItemWidth="Auto" MinWidth="400">
@@ -116,11 +91,5 @@
                 </dxdo:LayoutGroup>
             </dxdo:LayoutGroup>
         </dxdo:DockLayoutManager>
-
-        <!--<dxr:RibbonStatusBarControl DockPanel.Dock="Bottom">
-            <dxr:RibbonStatusBarControl.RightItems>
-                <dxb:BarButtonItem x:Name="printItem" Content="Print" Glyph="{dx:DXImage 'SvgImages/Print/Print.svg'}" />
-            </dxr:RibbonStatusBarControl.RightItems>
-        </dxr:RibbonStatusBarControl>-->
     </DockPanel>
 </dx:ThemedWindow>

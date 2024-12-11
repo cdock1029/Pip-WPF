@@ -25,9 +25,7 @@ public partial class App
 	{
 		CompatibilitySettings.UseLightweightThemes = true;
 		ThemedWindow.UseNativeWindow = true;
-
-
-		//ApplicationThemeHelper.UpdateApplicationThemeName();
+		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Office2019BlackBrickwork.Name;
 		SplashScreenManager.CreateFluent(new DXSplashScreenViewModel
 		{
 			Copyright = "All rights reserved",
@@ -42,23 +40,11 @@ public partial class App
 
 	protected override void OnStartup(StartupEventArgs e)
 	{
-		var palette = new Win10Palette(true);
-		var mode = palette.ActualAppMode;
-
-		ApplicationThemeHelper.ApplicationThemeName = mode == WindowsAppMode.Dark
-			? LightweightTheme.Office2019BlackBrickwork.Name
-			: LightweightTheme.Win10SystemColors.Name;
-
 		var dbContext = _serviceProvider.GetRequiredService<PipDbContext>();
 		dbContext.Database.Migrate();
 		var mainWindow = _serviceProvider.GetService<MainWindow>();
 		mainWindow?.Show();
 		base.OnStartup(e);
-	}
-
-	protected override void OnExit(ExitEventArgs e)
-	{
-		//ApplicationThemeHelper.SaveApplicationThemeName();
 	}
 
 	private static void ConfigureServices(ServiceCollection serviceCollection)
