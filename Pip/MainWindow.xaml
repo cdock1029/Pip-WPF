@@ -70,7 +70,7 @@
     </dx:ThemedWindow.HeaderItems>
 
     <DockPanel>
-        <!--<dxr:RibbonControl DockPanel.Dock="Top" x:Name="RibbonControl" RibbonStyle="Office2019"
+        <!--<dxr:RibbonControl DockPanel.Dock="Top" RibbonStyle="Office2019"
                            AllowSimplifiedRibbon="True" IsSimplified="True">
             <dxr:RibbonDefaultPageCategory>
                 <dxr:RibbonPage Caption="Settings" IsSelected="True">
@@ -117,5 +117,10 @@
             </dxdo:LayoutGroup>
         </dxdo:DockLayoutManager>
 
+        <!--<dxr:RibbonStatusBarControl DockPanel.Dock="Bottom">
+            <dxr:RibbonStatusBarControl.RightItems>
+                <dxb:BarButtonItem x:Name="printItem" Content="Print" Glyph="{dx:DXImage 'SvgImages/Print/Print.svg'}" />
+            </dxr:RibbonStatusBarControl.RightItems>
+        </dxr:RibbonStatusBarControl>-->
     </DockPanel>
 </dx:ThemedWindow>
