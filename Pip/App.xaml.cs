@@ -26,13 +26,6 @@ public partial class App
 		CompatibilitySettings.UseLightweightThemes = true;
 		ThemedWindow.UseNativeWindow = true;
 		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Office2019BlackBrickwork.Name;
-		SplashScreenManager.CreateFluent(new DXSplashScreenViewModel
-		{
-			Copyright = "All rights reserved",
-			IsIndeterminate = true,
-			Title = "Treasury Director",
-			Subtitle = "Subtitle"
-		}).ShowOnStartup();
 		ServiceCollection serviceCollection = [];
 		ConfigureServices(serviceCollection);
 		_serviceProvider = serviceCollection.BuildServiceProvider();
