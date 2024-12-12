@@ -11,8 +11,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     d:DataContext="{d:DesignInstance Type=investments:InvestmentsViewModel}"
-    d:DesignHeight="300"
-    d:DesignWidth="400"
+    d:DesignHeight="400"
+    d:DesignWidth="1000"
     mc:Ignorable="d"
     Loaded="{DXEvent Handler='LoadAsync()'}">
 
@@ -107,7 +107,7 @@
                                 d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
                                 FieldName="Par">
                     <dxg:GridColumn.EditSettings>
-                        <dxe:TextEditSettings DisplayFormat="c" />
+                        <dxe:TextEditSettings DisplayFormat="c" Mask="c" MaskType="Numeric" />
                     </dxg:GridColumn.EditSettings>
                 </dxg:GridColumn>
                 <dxg:GridColumn

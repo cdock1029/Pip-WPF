@@ -16,7 +16,9 @@ public partial class SearchViewModel : PipViewModel
 	private readonly IMessageBoxService _messageBoxService;
 	private readonly ITreasuryDataProvider _treasuryDataProvider;
 
-	[GenerateProperty] private string? _searchText;
+	//public ObservableCollection<TreasuryItemViewModel> SearchResults { get; } = [];
+
+	[GenerateProperty] private ObservableCollection<TreasuryItemViewModel> _searchResults = [];
 
 	public SearchViewModel(ITreasuryDataProvider treasuryDataProvider,
 		IMessageBoxService messageBoxService, DetailsViewModel detailsViewModel)
@@ -28,7 +30,21 @@ public partial class SearchViewModel : PipViewModel
 			ClearResultsCommand.RaiseCanExecuteChanged();
 	}
 
-	public ObservableCollection<TreasuryItemViewModel> SearchResults { get; } = [];
+	public string? SearchText
+	{
+		get;
+		set
+		{
+			field = value;
+			if (string.IsNullOrWhiteSpace(field))
+			{
+				SearchResults.Clear();
+				SearchResults = [];
+			}
+
+			RaisePropertyChanged();
+		}
+	}
 
 	public DetailsViewModel DetailsViewModel { get; }
 
@@ -51,10 +67,10 @@ public partial class SearchViewModel : PipViewModel
 			});
 	}
 
-	//private bool CanSearch()
-	//{
-	//	return !string.IsNullOrWhiteSpace(SearchText);
-	//}
+	private bool CanSearch()
+	{
+		return !string.IsNullOrWhiteSpace(SearchText);
+	}
 
 	[GenerateCommand]
 	private async Task CreateInvestment(Treasury? treasury)
