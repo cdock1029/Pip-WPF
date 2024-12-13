@@ -17,13 +17,13 @@
                 AutoExpandAllGroups="True"
                 ItemsSource="{TemplateBinding Treasuries}"
                 SelectedItem="{TemplateBinding SelectedTreasury}"
-                SelectionMode="Row">
+                SelectionMode="None">
                 <dxg:GridControl.View>
                     <dxg:TableView
                         AllowBestFit="True"
                         AllowGrouping="True"
                         AutoWidth="True"
-                        BestFitMode="VisibleRows"
+                        AllowCellMerge="True"
                         ShowGroupedColumns="False" />
                 </dxg:GridControl.View>
                 <dxg:GridControl.Columns>
@@ -32,7 +32,6 @@
                         Header="CUSIP"
                         ReadOnly="True" />
                     <dxg:GridColumn
-                        AllowCellMerge="True"
                         Binding="{Binding Path=(model:Treasury.IssueDate)}"
                         Header="Issue Date"
                         ReadOnly="True" />
@@ -43,6 +42,7 @@
                     <dxg:GridColumn
                         Binding="{Binding Path=(model:Treasury.SecurityTerm)}"
                         Header="Term"
+                        SortFieldName="TermSpan"
                         ReadOnly="True" />
                     <dxg:GridColumn
                         Binding="{Binding Path=(model:Treasury.Type)}"

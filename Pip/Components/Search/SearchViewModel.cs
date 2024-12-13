@@ -16,8 +16,6 @@ public partial class SearchViewModel : PipViewModel
 	private readonly IMessageBoxService _messageBoxService;
 	private readonly ITreasuryDataProvider _treasuryDataProvider;
 
-	//public ObservableCollection<TreasuryItemViewModel> SearchResults { get; } = [];
-
 	[GenerateProperty] private ObservableCollection<TreasuryItemViewModel> _searchResults = [];
 
 	public SearchViewModel(ITreasuryDataProvider treasuryDataProvider,

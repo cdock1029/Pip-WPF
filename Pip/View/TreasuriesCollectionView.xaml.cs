@@ -1,6 +1,6 @@
-﻿using Pip.Model;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
+using Pip.Model;
 
 namespace Pip.UI.View;
 

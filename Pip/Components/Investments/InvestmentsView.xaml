@@ -31,20 +31,18 @@
             </dxmvvm:Interaction.Behaviors>
             <dxg:GridControl.View>
                 <dxg:TableView
-                    NavigationStyle="Cell"
                     AllowCellMerge="True"
                     AllowBestFit="True"
                     AllowGrouping="True"
                     AutoWidth="True"
-                    BestFitMode="Smart"
                     IsTotalSummaryMenuEnabled="True"
                     ShowEditFormOnDoubleClick="True"
                     ShowGroupedColumns="False"
                     ShowUpdateRowButtons="OnCellEditorOpen"
-                    ValidateRowCommand="{Binding ValidateRowCommand}"
+                    TotalSummaryPosition="Bottom"
                     ValidateRowDeletionCommand="{Binding ValidateRowDeletionCommand}"
                     DataSourceRefreshCommand="{Binding DataSourceRefreshCommand }"
-                    TotalSummaryPosition="Bottom" ShowFixedTotalSummary="True">
+                    ShowFixedTotalSummary="True">
                     <dxg:TableView.RowCellMenuCustomizations>
                         <dxb:BarButtonItem Content="Delete">
                             <dxmvvm:Interaction.Behaviors>
@@ -94,6 +92,7 @@
                     d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
                     Binding="{Binding Term}"
                     Header="Term"
+                    SortFieldName="TermSpan"
                     AllowEditing="False"
                     ReadOnly="True" />
                 <dxg:GridColumn

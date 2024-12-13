@@ -1,13 +1,11 @@
-﻿using DevExpress.Mvvm.CodeGenerators;
-using Pip.UI.Components.Auctions;
+﻿using Pip.UI.Components.Auctions;
 using Pip.UI.Components.Details;
 using Pip.UI.Components.Investments;
 using Pip.UI.Components.Search;
 
 namespace Pip.UI.ViewModel;
 
-[GenerateViewModel]
-public partial class MainViewModel(
+public class MainViewModel(
 	InvestmentsViewModel investmentsViewModel,
 	SearchViewModel searchViewModel,
 	AuctionsViewModel auctionsViewModel,
