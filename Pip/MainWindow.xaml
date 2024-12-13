@@ -12,6 +12,7 @@
     xmlns:details="clr-namespace:Pip.UI.Components.Details"
     xmlns:view="clr-namespace:Pip.UI.View"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
     x:Class="Pip.UI.MainWindow"
     Width="800"
     Height="800"
@@ -66,16 +67,56 @@
     <DockPanel>
         <dxdo:DockLayoutManager ClosedPanelsBarVisibility="Auto">
             <dxdo:LayoutGroup Caption="LayoutRoot">
+
                 <dxdo:LayoutGroup Orientation="Vertical" ItemWidth="Auto" MinWidth="400">
-                    <dxdo:LayoutPanel dxdo:AutoHideGroup.AutoHideType="Left" Caption="Details">
+                    <dxdo:LayoutPanel ItemHeight="*" dxdo:AutoHideGroup.AutoHideType="Left" Caption="Details">
                         <details:DetailsView
                             DataContext="{Binding DataContext.DetailsViewModel, RelativeSource={RelativeSource AncestorType={x:Type dxdo:DockLayoutManager}}}" />
                     </dxdo:LayoutPanel>
+
+                    <dxdo:LayoutPanel ItemHeight="300" dxdo:AutoHideGroup.AutoHideType="Left" Caption="Search"
+                                      DataContext="{Binding DataContext.SearchViewModel, RelativeSource={RelativeSource AncestorType={x:Type dxdo:DockLayoutManager}}}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <dxe:ButtonEdit NullText="Search CUSIP" AllowDefaultButton="False"
+                                            Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                                            ShowNullValueButtonOnFocusOnly="True"
+                                            NullValueButtonPlacement="EditBox">
+                                <dxe:ButtonInfo IsLeft="False" GlyphKind="Search" Command="{Binding SearchCommand}" />
+                            </dxe:ButtonEdit>
+                            <dxe:ListBoxEdit Grid.Row="1"
+                                             SelectedItem="{Binding SelectedTreasuryItem}"
+                                             ItemsSource="{Binding SearchResults}">
+                                <dxb:BarManager.DXContextMenu>
+                                    <dxb:PopupMenu>
+                                        <dxb:PopupMenu.Items>
+                                            <dxb:BarButtonItem Content="Create investment">
+                                                <dxmvvm:Interaction.Behaviors>
+                                                    <dxmvvm:ConfirmationBehavior
+                                                        Command="{Binding CreateInvestmentCommand}"
+                                                        CommandParameter="{Binding SelectedTreasuryItem}"
+                                                        EnableConfirmationMessage="True"
+                                                        MessageIcon="Exclamation"
+                                                        MessageButton="YesNo"
+                                                        MessageText="Do you want to create investment?" />
+                                                </dxmvvm:Interaction.Behaviors>
+                                            </dxb:BarButtonItem>
+                                        </dxb:PopupMenu.Items>
+                                    </dxb:PopupMenu>
+                                </dxb:BarManager.DXContextMenu>
+                            </dxe:ListBoxEdit>
+                        </Grid>
+                    </dxdo:LayoutPanel>
                 </dxdo:LayoutGroup>
+
                 <dxdo:LayoutPanel Caption="Investments" ItemWidth="*">
                     <investments:InvestmentsView
                         DataContext="{Binding DataContext.InvestmentsViewModel, RelativeSource={RelativeSource AncestorType={x:Type dxdo:DockLayoutManager}}}" />
                 </dxdo:LayoutPanel>
+
                 <dxdo:LayoutGroup ItemWidth="*" Caption="Auctions" ShowCaption="True"
                                   DataContext="{Binding  DataContext.AuctionsViewModel, RelativeSource={RelativeSource AncestorType={x:Type dxdo:DockLayoutManager}}}"
                                   Loaded="{DXEvent Handler='LoadAsync()'}">
@@ -93,5 +134,6 @@
                 </dxdo:LayoutGroup>
             </dxdo:LayoutGroup>
         </dxdo:DockLayoutManager>
+        <dxe:ListBoxEdit Width="0" />
     </DockPanel>
 </dx:ThemedWindow>
