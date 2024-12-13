@@ -5,7 +5,7 @@ using Pip.UI.Components.Search;
 
 namespace Pip.UI.ViewModel;
 
-public class MainViewModel(
+public partial class MainViewModel(
 	InvestmentsViewModel investmentsViewModel,
 	SearchViewModel searchViewModel,
 	AuctionsViewModel auctionsViewModel,
