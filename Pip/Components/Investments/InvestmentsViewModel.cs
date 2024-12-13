@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows.Threading;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using DevExpress.Mvvm.Xpf;
@@ -13,16 +12,13 @@ namespace Pip.UI.Components.Investments;
 [GenerateViewModel]
 public partial class InvestmentsViewModel : PipViewModel
 {
-	private readonly Dispatcher _dispatcher;
 	private readonly ITreasuryDataProvider _treasuryDataProvider;
 	[GenerateProperty] private bool _isWaitIndicatorVisible;
 	[GenerateProperty] private InvestmentItemViewModel? _selectedInvestment;
 
-	public InvestmentsViewModel(ITreasuryDataProvider treasuryDataProvider,
-		Dispatcher dispatcher, DetailsViewModel detailsViewModel)
+	public InvestmentsViewModel(ITreasuryDataProvider treasuryDataProvider, DetailsViewModel detailsViewModel)
 	{
 		_treasuryDataProvider = treasuryDataProvider;
-		_dispatcher = dispatcher;
 		DetailsViewModel = detailsViewModel;
 		Messenger.Default.Register<AfterInsertInvestmentMessage>(this, Receive);
 	}
@@ -44,7 +40,7 @@ public partial class InvestmentsViewModel : PipViewModel
 
 	private void Receive(AfterInsertInvestmentMessage message)
 	{
-		_dispatcher.BeginInvoke(async () =>
+		Dispatcher.BeginInvoke(async () =>
 		{
 			Investments.Clear();
 			await LoadAsync();

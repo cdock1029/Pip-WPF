@@ -1,14 +1,14 @@
 ﻿using System.Diagnostics;
-using System.Windows.Threading;
 using DevExpress.Mvvm.CodeGenerators;
 using Pip.DataAccess.Services;
 using Pip.Model;
 using Pip.UI.Components.Investments;
+using Pip.UI.ViewModel;
 
 namespace Pip.UI.Components.Details;
 
 [GenerateViewModel]
-public partial class DetailsViewModel(ITreasuryDataProvider treasuryDataProvider)
+public partial class DetailsViewModel(ITreasuryDataProvider treasuryDataProvider) : PipViewModel
 {
 	private CancellationTokenSource? _tokenSource;
 	[GenerateProperty] private Treasury? _treasuryDetailsSelected;
@@ -39,7 +39,7 @@ public partial class DetailsViewModel(ITreasuryDataProvider treasuryDataProvider
 			if (treasuryTask.IsCompleted)
 				TreasuryDetailsSelected = treasuryTask.Result;
 			else
-				Dispatcher.CurrentDispatcher.BeginInvoke(async () =>
+				Dispatcher.BeginInvoke(async () =>
 				{
 					var treasury = await treasuryTask;
 					if (!ct.IsCancellationRequested) TreasuryDetailsSelected = treasury;

@@ -36,6 +36,8 @@ public class InvestmentItemViewModel(Investment investment) : PipViewModel
 
 	public Investment Investment => investment;
 
+	public int TermSpan => MaturityDate is null ? 0 : MaturityDate.Value.DayNumber - IssueDate.DayNumber;
+
 	public int Par
 	{
 		get => investment.Par;

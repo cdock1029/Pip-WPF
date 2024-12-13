@@ -37,7 +37,6 @@ public partial class App
 		dbContext.Database.Migrate();
 		var mainWindow = _serviceProvider.GetService<MainWindow>();
 		mainWindow?.Show();
-		base.OnStartup(e);
 	}
 
 	private static void ConfigureServices(ServiceCollection serviceCollection)
@@ -52,7 +51,6 @@ public partial class App
 			.AddSingleton<InvestmentsViewModel>()
 			.AddSingleton<AuctionsViewModel>()
 			.AddSingleton<DetailsViewModel>()
-			.AddSingleton(_ => Dispatcher.CurrentDispatcher)
 			.AddSingleton(p => new MainWindow { DataContext = p.GetRequiredService<MainViewModel>() })
 			.AddSingleton<Func<Type, PipViewModel>>(p =>
 				viewModelType => (PipViewModel)p.GetRequiredService(viewModelType))
