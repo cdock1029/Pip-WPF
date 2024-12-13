@@ -2,17 +2,17 @@
 
 namespace Pip.UI.ViewModel;
 
-public class TreasuryItemViewModel
+public class TreasuryItemViewModel(Treasury treasury)
 {
-	public required string Cusip { get; set; }
+	public string Cusip { get; set; } = treasury.Cusip;
 
-	public DateOnly? IssueDate { get; set; }
+	public DateOnly? IssueDate { get; set; } = treasury.IssueDate;
 
-	public string Id => $"{Cusip}_{IssueDate:yy-MM-dd}";
+	public TreasuryType? Type { get; set; } = treasury.Type;
 
-	public TreasuryType? Type { get; set; }
+	public string? Term { get; set; } = treasury.SecurityTerm;
 
-	public string? Term { get; set; }
+	public Treasury Treasury { get; set; } = treasury;
 
 	public override string ToString()
 	{

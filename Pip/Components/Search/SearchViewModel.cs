@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
-using Microsoft.EntityFrameworkCore;
 using Pip.DataAccess.Services;
 using Pip.Model;
 using Pip.UI.Components.Details;
@@ -17,6 +16,7 @@ public partial class SearchViewModel : PipViewModel
 	private readonly ITreasuryDataProvider _treasuryDataProvider;
 
 	[GenerateProperty] private ObservableCollection<TreasuryItemViewModel> _searchResults = [];
+	[GenerateProperty] private TreasuryItemViewModel? _selectedTreasuryItem;
 
 	public SearchViewModel(ITreasuryDataProvider treasuryDataProvider,
 		IMessageBoxService messageBoxService, DetailsViewModel detailsViewModel)
@@ -56,13 +56,7 @@ public partial class SearchViewModel : PipViewModel
 		SearchResults.Clear();
 		if (treasuries == null) return;
 		foreach (var treasury in treasuries)
-			SearchResults.Add(new TreasuryItemViewModel
-			{
-				Cusip = treasury.Cusip,
-				IssueDate = treasury.IssueDate,
-				Type = treasury.Type,
-				Term = treasury.SecurityTerm
-			});
+			SearchResults.Add(new TreasuryItemViewModel(treasury));
 	}
 
 	private bool CanSearch()
@@ -71,39 +65,29 @@ public partial class SearchViewModel : PipViewModel
 	}
 
 	[GenerateCommand]
-	private async Task CreateInvestment(Treasury? treasury)
+	private async Task CreateInvestment()
 	{
-		ArgumentNullException.ThrowIfNull(treasury);
+		ArgumentNullException.ThrowIfNull(SelectedTreasuryItem);
 
-		var result = _messageBoxService.ShowMessage(
-			$"CUSIP: [{treasury.Cusip}]\nIssue Date: [{treasury.IssueDate?.ToLongDateString()}]\nMaturity Date: [{treasury.MaturityDate?.ToLongDateString()}]",
-			"Do you want to create investment?",
-			MessageButton.OKCancel,
-			MessageIcon.Question
-		);
+		var treasury = SelectedTreasuryItem.Treasury;
 
-		if (result == MessageResult.OK)
-			try
-			{
-				var investment = new Investment
-				{
-					Cusip = treasury.Cusip,
-					IssueDate = treasury.IssueDate ?? default,
-					MaturityDate = treasury.MaturityDate,
-					SecurityTerm = treasury.SecurityTerm,
-					Type = treasury.Type
-				};
-				await _treasuryDataProvider.InsertInvestmentAsync(investment);
-				Messenger.Default.Send(
-					new AfterInsertInvestmentMessage(new AfterInsertInvestmentArgs(investment.Id, treasury.Cusip,
-						treasury.IssueDate)));
-			}
-			catch (DbUpdateException e)
-			{
-				_ = _messageBoxService.ShowMessage(
-					$"Error saving Investment: {e.Message}\nInner error: {e.InnerException?.Message}", "Error",
-					MessageButton.OK, MessageIcon.Error);
-			}
+		var investment = new Investment
+		{
+			Cusip = treasury.Cusip,
+			IssueDate = treasury.IssueDate ?? default,
+			MaturityDate = treasury.MaturityDate,
+			SecurityTerm = treasury.SecurityTerm,
+			Type = treasury.Type
+		};
+		await _treasuryDataProvider.InsertInvestmentAsync(investment);
+		Messenger.Default.Send(
+			new AfterInsertInvestmentMessage(new AfterInsertInvestmentArgs(investment.Id, treasury.Cusip,
+				treasury.IssueDate)));
+	}
+
+	private bool CanCreateInvestment()
+	{
+		return SelectedTreasuryItem is not null;
 	}
 
 	[GenerateCommand]

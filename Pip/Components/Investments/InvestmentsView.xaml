@@ -18,9 +18,8 @@
 
     <Grid>
         <dxg:GridControl
-            Name="InvestmentsGrid"
+            x:Name="InvestmentsGrid"
             AutoExpandAllGroups="True"
-            DeleteKeyBehavior="DeleteFocusedRow"
             SelectionMode="Row"
             ItemsSource="{Binding Investments}"
             SelectedItem="{Binding SelectedInvestment, Mode=TwoWay}">
@@ -56,6 +55,17 @@
                     </dxg:TableView.RowCellMenuCustomizations>
                 </dxg:TableView>
             </dxg:GridControl.View>
+            <dxg:GridControl.InputBindings>
+                <KeyBinding Key="Delete">
+                    <dxmvvm:Interaction.Behaviors>
+                        <dxmvvm:ConfirmationBehavior Command="{x:Static dxg:GridCommands.DeleteFocusedRow}"
+                                                     EnableConfirmationMessage="True"
+                                                     MessageIcon="Exclamation"
+                                                     MessageButton="YesNo"
+                                                     MessageText="Confirm Delete?" />
+                    </dxmvvm:Interaction.Behaviors>
+                </KeyBinding>
+            </dxg:GridControl.InputBindings>
             <dxg:GridControl.TotalSummary>
                 <dxg:GridSummaryItem
                     DisplayFormat="Total: {0:c}"
