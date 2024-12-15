@@ -13,6 +13,7 @@
     xmlns:view="clr-namespace:Pip.UI.View"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
     x:Class="Pip.UI.MainWindow"
     Width="800"
     Height="800"
@@ -45,22 +46,49 @@
 
     <dx:ThemedWindow.HeaderItems>
         <StackPanel DataContext="{Binding SearchViewModel}" Orientation="Horizontal" VerticalAlignment="Center">
-            <!--<dxe:ButtonEdit Margin="0,0,40,0" Width="230" NullText="Search CUSIP" AllowDefaultButton="False"
-                            ShowNullValueButtonOnFocusOnly="True"
-                            NullValueButtonPlacement="EditBox">
-                <dxe:ButtonInfo IsLeft="False" GlyphKind="Search" />
-            </dxe:ButtonEdit>-->
-            <!--<dxg:LookUpEdit ItemsSource="{Binding SearchResults}" Width="230" DisplayMember="Cusip" ValueMember="Id" Buttons=""/>-->
-            <dxe:ComboBoxEdit x:Name="SearchComboBox" Width="330"
-                              Margin="0,0,40,0"
-                              ImmediatePopup="True"
-                              EditValue="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-                              ItemsSource="{Binding SearchResults}">
-                <dxe:ComboBoxEdit.Buttons>
-                    <dxe:ButtonInfo IsLeft="False" GlyphKind="Search" Command="{Binding SearchCommand}"
-                                    CommandParameter="{Binding ElementName=SearchComboBox, Path=Text}" />
-                </dxe:ComboBoxEdit.Buttons>
-            </dxe:ComboBoxEdit>
+            <dxe:PopupBaseEdit x:Name="PopupBaseEdit" Margin="0,0,100,0" Width="300"
+                               NullText="Search CUSIP"
+                               AllowDefaultButton="{Binding HasSearchResults}"
+                               ShowNullValueButtonOnFocusOnly="True"
+                               NullValueButtonPlacement="EditBox"
+                               EditValue="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                               FocusPopupOnOpen="True"
+                               IsReadOnly="False"
+                               PopupFooterButtons="OkCancel">
+                <dxe:PopupBaseEdit.Buttons>
+                    <dxe:ButtonInfo IsLeft="True" GlyphKind="Search">
+                        <dxmvvm:Interaction.Behaviors>
+                            <dxmvvm:CompositeCommandBehavior>
+                                <dxmvvm:CommandItem Command="{Binding SearchCommand}" />
+                                <dxmvvm:CommandItem
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType=dxe:PopupBaseEdit}, Path=OpenPopupCommand}" />
+                            </dxmvvm:CompositeCommandBehavior>
+                        </dxmvvm:Interaction.Behaviors>
+                    </dxe:ButtonInfo>
+                </dxe:PopupBaseEdit.Buttons>
+                <dxe:PopupBaseEdit.PopupContentTemplate>
+                    <ControlTemplate>
+                        <dxg:GridControl Height="400" ItemsSource="{Binding SearchResults}">
+                            <dxg:GridControl.View>
+                                <dxg:TableView x:Name="InnerTableView" AllowGrouping="False" AllowEditing="False"
+                                               AutoWidth="True"
+                                               ShowGroupPanel="False" />
+                            </dxg:GridControl.View>
+                            <dxg:GridControl.Columns>
+                                <dxg:GridColumn FieldName="Type" />
+                                <dxg:GridColumn FieldName="Term" />
+                                <dxg:GridColumn Header="Issue date" FieldName="IssueDate" />
+                            </dxg:GridControl.Columns>
+                        </dxg:GridControl>
+                    </ControlTemplate>
+                </dxe:PopupBaseEdit.PopupContentTemplate>
+                <dxe:PopupBaseEdit.PopupTopAreaTemplate>
+                    <ControlTemplate>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10"
+                                   Text="Pip Search" FontSize="18" />
+                    </ControlTemplate>
+                </dxe:PopupBaseEdit.PopupTopAreaTemplate>
+            </dxe:PopupBaseEdit>
         </StackPanel>
     </dx:ThemedWindow.HeaderItems>
 
