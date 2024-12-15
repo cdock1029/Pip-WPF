@@ -14,6 +14,8 @@ public partial class SearchViewModel : PipViewModel
 {
 	private readonly ITreasuryDataProvider _treasuryDataProvider;
 
+	[GenerateProperty] private bool _hasSearchResults;
+
 	[GenerateProperty] private ObservableCollection<TreasuryItemViewModel> _searchResults = [];
 	[GenerateProperty] private TreasuryItemViewModel? _selectedTreasuryItem;
 
@@ -23,7 +25,10 @@ public partial class SearchViewModel : PipViewModel
 		_treasuryDataProvider = treasuryDataProvider;
 		DetailsViewModel = detailsViewModel;
 		SearchResults.CollectionChanged += (_, _) =>
-			ClearResultsCommand.RaiseCanExecuteChanged();
+		{
+			//ClearResultsCommand.RaiseCanExecuteChanged();
+			HasSearchResults = SearchResults.Count > 0;
+		};
 	}
 
 	public string? SearchText
@@ -32,11 +37,7 @@ public partial class SearchViewModel : PipViewModel
 		set
 		{
 			field = value;
-			if (string.IsNullOrWhiteSpace(field))
-			{
-				SearchResults.Clear();
-				SearchResults = [];
-			}
+			if (string.IsNullOrWhiteSpace(field)) SearchResults.Clear();
 
 			RaisePropertyChanged();
 		}
@@ -45,7 +46,7 @@ public partial class SearchViewModel : PipViewModel
 	public DetailsViewModel DetailsViewModel { get; }
 
 	[GenerateCommand]
-	private async Task Search()
+	public async Task Search()
 	{
 		ArgumentNullException.ThrowIfNull(SearchText);
 
@@ -88,15 +89,15 @@ public partial class SearchViewModel : PipViewModel
 		return SelectedTreasuryItem is not null;
 	}
 
-	[GenerateCommand]
-	private void ClearResults()
-	{
-		SearchResults.Clear();
-		SearchText = string.Empty;
-	}
+	//[GenerateCommand]
+	//private void ClearResults()
+	//{
+	//	SearchResults.Clear();
+	//	SearchText = string.Empty;
+	//}
 
-	private bool CanClearResults()
-	{
-		return SearchResults.Count > 0;
-	}
+	//private bool CanClearResults()
+	//{
+	//	return SearchResults.Count > 0;
+	//}
 }
