@@ -3,7 +3,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
@@ -41,19 +40,7 @@
                     TotalSummaryPosition="Bottom"
                     ValidateRowDeletionCommand="{Binding ValidateRowDeletionCommand}"
                     DataSourceRefreshCommand="{Binding DataSourceRefreshCommand }"
-                    ShowFixedTotalSummary="True">
-                    <dxg:TableView.RowCellMenuCustomizations>
-                        <dxb:BarButtonItem Content="Delete">
-                            <dxmvvm:Interaction.Behaviors>
-                                <dxmvvm:ConfirmationBehavior Command="{x:Static dxg:GridCommands.DeleteFocusedRow}"
-                                                             EnableConfirmationMessage="True"
-                                                             MessageIcon="Exclamation"
-                                                             MessageButton="YesNo"
-                                                             MessageText="Confirm Delete?" />
-                            </dxmvvm:Interaction.Behaviors>
-                        </dxb:BarButtonItem>
-                    </dxg:TableView.RowCellMenuCustomizations>
-                </dxg:TableView>
+                    ShowFixedTotalSummary="True" />
             </dxg:GridControl.View>
             <dxg:GridControl.InputBindings>
                 <KeyBinding Key="Delete">
