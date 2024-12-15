@@ -12,17 +12,15 @@ namespace Pip.UI.Components.Search;
 [GenerateViewModel]
 public partial class SearchViewModel : PipViewModel
 {
-	private readonly IMessageBoxService _messageBoxService;
 	private readonly ITreasuryDataProvider _treasuryDataProvider;
 
 	[GenerateProperty] private ObservableCollection<TreasuryItemViewModel> _searchResults = [];
 	[GenerateProperty] private TreasuryItemViewModel? _selectedTreasuryItem;
 
 	public SearchViewModel(ITreasuryDataProvider treasuryDataProvider,
-		IMessageBoxService messageBoxService, DetailsViewModel detailsViewModel)
+		DetailsViewModel detailsViewModel)
 	{
 		_treasuryDataProvider = treasuryDataProvider;
-		_messageBoxService = messageBoxService;
 		DetailsViewModel = detailsViewModel;
 		SearchResults.CollectionChanged += (_, _) =>
 			ClearResultsCommand.RaiseCanExecuteChanged();
