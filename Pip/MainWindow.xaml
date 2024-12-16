@@ -20,6 +20,7 @@
     d:DataContext="{d:DesignInstance Type={x:Type viewModel:MainViewModel}}"
     SizeToContent="Manual"
     WindowStartupLocation="Manual"
+    UseLayoutRounding="True"
     mc:Ignorable="d">
 
     <dx:ThemedWindow.ToolbarItems>

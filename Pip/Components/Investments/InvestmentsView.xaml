@@ -33,11 +33,11 @@
                     AllowBestFit="True"
                     AllowGrouping="True"
                     AutoWidth="True"
+                    EditFormShowMode="Dialog"
                     IsTotalSummaryMenuEnabled="True"
-                    ShowEditFormOnDoubleClick="True"
                     ShowGroupedColumns="False"
-                    ShowUpdateRowButtons="OnCellEditorOpen"
                     TotalSummaryPosition="Bottom"
+                    ValidateRowCommand="{Binding ValidateRowCommand}"
                     ValidateRowDeletionCommand="{Binding ValidateRowDeletionCommand}"
                     DataSourceRefreshCommand="{Binding DataSourceRefreshCommand }"
                     ShowFixedTotalSummary="True" />
@@ -71,33 +71,28 @@
                     d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
                     Binding="{Binding Cusip}"
                     Header="CUSIP"
-                    AllowEditing="False"
                     ReadOnly="True" />
                 <dxg:GridColumn
                     d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
                     Binding="{Binding IssueDate}"
                     Header="Issue Date"
-                    AllowEditing="False"
                     ReadOnly="True" />
                 <dxg:GridColumn
                     d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
                     Binding="{Binding MaturityDate, FallbackValue=''}"
                     Header="Maturity Date"
-                    AllowEditing="False"
                     ReadOnly="True" />
                 <dxg:GridColumn
                     d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
                     Binding="{Binding Term}"
                     Header="Term"
                     SortFieldName="TermSpan"
-                    AllowEditing="False"
                     ReadOnly="True" />
                 <dxg:GridColumn
                     d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
                     Binding="{Binding Type}"
                     GroupIndex="0"
                     Header="Type"
-                    AllowEditing="False"
                     ReadOnly="True" />
                 <dxg:GridColumn AllowCellMerge="False"
                                 d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
