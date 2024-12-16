@@ -24,6 +24,7 @@
                         AllowGrouping="True"
                         AutoWidth="True"
                         AllowCellMerge="True"
+                        NavigationStyle="Cell"
                         ShowGroupedColumns="False" />
                 </dxg:GridControl.View>
                 <dxg:GridControl.Columns>

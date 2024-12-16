@@ -11,6 +11,7 @@
     <Grid VerticalAlignment="Stretch">
         <dxprg:PropertyGridControl SelectedObject="{Binding TreasuryDetailsSelected}"
                                    ShowCategories="Hidden"
+                                   ReadOnly="True"
                                    ShowProperties="All" />
     </Grid>
 </UserControl>
