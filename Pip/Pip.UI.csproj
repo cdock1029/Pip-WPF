@@ -12,14 +12,13 @@
 		<PackageReference Include="Azure.Identity" Version="1.13.1" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0-preview3" />
 		<PackageReference Include="DevExpress.Images" Version="24.2.*-*" />
-		<PackageReference Include="DevExpress.Mvvm" Version="24.2.*-*" />
 		<PackageReference Include="DevExpress.Mvvm.CodeGenerators" Version="22.1.1" />
-		<PackageReference Include="DevExpress.Wpf.Controls" Version="24.2.2-beta" />
+		<PackageReference Include="DevExpress.Wpf.Controls" Version="24.2.3" />
 		<PackageReference Include="DevExpress.Wpf.Core" Version="24.2.*-*" />
 		<PackageReference Include="devexpress.wpf.docking" Version="24.2.*-*" />
 		<PackageReference Include="DevExpress.Wpf.Grid.Core" Version="24.2.*-*" />
 		<PackageReference Include="devexpress.wpf.propertygrid" Version="24.2.*-*" />
-		<PackageReference Include="DevExpress.Wpf.Ribbon" Version="24.2.2-beta" />
+		<PackageReference Include="DevExpress.Wpf.Ribbon" Version="24.2.3" />
 		<PackageReference Include="DevExpress.Wpf.Themes.All" Version="24.2.*-*" />
 		<PackageReference Include="DevExpress.Wpf.ThemesLW" Version="24.2.*-*" />
 		<PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
