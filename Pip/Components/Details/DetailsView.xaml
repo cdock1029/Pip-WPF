@@ -5,12 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:details="clr-namespace:Pip.UI.Components.Details"
              xmlns:dxprg="http://schemas.devexpress.com/winfx/2008/xaml/propertygrid"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type={x:Type details:DetailsViewModel}}"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid VerticalAlignment="Stretch">
         <dxprg:PropertyGridControl SelectedObject="{Binding TreasuryDetailsSelected}"
                                    ShowCategories="Hidden"
+                                   BorderThickness="0"
+                                   ShowSearchBox="{Binding TreasuryDetailsSelected, Converter={dxmvvm:ObjectToBooleanConverter}}"
                                    ReadOnly="True"
                                    ShowProperties="All" />
     </Grid>

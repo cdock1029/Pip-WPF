@@ -15,6 +15,7 @@
         <ControlTemplate TargetType="{x:Type view:TreasuriesCollectionView}">
             <dxg:GridControl
                 AutoExpandAllGroups="True"
+                ShowBorder="False"
                 ItemsSource="{TemplateBinding Treasuries}"
                 SelectedItem="{TemplateBinding SelectedTreasury}"
                 SelectionMode="None">

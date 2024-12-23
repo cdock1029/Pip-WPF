@@ -16,6 +16,7 @@ public partial class AuctionsViewModel(ITreasuryDataProvider treasuryDataProvide
 	public ObservableCollection<Treasury> TreasuriesRecent { get; } = [];
 	public ObservableCollection<Treasury> TreasuriesUpcoming { get; } = [];
 
+	[GenerateCommand]
 	public override Task LoadAsync()
 	{
 		Dispatcher.BeginInvoke(LoadRecent);

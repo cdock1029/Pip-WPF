@@ -24,11 +24,7 @@ public partial class SearchViewModel : PipViewModel
 	{
 		_treasuryDataProvider = treasuryDataProvider;
 		DetailsViewModel = detailsViewModel;
-		SearchResults.CollectionChanged += (_, _) =>
-		{
-			//ClearResultsCommand.RaiseCanExecuteChanged();
-			HasSearchResults = SearchResults.Count > 0;
-		};
+		SearchResults.CollectionChanged += (_, _) => { HasSearchResults = SearchResults.Count > 0; };
 	}
 
 	public string? SearchText
@@ -46,9 +42,9 @@ public partial class SearchViewModel : PipViewModel
 	public DetailsViewModel DetailsViewModel { get; }
 
 	[GenerateCommand]
-	public async Task Search()
+	private async Task Search()
 	{
-		ArgumentNullException.ThrowIfNull(SearchText);
+		ArgumentException.ThrowIfNullOrWhiteSpace(SearchText);
 
 		var treasuries = await _treasuryDataProvider.SearchTreasuriesAsync(SearchText.Trim());
 
@@ -88,16 +84,4 @@ public partial class SearchViewModel : PipViewModel
 	{
 		return SelectedTreasuryItem is not null;
 	}
-
-	//[GenerateCommand]
-	//private void ClearResults()
-	//{
-	//	SearchResults.Clear();
-	//	SearchText = string.Empty;
-	//}
-
-	//private bool CanClearResults()
-	//{
-	//	return SearchResults.Count > 0;
-	//}
 }
