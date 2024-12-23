@@ -3,47 +3,47 @@ using Pip.UI.ViewModel;
 
 namespace Pip.UI.Components.Investments;
 
-public class InvestmentItemViewModel(Investment investment) : PipViewModel
+public class InvestmentItemViewModel : PipViewModel
 {
-	public int Id { get; } = investment.Id;
-	public string Cusip { get; } = investment.Cusip;
-	public DateOnly IssueDate { get; } = investment.IssueDate;
-	public DateOnly? MaturityDate { get; } = investment.MaturityDate;
+	public int Id => Investment.Id;
+	public string Cusip => Investment.Cusip;
+	public DateOnly IssueDate => Investment.IssueDate;
+	public DateOnly? MaturityDate => Investment.MaturityDate;
 
+	public required Investment Investment { get; set; }
 
 	public string? Confirmation
 	{
-		get => investment.Confirmation;
+		get => Investment.Confirmation;
 		set
 		{
-			investment.Confirmation = value;
+			Investment.Confirmation = value;
 			RaisePropertyChanged();
 		}
 	}
 
 	public int Reinvestments
 	{
-		get => investment.Reinvestments;
+		get => Investment.Reinvestments;
 		set
 		{
-			investment.Reinvestments = value;
+			Investment.Reinvestments = value;
 			RaisePropertyChanged();
 		}
 	}
 
-	public string? Term { get; } = investment.SecurityTerm;
-	public TreasuryType Type { get; } = investment.Type;
+	public string? Term => Investment.SecurityTerm;
+	public TreasuryType Type => Investment.Type;
 
-	public Investment Investment => investment;
 
 	public int TermSpan => MaturityDate is null ? 0 : MaturityDate.Value.DayNumber - IssueDate.DayNumber;
 
 	public int Par
 	{
-		get => investment.Par;
+		get => Investment.Par;
 		set
 		{
-			investment.Par = value;
+			Investment.Par = value;
 			RaisePropertyChanged();
 		}
 	}

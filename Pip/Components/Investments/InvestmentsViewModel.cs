@@ -33,21 +33,19 @@ public partial class InvestmentsViewModel : PipViewModel
 
 		var investments = _treasuryDataProvider.GetInvestments();
 		foreach (var investment in investments)
-			Investments.Add(new InvestmentItemViewModel(investment));
+			Investments.Add(new InvestmentItemViewModel { Investment = investment });
 
 		return Task.CompletedTask;
 	}
 
 	private void Receive(AfterInsertInvestmentMessage message)
 	{
-		Dispatcher.BeginInvoke(async () =>
-		{
-			Investments.Clear();
-			await LoadAsync();
-			var insertedId = message.Value.Id;
-			var found = Investments.FirstOrDefault(i => i.Id == insertedId);
-			SelectedInvestment = found;
-		});
+		Investments.Clear();
+		var task = LoadAsync();
+		if (!task.IsCompletedSuccessfully) return;
+		var insertedId = message.Value.Id;
+		var found = Investments.FirstOrDefault(i => i.Id == insertedId);
+		SelectedInvestment = found;
 	}
 
 	[GenerateCommand]

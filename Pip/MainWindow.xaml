@@ -23,6 +23,11 @@
     UseLayoutRounding="True"
     mc:Ignorable="d">
 
+    <dxmvvm:Interaction.Behaviors>
+        <dxmvvm:EventToCommand SourceObject="{Binding ElementName=AuctionsLayoutGroup}" EventName="Loaded"
+                               Command="{Binding AuctionsViewModel.LoadAsyncCommand}" />
+    </dxmvvm:Interaction.Behaviors>
+
     <dx:ThemedWindow.ToolbarItems>
         <dxb:MainMenuControl VerticalAlignment="Center">
             <dxb:BarSubItem Content="_File">
@@ -94,17 +99,18 @@
     </dx:ThemedWindow.HeaderItems>
 
     <DockPanel>
-        <dxdo:DockLayoutManager ClosedPanelsBarVisibility="Auto">
+        <dxdo:DockLayoutManager ClosedPanelsBarVisibility="Auto" ViewStyle="Default">
             <dxdo:LayoutGroup Caption="LayoutRoot">
 
                 <dxdo:LayoutGroup Orientation="Vertical" ItemWidth="Auto" MinWidth="400">
-                    <dxdo:LayoutPanel ItemHeight="*" dxdo:AutoHideGroup.AutoHideType="Left" Caption="Details">
+                    <dxdo:LayoutPanel ItemHeight="*" dxdo:AutoHideGroup.AutoHideType="Left"
+                                      Caption="Details">
                         <details:DetailsView
-                            DataContext="{Binding DataContext.DetailsViewModel, RelativeSource={RelativeSource AncestorType={x:Type dxdo:DockLayoutManager}}}" />
+                            DataContext="{Binding DataContext.DetailsViewModel, RelativeSource={RelativeSource AncestorType={x:Type dx:ThemedWindow}}}" />
                     </dxdo:LayoutPanel>
 
                     <dxdo:LayoutPanel ItemHeight="300" dxdo:AutoHideGroup.AutoHideType="Left" Caption="Search"
-                                      DataContext="{Binding DataContext.SearchViewModel, RelativeSource={RelativeSource AncestorType={x:Type dxdo:DockLayoutManager}}}">
+                                      DataContext="{Binding DataContext.SearchViewModel, RelativeSource={RelativeSource AncestorType={x:Type dx:ThemedWindow}}}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -116,9 +122,32 @@
                                             NullValueButtonPlacement="EditBox">
                                 <dxe:ButtonInfo IsLeft="False" GlyphKind="Search" Command="{Binding SearchCommand}" />
                             </dxe:ButtonEdit>
-                            <dxe:ListBoxEdit Grid.Row="1"
+                            <dxg:GridControl Grid.Row="1"
                                              SelectedItem="{Binding SelectedTreasuryItem}"
-                                             ItemsSource="{Binding SearchResults}">
+                                             ItemsSource="{Binding SearchResults}"
+                                             SelectionMode="Row"
+                                             ShowBorder="False">
+                                <dxg:GridControl.View>
+                                    <dxg:TableView AllowPerPixelScrolling="True"
+                                                   AllowGrouping="False"
+                                                   NavigationStyle="Row"
+                                                   ShowGroupPanel="False">
+                                        <dxg:TableView.RowCellMenuCustomizations>
+                                            <dxb:BarButtonItem Content="Save..." />
+                                        </dxg:TableView.RowCellMenuCustomizations>
+                                    </dxg:TableView>
+                                </dxg:GridControl.View>
+                                <dxg:GridControl.Columns>
+                                    <dxg:GridColumn FieldName="IssueDate" />
+                                    <dxg:GridColumn FieldName="Type" />
+                                    <dxg:GridColumn FieldName="Term" />
+                                </dxg:GridControl.Columns>
+                            </dxg:GridControl>
+
+                            <!--<dxe:ListBoxEdit Grid.Row="1"
+                                             SelectedItem="{Binding SelectedTreasuryItem}"
+                                             ItemsSource="{Binding SearchResults}"
+                                             ShowBorder="False">
                                 <dxb:BarManager.DXContextMenu>
                                     <dxb:PopupMenu>
                                         <dxb:PopupMenu.Items>
@@ -136,33 +165,35 @@
                                         </dxb:PopupMenu.Items>
                                     </dxb:PopupMenu>
                                 </dxb:BarManager.DXContextMenu>
-                            </dxe:ListBoxEdit>
+                            </dxe:ListBoxEdit>-->
                         </Grid>
                     </dxdo:LayoutPanel>
                 </dxdo:LayoutGroup>
 
-                <dxdo:LayoutPanel Caption="Investments" ItemWidth="*">
-                    <investments:InvestmentsView
-                        DataContext="{Binding DataContext.InvestmentsViewModel, RelativeSource={RelativeSource AncestorType={x:Type dxdo:DockLayoutManager}}}" />
-                </dxdo:LayoutPanel>
+                <dxdo:LayoutGroup Orientation="Vertical">
 
-                <dxdo:LayoutGroup ItemWidth="*" Caption="Auctions" ShowCaption="True"
-                                  DataContext="{Binding  DataContext.AuctionsViewModel, RelativeSource={RelativeSource AncestorType={x:Type dxdo:DockLayoutManager}}}"
-                                  Loaded="{DXEvent Handler='LoadAsync()'}">
-                    <dxdo:DocumentGroup Caption="Auctions">
-                        <dxdo:DocumentPanel Caption="Recent">
-                            <view:TreasuriesCollectionView SelectedTreasury="{Binding SelectedTreasuryRecent}"
-                                                           Treasuries="{Binding TreasuriesRecent}" />
+
+                    <dxdo:DocumentGroup x:Name="AuctionsLayoutGroup" Caption="Auctions" ItemHeight="3*">
+                        <dxdo:DocumentPanel Caption="Recent" ShowBorder="False">
+                            <view:TreasuriesCollectionView
+                                SelectedTreasury="{Binding AuctionsViewModel.SelectedTreasuryRecent}"
+                                Treasuries="{Binding AuctionsViewModel.TreasuriesRecent}" />
                         </dxdo:DocumentPanel>
 
-                        <dxdo:DocumentPanel Caption="Announced">
-                            <view:TreasuriesCollectionView SelectedTreasury="{Binding SelectedTreasuryUpcoming}"
-                                                           Treasuries="{Binding TreasuriesUpcoming}" />
+                        <dxdo:DocumentPanel Caption="Announced" ShowBorder="False">
+                            <view:TreasuriesCollectionView
+                                SelectedTreasury="{Binding AuctionsViewModel. SelectedTreasuryUpcoming}"
+                                Treasuries="{Binding AuctionsViewModel. TreasuriesUpcoming}" />
                         </dxdo:DocumentPanel>
                     </dxdo:DocumentGroup>
+
+                    <dxdo:LayoutPanel Caption="Investments" ItemHeight="2*">
+                        <investments:InvestmentsView
+                            DataContext="{Binding DataContext.InvestmentsViewModel, RelativeSource={RelativeSource AncestorType={x:Type dx:ThemedWindow}}}" />
+                    </dxdo:LayoutPanel>
+
                 </dxdo:LayoutGroup>
             </dxdo:LayoutGroup>
         </dxdo:DockLayoutManager>
-        <dxe:ListBoxEdit Width="0" />
     </DockPanel>
 </dx:ThemedWindow>

@@ -20,6 +20,7 @@
             x:Name="InvestmentsGrid"
             AutoExpandAllGroups="True"
             SelectionMode="Row"
+            ShowBorder="False"
             ItemsSource="{Binding Investments}"
             SelectedItem="{Binding SelectedInvestment, Mode=TwoWay}">
             <dxmvvm:Interaction.Behaviors>
@@ -29,14 +30,14 @@
             </dxmvvm:Interaction.Behaviors>
             <dxg:GridControl.View>
                 <dxg:TableView
-                    AllowCellMerge="True"
                     AllowBestFit="True"
                     AllowGrouping="True"
+                    AllowEditing="False"
+                    ShowUpdateRowButtons="Never"
+                    EditFormShowMode="InlineHideRow"
                     AutoWidth="True"
-                    EditFormShowMode="Dialog"
                     IsTotalSummaryMenuEnabled="True"
                     ShowGroupedColumns="False"
-                    TotalSummaryPosition="Bottom"
                     ValidateRowCommand="{Binding ValidateRowCommand}"
                     ValidateRowDeletionCommand="{Binding ValidateRowDeletionCommand}"
                     DataSourceRefreshCommand="{Binding DataSourceRefreshCommand }"
@@ -68,45 +69,36 @@
             </dxg:GridControl.GroupSummary>
             <dxg:GridControl.Columns>
                 <dxg:GridColumn
-                    d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
-                    Binding="{Binding Cusip}"
+                    FieldName="Cusip"
                     Header="CUSIP"
                     ReadOnly="True" />
                 <dxg:GridColumn
-                    d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
-                    Binding="{Binding IssueDate}"
+                    FieldName="IssueDate"
                     Header="Issue Date"
                     ReadOnly="True" />
                 <dxg:GridColumn
-                    d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
-                    Binding="{Binding MaturityDate, FallbackValue=''}"
+                    FieldName="MaturityDate"
                     Header="Maturity Date"
                     ReadOnly="True" />
                 <dxg:GridColumn
-                    d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
-                    Binding="{Binding Term}"
-                    Header="Term"
+                    FieldName="Term"
                     SortFieldName="TermSpan"
                     ReadOnly="True" />
                 <dxg:GridColumn
-                    d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
-                    Binding="{Binding Type}"
+                    FieldName="Type"
                     GroupIndex="0"
-                    Header="Type"
                     ReadOnly="True" />
                 <dxg:GridColumn AllowCellMerge="False"
-                                d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
+                                AllowEditing="True"
                                 FieldName="Par">
                     <dxg:GridColumn.EditSettings>
                         <dxe:TextEditSettings DisplayFormat="c" Mask="c" MaskType="Numeric" />
                     </dxg:GridColumn.EditSettings>
                 </dxg:GridColumn>
                 <dxg:GridColumn
-                    d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
                     FieldName="Confirmation"
                     AllowCellMerge="False" />
                 <dxg:GridColumn
-                    d:DataContext="{d:DesignInstance Type=investments:InvestmentItemViewModel}"
                     FieldName="Reinvestments"
                     AllowCellMerge="False" />
             </dxg:GridControl.Columns>
