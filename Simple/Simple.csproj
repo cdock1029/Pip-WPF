@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net9.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+		<NoWarn>$(NoWarn);WPF0001</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Content Include="Assets\cat.ico">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="DevExpress.Mvvm" Version="24.2.3" />
+	  <PackageReference Include="DevExpress.Mvvm.CodeGenerators" Version="22.1.1" />
+	  <PackageReference Include="DevExpress.Wpf.Grid" Version="24.2.3" />
+	  <PackageReference Include="DevExpress.Wpf.Themes.All" Version="24.2.3" />
+	  <PackageReference Include="DevExpress.Wpf.ThemesLW" Version="24.2.3" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\DataAccess\Pip.DataAccess.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="View\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="Microsoft.Xaml.Behaviors">
+	    <HintPath>..\..\..\..\packages\NuGet\cache\microsoft.xaml.behaviors.wpf\1.1.135\lib\net6.0-windows7.0\Microsoft.Xaml.Behaviors.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<RuntimeHostConfigurationOption Include="Switch.System.Windows.Controls.DisableDynamicResourceOptimization" Value="false" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<RuntimeHostConfigurationOption Include="Switch.System.Windows.Controls.DisableDynamicResourceOptimization" Value="false" />
+	</ItemGroup>
+</Project>
