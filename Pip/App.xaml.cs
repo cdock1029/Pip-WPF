@@ -25,6 +25,7 @@ public partial class App
 	{
 		CompatibilitySettings.UseLightweightThemes = true;
 		ThemedWindow.UseNativeWindow = true;
+		ThemedWindow.EnableSnapLayouts = true;
 		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Office2019BlackBrickwork.Name;
 		ServiceCollection serviceCollection = [];
 		ConfigureServices(serviceCollection);
@@ -35,8 +36,10 @@ public partial class App
 	{
 		var dbContext = _serviceProvider.GetRequiredService<PipDbContext>();
 		dbContext.Database.Migrate();
-		var mainWindow = _serviceProvider.GetService<MainWindow>();
-		mainWindow?.Show();
+
+		var mainViewModel = _serviceProvider.GetRequiredService<MainViewModel>();
+		var mainWindow = new MainWindow { DataContext = mainViewModel };
+		mainWindow.Show();
 	}
 
 	private static void ConfigureServices(ServiceCollection serviceCollection)
@@ -51,7 +54,6 @@ public partial class App
 			.AddSingleton<InvestmentsViewModel>()
 			.AddSingleton<AuctionsViewModel>()
 			.AddSingleton<DetailsViewModel>()
-			.AddSingleton(p => new MainWindow { DataContext = p.GetRequiredService<MainViewModel>() })
 			.AddSingleton<Func<Type, PipViewModel>>(p =>
 				viewModelType => (PipViewModel)p.GetRequiredService(viewModelType))
 			.AddDbContext<PipDbContext>(ServiceLifetime.Transient)

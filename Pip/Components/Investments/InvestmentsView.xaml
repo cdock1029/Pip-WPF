@@ -9,6 +9,7 @@
     xmlns:investments="clr-namespace:Pip.UI.Components.Investments"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
     d:DataContext="{d:DesignInstance Type=investments:InvestmentsViewModel}"
     d:DesignHeight="400"
     d:DesignWidth="1000"
@@ -19,6 +20,7 @@
         <dxg:GridControl
             x:Name="InvestmentsGrid"
             AutoExpandAllGroups="True"
+            DesignTimeDataObjectType="investments:InvestmentItemViewModel"
             SelectionMode="Row"
             ShowBorder="False"
             ItemsSource="{Binding Investments}"
@@ -33,15 +35,27 @@
                     AllowBestFit="True"
                     AllowGrouping="True"
                     AllowEditing="False"
-                    ShowUpdateRowButtons="Never"
-                    EditFormShowMode="InlineHideRow"
+                    ShowUpdateRowButtons="OnCellEditorOpen"
+                    EditFormShowMode="None"
                     AutoWidth="True"
                     IsTotalSummaryMenuEnabled="True"
                     ShowGroupedColumns="False"
                     ValidateRowCommand="{Binding ValidateRowCommand}"
                     ValidateRowDeletionCommand="{Binding ValidateRowDeletionCommand}"
                     DataSourceRefreshCommand="{Binding DataSourceRefreshCommand }"
-                    ShowFixedTotalSummary="True" />
+                    ShowFixedTotalSummary="True">
+                    <dxg:TableView.RowCellMenuCustomizations>
+                        <dxb:BarButtonItem Content="Delete...">
+                            <dxmvvm:Interaction.Behaviors>
+                                <dxmvvm:ConfirmationBehavior Command="{x:Static dxg:GridCommands.DeleteFocusedRow}"
+                                                             EnableConfirmationMessage="True"
+                                                             MessageIcon="Exclamation"
+                                                             MessageButton="YesNo"
+                                                             MessageText="Confirm Delete?" />
+                            </dxmvvm:Interaction.Behaviors>
+                        </dxb:BarButtonItem>
+                    </dxg:TableView.RowCellMenuCustomizations>
+                </dxg:TableView>
             </dxg:GridControl.View>
             <dxg:GridControl.InputBindings>
                 <KeyBinding Key="Delete">
@@ -97,9 +111,11 @@
                 </dxg:GridColumn>
                 <dxg:GridColumn
                     FieldName="Confirmation"
+                    AllowEditing="True"
                     AllowCellMerge="False" />
                 <dxg:GridColumn
                     FieldName="Reinvestments"
+                    AllowEditing="True"
                     AllowCellMerge="False" />
             </dxg:GridControl.Columns>
         </dxg:GridControl>

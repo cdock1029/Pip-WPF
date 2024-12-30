@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
+using JetBrains.Annotations;
 using Pip.UI.Properties;
 using Pip.UI.View.Types;
 using Pip.UI.ViewModel;
@@ -77,9 +78,11 @@ public partial class MainWindow
 
 	[LibraryImport("user32.dll")]
 	[return: MarshalAs(UnmanagedType.Bool)]
+	[UsedImplicitly]
 	public static partial bool SetWindowPlacement(IntPtr hWnd, ref WindowPlacement windowPlacement);
 
 	[LibraryImport("user32.dll")]
 	[return: MarshalAs(UnmanagedType.Bool)]
+	[UsedImplicitly]
 	public static partial bool GetWindowPlacement(IntPtr hWnd, out WindowPlacement windowPlacement);
 }

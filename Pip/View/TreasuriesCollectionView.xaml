@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:Pip.Model;assembly=Pip.Model"
     xmlns:view="clr-namespace:Pip.UI.View"
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -17,15 +18,20 @@
                 AutoExpandAllGroups="True"
                 ShowBorder="False"
                 ItemsSource="{TemplateBinding Treasuries}"
-                SelectedItem="{TemplateBinding SelectedTreasury}"
-                SelectionMode="None">
+                SelectedItem="{Binding SelectedTreasury, RelativeSource={RelativeSource TemplatedParent}}"
+                SelectionMode="Row">
+                <dxmvvm:Interaction.Behaviors>
+                    <dxmvvm:EventToCommand EventName="SelectionChanged"
+                                           Command="{Binding HandleSelectionChangedCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                           CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=dxg:GridControl}, Path=SelectedItem}" />
+                </dxmvvm:Interaction.Behaviors>
                 <dxg:GridControl.View>
                     <dxg:TableView
                         AllowBestFit="True"
                         AllowGrouping="True"
                         AutoWidth="True"
                         AllowCellMerge="True"
-                        NavigationStyle="Cell"
+                        NavigationStyle="Row"
                         ShowGroupedColumns="False" />
                 </dxg:GridControl.View>
                 <dxg:GridControl.Columns>

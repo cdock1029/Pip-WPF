@@ -7,12 +7,11 @@ public interface ITreasuryDataProvider
 	Task<IEnumerable<Treasury>?> SearchTreasuriesAsync(string cusip);
 	Task<IEnumerable<Treasury>?> GetUpcomingAsync();
 	Task<IEnumerable<Treasury>?> GetAuctionsAsync();
-	Task SaveAsync();
-	Task InsertInvestmentAsync(Investment investment);
-	Task<List<Investment>> GetInvestmentsAsync();
+	void Save();
 	List<Investment> GetInvestments();
 	void Add(Investment investment);
-	Task DeleteInvestmentsAsync(IEnumerable<Investment> investments);
-	Task DeleteInvestmentAsync(Investment investment);
+	void Insert(Investment investment);
+	void DeleteRange(IEnumerable<Investment> investments);
+	void Delete(Investment investment);
 	ValueTask<Treasury?> LookupTreasuryAsync(string cusip, DateOnly issueDate, CancellationToken ct = default);
 }
