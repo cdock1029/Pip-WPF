@@ -1,9 +1,5 @@
 ﻿using System.Runtime.InteropServices;
-using Windows.UI;
-using Windows.UI.ViewManagement;
-using Microsoft.UI;
 using Microsoft.UI.Xaml;
-using WinRT.Interop;
 
 namespace Pip.WinUI.Helpers;
 
@@ -24,7 +20,7 @@ internal static class TitleBarHelper
 
 	public static void UpdateTitleBar(ElementTheme theme)
 	{
-		return;
+		/*
 		if (!App.MainWindow.ExtendsContentIntoTitleBar) return;
 
 		if (theme == ElementTheme.Default)
@@ -81,6 +77,7 @@ internal static class TitleBarHelper
 			SendMessage(hwnd, WMACTIVATE, WAACTIVE, IntPtr.Zero);
 			SendMessage(hwnd, WMACTIVATE, WAINACTIVE, IntPtr.Zero);
 		}
+        */
 	}
 
 	public static void ApplySystemThemeToCaptionButtons()

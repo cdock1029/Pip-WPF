@@ -8,8 +8,28 @@
     MinWidth="500"
     MinHeight="500"
     PersistenceId="MainWindow"
+    TaskBarIcon="Assets/WindowIcon.ico"
     mc:Ignorable="d">
     <Window.SystemBackdrop>
         <MicaBackdrop Kind="Base" />
     </Window.SystemBackdrop>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32" />
+        </Grid.RowDefinitions>
+
+        <windowex:TitleBar x:Name="titleBar" Title="WinUI EX Test App" IsPaneToggleButtonVisible="False"
+                           IsBackButtonVisible="False"
+                           IsBackEnabled="False">
+            <windowex:TitleBar.IconSource>
+                <ImageIconSource ImageSource="ms-appx:///Assets/WindowIcon.ico" />
+            </windowex:TitleBar.IconSource>
+            <!--<windowex:TitleBar.Footer>
+                <HyperlinkButton Content="WinUIEx on GitHub" NavigateUri="https://github.com/dotMorten/WinUIEx" />
+            </windowex:TitleBar.Footer>-->
+        </windowex:TitleBar>
+
+    </Grid>
+
 </windowex:WindowEx>
