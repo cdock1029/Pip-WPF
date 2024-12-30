@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using System.Net.Http.Json;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Pip.Model;
 
@@ -61,6 +60,7 @@ public class TreasuryDataProvider : ITreasuryDataProvider
 
 	#region DB
 
+	// sync I/O faster. https://x.com/davkean/status/1821875521954963742
 	public List<Investment> GetInvestments()
 	{
 		var investments = _dbContext
@@ -69,31 +69,22 @@ public class TreasuryDataProvider : ITreasuryDataProvider
 		return investments;
 	}
 
-	// TODO: sync I/O faster. https://x.com/davkean/status/1821875521954963742
-	public async Task<List<Investment>> GetInvestmentsAsync()
-	{
-		var investments = await Task.Run(() => _dbContext
-			.Investments
-			.ToListAsync()).ConfigureAwait(false);
-		return investments;
-	}
-
-	public async Task InsertInvestmentAsync(Investment investment)
+	public void Insert(Investment investment)
 	{
 		_dbContext.Investments.Add(investment);
-		await Task.Run(() => _dbContext.SaveChangesAsync()).ConfigureAwait(false);
+		_dbContext.SaveChanges();
 	}
 
-	public async Task DeleteInvestmentsAsync(IEnumerable<Investment> investments)
+	public void DeleteRange(IEnumerable<Investment> investments)
 	{
 		_dbContext.Investments.RemoveRange(investments);
-		await Task.Run(() => _dbContext.SaveChangesAsync()).ConfigureAwait(false);
+		_dbContext.SaveChanges();
 	}
 
-	public async Task DeleteInvestmentAsync(Investment investment)
+	public void Delete(Investment investment)
 	{
 		_dbContext.Investments.Remove(investment);
-		await Task.Run(() => _dbContext.SaveChangesAsync()).ConfigureAwait(false);
+		_dbContext.SaveChanges();
 	}
 
 	public void Add(Investment investment)
@@ -101,9 +92,9 @@ public class TreasuryDataProvider : ITreasuryDataProvider
 		_dbContext.Investments.Add(investment);
 	}
 
-	public async Task SaveAsync()
+	public void Save()
 	{
-		await Task.Run(() => _dbContext.SaveChangesAsync()).ConfigureAwait(false);
+		_dbContext.SaveChanges();
 	}
 
 	#endregion DB

@@ -10,6 +10,14 @@
 		<IncludePackageReferencesDuringMarkupCompilation>true</IncludePackageReferencesDuringMarkupCompilation>
 	</PropertyGroup>
 	<ItemGroup>
+	  <None Remove="Assets\cat.ico" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Content Include="Assets\cat.ico">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+	<ItemGroup>
 		<PackageReference Include="Azure.Identity" Version="1.13.1" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0-preview3" />
 		<PackageReference Include="DevExpress.Images" Version="24.2.*-*" />
@@ -41,5 +49,9 @@
 
 	<ItemGroup>
 		<RuntimeHostConfigurationOption Include="Switch.System.Windows.Media.EnableHardwareAccelerationInRdp" Value="true" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<RuntimeHostConfigurationOption Include="Switch.System.Windows.Controls.DisableDynamicResourceOptimization" Value="false" />
 	</ItemGroup>
 </Project>

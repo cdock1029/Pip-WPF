@@ -21,17 +21,28 @@
     SizeToContent="Manual"
     WindowStartupLocation="Manual"
     UseLayoutRounding="True"
+    Icon="Assets/cat.ico"
     mc:Ignorable="d">
 
     <dxmvvm:Interaction.Behaviors>
         <dxmvvm:EventToCommand SourceObject="{Binding ElementName=AuctionsLayoutGroup}" EventName="Loaded"
                                Command="{Binding AuctionsViewModel.LoadAsyncCommand}" />
+
+        <dx:DialogService DialogWindowStartupLocation="CenterOwner">
+            <dx:DialogService.DialogStyle>
+                <Style TargetType="Window">
+                    <Setter Property="SizeToContent" Value="Height" />
+                    <Setter Property="Width" Value="400" />
+                </Style>
+            </dx:DialogService.DialogStyle>
+        </dx:DialogService>
     </dxmvvm:Interaction.Behaviors>
 
     <dx:ThemedWindow.ToolbarItems>
         <dxb:MainMenuControl VerticalAlignment="Center">
             <dxb:BarSubItem Content="_File">
-                <dxb:BarButtonItem x:Name="btnNew" Content="_New" Glyph="{dx:DXImage Image=New_16x16.png}" />
+                <dxb:BarButtonItem x:Name="btnNew" Content="_New" Glyph="{dx:DXImage Image=New_16x16.png}"
+                                   Command="{Binding ShowFormCommand}" />
                 <dxb:BarButtonItem x:Name="btnOpen" Content="_Open" Glyph="{dx:DXImage Image=Open_16x16.png}" />
                 <dxb:BarButtonItem Content="_Quit" Glyph="{dx:DXImage SvgImages/XAF/Action_Close.svg}">
                     <b:Interaction.Triggers>
@@ -123,7 +134,7 @@
                                 <dxe:ButtonInfo IsLeft="False" GlyphKind="Search" Command="{Binding SearchCommand}" />
                             </dxe:ButtonEdit>
                             <dxg:GridControl Grid.Row="1"
-                                             SelectedItem="{Binding SelectedTreasuryItem}"
+                                             SelectedItem="{Binding SelectedTreasuryItem, Mode=TwoWay}"
                                              ItemsSource="{Binding SearchResults}"
                                              SelectionMode="Row"
                                              ShowBorder="False">
@@ -133,7 +144,10 @@
                                                    NavigationStyle="Row"
                                                    ShowGroupPanel="False">
                                         <dxg:TableView.RowCellMenuCustomizations>
-                                            <dxb:BarButtonItem Content="Save..." />
+                                            <dxb:BarButtonItem
+                                                DataContext="{Binding RelativeSource={RelativeSource AncestorType={x:Type dx:ThemedWindow}}, Path=DataContext.SearchViewModel}"
+                                                Content="Save..."
+                                                Command="{Binding CreateInvestmentCommand}" />
                                         </dxg:TableView.RowCellMenuCustomizations>
                                     </dxg:TableView>
                                 </dxg:GridControl.View>
@@ -144,44 +158,24 @@
                                 </dxg:GridControl.Columns>
                             </dxg:GridControl>
 
-                            <!--<dxe:ListBoxEdit Grid.Row="1"
-                                             SelectedItem="{Binding SelectedTreasuryItem}"
-                                             ItemsSource="{Binding SearchResults}"
-                                             ShowBorder="False">
-                                <dxb:BarManager.DXContextMenu>
-                                    <dxb:PopupMenu>
-                                        <dxb:PopupMenu.Items>
-                                            <dxb:BarButtonItem Content="Create investment">
-                                                <dxmvvm:Interaction.Behaviors>
-                                                    <dxmvvm:ConfirmationBehavior
-                                                        Command="{Binding CreateInvestmentCommand}"
-                                                        CommandParameter="{Binding SelectedTreasuryItem}"
-                                                        EnableConfirmationMessage="True"
-                                                        MessageIcon="Exclamation"
-                                                        MessageButton="YesNo"
-                                                        MessageText="Do you want to create investment?" />
-                                                </dxmvvm:Interaction.Behaviors>
-                                            </dxb:BarButtonItem>
-                                        </dxb:PopupMenu.Items>
-                                    </dxb:PopupMenu>
-                                </dxb:BarManager.DXContextMenu>
-                            </dxe:ListBoxEdit>-->
                         </Grid>
                     </dxdo:LayoutPanel>
                 </dxdo:LayoutGroup>
 
                 <dxdo:LayoutGroup Orientation="Vertical">
 
-
-                    <dxdo:DocumentGroup x:Name="AuctionsLayoutGroup" Caption="Auctions" ItemHeight="3*">
+                    <dxdo:DocumentGroup x:Name="AuctionsLayoutGroup" Caption="Auctions" ItemHeight="3*"
+                                        ShowCaption="True">
                         <dxdo:DocumentPanel Caption="Recent" ShowBorder="False">
                             <view:TreasuriesCollectionView
-                                SelectedTreasury="{Binding AuctionsViewModel.SelectedTreasuryRecent}"
+                                HandleSelectionChangedCommand="{Binding DetailsViewModel.HandleSelectionChangedCommand, Mode=OneWay}"
+                                SelectedTreasury="{Binding AuctionsViewModel.SelectedTreasuryRecent, Mode=TwoWay}"
                                 Treasuries="{Binding AuctionsViewModel.TreasuriesRecent}" />
                         </dxdo:DocumentPanel>
 
                         <dxdo:DocumentPanel Caption="Announced" ShowBorder="False">
                             <view:TreasuriesCollectionView
+                                HandleSelectionChangedCommand="{Binding DetailsViewModel.HandleSelectionChangedCommand, Mode=OneWay}"
                                 SelectedTreasury="{Binding AuctionsViewModel. SelectedTreasuryUpcoming}"
                                 Treasuries="{Binding AuctionsViewModel. TreasuriesUpcoming}" />
                         </dxdo:DocumentPanel>

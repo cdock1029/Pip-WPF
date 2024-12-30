@@ -44,7 +44,7 @@ public partial class InvestmentsViewModel : PipViewModel
 		var task = LoadAsync();
 		if (!task.IsCompletedSuccessfully) return;
 		var insertedId = message.Value.Id;
-		var found = Investments.FirstOrDefault(i => i.Id == insertedId);
+		var found = Investments.FirstOrDefault(i => i.Investment.Id == insertedId);
 		SelectedInvestment = found;
 	}
 
@@ -56,24 +56,23 @@ public partial class InvestmentsViewModel : PipViewModel
 	}
 
 	[GenerateCommand]
-	private async Task ValidateRow(RowValidationArgs args)
+	private void ValidateRow(RowValidationArgs args)
 	{
-		if (args.IsNewItem)
-		{
-			var investmentItem = (InvestmentItemViewModel)args.Item;
-			_treasuryDataProvider.Add(investmentItem.Investment);
-		}
+		var investmentItem = (InvestmentItemViewModel)args.Item;
+		if (investmentItem.HasErrors) return;
 
-		await _treasuryDataProvider.SaveAsync();
+		if (args.IsNewItem) _treasuryDataProvider.Add(investmentItem.Investment);
+
+		_treasuryDataProvider.Save();
 	}
 
 	[GenerateCommand]
-	private async Task ValidateRowDeletion(ValidateRowDeletionArgs args)
+	private void ValidateRowDeletion(ValidateRowDeletionArgs args)
 	{
 		try
 		{
 			var investmentItem = (InvestmentItemViewModel)args.Items.Single();
-			await _treasuryDataProvider.DeleteInvestmentAsync(investmentItem.Investment);
+			_treasuryDataProvider.Delete(investmentItem.Investment);
 		}
 		catch (Exception e)
 		{

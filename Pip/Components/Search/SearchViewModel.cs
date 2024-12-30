@@ -60,7 +60,7 @@ public partial class SearchViewModel : PipViewModel
 	}
 
 	[GenerateCommand]
-	private async Task CreateInvestment()
+	private void CreateInvestment()
 	{
 		ArgumentNullException.ThrowIfNull(SelectedTreasuryItem);
 
@@ -74,7 +74,7 @@ public partial class SearchViewModel : PipViewModel
 			SecurityTerm = treasury.SecurityTerm,
 			Type = treasury.Type
 		};
-		await _treasuryDataProvider.InsertInvestmentAsync(investment);
+		_treasuryDataProvider.Insert(investment);
 		Messenger.Default.Send(
 			new AfterInsertInvestmentMessage(new AfterInsertInvestmentArgs(investment.Id, treasury.Cusip,
 				treasury.IssueDate)));
