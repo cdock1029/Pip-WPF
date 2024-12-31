@@ -14,4 +14,8 @@ public abstract class PipViewModel : ViewModelBase
 	{
 		return Task.CompletedTask;
 	}
+
+	public virtual void Load()
+	{
+	}
 }
