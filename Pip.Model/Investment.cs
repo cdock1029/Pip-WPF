@@ -1,14 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace Pip.Model;
 
+[Index(nameof(Cusip), nameof(IssueDate))]
 public class Investment
 {
 	public int Id { get; set; }
 
-	[Required] public required string Cusip { get; set; }
+	[Required]
+	[MaxLength(9)]
+	[MinLength(9)]
+	public string? Cusip { get; set; }
 
-	[Required] public required DateOnly IssueDate { get; set; }
+	[Required] public DateOnly? IssueDate { get; set; }
 
 	public int Par { get; set; }
 

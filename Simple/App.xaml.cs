@@ -29,7 +29,7 @@ public partial class App
 
 	protected override void OnStartup(StartupEventArgs e)
 	{
-		using var context = new PipDbContext(new DbContextOptions<PipDbContext>());
+		using var context = new PipDbContext();
 		context.Database.Migrate();
 
 		//var mainWindow = new MainWindow { ThemeMode = ThemeMode.System };

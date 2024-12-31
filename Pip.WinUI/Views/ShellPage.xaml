@@ -60,8 +60,18 @@
                 </AnimatedIcon>
             </AppBarButton>
         </Grid>
-        <Grid Grid.Row="2" Margin="{StaticResource MenuBarContentMargin}">
-            <Frame x:Name="NavigationFrame" />
+        <Grid Grid.Row="2" Margin="10, 20, 20, 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <ListView MinWidth="300" Margin="0, 0, 20, 0">
+                <ListViewItem Content="Auctions" />
+                <ListViewItem Content="Investments" />
+                <ListViewItem Content="Search" />
+                <ListViewItem Content="Settings" />
+            </ListView>
+            <Frame Grid.Column="1" x:Name="NavigationFrame" />
         </Grid>
     </Grid>
 </Page>

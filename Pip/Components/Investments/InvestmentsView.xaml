@@ -12,7 +12,7 @@
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
     d:DataContext="{d:DesignInstance Type=investments:InvestmentsViewModel}"
     d:DesignHeight="400"
-    d:DesignWidth="1000"
+    d:DesignWidth="900"
     mc:Ignorable="d"
     Loaded="{DXEvent Handler='LoadAsync()'}">
 
@@ -34,7 +34,7 @@
                 <dxg:TableView
                     AllowBestFit="True"
                     AllowGrouping="True"
-                    AllowEditing="False"
+                    NewItemRowPosition="Top"
                     ShowUpdateRowButtons="OnCellEditorOpen"
                     EditFormShowMode="None"
                     AutoWidth="True"
@@ -84,24 +84,19 @@
             <dxg:GridControl.Columns>
                 <dxg:GridColumn
                     FieldName="Cusip"
-                    Header="CUSIP"
-                    ReadOnly="True" />
+                    Header="CUSIP" />
                 <dxg:GridColumn
                     FieldName="IssueDate"
-                    Header="Issue Date"
-                    ReadOnly="True" />
+                    Header="Issue Date" />
                 <dxg:GridColumn
                     FieldName="MaturityDate"
-                    Header="Maturity Date"
-                    ReadOnly="True" />
+                    Header="Maturity Date" />
                 <dxg:GridColumn
                     FieldName="Term"
-                    SortFieldName="TermSpan"
-                    ReadOnly="True" />
+                    SortFieldName="TermSpan" />
                 <dxg:GridColumn
                     FieldName="Type"
-                    GroupIndex="0"
-                    ReadOnly="True" />
+                    GroupIndex="0" />
                 <dxg:GridColumn AllowCellMerge="False"
                                 AllowEditing="True"
                                 FieldName="Par">
@@ -111,11 +106,9 @@
                 </dxg:GridColumn>
                 <dxg:GridColumn
                     FieldName="Confirmation"
-                    AllowEditing="True"
                     AllowCellMerge="False" />
                 <dxg:GridColumn
                     FieldName="Reinvestments"
-                    AllowEditing="True"
                     AllowCellMerge="False" />
             </dxg:GridControl.Columns>
         </dxg:GridControl>

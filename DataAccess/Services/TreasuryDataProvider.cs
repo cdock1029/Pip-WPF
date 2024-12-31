@@ -46,10 +46,12 @@ public class TreasuryDataProvider : ITreasuryDataProvider
 				"securities/auctioned?format=json&limitByTerm=true&days=720")).ConfigureAwait(false);
 	}
 
-	public ValueTask<Treasury?> LookupTreasuryAsync(string cusip, DateOnly issueDate, CancellationToken ct)
+	public ValueTask<Treasury?> LookupTreasuryAsync(string cusip, DateOnly? issueDate, CancellationToken ct)
 	{
+		ArgumentNullException.ThrowIfNull(issueDate);
+
 		var key = (cusip, issueDate);
-		var datePath = issueDate.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
+		var datePath = issueDate.Value.ToString("M/d/yyyy", CultureInfo.InvariantCulture);
 		var path = $"securities/{cusip}/{datePath}";
 		// TODO: manage cache size, eviction etc
 		var task = _cache.GetOrCreateAsync(key, _ => _client.GetFromJsonAsync<Treasury>(path, ct));

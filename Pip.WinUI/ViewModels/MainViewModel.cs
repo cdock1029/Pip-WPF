@@ -1,10 +1,14 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
+using Pip.DataAccess;
+using Pip.Model;
 
 namespace Pip.WinUI.ViewModels;
 
-public partial class MainViewModel : ObservableRecipient
+public partial class MainViewModel(PipDbContext dbContext) : ObservableRecipient
 {
-    public MainViewModel()
-    {
-    }
+	public ObservableCollection<Investment>? Investments =>
+		field ??= new ObservableCollection<Investment>(dbContext.Investments.ToList());
+
+	public TreasuryType[] TreasuryTypes => Enum.GetValues<TreasuryType>();
 }

@@ -1,55 +1,51 @@
 ﻿using System.Windows.Input;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Navigation;
-
 using Pip.WinUI.Contracts.Services;
 
 namespace Pip.WinUI.ViewModels;
 
 public partial class ShellViewModel : ObservableRecipient
 {
-    [ObservableProperty]
-    private bool isBackEnabled;
+	[ObservableProperty] private bool _isBackEnabled;
 
-    public ICommand MenuFileExitCommand
-    {
-        get;
-    }
+	public ShellViewModel(INavigationService navigationService)
+	{
+		NavigationService = navigationService;
+		NavigationService.Navigated += OnNavigated;
 
-    public ICommand MenuSettingsCommand
-    {
-        get;
-    }
+		MenuFileExitCommand = new RelayCommand(OnMenuFileExit);
+		MenuSettingsCommand = new RelayCommand(OnMenuSettings);
+		MenuViewsMainCommand = new RelayCommand(OnMenuViewsMain);
+	}
 
-    public ICommand MenuViewsMainCommand
-    {
-        get;
-    }
+	public ICommand MenuFileExitCommand { get; }
 
-    public INavigationService NavigationService
-    {
-        get;
-    }
+	public ICommand MenuSettingsCommand { get; }
 
-    public ShellViewModel(INavigationService navigationService)
-    {
-        NavigationService = navigationService;
-        NavigationService.Navigated += OnNavigated;
+	public ICommand MenuViewsMainCommand { get; }
 
-        MenuFileExitCommand = new RelayCommand(OnMenuFileExit);
-        MenuSettingsCommand = new RelayCommand(OnMenuSettings);
-        MenuViewsMainCommand = new RelayCommand(OnMenuViewsMain);
-    }
+	public INavigationService NavigationService { get; }
 
-    private void OnNavigated(object sender, NavigationEventArgs e) => IsBackEnabled = NavigationService.CanGoBack;
+	private void OnNavigated(object sender, NavigationEventArgs e)
+	{
+		IsBackEnabled = NavigationService.CanGoBack;
+	}
 
-    private void OnMenuFileExit() => Application.Current.Exit();
+	private void OnMenuFileExit()
+	{
+		Application.Current.Exit();
+	}
 
-    private void OnMenuSettings() => NavigationService.NavigateTo(typeof(SettingsViewModel).FullName!);
+	private void OnMenuSettings()
+	{
+		NavigationService.NavigateTo(typeof(SettingsViewModel).FullName!);
+	}
 
-    private void OnMenuViewsMain() => NavigationService.NavigateTo(typeof(MainViewModel).FullName!);
+	private void OnMenuViewsMain()
+	{
+		NavigationService.NavigateTo(typeof(MainViewModel).FullName!);
+	}
 }

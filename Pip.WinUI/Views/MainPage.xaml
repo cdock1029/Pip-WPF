@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:dataGrid="using:Syncfusion.UI.Xaml.DataGrid"
     mc:Ignorable="d">
 
     <Grid x:Name="ContentArea">
@@ -18,8 +19,34 @@
             Style="{StaticResource PageTitleStyle}" />
 
         <Grid Grid.Row="1">
-            
+            <dataGrid:SfDataGrid x:Name="sfDataGrid"
+                                 AddNewRowPosition="Top"
+                                 AllowEditing="True"
+                                 AllowDeleting="True"
+                                 AllowGrouping="True"
+                                 ColumnWidthMode="Star"
+                                 LiveDataUpdateMode="AllowDataShaping"
+                                 AutoGenerateColumns="False"
+                                 ShowGroupDropArea="True"
+                                 ShowColumnWhenGrouped="False"
+                                 AutoExpandGroups="False"
+                                 ItemsSource="{x:Bind ViewModel.Investments}">
+                <dataGrid:SfDataGrid.Columns>
+                    <dataGrid:GridNumericColumn MappingName="Id" />
+                    <dataGrid:GridTextColumn MappingName="Cusip" />
+                    <dataGrid:GridDateColumn MappingName="IssueDate" HeaderText="Issue date" />
+                    <dataGrid:GridNumericColumn MappingName="Par" DisplayNumberFormat="C0" />
+                    <dataGrid:GridDateColumn MappingName="MaturityDate" HeaderText="Maturity date" />
+                    <dataGrid:GridComboBoxColumn ItemsSource="{x:Bind ViewModel.TreasuryTypes}" MappingName="Type" />
+                    <dataGrid:GridTextColumn MappingName="Confirmation" />
+                    <dataGrid:GridNumericColumn MappingName="Reinvestments" />
+                </dataGrid:SfDataGrid.Columns>
+                <dataGrid:SfDataGrid.GroupColumnDescriptions>
+                    <dataGrid:GroupColumnDescription ColumnName="Type" />
+                </dataGrid:SfDataGrid.GroupColumnDescriptions>
+
+            </dataGrid:SfDataGrid>
         </Grid>
-        
+
     </Grid>
 </Page>

@@ -19,7 +19,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Azure.Identity" Version="1.13.1" />
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0-preview3" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="DevExpress.Images" Version="24.2.*-*" />
 		<PackageReference Include="DevExpress.Mvvm.CodeGenerators" Version="22.1.1" />
 		<PackageReference Include="DevExpress.Wpf.Controls" Version="24.2.3" />

@@ -56,10 +56,10 @@ public class InvestmentItemViewModel : PipViewModel, INotifyDataErrorInfo
 	}
 
 	[Display(GroupName = "[Investment parameters]/[Treasury]")]
-	public string Cusip => Investment.Cusip;
+	public string? Cusip => Investment.Cusip;
 
 	[Display(GroupName = "[Investment parameters]/[Treasury]")]
-	public DateOnly IssueDate => Investment.IssueDate;
+	public DateOnly? IssueDate => Investment.IssueDate;
 
 	[Display(GroupName = "[Investment parameters]/[Treasury]")]
 	[UsedImplicitly]
@@ -72,7 +72,9 @@ public class InvestmentItemViewModel : PipViewModel, INotifyDataErrorInfo
 	public TreasuryType Type => Investment.Type;
 
 
-	public int TermSpan => MaturityDate is null ? 0 : MaturityDate.Value.DayNumber - IssueDate.DayNumber;
+	public int TermSpan => MaturityDate is null || IssueDate is null
+		? 0
+		: MaturityDate.Value.DayNumber - IssueDate.Value.DayNumber;
 
 	public IEnumerable GetErrors(string? propertyName)
 	{

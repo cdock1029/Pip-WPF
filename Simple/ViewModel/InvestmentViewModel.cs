@@ -2,7 +2,6 @@
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using DevExpress.Mvvm.Xpf;
-using Microsoft.EntityFrameworkCore;
 using Pip.DataAccess;
 using Pip.Model;
 
@@ -20,7 +19,7 @@ public partial class InvestmentViewModel
 		{
 			if (_itemsSource != null || ViewModelBase.IsInDesignMode) return _itemsSource;
 
-			_context = new PipDbContext(new DbContextOptions<PipDbContext>());
+			_context = new PipDbContext();
 			_itemsSource = _context.Investments.ToList();
 
 			return _itemsSource;
