@@ -11,6 +11,7 @@ using Pip.UI.Components.Auctions;
 using Pip.UI.Components.Details;
 using Pip.UI.Components.Investments;
 using Pip.UI.Components.Search;
+using Pip.UI.Properties;
 using Pip.UI.Services;
 using Pip.UI.ViewModel;
 using INavigationService = Pip.UI.Services.INavigationService;
@@ -19,26 +20,25 @@ namespace Pip.UI;
 
 public partial class App
 {
-	private readonly ServiceProvider _serviceProvider;
-
 	public App()
 	{
 		CompatibilitySettings.UseLightweightThemes = true;
 		ThemedWindow.UseNativeWindow = true;
-		ThemedWindow.EnableSnapLayouts = true;
 		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Office2019BlackBrickwork.Name;
-		ServiceCollection serviceCollection = [];
-		ConfigureServices(serviceCollection);
-		_serviceProvider = serviceCollection.BuildServiceProvider();
 	}
+
+	private IServiceProvider ServiceProvider { get; set; } = null!;
 
 	protected override void OnStartup(StartupEventArgs e)
 	{
-		var dbContext = _serviceProvider.GetRequiredService<PipDbContext>();
+		ServiceCollection serviceCollection = [];
+		ConfigureServices(serviceCollection);
+		ServiceProvider = serviceCollection.BuildServiceProvider();
+
+		var dbContext = ServiceProvider.GetRequiredService<PipDbContext>();
 		dbContext.Database.Migrate();
 
-		var mainViewModel = _serviceProvider.GetRequiredService<MainViewModel>();
-		var mainWindow = new MainWindow { DataContext = mainViewModel };
+		var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
 		mainWindow.Show();
 	}
 
@@ -48,12 +48,14 @@ public partial class App
 			.AddMemoryCache()
 			.AddSingleton<INavigationService, NavigationService>()
 			.AddSingleton<IMessageBoxService, DXMessageBoxService>()
-			.AddTransient<ITreasuryDataProvider, TreasuryDataProvider>()
+			.AddSingleton<ITreasuryDataProvider, TreasuryDataProvider>()
+			.AddSingleton<PipSettings>()
 			.AddSingleton<MainViewModel>()
 			.AddSingleton<SearchViewModel>()
 			.AddSingleton<InvestmentsViewModel>()
 			.AddSingleton<AuctionsViewModel>()
 			.AddSingleton<DetailsViewModel>()
+			.AddSingleton<MainWindow>()
 			.AddSingleton<Func<Type, PipViewModel>>(p =>
 				viewModelType => (PipViewModel)p.GetRequiredService(viewModelType))
 			.AddDbContext<PipDbContext>(ServiceLifetime.Transient)
@@ -64,7 +66,7 @@ public partial class App
 	{
 		e.Handled = true;
 		Debug.WriteLine(e.Exception);
-		var messageBoxService = _serviceProvider.GetRequiredService<IMessageBoxService>();
+		var messageBoxService = ServiceProvider.GetRequiredService<IMessageBoxService>();
 		messageBoxService.Show($"Unhandled Exception. Contact administrator: [{e.Exception}]", "Error",
 			MessageBoxButton.OK);
 	}

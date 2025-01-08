@@ -16,10 +16,11 @@ public partial class MainWindow
 
 	private readonly PipSettings _pipSettings;
 
-	public MainWindow()
+	public MainWindow(MainViewModel mainViewModel, PipSettings pipSettings)
 	{
 		InitializeComponent();
-		_pipSettings = new PipSettings();
+		DataContext = mainViewModel;
+		_pipSettings = pipSettings;
 
 		SourceInitialized += MainWindow_SourceInitialized;
 		Closing += MainWindow_Closing;

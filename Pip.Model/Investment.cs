@@ -8,10 +8,7 @@ public class Investment
 {
 	public int Id { get; set; }
 
-	[Required]
-	[MaxLength(9)]
-	[MinLength(9)]
-	public string? Cusip { get; set; }
+	[Required] public string? Cusip { get; set; }
 
 	[Required] public DateOnly? IssueDate { get; set; }
 

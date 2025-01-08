@@ -44,7 +44,7 @@
                         Header="Issue Date"
                         ReadOnly="True" />
                     <dxg:GridColumn
-                        Binding="{Binding Path=(model:Treasury.MaturingDate), FallbackValue=''}"
+                        Binding="{Binding Path=(model:Treasury.MaturityDate), FallbackValue=''}"
                         Header="Maturity Date"
                         ReadOnly="True" />
                     <dxg:GridColumn

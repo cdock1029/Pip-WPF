@@ -1,41 +1,59 @@
-﻿using System.Collections;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
+﻿using System.ComponentModel.DataAnnotations;
+using DevExpress.Mvvm.CodeGenerators;
 using JetBrains.Annotations;
 using Pip.Model;
 using Pip.UI.ViewModel;
 
 namespace Pip.UI.Components.Investments;
 
-public class InvestmentItemViewModel : PipViewModel, INotifyDataErrorInfo
+[GenerateViewModel]
+public partial class InvestmentItemViewModel(Investment investment) : PipViewModel
 {
-	private readonly Dictionary<string, List<string>> _errors = new();
-
-	[Display] public required Investment Investment { get; init; }
-
-
-	[Display(GroupName = "[Investment parameters]")]
-	public string? Confirmation
+	public InvestmentItemViewModel() : this(new Investment())
 	{
-		get => Investment.Confirmation;
+	}
+
+	public int Id
+	{
+		get => investment.Id;
 		set
 		{
-			Investment.Confirmation = value;
+			investment.Id = value;
+			RaisePropertiesChanged();
+		}
+	}
+
+	[Display(GroupName = "[Investment parameters]/[Treasury]")]
+	[StringLength(9, ErrorMessage = "Annotation: Must have length 9")]
+	public string? Cusip
+	{
+		get => investment.Cusip;
+		set
+		{
+			investment.Cusip = value;
+			RaisePropertiesChanged();
+		}
+	}
+
+	[Display(GroupName = "[Investment parameters]")]
+	[StringLength(5, ErrorMessage = "Annotation: must be of length 5")]
+	public string? Confirmation
+	{
+		get => investment.Confirmation;
+		set
+		{
+			investment.Confirmation = value;
 			RaisePropertyChanged();
-			ClearErrors();
-			if (string.IsNullOrEmpty(value) || value.Length != 5) AddError("Confirmation must be of length 5");
-			OnErrorsChanged();
 		}
 	}
 
 	[Display(GroupName = "[Investment parameters]")]
 	public int Reinvestments
 	{
-		get => Investment.Reinvestments;
+		get => investment.Reinvestments;
 		set
 		{
-			Investment.Reinvestments = value;
+			investment.Reinvestments = value;
 			RaisePropertyChanged();
 			ClearErrors();
 			if (value > 5) AddError("Max re-investments is 5");
@@ -47,60 +65,68 @@ public class InvestmentItemViewModel : PipViewModel, INotifyDataErrorInfo
 	[DataType(DataType.Currency)]
 	public int Par
 	{
-		get => Investment.Par;
+		get => investment.Par;
 		set
 		{
-			Investment.Par = value;
+			investment.Par = value;
 			RaisePropertyChanged();
 		}
 	}
 
-	[Display(GroupName = "[Investment parameters]/[Treasury]")]
-	public string? Cusip => Investment.Cusip;
 
 	[Display(GroupName = "[Investment parameters]/[Treasury]")]
-	public DateOnly? IssueDate => Investment.IssueDate;
+	public DateOnly? IssueDate
+	{
+		get => investment.IssueDate;
+		set
+		{
+			investment.IssueDate = value;
+			RaisePropertiesChanged();
+		}
+	}
 
 	[Display(GroupName = "[Investment parameters]/[Treasury]")]
 	[UsedImplicitly]
-	public DateOnly? MaturityDate => Investment.MaturityDate;
+	public DateOnly? MaturityDate
+	{
+		get => investment.MaturityDate;
+		set
+		{
+			investment.MaturityDate = value;
+			RaisePropertiesChanged();
+		}
+	}
 
 	[Display(GroupName = "[Investment parameters]/[Treasury]")]
-	public string? Term => Investment.SecurityTerm;
+	public string? Term
+	{
+		get => investment.SecurityTerm;
+		set
+		{
+			investment.SecurityTerm = value;
+			RaisePropertiesChanged();
+		}
+	}
+
 
 	[Display(GroupName = "[Investment parameters]/[Treasury]")]
-	public TreasuryType Type => Investment.Type;
-
+	public TreasuryType Type
+	{
+		get => investment.Type;
+		set
+		{
+			investment.Type = value;
+			RaisePropertiesChanged();
+		}
+	}
 
 	public int TermSpan => MaturityDate is null || IssueDate is null
 		? 0
 		: MaturityDate.Value.DayNumber - IssueDate.Value.DayNumber;
 
-	public IEnumerable GetErrors(string? propertyName)
+
+	public Investment AsInvestment()
 	{
-		return string.IsNullOrEmpty(propertyName)
-			? _errors.SelectMany(p => p.Value)
-			: _errors.GetValueOrDefault(propertyName!, []);
-	}
-
-	public bool HasErrors => _errors.Any();
-
-	public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
-
-	private void AddError(string errorMsg, [CallerMemberName] string propertyName = "")
-	{
-		if (!_errors.ContainsKey(propertyName)) _errors.Add(propertyName, []);
-		_errors[propertyName].Add(errorMsg);
-		OnErrorsChanged(propertyName);
-	}
-
-	private void ClearErrors([CallerMemberName] string propertyName = "")
-	{
-		_errors.Remove(propertyName);
-	}
-
-	private void OnErrorsChanged([CallerMemberName] string propertyName = "")
-	{
-		ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+		return investment;
 	}
 }
