@@ -16,8 +16,8 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <winUiEx:TitleBar Grid.Row="0" x:Name="AppTitleBar" Title="WinUI EX Test App" IsPaneToggleButtonVisible="False"
-                          IsBackButtonVisible="False"
-                          IsBackEnabled="False">
+                          IsBackButtonVisible="True"
+                          IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}">
             <winUiEx:TitleBar.IconSource>
                 <ImageIconSource ImageSource="ms-appx:///Assets/WindowIcon.ico" />
             </winUiEx:TitleBar.IconSource>

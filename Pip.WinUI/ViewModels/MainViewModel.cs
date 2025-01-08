@@ -10,5 +10,5 @@ public partial class MainViewModel(PipDbContext dbContext) : ObservableRecipient
 	public ObservableCollection<Investment>? Investments =>
 		field ??= new ObservableCollection<Investment>(dbContext.Investments.ToList());
 
-	public TreasuryType[] TreasuryTypes => Enum.GetValues<TreasuryType>();
+	public static TreasuryType[] TreasuryTypes => Enum.GetValues<TreasuryType>();
 }

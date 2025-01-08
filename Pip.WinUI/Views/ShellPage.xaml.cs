@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Input;
 using Pip.WinUI.Contracts.Services;
 using Pip.WinUI.Helpers;
 using Pip.WinUI.ViewModels;
+using TitleBar = WinUIEx.TitleBar;
 
 namespace Pip.WinUI.Views;
 
@@ -40,6 +41,9 @@ public sealed partial class ShellPage : Page
 			new PointerEventHandler(ShellMenuBarSettingsButton_PointerPressed), true);
 		ShellMenuBarSettingsButton.AddHandler(PointerReleasedEvent,
 			new PointerEventHandler(ShellMenuBarSettingsButton_PointerReleased), true);
+
+		/* TODO: put this in the right place, who knows */
+		AppTitleBar.BackRequested += AppTitleBar_BackRequested;
 	}
 
 	private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
@@ -53,6 +57,10 @@ public sealed partial class ShellPage : Page
 			(PointerEventHandler)ShellMenuBarSettingsButton_PointerPressed);
 		ShellMenuBarSettingsButton.RemoveHandler(PointerReleasedEvent,
 			(PointerEventHandler)ShellMenuBarSettingsButton_PointerReleased);
+
+
+		/* TODO: put this in the right place, who knows */
+		AppTitleBar.BackRequested -= AppTitleBar_BackRequested;
 	}
 
 	private static KeyboardAccelerator BuildKeyboardAccelerator(VirtualKey key, VirtualKeyModifiers? modifiers = null)
@@ -94,5 +102,10 @@ public sealed partial class ShellPage : Page
 	private void ShellMenuBarSettingsButton_PointerExited(object sender, PointerRoutedEventArgs e)
 	{
 		AnimatedIcon.SetState((UIElement)sender, "Normal");
+	}
+
+	private void AppTitleBar_BackRequested(TitleBar sender, object args)
+	{
+		ViewModel.NavigationService.GoBack();
 	}
 }

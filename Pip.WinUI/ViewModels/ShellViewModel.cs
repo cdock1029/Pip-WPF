@@ -1,5 +1,4 @@
-﻿using System.Windows.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Navigation;
@@ -9,23 +8,13 @@ namespace Pip.WinUI.ViewModels;
 
 public partial class ShellViewModel : ObservableRecipient
 {
-	[ObservableProperty] private bool _isBackEnabled;
-
 	public ShellViewModel(INavigationService navigationService)
 	{
 		NavigationService = navigationService;
 		NavigationService.Navigated += OnNavigated;
-
-		MenuFileExitCommand = new RelayCommand(OnMenuFileExit);
-		MenuSettingsCommand = new RelayCommand(OnMenuSettings);
-		MenuViewsMainCommand = new RelayCommand(OnMenuViewsMain);
 	}
 
-	public ICommand MenuFileExitCommand { get; }
-
-	public ICommand MenuSettingsCommand { get; }
-
-	public ICommand MenuViewsMainCommand { get; }
+	[ObservableProperty] public partial bool IsBackEnabled { get; set; }
 
 	public INavigationService NavigationService { get; }
 
@@ -34,17 +23,20 @@ public partial class ShellViewModel : ObservableRecipient
 		IsBackEnabled = NavigationService.CanGoBack;
 	}
 
-	private void OnMenuFileExit()
+	[RelayCommand]
+	private void MenuFileExit()
 	{
 		Application.Current.Exit();
 	}
 
-	private void OnMenuSettings()
+	[RelayCommand]
+	private void MenuSettings()
 	{
 		NavigationService.NavigateTo(typeof(SettingsViewModel).FullName!);
 	}
 
-	private void OnMenuViewsMain()
+	[RelayCommand]
+	private void MenuViewsMain()
 	{
 		NavigationService.NavigateTo(typeof(MainViewModel).FullName!);
 	}
