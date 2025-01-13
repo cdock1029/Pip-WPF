@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
+using DevExpress.Xpf.Core;
 using JetBrains.Annotations;
 using Pip.UI.Properties;
 using Pip.UI.View.Types;
@@ -9,7 +10,7 @@ using Pip.UI.ViewModel;
 
 namespace Pip.UI;
 
-public partial class MainWindow
+public partial class MainWindow : ThemedWindow
 {
 	private const int ShowNormal = 1;
 	private const int ShowMinimized = 2;
@@ -86,4 +87,16 @@ public partial class MainWindow
 	[return: MarshalAs(UnmanagedType.Bool)]
 	[UsedImplicitly]
 	public static partial bool GetWindowPlacement(IntPtr hWnd, out WindowPlacement windowPlacement);
+
+
+	//private void OnWindowClosing()
+	//{
+	//	_pipSettings.RootLayout = DXSerializer.Serialize LayoutSerializationService.Serialize();
+	//	_pipSettings.Save();
+	//}
+
+	//private void OnWindowLoaded()
+	//{
+	//	if (_pipSettings.RootLayout != null) LayoutSerializationService.Deserialize(_pipSettings.RootLayout);
+	//}
 }

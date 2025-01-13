@@ -76,8 +76,7 @@ public partial class SearchViewModel : PipViewModel
 		};
 		_treasuryDataProvider.Insert(investment);
 		Messenger.Default.Send(
-			new AfterInsertInvestmentMessage(new AfterInsertInvestmentArgs(investment.Id, treasury.Cusip,
-				treasury.IssueDate)));
+			new AfterInsertInvestmentMessage(new AfterInsertInvestmentArgs(investment.Id)));
 	}
 
 	private bool CanCreateInvestment()

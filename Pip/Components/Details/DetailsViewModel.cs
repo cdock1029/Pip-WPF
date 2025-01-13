@@ -24,7 +24,7 @@ public partial class DetailsViewModel(ITreasuryDataProvider treasuryDataProvider
 	{
 		_tokenSource?.Cancel();
 
-		if (selected is null)
+		if (selected?.Cusip is null)
 		{
 			TreasuryDetailsSelected = null;
 			return;

@@ -24,7 +24,7 @@ public partial class App
 	{
 		CompatibilitySettings.UseLightweightThemes = true;
 		ThemedWindow.UseNativeWindow = true;
-		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Office2019BlackBrickwork.Name;
+		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
 	}
 
 	private IServiceProvider ServiceProvider { get; set; } = null!;

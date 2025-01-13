@@ -27,32 +27,25 @@ public partial class InvestmentsViewModel : PipViewModel
 
 	public DetailsViewModel DetailsViewModel { get; }
 
-	public override Task LoadAsync()
+	public override void Load()
 	{
-		if (Investments.Any()) return Task.CompletedTask;
-
-		var investments = _treasuryDataProvider.GetInvestments();
-		foreach (var investment in investments)
-			Investments.Add(new InvestmentItemViewModel(investment));
-
-		return Task.CompletedTask;
+		LoadData();
 	}
 
 	private void Receive(AfterInsertInvestmentMessage message)
 	{
 		Investments.Clear();
-		var task = LoadAsync();
-		if (!task.IsCompletedSuccessfully) return;
+		LoadData();
 		var insertedId = message.Value.Id;
 		var found = Investments.FirstOrDefault(i => i.Id == insertedId);
 		SelectedInvestment = found;
 	}
 
 	[GenerateCommand]
-	private async Task DataSourceRefresh(DataSourceRefreshArgs args)
+	private void DataSourceRefresh(DataSourceRefreshArgs args)
 	{
 		Investments.Clear();
-		await LoadAsync();
+		LoadData();
 	}
 
 	[GenerateCommand]
@@ -78,5 +71,14 @@ public partial class InvestmentsViewModel : PipViewModel
 		{
 			args.ResultAsync = Task.FromResult(new ValidationErrorInfo($"Error Deleting:\n{e.Message}"));
 		}
+	}
+
+	private void LoadData()
+	{
+		if (Investments.Any()) return;
+
+		var investments = _treasuryDataProvider.GetInvestments();
+		foreach (var investment in investments)
+			Investments.Add(new InvestmentItemViewModel(investment));
 	}
 }

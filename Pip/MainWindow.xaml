@@ -22,7 +22,9 @@
     WindowStartupLocation="Manual"
     UseLayoutRounding="True"
     Icon="Assets/cat.ico"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    dx:DXSerializer.Enabled="True"
+    dx:WindowRestoreLayoutOptions.AllowRestoreStateForDisplayedWindow="True">
 
     <dxmvvm:Interaction.Behaviors>
         <dxmvvm:EventToCommand SourceObject="{Binding ElementName=AuctionsLayoutGroup}" EventName="Loaded"
@@ -36,6 +38,12 @@
                 </Style>
             </dx:DialogService.DialogStyle>
         </dx:DialogService>
+
+
+        <!--<dxmvvm:CurrentWindowSerializationBehavior />
+        <dxmvvm:LayoutSerializationService />
+        <dxmvvm:CurrentWindowService ClosingCommand="{Binding OnWindowClosingCommand}" />
+        <dxmvvm:EventToCommand EventName="Initialized" Command="{Binding OnWindowLoadedCommand}" />-->
     </dxmvvm:Interaction.Behaviors>
 
     <dx:ThemedWindow.ToolbarItems>

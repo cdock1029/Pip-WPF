@@ -5,7 +5,7 @@ VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pip.UI", "Pip\Pip.UI.csproj", "{5CE723D9-38E1-4A38-B315-6A26E5FBA471}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pip.DataAccess", "DataAccess\Pip.DataAccess.csproj", "{F291910D-7D57-436E-9759-071E093FF1FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pip.DataAccess", "Pip.DataAccess\Pip.DataAccess.csproj", "{F291910D-7D57-436E-9759-071E093FF1FE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pip.Model", "Pip.Model\Pip.Model.csproj", "{4841918D-B353-4AEF-AA5E-CFFDD5E0830F}"
 EndProject

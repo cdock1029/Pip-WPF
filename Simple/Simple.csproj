@@ -24,7 +24,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\DataAccess\Pip.DataAccess.csproj" />
+		<ProjectReference Include="..\Pip.DataAccess\Pip.DataAccess.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

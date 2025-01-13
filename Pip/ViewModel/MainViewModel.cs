@@ -34,6 +34,7 @@ public partial class MainViewModel(
 
 		var result = DialogService.ShowDialog(MessageButton.OKCancel, "Investment form", nameof(InvestmentForm), model);
 
-		Debug.WriteLine($"result: {result}, model par: {model.Par}, confirmation: {model.Confirmation}");
+		Debug.WriteLine(
+			$"result: {result}, model par: {model.Par}, confirmation: {model.Confirmation}, re-investments: {model.Reinvestments}");
 	}
 }
