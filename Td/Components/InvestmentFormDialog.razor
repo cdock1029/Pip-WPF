@@ -1,0 +1,53 @@
+﻿@using Microsoft.FluentUI.AspNetCore.Components.Icons.Regular
+@implements IDialogContentComponent<Investment>
+
+
+
+@* Header *@
+<FluentDialogHeader ShowDismiss="true">
+    <FluentStack VerticalAlignment="VerticalAlignment.Center">
+        <FluentIcon Value="@(new Size24.WindowApps())"/>
+        <FluentLabel Typo="Typography.PaneHeader">
+            @Dialog.Instance.Parameters.Title
+        </FluentLabel>
+    </FluentStack>
+</FluentDialogHeader>
+
+<EditForm Model="Content" OnValidSubmit="SaveAsync" novalidate>
+    <DataAnnotationsValidator/>
+
+    @* Body *@
+    <FluentDialogBody Class="flex flex-col">
+        <FluentTextField Disabled="true" Value="@Content.Cusip" Label="Cusip:" Class="mb-2"/>
+        <FluentDatePicker Disabled="true" Value="@Content.IssueDate?.ToDateTime()" Label="Issue Date:"  Class="mb-2"/>
+        <div class="flex min-h-24 flex-col">
+            <FluentNumberField Required @bind-Value="@Content.Par" Label="Amount:" Immediate="true" AutoComplete="off" Class="mb-1"/>
+            <FluentValidationMessage For="@(() => Content.Par)"/>
+        </div>
+    </FluentDialogBody>
+
+    @* Footer *@
+    <FluentDialogFooter>
+        <FluentButton Appearance="Appearance.Accent" OnClick="@SaveAsync" Disabled="@(!context.IsModified() || !context.Validate())">Save</FluentButton>
+        <FluentButton Appearance="Appearance.Neutral" OnClick="@CancelAsync">Cancel</FluentButton>
+    </FluentDialogFooter>
+
+</EditForm>
+
+@code {
+
+    [Parameter] public Investment Content { get; set; } = null!;
+
+    [CascadingParameter] public FluentDialog Dialog { get; set; } = null!;
+
+    private async Task SaveAsync()
+    {
+        await Dialog.CloseAsync(Content);
+    }
+
+    private async Task CancelAsync()
+    {
+        await Dialog.CancelAsync();
+    }
+
+}

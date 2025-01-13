@@ -1,0 +1,56 @@
+﻿@page "/treasury/{Cusip}/{IssueDate:datetime}"
+@inject ITreasuryService TreasuryService
+
+<h3>Treasury details</h3>
+
+<FluentGrid>
+    <FluentGridItem xs="12" sm="3">
+        <div>
+            <small>Cusip:</small>
+            <FluentLabel>@Cusip</FluentLabel>
+        </div>
+    </FluentGridItem>
+    <FluentGridItem xs="12" sm="3">
+        <div>
+            <small>Issue date:</small>
+            <FluentLabel>@DateOnly.FromDateTime(IssueDate).ToString(Statics.DateFormatString)</FluentLabel>
+        </div>
+    </FluentGridItem>
+
+    @if (Treasury is not null)
+    {
+        <FluentGridItem xs="12" sm="3">
+            <div>
+                <small>Maturity date:</small>
+                <FluentLabel>@Treasury.MaturityDate?.ToString(Statics.DateFormatString)</FluentLabel>
+            </div>
+        </FluentGridItem>
+        <FluentGridItem xs="12" sm="3">
+            <div>
+                <small>Security term:</small>
+                <FluentLabel>@Treasury.SecurityTerm</FluentLabel>
+            </div>
+        </FluentGridItem>
+        <FluentGridItem xs="12" sm="3">
+            <div>
+                <small>High rate:</small>
+                <FluentLabel>@Treasury.HighInvestmentRate</FluentLabel>
+            </div>
+        </FluentGridItem>
+    }
+</FluentGrid>
+
+@code {
+
+    [Parameter] public required string Cusip { get; set; }
+
+    [Parameter] public required DateTime IssueDate { get; set; }
+
+    Treasury? Treasury { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Treasury = await TreasuryService.GetTreasuryAsync(Cusip, DateOnly.FromDateTime(IssueDate));
+    }
+
+}

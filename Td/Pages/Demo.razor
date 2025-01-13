@@ -1,0 +1,26 @@
+﻿@page "/demo"
+
+<PageTitle>Demo</PageTitle>
+
+<div class="flex flex-col">
+    <p> The DatePicker Value is: @DatePickerValue.ToShortDateString() </p>
+
+   @*  <div class="mb-4">
+        <DxCalendar @bind-SelectedDate="@DatePickerValue" MinDate="_minDate" MaxDate="_maxDate"/>
+    </div> *@
+    <div>
+        <SfCalendar TValue="DateTime" @bind-Value="DatePickerValue"></SfCalendar>
+    </div>
+
+</div>
+
+
+@code {
+    private DateTime DatePickerValue { get; set; } = DateTime.Today;
+
+    private readonly DateTime _minDate = DateTime.Today.AddMonths(-1);
+
+    private readonly DateTime _maxDate = DateTime.Today.AddMonths(1);
+
+
+}

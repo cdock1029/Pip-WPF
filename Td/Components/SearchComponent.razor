@@ -1,0 +1,70 @@
+﻿@using Microsoft.FluentUI.AspNetCore.Components.Icons.Regular
+@inherits BaseStateComponent<SearchComponentState>
+@inject IDialogService DialogService
+@inject NavigationManager Navigation
+
+<div style="padding-left:calc(1rem + 2px); display:flex;flex-direction:column;">
+    <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Left" HorizontalGap="10" Class="pt-4">
+
+        <FluentSearch @ref="_fluentSearchRef" @onfocusin="() => SetMenuOpen(true)" @onfocusout="() => SetMenuOpen(false)" @bind-Value="StateContainer.SearchString" Immediate="true" Placeholder="Search CUSIP" AutoComplete="off" Autofocus="true"/>
+
+        <FluentButton Title="Search" Disabled="string.IsNullOrEmpty(StateContainer.SearchString.Trim())" @onmousedown="HandleSearchClick" Appearance="Appearance.Accent" IconEnd="@(new Size16.Search())"/>
+
+
+    </FluentStack>
+    <div style="position:relative;">
+        <div id="menu-holder" style="position:absolute;top:0;left:0;right:0;z-index:20;">
+            @if (StateContainer.SearchResults is not null && StateContainer.SearchResults.Count > 0)
+            {
+                <FluentMenu Open="@_menuOpen">
+                    @foreach (var result in StateContainer.SearchResults)
+                    {
+                        <FluentMenuItem @onmousedown="() => HandleMenuClick(result)">
+                            <div class="search-option-row" style="display:flex;align-items:center;flex-wrap:wrap;padding:0.5rem;min-height:20px">
+                                <div title="Type" style="width:40px;">@result.Type</div>
+                                <FluentDivider Orientation="Orientation.Vertical" Style="height:15px;" Role="@DividerRole.Presentation"></FluentDivider>
+                                <div title="Term" style="width:70px;">@result.Term</div>
+                                <FluentDivider Orientation="Orientation.Vertical" Style="height:15px;" Role="@DividerRole.Presentation"></FluentDivider>
+                                <div title="Issue date">@result.IssueDate?.ToString(Statics.DateFormatString)</div>
+                            </div>
+                        </FluentMenuItem>
+                    }
+                </FluentMenu>
+            }
+        </div>
+    </div>
+</div>
+
+@code
+{
+
+    private bool _menuOpen = true;
+    private FluentSearch? _fluentSearchRef;
+
+    private void SetMenuOpen(bool isOpen)
+    {
+        InvokeAsync(async () =>
+        {
+            await Task.Delay(1);
+            _menuOpen = isOpen;
+            StateHasChanged();
+        });
+    }
+
+    private async Task HandleSearchClick()
+    {
+        await StateContainer.Search();
+        await InvokeAsync(() => { _fluentSearchRef?.FocusAsync(); });
+    }
+
+    private async Task HandleMenuClick(TreasuryItemViewModel treasuryItem)
+    {
+        var result = await DialogService.OpenCreateInvestmentDialogAsync(treasuryItem);
+
+        if (result.Data is Investment newInvestment)
+        {
+            await StateContainer.AddInvestmentAndResetListAsync(newInvestment);
+            Navigation.NavigateTo("investments");
+        }
+    }
+}

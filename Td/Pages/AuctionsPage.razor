@@ -1,0 +1,57 @@
+﻿@page "/auctions"
+@using Microsoft.FluentUI.AspNetCore.Components.Icons.Regular
+
+<PageTitle>Auctions</PageTitle>
+
+<div class="flex max-h-full flex-col overflow-y-hidden">
+
+    <FluentLabel Typo="Typography.PageTitle" MarginBlock="default">Auctions</FluentLabel>
+
+    <FluentTabs @bind-ActiveTabId="_activeTabId" Style="flex:1;height:1px;overflow:scroll;padding-bottom:1rem;">
+
+        <FluentTab Label="Recent" Id="tab-recent">
+            @if (_activeTabId == "tab-recent")
+            {
+                <FluentDataGrid AutoFit="true" Items="RecentTreasuries?.AsQueryable()" Loading="RecentTreasuries is null">
+                    <TemplateColumn Align="Align.Center" Title="Details">
+                        <div class="flex items-center justify-center">
+                            <FluentIcon Value="new Size20.Link()" OnClick="() => NavigateTreasuryItem(context)"/>
+                        </div>
+                    </TemplateColumn>
+                    <PropertyColumn Style="@Statics.GridFont" Property="@(p => p.Cusip)" Sortable="true"/>
+                    <PropertyColumn Align="Align.End" Style="@Statics.GridFont" Property="@(p => p.AuctionDate)" Title="Auction date" Format="@Statics.DateFormatString" Sortable="true"/>
+                    <PropertyColumn Align="Align.End" Style="@Statics.GridFont" Property="@(p => p.IssueDate)" Title="Issue date" Format="@Statics.DateFormatString" Sortable="true"/>
+                    <PropertyColumn Align="Align.End" Style="@Statics.GridFont" Property="@(p => p.MaturityDate)" Title="Maturity date" Format="@Statics.DateFormatString" Sortable="true"/>
+                    <PropertyColumn Style="@Statics.GridFont" Property="@(p => p.Type)" Title="Type" Sortable="true"/>
+                    <PropertyColumn Style="@Statics.GridFont" Property="@(p => p.Term)" Title="Term" Sortable="true" SortBy="@Statics.TermSpanSort"/>
+                    <TemplateColumn Title="Save" Align="Align.Center">
+                        <div class="flex items-center justify-center">
+                            <FluentIcon Title="@($"Save {context.Type} {context.Term}")" Value="new Size20.Save()" OnClick="() => AddInvestment(context)"/>
+                        </div>
+                    </TemplateColumn>
+                </FluentDataGrid>
+            }
+        </FluentTab>
+
+        <FluentTab Label="Upcoming" Id="tab-upcoming">
+            @if (_activeTabId == "tab-upcoming")
+            {
+                <FluentDataGrid AutoFit="true" Items="UpcomingTreasuries?.AsQueryable()" Loading="UpcomingTreasuries is null">
+                    <PropertyColumn Style="@Statics.GridFont" Property="@(p => p.Cusip)" Sortable="true"/>
+                    <PropertyColumn Align="Align.End" Style="@Statics.GridFont" Property="@(p => p.AuctionDate)" Title="Auction date" Format="@Statics.DateFormatString" Sortable="true"/>
+                    <PropertyColumn Align="Align.End" Style="@Statics.GridFont" Property="@(p => p.IssueDate)" Title="Issue date" Format="@Statics.DateFormatString" Sortable="true"/>
+                    <PropertyColumn Align="Align.End" Style="@Statics.GridFont" Property="@(p => p.MaturityDate)" Title="Maturity date" Format="@Statics.DateFormatString" Sortable="true"/>
+                    <PropertyColumn Style="@Statics.GridFont" Property="@(p => p.Type)" Title="Type" Sortable="true"/>
+                    <PropertyColumn Style="@Statics.GridFont" Property="@(p => p.Term)" Title="Term" Sortable="true" SortBy="@Statics.TermSpanSort"/>
+                    <TemplateColumn Align="Align.Center" Class="flex items-center justify-center">
+                        <div class="flex items-center justify-center">
+                            <FluentIcon Value="@(new Size20.Save())" OnClick="@(_ => AddInvestment(context))"/>
+                        </div>
+                    </TemplateColumn>
+                </FluentDataGrid>
+            }
+        </FluentTab>
+
+    </FluentTabs>
+
+</div>

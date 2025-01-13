@@ -1,0 +1,92 @@
+﻿@using System.Windows
+@using Microsoft.Win32
+@inherits LayoutComponentBase
+@implements IDisposable
+@inject IDialogService DialogService
+@inject AppState AppState
+
+<FluentDesignTheme
+    Mode="DesignThemeModes.System"
+    CustomColor="@CustomColor"
+    Direction="LocalizationDirection.LeftToRight"/>
+<FluentLayout>
+    <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
+        <div style="display:flex;flex-direction:column">
+            <SearchComponent/>
+            <NavMenu/>
+        </div>
+        <FluentBodyContent Class="body-content">
+            <ErrorBoundary>
+                <ChildContent>
+                    <div class="content">
+                        @Body
+                        <FluentToastProvider/>
+                        <FluentDialogProvider/>
+                        <FluentTooltipProvider/>
+                        <FluentKeyCodeProvider/>
+                        <FluentMenuProvider/>
+                    </div>
+                </ChildContent>
+                <ErrorContent Context="ex">
+                    <div class="blazor-error-boundary">@ex.Message</div>
+                </ErrorContent>
+            </ErrorBoundary>
+        </FluentBodyContent>
+    </FluentStack>
+    <FluentFooter>
+        <a href="https://www.treasurydirect.gov/" target="_blank">TreasuryDirect.gov</a>
+        <FluentSpacer/>
+        <a href="https://home.treasury.gov/" target="_blank">U.S. Department of the Treasury</a>
+    </FluentFooter>
+</FluentLayout>
+
+@code
+{
+
+    private IDialogReference? _dialog;
+
+    private string CustomColor { get; set; } = SystemAccentToHex();
+
+    protected override void OnInitialized()
+    {
+        AppState.MainLayoutComponent = this;
+
+        SystemEvents.InvokeOnEventsThread(() => { SystemEvents.UserPreferenceChanged += UserPrefChangedHandler; });
+    }
+
+    private void UserPrefChangedHandler(object sender, UserPreferenceChangedEventArgs e)
+    {
+        InvokeAsync(() =>
+        {
+            CustomColor = SystemAccentToHex();
+            StateHasChanged();
+        });
+    }
+
+    public async Task OpenSiteSettingsAsync()
+    {
+        _dialog = await DialogService.ShowPanelAsync<SiteSettingsPanel>(new DialogParameters
+        {
+            ShowTitle = true,
+            Title = "Site settings",
+            Alignment = HorizontalAlignment.Right,
+            PrimaryAction = "OK",
+            SecondaryAction = null,
+            ShowDismiss = true
+        });
+
+        var _ = await _dialog.Result;
+    }
+
+    private static string SystemAccentToHex()
+    {
+        var ac = SystemColors.AccentColor;
+        var str = $"#{ac.R:X2}{ac.G:X2}{ac.B:X2}";
+        return str;
+    }
+
+    public void Dispose()
+    {
+        SystemEvents.InvokeOnEventsThread(() => { SystemEvents.UserPreferenceChanged -= UserPrefChangedHandler; });
+    }
+}
