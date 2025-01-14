@@ -1,4 +1,6 @@
-﻿namespace Td.Extensions;
+﻿using Pip.Model;
+
+namespace Td.Extensions;
 
 public static class TdAppExtensions
 {
@@ -7,11 +9,11 @@ public static class TdAppExtensions
 	{
 		var investment = new Investment
 		{
-			Cusip = treasuryItem.Cusip,
-			IssueDate = treasuryItem.IssueDate,
+			Cusip = treasuryItem.Cusip!,
+			IssueDate = treasuryItem.IssueDate!.Value,
 			MaturityDate = treasuryItem.MaturityDate,
 			AuctionDate = treasuryItem.AuctionDate,
-			Type = treasuryItem.Type,
+			Type = treasuryItem.Type!.Value,
 			SecurityTerm = treasuryItem.Term
 		};
 

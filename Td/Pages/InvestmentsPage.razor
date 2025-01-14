@@ -175,12 +175,12 @@
 
             var xSpan = investmentX?.MaturityDate is null || investmentX?.IssueDate is null
                 ? 0
-                : investmentX.MaturityDate.Value.DayNumber - investmentX.IssueDate.Value.DayNumber;
+                : investmentX.MaturityDate.Value.DayNumber - investmentX.IssueDate.DayNumber;
 
 
             var ySpan = investmentY?.MaturityDate is null || investmentY?.IssueDate is null
                 ? 0
-                : investmentY.MaturityDate.Value.DayNumber - investmentY.IssueDate.Value.DayNumber;
+                : investmentY.MaturityDate.Value.DayNumber - investmentY.IssueDate.DayNumber;
 
 
             return xSpan.CompareTo(ySpan);

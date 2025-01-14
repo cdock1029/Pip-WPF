@@ -19,7 +19,7 @@
     @* Body *@
     <FluentDialogBody Class="flex flex-col">
         <FluentTextField Disabled="true" Value="@Content.Cusip" Label="Cusip:" Class="mb-2"/>
-        <FluentDatePicker Disabled="true" Value="@Content.IssueDate?.ToDateTime()" Label="Issue Date:"  Class="mb-2"/>
+        <FluentDatePicker Disabled="true" Value="@Content.IssueDate.ToDateTime()" Label="Issue Date:"  Class="mb-2"/>
         <div class="flex min-h-24 flex-col">
             <FluentNumberField Required @bind-Value="@Content.Par" Label="Amount:" Immediate="true" AutoComplete="off" Class="mb-1"/>
             <FluentValidationMessage For="@(() => Content.Par)"/>

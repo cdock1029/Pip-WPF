@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using Pip.Model.Converters;
 
 namespace Pip.Model;
@@ -331,11 +330,6 @@ public class Treasury
 	[JsonPropertyName("type")] public required TreasuryType Type { get; init; }
 
 	[JsonPropertyName("term")] public string? Term { get; init; }
-
-	[NotMapped]
-	public int TermSpan => MaturityDate is null || IssueDate is null
-		? 0
-		: MaturityDate.Value.DayNumber - IssueDate.Value.DayNumber;
 }
 
 [JsonConverter(typeof(JsonStringEnumConverter<TreasuryType>))]

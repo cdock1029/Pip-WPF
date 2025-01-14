@@ -57,7 +57,7 @@ public class PipDbContext : DbContext
 				Confirmation = "FOO",
 				Par = 100_000,
 				Cusip = treasuries[0].Cusip,
-				IssueDate = treasuries[0].IssueDate ?? default,
+				IssueDate = treasuries[0].IssueDate!.Value,
 				MaturityDate = treasuries[0].MaturityDate,
 				SecurityTerm = treasuries[0].SecurityTerm,
 				Type = treasuries[0].Type
@@ -69,7 +69,7 @@ public class PipDbContext : DbContext
 				Confirmation = "BAR",
 				Par = 55_000,
 				Cusip = treasuries[1].Cusip,
-				IssueDate = treasuries[1].IssueDate ?? default,
+				IssueDate = treasuries[1].IssueDate!.Value,
 				MaturityDate = treasuries[1].MaturityDate,
 				SecurityTerm = treasuries[1].SecurityTerm,
 				Type = treasuries[1].Type
@@ -80,7 +80,7 @@ public class PipDbContext : DbContext
 				Confirmation = "BAZ",
 				Par = 2000_400,
 				Cusip = treasuries[2].Cusip,
-				IssueDate = treasuries[2].IssueDate ?? default,
+				IssueDate = treasuries[2].IssueDate!.Value,
 				MaturityDate = treasuries[2].MaturityDate,
 				SecurityTerm = treasuries[2].SecurityTerm,
 				Type = treasuries[2].Type

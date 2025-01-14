@@ -1,4 +1,6 @@
-﻿namespace Td.Data;
+﻿using Pip.Model;
+
+namespace Td.Data;
 
 public interface ITreasuryService
 {
