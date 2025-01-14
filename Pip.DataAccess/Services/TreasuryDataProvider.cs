@@ -62,6 +62,12 @@ public class TreasuryDataProvider : ITreasuryDataProvider
 
 	#region DB
 
+	public void Update(Investment investment)
+	{
+		if (_dbContext.Investments.Find(investment.Id) is { } inv)
+			_dbContext.Entry(inv).CurrentValues.SetValues(investment);
+	}
+
 	// sync I/O faster. https://x.com/davkean/status/1821875521954963742
 	public List<Investment> GetInvestments()
 	{

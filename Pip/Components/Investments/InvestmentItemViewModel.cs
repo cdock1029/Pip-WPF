@@ -7,118 +7,47 @@ using Pip.UI.ViewModel;
 namespace Pip.UI.Components.Investments;
 
 [GenerateViewModel]
-public partial class InvestmentItemViewModel(Investment investment) : PipViewModel
+public partial class InvestmentItemViewModel : PipViewModel
 {
-	public InvestmentItemViewModel() : this(new Investment())
-	{
-	}
-
-	public int Id
-	{
-		get => investment.Id;
-		set
-		{
-			investment.Id = value;
-			RaisePropertiesChanged();
-		}
-	}
-
-	[Display(GroupName = "[Investment parameters]/[Treasury]")]
-	[StringLength(9, ErrorMessage = "Annotation: Must have length 9")]
-	public string? Cusip
-	{
-		get => investment.Cusip;
-		set
-		{
-			investment.Cusip = value;
-			RaisePropertiesChanged();
-		}
-	}
+	[Display(GroupName = "[Investment parameters]")] [GenerateProperty]
+	private DateOnly? _auctionDate;
 
 	[Display(GroupName = "[Investment parameters]")]
 	[StringLength(5, ErrorMessage = "Annotation: must be of length 5")]
-	public string? Confirmation
-	{
-		get => investment.Confirmation;
-		set
-		{
-			investment.Confirmation = value;
-			RaisePropertyChanged();
-		}
-	}
+	[GenerateProperty]
+	private string? _confirmation;
 
-	[Display(GroupName = "[Investment parameters]")]
-	public int Reinvestments
-	{
-		get => investment.Reinvestments;
-		set
-		{
-			investment.Reinvestments = value;
-			RaisePropertyChanged();
-			ClearErrors();
-			if (value > 5) AddError("Max re-investments is 5");
-			OnErrorsChanged();
-		}
-	}
+	[Display(GroupName = "[Investment parameters]/[Treasury]")]
+	[StringLength(9, ErrorMessage = "Annotation: Must have length 9")]
+	[Required]
+	[GenerateProperty]
+	private string? _cusip;
+
+	[GenerateProperty] private int _id;
+
+	[Display(GroupName = "[Investment parameters]/[Treasury]")] [GenerateProperty] [Required]
+	private DateOnly? _issueDate;
+
+	[Display(GroupName = "[Investment parameters]/[Treasury]")] [UsedImplicitly] [GenerateProperty]
+	private DateOnly? _maturityDate;
 
 	[Display(GroupName = "[Investment parameters]")]
 	[DataType(DataType.Currency)]
-	public int Par
-	{
-		get => investment.Par;
-		set
-		{
-			investment.Par = value;
-			RaisePropertyChanged();
-		}
-	}
+	[GenerateProperty]
+	[Range(100, int.MaxValue)]
+	private int _par;
+
+	[Display(GroupName = "[Investment parameters]")]
+	[Range(0, 5, ErrorMessage = "Maximum re-investments is 5")]
+	[GenerateProperty]
+	private int _reinvestments;
+
+	[Display(GroupName = "[Investment parameters]/[Treasury]")] [GenerateProperty]
+	private string? _term;
 
 
-	[Display(GroupName = "[Investment parameters]/[Treasury]")]
-	public DateOnly? IssueDate
-	{
-		get => investment.IssueDate;
-		set
-		{
-			investment.IssueDate = value;
-			RaisePropertiesChanged();
-		}
-	}
-
-	[Display(GroupName = "[Investment parameters]/[Treasury]")]
-	[UsedImplicitly]
-	public DateOnly? MaturityDate
-	{
-		get => investment.MaturityDate;
-		set
-		{
-			investment.MaturityDate = value;
-			RaisePropertiesChanged();
-		}
-	}
-
-	[Display(GroupName = "[Investment parameters]/[Treasury]")]
-	public string? Term
-	{
-		get => investment.SecurityTerm;
-		set
-		{
-			investment.SecurityTerm = value;
-			RaisePropertiesChanged();
-		}
-	}
-
-
-	[Display(GroupName = "[Investment parameters]/[Treasury]")]
-	public TreasuryType Type
-	{
-		get => investment.Type;
-		set
-		{
-			investment.Type = value;
-			RaisePropertiesChanged();
-		}
-	}
+	[Display(GroupName = "[Investment parameters]/[Treasury]")] [GenerateProperty] [Required]
+	private TreasuryType? _type;
 
 	public int TermSpan => MaturityDate is null || IssueDate is null
 		? 0
@@ -127,6 +56,35 @@ public partial class InvestmentItemViewModel(Investment investment) : PipViewMod
 
 	public Investment AsInvestment()
 	{
-		return investment;
+		return new Investment
+		{
+			Id = Id,
+			Cusip = Cusip!,
+			IssueDate = IssueDate!.Value,
+			Type = Type!.Value,
+			Par = Par,
+			MaturityDate = MaturityDate,
+			AuctionDate = AuctionDate,
+			Confirmation = Confirmation,
+			Reinvestments = Reinvestments,
+			SecurityTerm = Term
+		};
+	}
+
+	public static InvestmentItemViewModel FromModel(Investment model)
+	{
+		return new InvestmentItemViewModel
+		{
+			Id = model.Id,
+			Cusip = model.Cusip,
+			IssueDate = model.IssueDate,
+			Par = model.Par,
+			MaturityDate = model.MaturityDate,
+			AuctionDate = model.AuctionDate,
+			Confirmation = model.Confirmation,
+			Reinvestments = model.Reinvestments,
+			Term = model.SecurityTerm,
+			Type = model.Type
+		};
 	}
 }

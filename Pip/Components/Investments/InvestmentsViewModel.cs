@@ -54,7 +54,10 @@ public partial class InvestmentsViewModel : PipViewModel
 		var investmentItem = (InvestmentItemViewModel)args.Item;
 		if (investmentItem.HasErrors) return;
 
-		if (args.IsNewItem) _treasuryDataProvider.Add(investmentItem.AsInvestment());
+		if (args.IsNewItem)
+			_treasuryDataProvider.Add(investmentItem.AsInvestment());
+		else
+			_treasuryDataProvider.Update(investmentItem.AsInvestment());
 
 		_treasuryDataProvider.Save();
 	}
@@ -79,6 +82,6 @@ public partial class InvestmentsViewModel : PipViewModel
 
 		var investments = _treasuryDataProvider.GetInvestments();
 		foreach (var investment in investments)
-			Investments.Add(new InvestmentItemViewModel(investment));
+			Investments.Add(InvestmentItemViewModel.FromModel(investment));
 	}
 }

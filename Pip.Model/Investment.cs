@@ -8,16 +8,21 @@ public class Investment
 {
 	public int Id { get; set; }
 
-	[Required] public string? Cusip { get; set; }
+	public required string Cusip { get; set; }
 
-	[Required] public DateOnly? IssueDate { get; set; }
+	public required DateOnly IssueDate { get; set; }
+
+	public required TreasuryType Type { get; set; }
 
 	public int Par { get; set; }
+
+	public DateOnly? MaturityDate { get; set; }
+
+	public DateOnly? AuctionDate { get; set; }
 
 	public string? Confirmation { get; set; }
 
 	public int Reinvestments { get; set; }
-	public DateOnly? MaturityDate { get; set; }
-	public string? SecurityTerm { get; set; }
-	public TreasuryType Type { get; set; }
+
+	[MaxLength(20)] public string? SecurityTerm { get; set; }
 }

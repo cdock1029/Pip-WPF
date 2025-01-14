@@ -40,4 +40,8 @@
 		<PackageReference Include="Syncfusion.Blazor.Themes" Version="28.1.38" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\Pip.DataAccess\Pip.DataAccess.csproj" />
+	</ItemGroup>
+
 </Project>
