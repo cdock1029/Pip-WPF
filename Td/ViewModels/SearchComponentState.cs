@@ -1,6 +1,6 @@
 ﻿namespace Td.ViewModels;
 
-public class SearchComponentState(ITreasuryService treasuryService, InvestmentPageState investmentPageState)
+public class SearchComponentState(ITreasuryDataProvider treasuryDataProvider, InvestmentPageState investmentPageState)
 	: BaseStateContainer
 {
 	public string SearchString
@@ -46,7 +46,7 @@ public class SearchComponentState(ITreasuryService treasuryService, InvestmentPa
 	{
 		SelectedOption = null;
 		SearchResults = [];
-		var treasuries = await treasuryService.SearchTreasuriesAsync(SearchString);
+		var treasuries = await treasuryDataProvider.SearchTreasuriesAsync(SearchString);
 		if (treasuries != null)
 			foreach (var t in treasuries)
 				SearchResults.Add(new TreasuryItemViewModel
@@ -60,9 +60,10 @@ public class SearchComponentState(ITreasuryService treasuryService, InvestmentPa
 				});
 	}
 
-	public async Task AddInvestmentAndResetListAsync(Investment newInvestment)
+	public void AddInvestmentAndResetList(Investment newInvestment)
 	{
-		await treasuryService.AddInvestmentAsync(newInvestment);
+		treasuryDataProvider.Add(newInvestment);
+		treasuryDataProvider.Save();
 		investmentPageState.LoadData();
 	}
 }

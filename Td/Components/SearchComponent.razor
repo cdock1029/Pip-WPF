@@ -1,5 +1,4 @@
 ﻿@using Microsoft.FluentUI.AspNetCore.Components.Icons.Regular
-@using Pip.Model
 @inherits BaseStateComponent<SearchComponentState>
 @inject IDialogService DialogService
 @inject NavigationManager Navigation
@@ -64,7 +63,7 @@
 
         if (result.Data is Investment newInvestment)
         {
-            await StateContainer.AddInvestmentAndResetListAsync(newInvestment);
+            StateContainer.AddInvestmentAndResetList(newInvestment);
             Navigation.NavigateTo("investments");
         }
     }

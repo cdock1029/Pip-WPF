@@ -9,7 +9,7 @@ public partial class AuctionsPage
 	private IEnumerable<TreasuryItemViewModel>? RecentTreasuries { get; set; }
 	private IEnumerable<TreasuryItemViewModel>? UpcomingTreasuries { get; set; }
 
-	[Inject] private ITreasuryService TreasuryService { get; set; } = null!;
+	[Inject] private ITreasuryDataProvider TreasuryDataProvider { get; set; } = null!;
 	[Inject] private IMemoryCache Cache { get; set; } = null!;
 
 	[Inject] private IDialogService DialogService { get; set; } = null!;
@@ -30,7 +30,7 @@ public partial class AuctionsPage
 			});
 
 
-			var treasuries = await TreasuryService.GetRecentAsyncSimple();
+			var treasuries = await TreasuryDataProvider.GetRecentAsync();
 			if (treasuries is null) return [];
 
 			return treasuries.Select(t => new TreasuryItemViewModel
@@ -54,7 +54,7 @@ public partial class AuctionsPage
 				AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10)
 			});
 
-			var treasuries = await TreasuryService.GetUpcomingAsyncSimple();
+			var treasuries = await TreasuryDataProvider.GetUpcomingAsync();
 			if (treasuries is null) return [];
 			return treasuries.Select(t => new TreasuryItemViewModel
 			{
@@ -73,7 +73,7 @@ public partial class AuctionsPage
 		var result = await DialogService.OpenCreateInvestmentDialogAsync(treasuryItem);
 		if (result.Data is Investment newInvestment)
 		{
-			TreasuryService.Add(newInvestment);
+			TreasuryDataProvider.Add(newInvestment);
 			Navigation.NavigateTo("investments");
 		}
 	}

@@ -1,5 +1,5 @@
 ﻿@page "/treasury/{Cusip}/{IssueDate:datetime}"
-@inject ITreasuryService TreasuryService
+@inject ITreasuryDataProvider TreasuryDataProvider
 
 <h3>Treasury details</h3>
 
@@ -48,9 +48,21 @@
 
     Treasury? Treasury { get; set; }
 
-    protected override async Task OnParametersSetAsync()
+    protected override void OnParametersSet()
     {
-        Treasury = await TreasuryService.GetTreasuryAsync(Cusip, DateOnly.FromDateTime(IssueDate));
+        var treasuryTask = TreasuryDataProvider.LookupTreasuryAsync(Cusip, DateOnly.FromDateTime(IssueDate));
+
+        if (treasuryTask.IsCompleted)
+        {
+            Treasury = treasuryTask.Result;
+        }
+        else
+        {
+            InvokeAsync(async () =>
+            {
+                Treasury = await treasuryTask;
+            });
+        }
     }
 
 }

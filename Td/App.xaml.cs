@@ -27,7 +27,7 @@ public partial class App
 
 		ServiceProvider = serviceCollection.BuildServiceProvider();
 
-		var dbContext = ServiceProvider.GetRequiredService<TreasuryDirectorContext>();
+		var dbContext = ServiceProvider.GetRequiredService<PipDbContext>();
 		dbContext.Database.Migrate();
 
 		var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
@@ -37,7 +37,7 @@ public partial class App
 	private void ConfigureServices(IServiceCollection serviceCollection)
 	{
 		serviceCollection.AddSingleton<MainWindow>();
-		serviceCollection.AddDbContext<TreasuryDirectorContext>(ServiceLifetime.Singleton);
+		serviceCollection.AddDbContext<PipDbContext>(ServiceLifetime.Singleton);
 		serviceCollection.AddWpfBlazorWebView();
 
 		serviceCollection.AddDevExpressBlazor(configure =>
@@ -49,7 +49,7 @@ public partial class App
 		serviceCollection.AddSyncfusionBlazor();
 
 		serviceCollection.AddMemoryCache();
-		serviceCollection.AddHttpClient<ITreasuryService, TreasuryService>();
+		serviceCollection.AddHttpClient<ITreasuryDataProvider, TreasuryDataProvider>();
 		serviceCollection.AddSingleton<SearchComponentState>();
 		serviceCollection.AddSingleton<InvestmentPageState>();
 		serviceCollection.AddSingleton<ReloadNotifierService>();

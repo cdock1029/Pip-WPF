@@ -38,10 +38,10 @@ public class TreasuryDataProvider : ITreasuryDataProvider
 	// 1 call, group by "Type"? https://www.treasurydirect.gov/TA_WS/securities/auctioned?limitByTerm=true&days=720
 	//or individual:
 	//https://www.treasurydirect.gov/TA_WS/securities/auctioned?limitByTerm=true&days=720&type=FRN
-	public async Task<IEnumerable<Treasury>?> GetAuctionsAsync()
+	public async Task<IEnumerable<Treasury>?> GetRecentAsync()
 	{
 		//type: Bill, Bond, FRN, Note, TIPS, CMB
-		return await _cache.GetOrCreateAsync(nameof(GetAuctionsAsync), _ =>
+		return await _cache.GetOrCreateAsync(nameof(GetRecentAsync), _ =>
 			_client.GetFromJsonAsync<IEnumerable<Treasury>>(
 				"securities/auctioned?format=json&limitByTerm=true&days=720")).ConfigureAwait(false);
 	}

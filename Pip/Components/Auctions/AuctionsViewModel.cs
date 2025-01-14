@@ -28,7 +28,7 @@ public partial class AuctionsViewModel(ITreasuryDataProvider treasuryDataProvide
 	private async Task LoadRecent()
 	{
 		if (TreasuriesRecent.Any()) return;
-		var recent = await treasuryDataProvider.GetAuctionsAsync();
+		var recent = await treasuryDataProvider.GetRecentAsync();
 		if (recent is not null)
 			foreach (var treasury in recent)
 				TreasuriesRecent.Add(treasury);

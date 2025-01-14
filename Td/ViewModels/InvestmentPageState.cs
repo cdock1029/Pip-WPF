@@ -1,6 +1,6 @@
 ﻿namespace Td.ViewModels;
 
-public class InvestmentPageState(ITreasuryService treasuryService) : BaseStateContainer
+public class InvestmentPageState(ITreasuryDataProvider treasuryDataProvider) : BaseStateContainer
 {
 	public List<Investment> Investments
 	{
@@ -14,21 +14,21 @@ public class InvestmentPageState(ITreasuryService treasuryService) : BaseStateCo
 
 	public override void LoadData()
 	{
-		Investments = treasuryService.GetInvestments();
+		Investments = treasuryDataProvider.GetInvestments();
 	}
 
 	public void DeleteInvestment(Investment investment)
 	{
-		treasuryService.Delete(investment);
+		treasuryDataProvider.Delete(investment);
 	}
 
 	public void Update(Investment investment)
 	{
-		treasuryService.Update(investment);
+		treasuryDataProvider.Update(investment);
 	}
 
 	public void Create(Investment investment)
 	{
-		treasuryService.Add(investment);
+		treasuryDataProvider.Add(investment);
 	}
 }
