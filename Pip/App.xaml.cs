@@ -9,6 +9,7 @@ using Pip.DataAccess;
 using Pip.DataAccess.Services;
 using Pip.UI.Components.Auctions;
 using Pip.UI.Components.Details;
+using Pip.UI.Components.Home;
 using Pip.UI.Components.Investments;
 using Pip.UI.Components.Search;
 using Pip.UI.Properties;
@@ -24,6 +25,7 @@ public partial class App
 	{
 		CompatibilitySettings.UseLightweightThemes = true;
 		ThemedWindow.UseNativeWindow = true;
+		//ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win10SystemColors.Name;
 		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
 	}
 
@@ -51,6 +53,7 @@ public partial class App
 			.AddSingleton<ITreasuryDataProvider, TreasuryDataProvider>()
 			.AddSingleton<PipSettings>()
 			.AddSingleton<MainViewModel>()
+			.AddSingleton<HomeViewModel>()
 			.AddSingleton<SearchViewModel>()
 			.AddSingleton<InvestmentsViewModel>()
 			.AddSingleton<AuctionsViewModel>()

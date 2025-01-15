@@ -1,9 +1,11 @@
 ﻿using System.Diagnostics;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
+using DevExpress.Xpf.Accordion;
 using DevExpress.Xpf.Core.Native;
 using Pip.UI.Components.Auctions;
 using Pip.UI.Components.Details;
+using Pip.UI.Components.Home;
 using Pip.UI.Components.Investments;
 using Pip.UI.Components.Search;
 
@@ -14,14 +16,19 @@ public partial class MainViewModel(
 	InvestmentsViewModel investmentsViewModel,
 	SearchViewModel searchViewModel,
 	AuctionsViewModel auctionsViewModel,
-	DetailsViewModel detailsViewModel
+	DetailsViewModel detailsViewModel,
+	HomeViewModel homeViewModel
 )
 	: PipViewModel
 {
-	public AuctionsViewModel AuctionsViewModel => auctionsViewModel;
+	private AuctionsViewModel AuctionsViewModel => auctionsViewModel;
 	public SearchViewModel SearchViewModel => searchViewModel;
-	public InvestmentsViewModel InvestmentsViewModel => investmentsViewModel;
+	private InvestmentsViewModel InvestmentsViewModel => investmentsViewModel;
 	public DetailsViewModel DetailsViewModel => detailsViewModel;
+	public HomeViewModel HomeViewModel => homeViewModel;
+
+	private INavigationService NavigationService => GetService<INavigationService>();
+
 
 	[GenerateCommand]
 	private void ShowForm()
@@ -36,5 +43,29 @@ public partial class MainViewModel(
 
 		Debug.WriteLine(
 			$"result: {result}, model par: {model.Par}, confirmation: {model.Confirmation}, re-investments: {model.Reinvestments}");
+	}
+
+	[GenerateCommand]
+	private void NavigateHome()
+	{
+		NavigationService.Navigate(nameof(HomeView), HomeViewModel);
+	}
+
+	[GenerateCommand]
+	private void NavigateAuctions()
+	{
+		NavigationService.Navigate(nameof(AuctionsView), AuctionsViewModel);
+	}
+
+	[GenerateCommand]
+	private void NavigateInvestments()
+	{
+		NavigationService.Navigate(nameof(InvestmentsView), InvestmentsViewModel);
+	}
+
+	[GenerateCommand]
+	private void HandleSelectedItemChanged(AccordionSelectedItemChangedEventArgs args)
+	{
+		Debug.WriteLine($"triggered {args.NewItem}");
 	}
 }

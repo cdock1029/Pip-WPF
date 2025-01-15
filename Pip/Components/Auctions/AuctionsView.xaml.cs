@@ -1,10 +1,10 @@
 ﻿using DevExpress.Xpf.WindowsUI.Navigation;
 
-namespace Pip.UI.Components.Investments;
+namespace Pip.UI.Components.Auctions;
 
-public partial class InvestmentsView : INavigationAware
+public partial class AuctionsView : INavigationAware
 {
-	public InvestmentsView()
+	public AuctionsView()
 	{
 		InitializeComponent();
 	}
@@ -12,7 +12,7 @@ public partial class InvestmentsView : INavigationAware
 	public void NavigatedTo(NavigationEventArgs e)
 	{
 		if (DataContext is not null) return;
-		if (e.Parameter is InvestmentsViewModel vm) DataContext = vm;
+		if (e.Parameter is AuctionsViewModel vm) DataContext = vm;
 	}
 
 	public void NavigatingFrom(NavigatingEventArgs e)

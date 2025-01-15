@@ -7,13 +7,13 @@
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="clr-namespace:Pip.UI.ViewModel"
-    xmlns:investments="clr-namespace:Pip.UI.Components.Investments"
-    xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
-    xmlns:details="clr-namespace:Pip.UI.Components.Details"
-    xmlns:view="clr-namespace:Pip.UI.View"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:navigation="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
+    xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
+    xmlns:dxa="http://schemas.devexpress.com/winfx/2008/xaml/accordion"
+    xmlns:home="clr-namespace:Pip.UI.Components.Home"
     x:Class="Pip.UI.MainWindow"
     Width="800"
     Height="800"
@@ -27,8 +27,6 @@
     dx:WindowRestoreLayoutOptions.AllowRestoreStateForDisplayedWindow="True">
 
     <dxmvvm:Interaction.Behaviors>
-        <dxmvvm:EventToCommand SourceObject="{Binding ElementName=AuctionsLayoutGroup}" EventName="Loaded"
-                               Command="{Binding AuctionsViewModel.LoadAsyncCommand}" />
 
         <dx:DialogService DialogWindowStartupLocation="CenterOwner">
             <dx:DialogService.DialogStyle>
@@ -44,6 +42,8 @@
         <dxmvvm:LayoutSerializationService />
         <dxmvvm:CurrentWindowService ClosingCommand="{Binding OnWindowClosingCommand}" />
         <dxmvvm:EventToCommand EventName="Initialized" Command="{Binding OnWindowLoadedCommand}" />-->
+
+
     </dxmvvm:Interaction.Behaviors>
 
     <dx:ThemedWindow.ToolbarItems>
@@ -117,8 +117,60 @@
         </StackPanel>
     </dx:ThemedWindow.HeaderItems>
 
-    <DockPanel>
-        <dxdo:DockLayoutManager ClosedPanelsBarVisibility="Auto" ViewStyle="Default">
+    <DockPanel Margin="10, 20, 10, 0">
+        <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Width="280">
+            <dxa:AccordionControl IsSynchronizedWithCurrentItem="True">
+                <dxmvvm:Interaction.Behaviors>
+                    <dxmvvm:EventToCommand EventName="SelectedItemChanged"
+                                           Command="{Binding HandleSelectedItemChangedCommand}"
+                                           PassEventArgsToCommand="True" />
+                </dxmvvm:Interaction.Behaviors>
+                <dxa:AccordionControl.Resources>
+                    <Style TargetType="{x:Type dxa:AccordionItem}">
+                        <Setter Property="GlyphSize" Value="20,20" />
+                    </Style>
+                </dxa:AccordionControl.Resources>
+                <dxa:AccordionItem x:Name="HomeItem" Header="Home"
+                                   Glyph="{dx:DXImage SvgImages/Icon Builder/Actions_Home.svg}">
+                    <dxmvvm:Interaction.Behaviors>
+                        <dxmvvm:EventToCommand EventName="PreviewMouseLeftButtonDown"
+                                               Command="{Binding NavigateHomeCommand}" />
+                    </dxmvvm:Interaction.Behaviors>
+                </dxa:AccordionItem>
+                <dxa:AccordionItem Header="Auctions" Command="{Binding NavigateAuctionsCommand}"
+                                   Glyph="{dx:DXImage SvgImages/Business Objects/BO_Sale.svg}">
+
+                    <dxmvvm:Interaction.Behaviors>
+                        <dxmvvm:EventToCommand EventName="PreviewMouseLeftButtonDown"
+                                               Command="{Binding NavigateAuctionsCommand}" />
+                    </dxmvvm:Interaction.Behaviors>
+                </dxa:AccordionItem>
+                <dxa:AccordionItem Header="Investments" Command="{Binding NavigateInvestmentsCommand}"
+                                   Glyph="{dx:DXImage SvgImages/Spreadsheet/Financial.svg}">
+
+                    <dxmvvm:Interaction.Behaviors>
+                        <dxmvvm:EventToCommand EventName="PreviewMouseLeftButtonDown"
+                                               Command="{Binding NavigateInvestmentsCommand}" />
+                    </dxmvvm:Interaction.Behaviors>
+                </dxa:AccordionItem>
+            </dxa:AccordionControl>
+            <!--<ListView>
+                <ListViewItem Content="Auctions" />
+                <ListViewItem Content="Investments" />
+                <ListViewItem Content="Search" />
+            </ListView>-->
+        </StackPanel>
+        <Grid Margin="20,0,0,0">
+            <dxwui:NavigationFrame NavigationCacheMode="Required" AnimationType="None">
+                <dxwui:NavigationFrame.Source>
+                    <home:HomeView DataContext="{Binding HomeViewModel}" />
+                </dxwui:NavigationFrame.Source>
+                <dxmvvm:Interaction.Behaviors>
+                    <navigation:FrameNavigationService />
+                </dxmvvm:Interaction.Behaviors>
+            </dxwui:NavigationFrame>
+        </Grid>
+        <!--<dxdo:DockLayoutManager ClosedPanelsBarVisibility="Auto" ViewStyle="Default">
             <dxdo:LayoutGroup Caption="LayoutRoot">
 
                 <dxdo:LayoutGroup Orientation="Vertical" ItemWidth="Auto" MinWidth="400">
@@ -196,6 +248,6 @@
 
                 </dxdo:LayoutGroup>
             </dxdo:LayoutGroup>
-        </dxdo:DockLayoutManager>
+        </dxdo:DockLayoutManager>-->
     </DockPanel>
 </dx:ThemedWindow>

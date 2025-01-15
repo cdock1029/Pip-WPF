@@ -8,8 +8,8 @@
     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
     xmlns:investments="clr-namespace:Pip.UI.Components.Investments"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+    xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
     d:DataContext="{d:DesignInstance Type=investments:InvestmentsViewModel}"
     d:DesignHeight="400"
     d:DesignWidth="900"
@@ -17,110 +17,110 @@
     Loaded="{DXEvent Handler='Load()'}">
 
     <Grid>
-        <dxg:GridControl
-            x:Name="InvestmentsGrid"
-            AutoExpandAllGroups="True"
-            DesignTimeDataObjectType="investments:InvestmentItemViewModel"
-            SelectionMode="Row"
-            ShowBorder="False"
-            ItemsSource="{Binding Investments}"
-            SelectedItem="{Binding SelectedInvestment, Mode=TwoWay}">
-            <dxmvvm:Interaction.Behaviors>
-                <dxmvvm:EventToCommand EventName="SelectionChanged"
-                                       Command="{Binding DetailsViewModel.HandleSelectedInvestmentChangedCommand}"
-                                       CommandParameter="{Binding ElementName=InvestmentsGrid, Path=SelectedItem}" />
-            </dxmvvm:Interaction.Behaviors>
-            <dxg:GridControl.View>
-                <dxg:TableView
-                    AllowBestFit="True"
-                    AllowGrouping="True"
-                    NewItemRowPosition="Top"
-                    ShowUpdateRowButtons="OnCellEditorOpen"
-                    EditFormShowMode="None"
-                    AutoWidth="True"
-                    IsTotalSummaryMenuEnabled="True"
-                    ShowGroupedColumns="False"
-                    ValidateRowCommand="{Binding ValidateRowCommand}"
-                    ValidateRowDeletionCommand="{Binding ValidateRowDeletionCommand}"
-                    DataSourceRefreshCommand="{Binding DataSourceRefreshCommand }"
-                    ShowFixedTotalSummary="True">
-                    <dxg:TableView.RowCellMenuCustomizations>
-                        <dxb:BarButtonItem Content="Delete...">
+        <dxdo:DockLayoutManager>
+            <dxdo:LayoutGroup>
+                <dxdo:DocumentGroup>
+                    <dxdo:DocumentPanel Caption="Investments" ShowBorder="False">
+                        <dxg:GridControl
+                            x:Name="InvestmentsGrid"
+                            AutoExpandAllGroups="True"
+                            DesignTimeDataObjectType="investments:InvestmentItemViewModel"
+                            SelectionMode="Row"
+                            ShowBorder="False"
+                            ItemsSource="{Binding Investments}"
+                            SelectedItem="{Binding SelectedInvestment, Mode=TwoWay}">
                             <dxmvvm:Interaction.Behaviors>
-                                <dxmvvm:ConfirmationBehavior Command="{x:Static dxg:GridCommands.DeleteFocusedRow}"
-                                                             EnableConfirmationMessage="True"
-                                                             MessageIcon="Exclamation"
-                                                             MessageButton="YesNo"
-                                                             MessageText="Confirm Delete?" />
+                                <dxmvvm:EventToCommand EventName="SelectionChanged"
+                                                       Command="{Binding DetailsViewModel.HandleSelectedInvestmentChangedCommand}"
+                                                       CommandParameter="{Binding ElementName=InvestmentsGrid, Path=SelectedItem}" />
                             </dxmvvm:Interaction.Behaviors>
-                        </dxb:BarButtonItem>
-                    </dxg:TableView.RowCellMenuCustomizations>
-                </dxg:TableView>
-            </dxg:GridControl.View>
-            <dxg:GridControl.InputBindings>
-                <KeyBinding Key="Delete">
-                    <dxmvvm:Interaction.Behaviors>
-                        <dxmvvm:ConfirmationBehavior Command="{x:Static dxg:GridCommands.DeleteFocusedRow}"
-                                                     EnableConfirmationMessage="True"
-                                                     MessageIcon="Exclamation"
-                                                     MessageButton="YesNo"
-                                                     MessageText="Confirm Delete?" />
-                    </dxmvvm:Interaction.Behaviors>
-                </KeyBinding>
-            </dxg:GridControl.InputBindings>
-            <dxg:GridControl.TotalSummary>
-                <dxg:GridSummaryItem
-                    DisplayFormat="Total: {0:c}"
-                    Alignment="Right"
-                    FieldName="Par"
-                    SummaryType="Sum" />
-            </dxg:GridControl.TotalSummary>
-            <dxg:GridControl.GroupSummary>
-                <dxg:GridSummaryItem
-                    DisplayFormat="{}{0:c}"
-                    FieldName="Par"
-                    SummaryType="Sum" />
-            </dxg:GridControl.GroupSummary>
-            <dxg:GridControl.Columns>
-                <dxg:GridColumn
-                    FieldName="Cusip"
-                    Header="CUSIP" />
-                <dxg:GridColumn
-                    FieldName="IssueDate"
-                    Header="Issue Date" />
-                <dxg:GridColumn
-                    FieldName="MaturityDate"
-                    Header="Maturity Date" />
-                <dxg:GridColumn
-                    FieldName="Term"
-                    SortFieldName="TermSpan" />
-                <dxg:GridColumn
-                    FieldName="Type"
-                    GroupIndex="0" />
-                <dxg:GridColumn AllowCellMerge="False"
-                                AllowEditing="True"
-                                FieldName="Par">
-                    <dxg:GridColumn.EditSettings>
-                        <dxe:TextEditSettings DisplayFormat="c" Mask="c" MaskType="Numeric" />
-                    </dxg:GridColumn.EditSettings>
-                </dxg:GridColumn>
-                <dxg:GridColumn
-                    FieldName="Confirmation"
-                    AllowCellMerge="False" />
-                <dxg:GridColumn
-                    FieldName="Reinvestments"
-                    AllowCellMerge="False" />
-            </dxg:GridControl.Columns>
-        </dxg:GridControl>
-        <dx:WaitIndicator Grid.Row="0" DeferedVisibility="{Binding IsWaitIndicatorVisible}" Content="Loading...">
-            <dx:WaitIndicator.ContentTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Text="Please Wait" FontSize="20" />
-                        <TextBlock Text="{Binding}" />
-                    </StackPanel>
-                </DataTemplate>
-            </dx:WaitIndicator.ContentTemplate>
-        </dx:WaitIndicator>
+                            <dxg:GridControl.View>
+                                <dxg:TableView
+                                    AllowBestFit="True"
+                                    AllowGrouping="True"
+                                    NewItemRowPosition="Top"
+                                    ShowUpdateRowButtons="OnCellEditorOpen"
+                                    EditFormShowMode="None"
+                                    AutoWidth="True"
+                                    IsTotalSummaryMenuEnabled="True"
+                                    ShowGroupedColumns="False"
+                                    ValidateRowCommand="{Binding ValidateRowCommand}"
+                                    ValidateRowDeletionCommand="{Binding ValidateRowDeletionCommand}"
+                                    DataSourceRefreshCommand="{Binding DataSourceRefreshCommand }"
+                                    ShowFixedTotalSummary="True">
+                                    <dxg:TableView.RowCellMenuCustomizations>
+                                        <dxb:BarButtonItem Content="Delete...">
+                                            <dxmvvm:Interaction.Behaviors>
+                                                <dxmvvm:ConfirmationBehavior
+                                                    Command="{x:Static dxg:GridCommands.DeleteFocusedRow}"
+                                                    EnableConfirmationMessage="True"
+                                                    MessageIcon="Exclamation"
+                                                    MessageButton="YesNo"
+                                                    MessageText="Confirm Delete?" />
+                                            </dxmvvm:Interaction.Behaviors>
+                                        </dxb:BarButtonItem>
+                                    </dxg:TableView.RowCellMenuCustomizations>
+                                </dxg:TableView>
+                            </dxg:GridControl.View>
+                            <dxg:GridControl.InputBindings>
+                                <KeyBinding Key="Delete">
+                                    <dxmvvm:Interaction.Behaviors>
+                                        <dxmvvm:ConfirmationBehavior
+                                            Command="{x:Static dxg:GridCommands.DeleteFocusedRow}"
+                                            EnableConfirmationMessage="True"
+                                            MessageIcon="Exclamation"
+                                            MessageButton="YesNo"
+                                            MessageText="Confirm Delete?" />
+                                    </dxmvvm:Interaction.Behaviors>
+                                </KeyBinding>
+                            </dxg:GridControl.InputBindings>
+                            <dxg:GridControl.TotalSummary>
+                                <dxg:GridSummaryItem
+                                    DisplayFormat="Total: {0:c}"
+                                    Alignment="Right"
+                                    FieldName="Par"
+                                    SummaryType="Sum" />
+                            </dxg:GridControl.TotalSummary>
+                            <dxg:GridControl.GroupSummary>
+                                <dxg:GridSummaryItem
+                                    DisplayFormat="{}{0:c}"
+                                    FieldName="Par"
+                                    SummaryType="Sum" />
+                            </dxg:GridControl.GroupSummary>
+                            <dxg:GridControl.Columns>
+                                <dxg:GridColumn
+                                    FieldName="Cusip"
+                                    Header="CUSIP" />
+                                <dxg:GridColumn
+                                    FieldName="IssueDate"
+                                    Header="Issue Date" />
+                                <dxg:GridColumn
+                                    FieldName="MaturityDate"
+                                    Header="Maturity Date" />
+                                <dxg:GridColumn
+                                    FieldName="Term"
+                                    SortFieldName="TermSpan" />
+                                <dxg:GridColumn
+                                    FieldName="Type"
+                                    GroupIndex="0" />
+                                <dxg:GridColumn AllowCellMerge="False"
+                                                AllowEditing="True"
+                                                FieldName="Par">
+                                    <dxg:GridColumn.EditSettings>
+                                        <dxe:TextEditSettings DisplayFormat="c" Mask="c" MaskType="Numeric" />
+                                    </dxg:GridColumn.EditSettings>
+                                </dxg:GridColumn>
+                                <dxg:GridColumn
+                                    FieldName="Confirmation"
+                                    AllowCellMerge="False" />
+                                <dxg:GridColumn
+                                    FieldName="Reinvestments"
+                                    AllowCellMerge="False" />
+                            </dxg:GridControl.Columns>
+                        </dxg:GridControl>
+                    </dxdo:DocumentPanel>
+                </dxdo:DocumentGroup>
+            </dxdo:LayoutGroup>
+        </dxdo:DockLayoutManager>
     </Grid>
 </UserControl>

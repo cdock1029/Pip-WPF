@@ -2,12 +2,14 @@
 using DevExpress.Mvvm.CodeGenerators;
 using Pip.DataAccess.Services;
 using Pip.Model;
+using Pip.UI.Components.Details;
 using Pip.UI.ViewModel;
 
 namespace Pip.UI.Components.Auctions;
 
 [GenerateViewModel]
-public partial class AuctionsViewModel(ITreasuryDataProvider treasuryDataProvider) : PipViewModel
+public partial class AuctionsViewModel(ITreasuryDataProvider treasuryDataProvider, DetailsViewModel detailsViewModel)
+	: PipViewModel
 {
 	[GenerateProperty] private Treasury? _selectedTreasuryRecent;
 
@@ -15,6 +17,8 @@ public partial class AuctionsViewModel(ITreasuryDataProvider treasuryDataProvide
 
 	public ObservableCollection<Treasury> TreasuriesRecent { get; } = [];
 	public ObservableCollection<Treasury> TreasuriesUpcoming { get; } = [];
+
+	public DetailsViewModel DetailsViewModel => detailsViewModel;
 
 	[GenerateCommand]
 	public override Task LoadAsync()
