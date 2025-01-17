@@ -33,6 +33,9 @@ public partial class App
 
 	protected override void OnStartup(StartupEventArgs e)
 	{
+		base.OnStartup(e);
+		Task.Run(() => ApplicationThemeHelper.PreloadAsync(PreloadCategories.Grid, PreloadCategories.LayoutControl));
+
 		ServiceCollection serviceCollection = [];
 		ConfigureServices(serviceCollection);
 		ServiceProvider = serviceCollection.BuildServiceProvider();

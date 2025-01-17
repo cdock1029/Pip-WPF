@@ -1,5 +1,6 @@
-﻿using System.Collections.ObjectModel;
-using DevExpress.Mvvm.CodeGenerators;
+﻿using DevExpress.Mvvm.CodeGenerators;
+using DevExpress.Xpf.Docking.Base;
+using JetBrains.Annotations;
 using Pip.DataAccess.Services;
 using Pip.Model;
 using Pip.UI.Components.Details;
@@ -15,35 +16,42 @@ public partial class AuctionsViewModel(ITreasuryDataProvider treasuryDataProvide
 
 	[GenerateProperty] private Treasury? _selectedTreasuryUpcoming;
 
-	public ObservableCollection<Treasury> TreasuriesRecent { get; } = [];
-	public ObservableCollection<Treasury> TreasuriesUpcoming { get; } = [];
+	[GenerateProperty] private IEnumerable<Treasury> _treasuriesRecent = [];
+
+	[GenerateProperty] private IEnumerable<Treasury> _treasuriesUpcoming = [];
 
 	public DetailsViewModel DetailsViewModel => detailsViewModel;
 
-	[GenerateCommand]
-	public override Task LoadAsync()
+	[UsedImplicitly]
+	public async Task LoadRecent()
 	{
-		Dispatcher.BeginInvoke(LoadRecent);
-		Dispatcher.BeginInvoke(LoadUpcoming);
-
-		return Task.CompletedTask;
+		var recent = await treasuryDataProvider.GetRecentAsync().ConfigureAwait(false);
+		Dispatcher.BeginInvoke(() => { TreasuriesRecent = recent ?? []; });
 	}
 
-	private async Task LoadRecent()
+	[UsedImplicitly]
+	public async Task LoadUpcoming()
 	{
-		if (TreasuriesRecent.Any()) return;
-		var recent = await treasuryDataProvider.GetRecentAsync();
-		if (recent is not null)
-			foreach (var treasury in recent)
-				TreasuriesRecent.Add(treasury);
+		var upcoming = await treasuryDataProvider.GetUpcomingAsync().ConfigureAwait(false);
+		Dispatcher.BeginInvoke(() => { TreasuriesUpcoming = upcoming ?? []; });
 	}
 
-	private async Task LoadUpcoming()
+	[UsedImplicitly]
+	public async Task HandleSelectedItem(SelectedItemChangedEventArgs args)
 	{
-		if (TreasuriesUpcoming.Any()) return;
-		var upcoming = await treasuryDataProvider.GetUpcomingAsync();
-		if (upcoming is not null)
-			foreach (var treasury in upcoming)
-				TreasuriesUpcoming.Add(treasury);
+		var name = args.Item.Name;
+
+		switch (name)
+		{
+			case "RecentTab":
+				await LoadRecent();
+				break;
+
+			case "UpcomingTab":
+				await LoadUpcoming();
+				break;
+			default:
+				throw new ArgumentException("Unknown tab name");
+		}
 	}
 }

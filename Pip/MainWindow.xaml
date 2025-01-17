@@ -7,13 +7,13 @@
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="clr-namespace:Pip.UI.ViewModel"
-    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
     xmlns:navigation="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
     xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
     xmlns:dxa="http://schemas.devexpress.com/winfx/2008/xaml/accordion"
     xmlns:home="clr-namespace:Pip.UI.Components.Home"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     x:Class="Pip.UI.MainWindow"
     Width="800"
     Height="800"
@@ -69,7 +69,7 @@
         </dxb:MainMenuControl>
     </dx:ThemedWindow.ToolbarItems>
 
-    <dx:ThemedWindow.HeaderItems>
+    <!--<dx:ThemedWindow.HeaderItems>
         <StackPanel DataContext="{Binding SearchViewModel}" Orientation="Horizontal" VerticalAlignment="Center">
             <dxe:PopupBaseEdit x:Name="PopupBaseEdit" Margin="0,0,100,0" Width="300"
                                NullText="Search CUSIP"
@@ -115,11 +115,16 @@
                 </dxe:PopupBaseEdit.PopupTopAreaTemplate>
             </dxe:PopupBaseEdit>
         </StackPanel>
-    </dx:ThemedWindow.HeaderItems>
+    </dx:ThemedWindow.HeaderItems>-->
 
     <DockPanel Margin="10, 20, 10, 0">
-        <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Width="280">
-            <dxa:AccordionControl IsSynchronizedWithCurrentItem="True">
+        <Grid DockPanel.Dock="Left" Width="280">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="2*" />
+            </Grid.RowDefinitions>
+            <dxa:AccordionControl IsSynchronizedWithCurrentItem="True"
+                                  SelectedItem="{Binding ElementName=HomeItem, Mode=OneTime}">
                 <dxmvvm:Interaction.Behaviors>
                     <dxmvvm:EventToCommand EventName="SelectedItemChanged"
                                            Command="{Binding HandleSelectedItemChangedCommand}"
@@ -154,12 +159,46 @@
                     </dxmvvm:Interaction.Behaviors>
                 </dxa:AccordionItem>
             </dxa:AccordionControl>
-            <!--<ListView>
-                <ListViewItem Content="Auctions" />
-                <ListViewItem Content="Investments" />
-                <ListViewItem Content="Search" />
-            </ListView>-->
-        </StackPanel>
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <dxe:ButtonEdit NullText="Search CUSIP" AllowDefaultButton="False"
+                                Text="{Binding SearchViewModel.SearchText, UpdateSourceTrigger=PropertyChanged}"
+                                ShowNullValueButtonOnFocusOnly="True"
+                                NullValueButtonPlacement="EditBox">
+                    <dxe:ButtonInfo IsLeft="False" GlyphKind="Search" Command="{Binding SearchViewModel.SearchCommand}" />
+                </dxe:ButtonEdit>
+                <dxg:GridControl Grid.Row="1"
+                                 SelectedItem="{Binding SearchViewModel.SelectedTreasuryItem, Mode=TwoWay}"
+                                 ItemsSource="{Binding SearchViewModel.SearchResults}"
+                                 SelectionMode="Row"
+                                 ShowBorder="False">
+                    <dxg:GridControl.View>
+                        <dxg:TableView AllowPerPixelScrolling="True"
+                                       AllowGrouping="False"
+                                       NavigationStyle="Row"
+                                       AutoWidth="True"
+                                       ShowGroupPanel="False">
+                            <dxg:TableView.RowCellMenuCustomizations>
+                                <dxb:BarButtonItem
+                                    DataContext="{Binding RelativeSource={RelativeSource AncestorType={x:Type dx:ThemedWindow}}, Path=DataContext.SearchViewModel}"
+                                    Content="Save..."
+                                    Command="{Binding CreateInvestmentCommand}" />
+                            </dxg:TableView.RowCellMenuCustomizations>
+                        </dxg:TableView>
+                    </dxg:GridControl.View>
+                    <dxg:GridControl.Columns>
+                        <dxg:GridColumn FieldName="IssueDate" IsSmart="True" />
+                        <dxg:GridColumn FieldName="Type" IsSmart="True" />
+                        <dxg:GridColumn FieldName="Term" IsSmart="True" />
+                    </dxg:GridControl.Columns>
+                </dxg:GridControl>
+
+            </Grid>
+        </Grid>
         <Grid Margin="20,0,0,0">
             <dxwui:NavigationFrame NavigationCacheMode="Required" AnimationType="None">
                 <dxwui:NavigationFrame.Source>

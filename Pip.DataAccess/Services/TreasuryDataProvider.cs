@@ -29,10 +29,11 @@ public class TreasuryDataProvider : ITreasuryDataProvider
 
 	public async Task<IEnumerable<Treasury>?> GetUpcomingAsync()
 	{
-		// TODO: caching here and inside viewmodel is duplicatation. Decide which to use.
-		return await _cache.GetOrCreateAsync(nameof(GetUpcomingAsync),
-				_ => _client.GetFromJsonAsync<IEnumerable<Treasury>>("securities/upcoming/?format=json"))
-			.ConfigureAwait(false);
+		return await _cache.GetOrCreateAsync(nameof(GetUpcomingAsync), e =>
+		{
+			e.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10);
+			return _client.GetFromJsonAsync<IEnumerable<Treasury>>("securities/upcoming/?format=json");
+		}).ConfigureAwait(false);
 	}
 
 	// 1 call, group by "Type"? https://www.treasurydirect.gov/TA_WS/securities/auctioned?limitByTerm=true&days=720
@@ -41,9 +42,13 @@ public class TreasuryDataProvider : ITreasuryDataProvider
 	public async Task<IEnumerable<Treasury>?> GetRecentAsync()
 	{
 		//type: Bill, Bond, FRN, Note, TIPS, CMB
-		return await _cache.GetOrCreateAsync(nameof(GetRecentAsync), _ =>
-			_client.GetFromJsonAsync<IEnumerable<Treasury>>(
-				"securities/auctioned?format=json&limitByTerm=true&days=720")).ConfigureAwait(false);
+		return await _cache.GetOrCreateAsync(nameof(GetRecentAsync), e =>
+		{
+			e.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10);
+			return _client.GetFromJsonAsync<IEnumerable<Treasury>>(
+				"securities/auctioned?format=json&limitByTerm=true&days=720");
+		}).ConfigureAwait(false);
+		;
 	}
 
 	public ValueTask<Treasury?> LookupTreasuryAsync(string cusip, DateOnly? issueDate, CancellationToken ct)
@@ -80,12 +85,6 @@ public class TreasuryDataProvider : ITreasuryDataProvider
 	public void Insert(Investment investment)
 	{
 		_dbContext.Investments.Add(investment);
-		_dbContext.SaveChanges();
-	}
-
-	public void DeleteRange(IEnumerable<Investment> investments)
-	{
-		_dbContext.Investments.RemoveRange(investments);
 		_dbContext.SaveChanges();
 	}
 

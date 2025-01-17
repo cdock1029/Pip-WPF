@@ -9,6 +9,8 @@ namespace Pip.UI.Components.Investments;
 [GenerateViewModel]
 public partial class InvestmentItemViewModel : PipViewModel
 {
+	private readonly Investment? _investment;
+
 	[Display(GroupName = "[Investment parameters]")] [GenerateProperty]
 	private DateOnly? _auctionDate;
 
@@ -49,42 +51,63 @@ public partial class InvestmentItemViewModel : PipViewModel
 	[Display(GroupName = "[Investment parameters]/[Treasury]")] [GenerateProperty] [Required]
 	private TreasuryType? _type;
 
+	public InvestmentItemViewModel()
+	{
+	}
+
+	public InvestmentItemViewModel(Investment investment)
+	{
+		_investment = investment;
+
+		Id = investment.Id;
+		Cusip = investment.Cusip;
+		IssueDate = investment.IssueDate;
+		Par = investment.Par;
+		MaturityDate = investment.MaturityDate;
+		AuctionDate = investment.AuctionDate;
+		Confirmation = investment.Confirmation;
+		Reinvestments = investment.Reinvestments;
+		Term = investment.SecurityTerm;
+		Type = investment.Type;
+	}
+
 	public int TermSpan => MaturityDate is null || IssueDate is null
 		? 0
 		: MaturityDate.Value.DayNumber - IssueDate.Value.DayNumber;
 
 
-	public Investment AsInvestment()
+	public Investment SyncToInvestment()
 	{
-		return new Investment
-		{
-			Id = Id,
-			Cusip = Cusip!,
-			IssueDate = IssueDate!.Value,
-			Type = Type!.Value,
-			Par = Par,
-			MaturityDate = MaturityDate,
-			AuctionDate = AuctionDate,
-			Confirmation = Confirmation,
-			Reinvestments = Reinvestments,
-			SecurityTerm = Term
-		};
+		if (_investment is null)
+			return new Investment
+			{
+				Id = Id,
+				Cusip = Cusip!,
+				IssueDate = IssueDate!.Value,
+				Type = Type!.Value,
+				Par = Par,
+				MaturityDate = MaturityDate,
+				AuctionDate = AuctionDate,
+				Confirmation = Confirmation,
+				Reinvestments = Reinvestments,
+				SecurityTerm = Term
+			};
+
+		_investment.Cusip = Cusip!;
+		_investment.IssueDate = IssueDate!.Value;
+		_investment.Type = Type!.Value;
+		_investment.Par = Par;
+		_investment.MaturityDate = MaturityDate;
+		_investment.AuctionDate = AuctionDate;
+		_investment.Confirmation = Confirmation;
+		_investment.Reinvestments = Reinvestments;
+		_investment.SecurityTerm = Term;
+
+		return _investment;
 	}
 
-	public static InvestmentItemViewModel FromModel(Investment model)
-	{
-		return new InvestmentItemViewModel
-		{
-			Id = model.Id,
-			Cusip = model.Cusip,
-			IssueDate = model.IssueDate,
-			Par = model.Par,
-			MaturityDate = model.MaturityDate,
-			AuctionDate = model.AuctionDate,
-			Confirmation = model.Confirmation,
-			Reinvestments = model.Reinvestments,
-			Term = model.SecurityTerm,
-			Type = model.Type
-		};
-	}
+	//public static InvestmentItemViewModel FromModel(Investment model)
+	//{
+	//	return new InvestmentItemViewModel(model);
+	//}
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows;
+﻿using System.Windows;
 using DevExpress.Mvvm;
 using Pip.Model;
 
@@ -8,8 +7,8 @@ namespace Pip.UI.View;
 public partial class TreasuriesCollectionView
 {
 	public static readonly DependencyProperty TreasuriesProperty = DependencyProperty.Register(
-		nameof(Treasuries), typeof(ObservableCollection<Treasury>), typeof(TreasuriesCollectionView),
-		new PropertyMetadata(default(ObservableCollection<Treasury>)));
+		nameof(Treasuries), typeof(IEnumerable<Treasury>), typeof(TreasuriesCollectionView),
+		new PropertyMetadata(default(IEnumerable<Treasury>)));
 
 	public static readonly DependencyProperty SelectedTreasuryProperty = DependencyProperty.Register(
 		nameof(SelectedTreasury), typeof(Treasury), typeof(TreasuriesCollectionView),
@@ -30,9 +29,9 @@ public partial class TreasuriesCollectionView
 		set => SetValue(SelectedTreasuryProperty, value);
 	}
 
-	public ObservableCollection<Treasury> Treasuries
+	public IEnumerable<Treasury> Treasuries
 	{
-		get => (ObservableCollection<Treasury>)GetValue(TreasuriesProperty);
+		get => (IEnumerable<Treasury>)GetValue(TreasuriesProperty);
 		set => SetValue(TreasuriesProperty, value);
 	}
 

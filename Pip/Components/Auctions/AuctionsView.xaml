@@ -8,23 +8,27 @@
              xmlns:auctions="clr-namespace:Pip.UI.Components.Auctions"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type={x:Type auctions:AuctionsViewModel}}"
-             d:DesignHeight="450" d:DesignWidth="800"
-             Loaded="{DXEvent Handler='LoadAsync()'}">
+             d:DesignHeight="450" d:DesignWidth="800">
 
+    <!--Loaded="{DXEvent Handler='LoadUpcoming()'}"-->
     <Grid>
         <dxdo:DockLayoutManager>
             <dxdo:LayoutGroup Orientation="Vertical">
                 <dxdo:DocumentGroup Caption="Auctions"
-                                    ShowCaption="True">
-                    <dxdo:DocumentPanel Caption="Recent" ShowBorder="False">
+                                    ShowCaption="True"
+                                    SelectedTabIndex="0"
+                                    SelectedItemChanged="{DXEvent Handler='HandleSelectedItem(@args)'}">
+                    <dxdo:DocumentPanel Caption="Recent" ShowBorder="False" x:Name="RecentTab">
                         <view:TreasuriesCollectionView
+                            Loaded="{DXEvent Handler='LoadRecent()'}"
                             HandleSelectionChangedCommand="{Binding DetailsViewModel.HandleSelectionChangedCommand, Mode=OneWay}"
                             SelectedTreasury="{Binding SelectedTreasuryRecent, Mode=TwoWay}"
                             Treasuries="{Binding TreasuriesRecent}" />
                     </dxdo:DocumentPanel>
 
-                    <dxdo:DocumentPanel Caption="Announced" ShowBorder="False">
+                    <dxdo:DocumentPanel Caption="Upcoming" ShowBorder="False" x:Name="UpcomingTab">
                         <view:TreasuriesCollectionView
+                            Loaded="{DXEvent Handler='LoadUpcoming()'}"
                             HandleSelectionChangedCommand="{Binding DetailsViewModel.HandleSelectionChangedCommand, Mode=OneWay}"
                             SelectedTreasury="{Binding  SelectedTreasuryUpcoming}"
                             Treasuries="{Binding  TreasuriesUpcoming}" />

@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Windows;
 using System.Windows.Interop;
 using DevExpress.Xpf.Core;
 using JetBrains.Annotations;
@@ -26,15 +25,15 @@ public partial class MainWindow : ThemedWindow
 		SourceInitialized += MainWindow_SourceInitialized;
 		Closing += MainWindow_Closing;
 
-		PopupBaseEdit.IsKeyboardFocusWithinChanged += PopupBaseEdit_IsKeyboardFocusedWithinChanged;
+		//PopupBaseEdit.IsKeyboardFocusWithinChanged += PopupBaseEdit_IsKeyboardFocusedWithinChanged;
 	}
 
-	private void PopupBaseEdit_IsKeyboardFocusedWithinChanged(object sender, DependencyPropertyChangedEventArgs e)
-	{
-		var newVal = (bool)e.NewValue;
-		var hasResults = ((MainViewModel)DataContext).SearchViewModel.HasSearchResults;
-		if (newVal && hasResults) PopupBaseEdit.ShowPopup();
-	}
+	//private void PopupBaseEdit_IsKeyboardFocusedWithinChanged(object sender, DependencyPropertyChangedEventArgs e)
+	//{
+	//	var newVal = (bool)e.NewValue;
+	//	var hasResults = ((MainViewModel)DataContext).SearchViewModel.HasSearchResults;
+	//	if (newVal && hasResults) PopupBaseEdit.ShowPopup();
+	//}
 
 	private void MainWindow_SourceInitialized(object? sender, EventArgs e)
 	{

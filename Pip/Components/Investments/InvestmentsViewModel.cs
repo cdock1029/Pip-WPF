@@ -27,9 +27,9 @@ public partial class InvestmentsViewModel : PipViewModel
 
 	public DetailsViewModel DetailsViewModel { get; }
 
-	public override void Load()
+	public override async Task LoadAsync()
 	{
-		LoadData();
+		await Task.Run(LoadData).ConfigureAwait(false);
 	}
 
 	private void Receive(AfterInsertInvestmentMessage message)
@@ -54,10 +54,11 @@ public partial class InvestmentsViewModel : PipViewModel
 		var investmentItem = (InvestmentItemViewModel)args.Item;
 		if (investmentItem.HasErrors) return;
 
+		var inv = investmentItem.SyncToInvestment();
 		if (args.IsNewItem)
-			_treasuryDataProvider.Add(investmentItem.AsInvestment());
-		else
-			_treasuryDataProvider.Update(investmentItem.AsInvestment());
+			_treasuryDataProvider.Add(inv);
+		//else
+		//	_treasuryDataProvider.Update(investmentItem.SyncToInvestment());
 
 		_treasuryDataProvider.Save();
 	}
@@ -68,7 +69,7 @@ public partial class InvestmentsViewModel : PipViewModel
 		try
 		{
 			var investmentItem = (InvestmentItemViewModel)args.Items.Single();
-			_treasuryDataProvider.Delete(investmentItem.AsInvestment());
+			_treasuryDataProvider.Delete(investmentItem.SyncToInvestment());
 		}
 		catch (Exception e)
 		{
@@ -81,7 +82,11 @@ public partial class InvestmentsViewModel : PipViewModel
 		if (Investments.Any()) return;
 
 		var investments = _treasuryDataProvider.GetInvestments();
-		foreach (var investment in investments)
-			Investments.Add(InvestmentItemViewModel.FromModel(investment));
+
+		Dispatcher.BeginInvoke(() =>
+		{
+			foreach (var investment in investments)
+				Investments.Add(new InvestmentItemViewModel(investment));
+		});
 	}
 }
