@@ -69,7 +69,7 @@ public partial class SearchViewModel : PipViewModel
 		var investment = new Investment
 		{
 			Cusip = treasury.Cusip,
-			IssueDate = treasury.IssueDate ?? default,
+			IssueDate = treasury.IssueDate!.Value,
 			MaturityDate = treasury.MaturityDate,
 			SecurityTerm = treasury.SecurityTerm,
 			Type = treasury.Type

@@ -19,6 +19,7 @@ public partial class MainWindow : ThemedWindow
 	public MainWindow(MainViewModel mainViewModel, PipSettings pipSettings)
 	{
 		InitializeComponent();
+
 		DataContext = mainViewModel;
 		_pipSettings = pipSettings;
 

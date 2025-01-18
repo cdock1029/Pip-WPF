@@ -10,7 +10,6 @@
              d:DataContext="{d:DesignInstance Type={x:Type auctions:AuctionsViewModel}}"
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <!--Loaded="{DXEvent Handler='LoadUpcoming()'}"-->
     <Grid>
         <dxdo:DockLayoutManager>
             <dxdo:LayoutGroup Orientation="Vertical">
@@ -23,15 +22,17 @@
                             Loaded="{DXEvent Handler='LoadRecent()'}"
                             HandleSelectionChangedCommand="{Binding DetailsViewModel.HandleSelectionChangedCommand, Mode=OneWay}"
                             SelectedTreasury="{Binding SelectedTreasuryRecent, Mode=TwoWay}"
-                            Treasuries="{Binding TreasuriesRecent}" />
+                            Treasuries="{Binding TreasuriesRecent}"
+                            SaveToInvestmentsCommand="{Binding SaveRecentToInvestmentsCommand}" />
                     </dxdo:DocumentPanel>
 
                     <dxdo:DocumentPanel Caption="Upcoming" ShowBorder="False" x:Name="UpcomingTab">
                         <view:TreasuriesCollectionView
                             Loaded="{DXEvent Handler='LoadUpcoming()'}"
                             HandleSelectionChangedCommand="{Binding DetailsViewModel.HandleSelectionChangedCommand, Mode=OneWay}"
-                            SelectedTreasury="{Binding  SelectedTreasuryUpcoming}"
-                            Treasuries="{Binding  TreasuriesUpcoming}" />
+                            SelectedTreasury="{Binding  SelectedTreasuryUpcoming, Mode=TwoWay}"
+                            Treasuries="{Binding  TreasuriesUpcoming}"
+                            SaveToInvestmentsCommand="{Binding SaveUpcomingtToInvestmentsCommand}" />
                     </dxdo:DocumentPanel>
                 </dxdo:DocumentGroup>
             </dxdo:LayoutGroup>

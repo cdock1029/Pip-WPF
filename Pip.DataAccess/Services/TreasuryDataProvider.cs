@@ -74,11 +74,10 @@ public class TreasuryDataProvider : ITreasuryDataProvider
 	}
 
 	// sync I/O faster. https://x.com/davkean/status/1821875521954963742
-	public List<Investment> GetInvestments()
+	public IEnumerable<Investment> GetInvestments()
 	{
 		var investments = _dbContext
-			.Investments
-			.ToList();
+			.Investments.AsEnumerable();
 		return investments;
 	}
 

@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 using DevExpress.Mvvm;
 using Pip.Model;
 
@@ -17,6 +18,10 @@ public partial class TreasuriesCollectionView
 	public static readonly DependencyProperty HandleSelectionChangedCommandProperty = DependencyProperty.Register(
 		nameof(HandleSelectionChangedCommand), typeof(DelegateCommand<Treasury>), typeof(TreasuriesCollectionView),
 		new PropertyMetadata(default(DelegateCommand<Treasury>)));
+
+	public static readonly DependencyProperty SaveToInvestmentsCommandProperty = DependencyProperty.Register(
+		nameof(SaveToInvestmentsCommand), typeof(ICommand), typeof(TreasuriesCollectionView),
+		new PropertyMetadata(default(ICommand)));
 
 	public TreasuriesCollectionView()
 	{
@@ -39,5 +44,11 @@ public partial class TreasuriesCollectionView
 	{
 		get => (DelegateCommand<Treasury>)GetValue(HandleSelectionChangedCommandProperty);
 		set => SetValue(HandleSelectionChangedCommandProperty, value);
+	}
+
+	public ICommand SaveToInvestmentsCommand
+	{
+		get => (ICommand)GetValue(SaveToInvestmentsCommandProperty);
+		set => SetValue(SaveToInvestmentsCommandProperty, value);
 	}
 }

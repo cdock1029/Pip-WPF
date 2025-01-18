@@ -1,31 +1,49 @@
 ﻿using System.Diagnostics;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
-using DevExpress.Xpf.Accordion;
 using DevExpress.Xpf.Core.Native;
 using Pip.UI.Components.Auctions;
 using Pip.UI.Components.Details;
 using Pip.UI.Components.Home;
 using Pip.UI.Components.Investments;
 using Pip.UI.Components.Search;
+using Pip.UI.Messages;
 
 namespace Pip.UI.ViewModel;
 
 [GenerateViewModel]
-public partial class MainViewModel(
-	InvestmentsViewModel investmentsViewModel,
-	SearchViewModel searchViewModel,
-	AuctionsViewModel auctionsViewModel,
-	DetailsViewModel detailsViewModel,
-	HomeViewModel homeViewModel
-)
-	: PipViewModel
+public partial class MainViewModel : PipViewModel
 {
-	private AuctionsViewModel AuctionsViewModel => auctionsViewModel;
-	public SearchViewModel SearchViewModel => searchViewModel;
-	private InvestmentsViewModel InvestmentsViewModel => investmentsViewModel;
-	public DetailsViewModel DetailsViewModel => detailsViewModel;
-	public HomeViewModel HomeViewModel => homeViewModel;
+	[GenerateProperty] private IPipPage? _selectedPage;
+
+	public MainViewModel(InvestmentsViewModel investmentsViewModel,
+		SearchViewModel searchViewModel,
+		AuctionsViewModel auctionsViewModel,
+		DetailsViewModel detailsViewModel,
+		HomeViewModel homeViewModel)
+	{
+		InvestmentsViewModel = investmentsViewModel;
+		SearchViewModel = searchViewModel;
+		AuctionsViewModel = auctionsViewModel;
+		DetailsViewModel = detailsViewModel;
+		HomeViewModel = homeViewModel;
+
+		Messenger.Default.Register<AfterInsertInvestmentMessage>(this, ReceiveAfterInvestmentMessage);
+
+		SelectedPage = HomeViewModel;
+	}
+
+	public IEnumerable<IPipPage> Pages => [HomeViewModel, AuctionsViewModel, InvestmentsViewModel];
+
+	private AuctionsViewModel AuctionsViewModel { get; }
+
+	public SearchViewModel SearchViewModel { get; }
+
+	private InvestmentsViewModel InvestmentsViewModel { get; }
+
+	public DetailsViewModel DetailsViewModel { get; }
+
+	public HomeViewModel HomeViewModel { get; }
 
 	private INavigationService NavigationService => GetService<INavigationService>();
 
@@ -46,26 +64,13 @@ public partial class MainViewModel(
 	}
 
 	[GenerateCommand]
-	private void NavigateHome()
+	private void NavigateToSelected()
 	{
-		NavigationService.Navigate(nameof(HomeView), HomeViewModel);
+		NavigationService.Navigate(SelectedPage!.View, SelectedPage);
 	}
 
-	[GenerateCommand]
-	private void NavigateAuctions()
+	private void ReceiveAfterInvestmentMessage(AfterInsertInvestmentMessage msg)
 	{
-		NavigationService.Navigate(nameof(AuctionsView), AuctionsViewModel);
-	}
-
-	[GenerateCommand]
-	private void NavigateInvestments()
-	{
-		NavigationService.Navigate(nameof(InvestmentsView), InvestmentsViewModel);
-	}
-
-	[GenerateCommand]
-	private void HandleSelectedItemChanged(AccordionSelectedItemChangedEventArgs args)
-	{
-		Debug.WriteLine($"triggered {args.NewItem}");
+		SelectedPage = InvestmentsViewModel;
 	}
 }

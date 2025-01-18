@@ -2,7 +2,7 @@
 
 public class InvestmentPageState(ITreasuryDataProvider treasuryDataProvider) : BaseStateContainer
 {
-	public List<Investment> Investments
+	public IEnumerable<Investment> Investments
 	{
 		get;
 		private set
