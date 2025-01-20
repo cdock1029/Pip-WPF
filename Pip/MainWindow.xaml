@@ -88,14 +88,14 @@
                                            Command="{Binding NavigateToSelectedCommand}" />
                 </dxmvvm:Interaction.Behaviors>
 
-                <dxa:AccordionControl.Resources>
+                <dxa:AccordionControl.ItemContainerStyle>
                     <Style d:DataContext="{d:DesignInstance Type={x:Type viewModel:IPipPage}}"
                            TargetType="{x:Type dxa:AccordionItem}">
-                        <Setter Property="GlyphSize" Value="20,20" />
+                        <Setter Property="GlyphSize" Value="16,16" />
                         <Setter Property="Glyph" Value="{Binding Image}" />
                         <Setter Property="Header" Value="{Binding Title}" />
                     </Style>
-                </dxa:AccordionControl.Resources>
+                </dxa:AccordionControl.ItemContainerStyle>
             </dxa:AccordionControl>
 
             <Grid Grid.Row="1">

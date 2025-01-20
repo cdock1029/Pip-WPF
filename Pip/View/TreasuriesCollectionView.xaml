@@ -30,6 +30,7 @@
                     <dxg:TableView
                         AllowBestFit="True"
                         AllowGrouping="True"
+                        AllowScrollAnimation="True"
                         AutoWidth="True"
                         AllowCellMerge="True"
                         NavigationStyle="Row"
