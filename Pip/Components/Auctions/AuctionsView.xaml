@@ -12,14 +12,12 @@
 
     <Grid>
         <dxdo:DockLayoutManager>
-            <dxdo:LayoutGroup Orientation="Vertical">
+            <dxdo:LayoutGroup Orientation="Vertical" Loaded="{DXEvent Handler='LoadAsync()'}">
                 <dxdo:DocumentGroup Caption="Auctions"
                                     ShowCaption="True"
-                                    SelectedTabIndex="0"
-                                    SelectedItemChanged="{DXEvent Handler='HandleSelectedItem(@args)'}">
+                                    SelectedTabIndex="0">
                     <dxdo:DocumentPanel Caption="Recent" ShowBorder="False" x:Name="RecentTab">
                         <view:TreasuriesCollectionView
-                            Loaded="{DXEvent Handler='LoadRecent()'}"
                             HandleSelectionChangedCommand="{Binding DetailsViewModel.HandleSelectionChangedCommand, Mode=OneWay}"
                             SelectedTreasury="{Binding SelectedTreasuryRecent, Mode=TwoWay}"
                             Treasuries="{Binding TreasuriesRecent}"
@@ -28,7 +26,6 @@
 
                     <dxdo:DocumentPanel Caption="Upcoming" ShowBorder="False" x:Name="UpcomingTab">
                         <view:TreasuriesCollectionView
-                            Loaded="{DXEvent Handler='LoadUpcoming()'}"
                             HandleSelectionChangedCommand="{Binding DetailsViewModel.HandleSelectionChangedCommand, Mode=OneWay}"
                             SelectedTreasury="{Binding  SelectedTreasuryUpcoming, Mode=TwoWay}"
                             Treasuries="{Binding  TreasuriesUpcoming}"

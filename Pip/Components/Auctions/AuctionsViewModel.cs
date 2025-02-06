@@ -1,8 +1,6 @@
 ﻿using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using DevExpress.Xpf.Core;
-using DevExpress.Xpf.Docking.Base;
-using JetBrains.Annotations;
 using Pip.DataAccess.Services;
 using Pip.Model;
 using Pip.UI.Components.Details;
@@ -29,38 +27,37 @@ public partial class AuctionsViewModel(ITreasuryDataProvider treasuryDataProvide
 	public string Title => "Auctions";
 	public Uri Image { get; } = DXImageHelper.GetImageUri("SvgImages/Business Objects/BO_Sale.svg");
 
-	[UsedImplicitly]
-	public async Task LoadRecent()
+	public override async Task LoadAsync()
 	{
-		var recent = await treasuryDataProvider.GetRecentAsync().ConfigureAwait(false);
-		Dispatcher.BeginInvoke(() => { TreasuriesRecent = recent ?? []; });
-	}
+		var tasks = new[] { LoadRecent(), LoadUpcoming() };
 
-	[UsedImplicitly]
-	public async Task LoadUpcoming()
-	{
-		var upcoming = await treasuryDataProvider.GetUpcomingAsync().ConfigureAwait(false);
-		Dispatcher.BeginInvoke(() => { TreasuriesUpcoming = upcoming ?? []; });
-	}
-
-	[UsedImplicitly]
-	public async Task HandleSelectedItem(SelectedItemChangedEventArgs args)
-	{
-		var name = args.Item.Name;
-
-		switch (name)
+		await foreach (var task in Task.WhenEach(tasks).ConfigureAwait(false))
 		{
-			case "RecentTab":
-				await LoadRecent();
-				break;
-
-			case "UpcomingTab":
-				await LoadUpcoming();
-				break;
-			default:
-				throw new ArgumentException("Unknown tab name");
+			var (treasuries, name) = task.Result;
+			switch (name)
+			{
+				case "recent":
+					Dispatcher.BeginInvoke(() => { TreasuriesRecent = treasuries ?? []; });
+					break;
+				case "upcoming":
+					Dispatcher.BeginInvoke(() => { TreasuriesUpcoming = treasuries ?? []; });
+					break;
+			}
 		}
 	}
+
+	private async Task<(IEnumerable<Treasury>?, string)> LoadRecent()
+	{
+		var recent = await treasuryDataProvider.GetRecentAsync().ConfigureAwait(false);
+		return (recent, "recent");
+	}
+
+	private async Task<(IEnumerable<Treasury>?, string)> LoadUpcoming()
+	{
+		var upcoming = await treasuryDataProvider.GetUpcomingAsync().ConfigureAwait(false);
+		return (upcoming, "upcoming");
+	}
+
 
 	[GenerateCommand]
 	private void SaveRecentToInvestments()

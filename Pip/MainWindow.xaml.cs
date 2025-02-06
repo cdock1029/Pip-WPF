@@ -2,9 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
 using DevExpress.Xpf.Core;
-using JetBrains.Annotations;
 using Pip.UI.Properties;
-using Pip.UI.View.Types;
 using Pip.UI.ViewModel;
 
 namespace Pip.UI;
@@ -25,33 +23,21 @@ public partial class MainWindow : ThemedWindow
 
 		SourceInitialized += MainWindow_SourceInitialized;
 		Closing += MainWindow_Closing;
-
-		//PopupBaseEdit.IsKeyboardFocusWithinChanged += PopupBaseEdit_IsKeyboardFocusedWithinChanged;
 	}
-
-	//private void PopupBaseEdit_IsKeyboardFocusedWithinChanged(object sender, DependencyPropertyChangedEventArgs e)
-	//{
-	//	var newVal = (bool)e.NewValue;
-	//	var hasResults = ((MainViewModel)DataContext).SearchViewModel.HasSearchResults;
-	//	if (newVal && hasResults) PopupBaseEdit.ShowPopup();
-	//}
 
 	private void MainWindow_SourceInitialized(object? sender, EventArgs e)
 	{
 		try
 		{
-			// Load window placement details for previous application session from application settings
-			// Note - if window was closed on a monitor that is now disconnected from the computer,
-			//        SetWindowPlacement will place the window onto a visible monitor.
 			var wp = _pipSettings.WindowPlacement;
-			wp.length = Marshal.SizeOf(typeof(WindowPlacement));
-			wp.flags = 0;
-			wp.showCmd = wp.showCmd == ShowMinimized ? ShowNormal : wp.showCmd;
+			wp.Length = Marshal.SizeOf<WindowPlacement>();
+			wp.Flags = 0;
+			if (wp.ShowCmd == ShowMinimized) wp.ShowCmd = ShowNormal;
 			var hwnd = new WindowInteropHelper(this).Handle;
-			SetWindowPlacement(hwnd, ref wp);
+			WindowPlacementHelper.SetWindowPlacement(hwnd, ref wp);
 		}
 
-		catch (Exception ex)
+		catch (ExternalException ex)
 		{
 			Debug.WriteLine($"Error accessing WindowPosition: {ex}");
 		}
@@ -61,42 +47,46 @@ public partial class MainWindow : ThemedWindow
 	{
 		try
 		{
-			// Persist window placement details to application settings
 			var hwnd = new WindowInteropHelper(this).Handle;
-			GetWindowPlacement(hwnd, out var wp);
+			WindowPlacementHelper.GetWindowPlacement(hwnd, out var wp);
 
-			/*
-			Settings.Default.WindowPlacement = wp;
-			Settings.Default.Save();
-			*/
+			Debug.WriteLine($"closing wp: MinPos={wp.MinPosition}, MaxPos={wp.MaxPosition}");
 			_pipSettings.WindowPlacement = wp;
 			_pipSettings.Save();
 		}
-		catch (Exception ex)
+		catch (ExternalException ex)
 		{
 			Debug.WriteLine($"Exception saving settings: {ex}");
 		}
 	}
+}
 
-	[LibraryImport("user32.dll")]
+public static partial class WindowPlacementHelper
+{
+	[LibraryImport("user32.dll", SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	[UsedImplicitly]
 	public static partial bool SetWindowPlacement(IntPtr hWnd, ref WindowPlacement windowPlacement);
 
-	[LibraryImport("user32.dll")]
+	[LibraryImport("user32.dll", SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	[UsedImplicitly]
 	public static partial bool GetWindowPlacement(IntPtr hWnd, out WindowPlacement windowPlacement);
-
-
-	//private void OnWindowClosing()
-	//{
-	//	_pipSettings.RootLayout = DXSerializer.Serialize LayoutSerializationService.Serialize();
-	//	_pipSettings.Save();
-	//}
-
-	//private void OnWindowLoaded()
-	//{
-	//	if (_pipSettings.RootLayout != null) LayoutSerializationService.Deserialize(_pipSettings.RootLayout);
-	//}
 }
+
+[Serializable]
+[StructLayout(LayoutKind.Sequential)]
+public record struct WindowPlacement(
+	int Length = 0,
+	int Flags = 0,
+	int ShowCmd = 0,
+	Point MinPosition = default,
+	Point MaxPosition = default,
+	Rect NormalPosition = default
+);
+
+[Serializable]
+[StructLayout(LayoutKind.Sequential)]
+public record struct Rect(int Left = 20, int Top = 20, int Right = 200, int Bottom = 200);
+
+[Serializable]
+[StructLayout(LayoutKind.Sequential)]
+public record struct Point(int X, int Y);
