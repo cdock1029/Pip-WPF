@@ -1,12 +1,19 @@
 ﻿using System.ComponentModel;
 using System.Text;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.AzureAIInference;
 using Microsoft.SemanticKernel.Connectors.Google;
 using Microsoft.SemanticKernel.Connectors.Ollama;
+using OpenTelemetry;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Pip.DataAccess;
 using Pip.DataAccess.Services;
 
@@ -14,59 +21,29 @@ using Pip.DataAccess.Services;
 
 //var builder = Host.CreateApplicationBuilder(args);
 
-/*
-var resourceBuilder = ResourceBuilder
-	.CreateDefault()
-	.AddService("TelemetryConsoleQuickstart");
-
-// Enable model diagnostics with sensitive data.
-AppContext.SetSwitch("Microsoft.SemanticKernel.Experimental.GenAI.EnableOTelDiagnosticsSensitive", true);
-
-using var traceProvider = Sdk.CreateTracerProviderBuilder()
-	.SetResourceBuilder(resourceBuilder)
-	.AddSource("Microsoft.SemanticKernel*")
-	.AddConsoleExporter()
-	.Build();
-
-using var meterProvider = Sdk.CreateMeterProviderBuilder()
-	.SetResourceBuilder(resourceBuilder)
-	.AddMeter("Microsoft.SemanticKernel*")
-	.AddConsoleExporter()
-	.Build();
-
-using var loggerFactory = LoggerFactory.Create(builder =>
-{
-	// Add OpenTelemetry as a logging provider
-	builder.AddOpenTelemetry(options =>
-	{
-		options.SetResourceBuilder(resourceBuilder);
-		options.AddConsoleExporter();
-		// Format log messages. This is default to false.
-		options.IncludeFormattedMessage = true;
-		options.IncludeScopes = true;
-	});
-	builder.SetMinimumLevel(LogLevel.Information);
-});
-*/
+//using var logger = CreateLoggerFactory();
 
 var builder = Kernel.CreateBuilder();
 
 var config = new ConfigurationBuilder().AddUserSecrets<Program>().Build();
 var azureConfig = config.GetSection("AzureAI").Get<AzureAiConfig>() ?? throw new ArgumentNullException();
 
-builder.Services
-	//.AddSingleton(loggerFactory)
-	//.AddAzureAIInferenceChatCompletion(azureConfig.ModelId, endpoint: new Uri(azureConfig.ModelInferenceEndpoint), apiKey: azureConfig.AzureKeyCredential)
-	.AddGoogleAIGeminiChatCompletion(apiKey: azureConfig.GeminiKey, modelId: "gemini-2.0-flash")
-	//.AddOllamaChatCompletion("qwen2.5", new Uri(azureConfig.OllamaEndpoint))
-	.AddMemoryCache()
-	.AddSingleton<ITreasuryDataProvider, TreasuryDataProvider>()
-	.AddDbContext<PipDbContext>(ServiceLifetime.Singleton)
-	.AddHttpClient<ITreasuryDataProvider, TreasuryDataProvider>();
-
 builder.Plugins
 	//.AddFromType<WeatherPlugin3>()
 	.AddFromType<TreasuryPlugin>();
+
+builder.Services
+	.AddHttpClient<ITreasuryDataProvider, TreasuryDataProvider>();
+
+builder.Services
+	.AddMemoryCache()
+	.AddSingleton<ITreasuryDataProvider, TreasuryDataProvider>()
+	.AddDbContext<PipDbContext>(ServiceLifetime.Singleton);
+
+builder.AddGoogleAIGeminiChatCompletion(apiKey: azureConfig.GeminiKey, modelId: "gemini-2.0-flash", serviceId: "gemini")
+	.AddAzureAIInferenceChatCompletion(azureConfig.ModelId, endpoint: new Uri(azureConfig.ModelInferenceEndpoint),
+		apiKey: azureConfig.AzureKeyCredential, serviceId: "azure")
+	.AddOllamaChatCompletion("qwen2.5", new Uri(azureConfig.OllamaEndpoint), "ollama");
 
 var kernel = builder.Build();
 //kernel.AutoFunctionInvocationFilters.Add(new AddReturnTypeSchemaFilter());
@@ -77,15 +54,10 @@ var kernel = builder.Build();
 //]);
 
 
-var chatService = kernel.GetRequiredService<IChatCompletionService>();
-
-var dataProvider = kernel.GetRequiredService<ITreasuryDataProvider>();
-
 var chatHistory = new ChatHistory();
 
 var sb = new StringBuilder();
 
-#pragma warning disable SKEXP0070
 AzureAIInferencePromptExecutionSettings azureAiInferencePromptExecutionSettings =
 	new() { FunctionChoiceBehavior = FunctionChoiceBehavior.Auto() };
 
@@ -98,38 +70,77 @@ GeminiPromptExecutionSettings googlePromptExecutionSettings =
 		ToolCallBehavior = GeminiToolCallBehavior.AutoInvokeKernelFunctions,
 		FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
 	};
-#pragma warning restore SKEXP0070
 
 
+var chatService = kernel.GetRequiredService<IChatCompletionService>("azure");
+var agentLabel = "Azure";
+PromptExecutionSettings settings = azureAiInferencePromptExecutionSettings;
+Console.WriteLine(@"Using azure. Switch service: \gemini, \azure, or \ollama");
 while (true)
 {
 	Console.Write("You: ");
+
 	var prompt = Console.ReadLine() ?? throw new ArgumentNullException();
-	if (prompt == "q") break;
+	if (prompt == "q")
+	{
+		Console.WriteLine("\nGoodbye!\n");
+		break;
+	}
+
+	if (prompt.StartsWith("\\"))
+	{
+		switch (prompt)
+		{
+			case @"\gemini":
+				chatService = kernel.GetRequiredService<IChatCompletionService>("gemini");
+				settings = googlePromptExecutionSettings;
+				agentLabel = "Gemini";
+				break;
+			case @"\azure":
+				chatService = kernel.GetRequiredService<IChatCompletionService>("azure");
+				settings = azureAiInferencePromptExecutionSettings;
+				agentLabel = "Azure";
+				break;
+			case @"\ollama":
+				chatService = kernel.GetRequiredService<IChatCompletionService>("ollama");
+				settings = ollamaPromptExecutionSettings;
+				agentLabel = "Ollama";
+				break;
+			default:
+				Console.WriteLine("\nUnrecognized service. No change.\n");
+				continue;
+		}
+
+		Console.WriteLine($"\nSwitched to {prompt[1..]}\n");
+		continue;
+	}
 
 	chatHistory.AddUserMessage(prompt);
 	Console.WriteLine();
 
-	Console.Write("AI: ");
-	await foreach (var update in chatService.GetStreamingChatMessageContentsAsync(chatHistory,
-		               googlePromptExecutionSettings,
-		               kernel))
+
+	if (settings is OllamaPromptExecutionSettings ollamaSettings)
 	{
-		sb.Append(update);
-		Console.Write(update);
+		var msg = await chatService.GetChatMessageContentAsync(chatHistory, ollamaSettings, kernel);
+		chatHistory.Add(msg);
+		Console.WriteLine($"{agentLabel}: {msg.Content}");
+	}
+	else
+	{
+		Console.Write($"{agentLabel}: ");
+		await foreach (var update in chatService.GetStreamingChatMessageContentsAsync(chatHistory,
+			               settings,
+			               kernel))
+		{
+			sb.Append(update);
+			Console.Write(update);
+		}
+
+		chatHistory.AddAssistantMessage(sb.ToString());
+		sb.Clear();
 	}
 
-	chatHistory.AddAssistantMessage(sb.ToString());
-	sb.Clear();
-
-
-	//var msg = await chatService.GetChatMessageContentAsync(chatHistory, ollamaPromptExecutionSettings, kernel);
-	//chatHistory.Add(msg);
-	//Console.WriteLine($"AI: {msg.Content}");
-
-	Console.WriteLine();
-	Console.WriteLine("-------------------------------------");
-	Console.WriteLine();
+	Console.WriteLine("\n-------------------------------------\n");
 }
 
 return;
@@ -139,6 +150,42 @@ string GetCurrentWeather()
 {
 	//return Random.Shared.NextDouble() > 0.5 ? "It's sunny" : "It's raining";
 	return "It's raining";
+}
+
+static ILoggerFactory CreateLoggerFactory()
+{
+	var resourceBuilder = ResourceBuilder
+		.CreateDefault()
+		.AddService("TelemetryConsoleQuickstart");
+
+// Enable model diagnostics with sensitive data.
+	AppContext.SetSwitch("Microsoft.SemanticKernel.Experimental.GenAI.EnableOTelDiagnosticsSensitive", true);
+
+	using var traceProvider = Sdk.CreateTracerProviderBuilder()
+		.SetResourceBuilder(resourceBuilder)
+		.AddSource("Microsoft.SemanticKernel*")
+		.AddConsoleExporter()
+		.Build();
+
+	using var meterProvider = Sdk.CreateMeterProviderBuilder()
+		.SetResourceBuilder(resourceBuilder)
+		.AddMeter("Microsoft.SemanticKernel*")
+		.AddConsoleExporter()
+		.Build();
+
+	return LoggerFactory.Create(builder =>
+	{
+		// Add OpenTelemetry as a logging provider
+		builder.AddOpenTelemetry(options =>
+		{
+			options.SetResourceBuilder(resourceBuilder);
+			options.AddConsoleExporter();
+			// Format log messages. This is default to false.
+			options.IncludeFormattedMessage = true;
+			options.IncludeScopes = true;
+		});
+		builder.SetMinimumLevel(LogLevel.Information);
+	});
 }
 
 public class AzureAiConfig
@@ -180,6 +227,7 @@ public sealed class WeatherPlugin3
 	}
 }
 
+[UsedImplicitly]
 public sealed class TreasuryPlugin(ITreasuryDataProvider dataProvider)
 {
 	[KernelFunction]
@@ -203,7 +251,7 @@ public sealed class TreasuryPlugin(ITreasuryDataProvider dataProvider)
 	[Description("A US government issued treasury security")]
 	public sealed class TreasuryData
 	{
-		[Description("Nine digit identification number for a treasury security")]
+		[Description("Nine digit identifier for a treasury security")]
 		public string Cusip { get; set; } = null!;
 
 		[Description("Date when treasury will be sold at auction")]
