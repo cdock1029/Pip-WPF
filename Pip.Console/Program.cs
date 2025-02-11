@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Text;
 using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -16,6 +17,7 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Pip.DataAccess;
 using Pip.DataAccess.Services;
+using Pip.Model;
 
 #pragma warning disable SKEXP0070
 
@@ -45,7 +47,14 @@ builder.AddGoogleAIGeminiChatCompletion(apiKey: azureConfig.GeminiKey, modelId: 
 		apiKey: azureConfig.AzureKeyCredential, serviceId: "azure")
 	.AddOllamaChatCompletion("qwen2.5", new Uri(azureConfig.OllamaEndpoint), "ollama");
 
+
 var kernel = builder.Build();
+
+{
+	var ctx = kernel.GetRequiredService<PipDbContext>();
+	ctx.Database.Migrate();
+}
+
 //kernel.AutoFunctionInvocationFilters.Add(new AddReturnTypeSchemaFilter());
 
 
@@ -106,6 +115,12 @@ while (true)
 				settings = ollamaPromptExecutionSettings;
 				agentLabel = "Ollama";
 				break;
+			case @"\clear":
+			case @"\c":
+				Console.Clear();
+				Console.WriteLine("clearing message context...\n");
+				chatHistory.Clear();
+				continue;
 			default:
 				Console.WriteLine("\nUnrecognized service. No change.\n");
 				continue;
@@ -120,25 +135,40 @@ while (true)
 
 
 	if (settings is OllamaPromptExecutionSettings ollamaSettings)
-	{
-		var msg = await chatService.GetChatMessageContentAsync(chatHistory, ollamaSettings, kernel);
-		chatHistory.Add(msg);
-		Console.WriteLine($"{agentLabel}: {msg.Content}");
-	}
-	else
-	{
-		Console.Write($"{agentLabel}: ");
-		await foreach (var update in chatService.GetStreamingChatMessageContentsAsync(chatHistory,
-			               settings,
-			               kernel))
+		try
 		{
-			sb.Append(update);
-			Console.Write(update);
+			var msg = await chatService.GetChatMessageContentAsync(chatHistory, ollamaSettings, kernel);
+			chatHistory.Add(msg);
+			Console.WriteLine($"{agentLabel}: {msg.Content}");
 		}
+		catch (HttpRequestException e)
+		{
+			Console.WriteLine($"There's a problem connecting: {e.Message}\n");
+			continue;
+		}
+	else
+		try
+		{
+			Console.Write($"{agentLabel}: ");
+			await foreach (var update in chatService.GetStreamingChatMessageContentsAsync(chatHistory,
+				               settings,
+				               kernel))
+			{
+				sb.Append(update);
+				Console.Write(update);
+			}
 
-		chatHistory.AddAssistantMessage(sb.ToString());
-		sb.Clear();
-	}
+			chatHistory.AddAssistantMessage(sb.ToString());
+		}
+		catch (HttpRequestException e)
+		{
+			Console.WriteLine($"There's a problem connecting: {e.Message}\n");
+			continue;
+		}
+		finally
+		{
+			sb.Clear();
+		}
 
 	Console.WriteLine("\n-------------------------------------\n");
 }
@@ -233,7 +263,7 @@ public sealed class TreasuryPlugin(ITreasuryDataProvider dataProvider)
 	[KernelFunction]
 	[Description(
 		"Returns a list of the upcoming US treasury auction securities of various terms and types, i.e 4-week T-Bills, 2-year Notes, 20-year Bonds etc.")]
-	public async Task<IEnumerable<TreasuryData>> ListUpcomingAuctions()
+	public async Task<List<TreasuryData>> ListUpcomingAuctions()
 	{
 		var treasuries = await dataProvider.GetUpcomingAsync();
 
@@ -244,7 +274,25 @@ public sealed class TreasuryPlugin(ITreasuryDataProvider dataProvider)
 			AuctionDate = t.AuctionDate,
 			Term = t.SecurityTerm,
 			Type = t.Type.ToString()
-		}) ?? [];
+		}).ToList() ?? [];
+	}
+
+	[KernelFunction]
+	[Description(
+		"Returns a list of saved investments of US treasuries in my portfolio")]
+	public async Task<List<Investment>> ListSavedPortfolioInvestedTreasuries()
+	{
+		var usts = await Task.Run(dataProvider.GetInvestments);
+
+		return usts.ToList();
+	}
+
+	[KernelFunction]
+	[Description(
+		"Total par dollar value of all treasuries invested in my portfolio")]
+	public int GetInvestmentsTotal()
+	{
+		return dataProvider.GetInvestments().Sum(i => i.Par);
 	}
 
 
@@ -260,7 +308,7 @@ public sealed class TreasuryPlugin(ITreasuryDataProvider dataProvider)
 		[Description("Date when treasury will be issued to buyers")]
 		public DateOnly? IssueDate { get; set; }
 
-		[Description("The length of time the security earns interest")]
+		[Description("The length of time the security earns interest, from issue date to maturity date")]
 		public string? Term { get; set; }
 
 		[Description("Which type of treasury: Bill, Note, Bond, CMB, TIPS, or FRN")]
