@@ -34,7 +34,6 @@ var azureConfig =
 		.GetSection("AzureAI").Get<AzureAiConfig>() ?? throw new ArgumentNullException();
 
 builder.Plugins
-	//.AddFromType<WeatherPlugin3>()
 	.AddFromType<TreasuryPlugin>();
 
 builder.Services
@@ -44,7 +43,7 @@ builder.Services
 	//.AddSingleton(loggerFactory)
 	.AddMemoryCache()
 	.AddSingleton<ITreasuryDataProvider, TreasuryDataProvider>()
-	.AddDbContext<PipDbContext>(ServiceLifetime.Singleton);
+	.AddDbContext<PipDbContext>(ServiceLifetime.Transient);
 
 builder
 	.AddGoogleAIGeminiChatCompletion(apiKey: azureConfig.GeminiKey, modelId: "gemini-2.0-flash", serviceId: "gemini")
@@ -71,7 +70,7 @@ var kernel = builder.Build();
 var chatHistory = new ChatHistory(
 	"""
 	You're a financial support agent that can provide information on US treasuries, the user's personal investment portfolio of saved treasuries, and other assorted financial knowlege and info.
-	Be succint, clear, and feel free to call functions available to you to give the user information he desires.
+	Be succint, clear, and feel free to call functions available to you to give the user information he desires. Show internal database ID's when displaying results, so user can modify entries.
 	""");
 
 var sb = new StringBuilder();
@@ -185,12 +184,6 @@ while (true)
 
 return;
 
-[Description("Gets the current weather")]
-string GetCurrentWeather()
-{
-	//return Random.Shared.NextDouble() > 0.5 ? "It's sunny" : "It's raining";
-	return "It's raining";
-}
 
 static ILoggerFactory CreateLoggerFactory()
 {
@@ -241,32 +234,6 @@ public class AzureAiConfig
 	public string OllamaEndpoint { get; set; } = null!;
 }
 
-public sealed class WeatherPlugin3
-{
-	[KernelFunction]
-	public WeatherData GetWeatherData(string city, string state)
-	{
-		return new WeatherData
-		{
-			Data1 = 35.0, // Temperature in degrees Celsius  
-			Data2 = 20.0, // Humidity in percentage  
-			Data3 = 10.0, // Dew point in degrees Celsius  
-			Data4 = 15.0 // Wind speed in kilometers per hour
-		};
-	}
-
-	public sealed class WeatherData
-	{
-		[Description("Temp (°C)")] public double Data1 { get; set; }
-
-		[Description("Humidity (%)")] public double Data2 { get; set; }
-
-		[Description("Dew point (°C)")] public double Data3 { get; set; }
-
-		[Description("Wind speed (km/h)")] public double Data4 { get; set; }
-	}
-}
-
 [UsedImplicitly]
 public sealed class TreasuryPlugin(ITreasuryDataProvider dataProvider)
 {
@@ -295,6 +262,56 @@ public sealed class TreasuryPlugin(ITreasuryDataProvider dataProvider)
 		var usts = await Task.Run(dataProvider.GetInvestments);
 
 		return usts.ToList();
+	}
+
+	[KernelFunction]
+	[Description(
+		"Adds an investment to the portfolio for the treasury with given CUSIP and issue date. Par value is optional and defaults to 0 if not passed in.")]
+	public async Task AddTreasuryInvestmentToPorfolio(
+		[Description("Unique number Treasury Dept. uses to identify securities maturing on a specific date")]
+		string cusip,
+		[Description("When the Treasury puts the security into the buyer's account")]
+		DateOnly issueDate,
+		[Description("The stated $ value of a security on its original issue date, defaults to 0")]
+		int parValue = 0)
+	{
+		var t = await dataProvider.LookupTreasuryAsync(cusip, issueDate);
+		ArgumentNullException.ThrowIfNull(t);
+		await Task.Run(() =>
+		{
+			dataProvider.Insert(new Investment
+			{
+				Cusip = cusip,
+				IssueDate = issueDate,
+				AuctionDate = t.AuctionDate,
+				Par = parValue,
+				MaturityDate = t.MaturityDate,
+				Type = t.Type,
+				SecurityTerm = t.SecurityTerm
+			});
+		});
+	}
+
+	[KernelFunction]
+	[Description("Returns a list of treasuries that have the given CUSIP identifier")]
+	public async Task<List<TreasuryData>> LookupTreasuriesByCusip(string cusip)
+	{
+		var treasuries = await dataProvider.SearchTreasuriesAsync(cusip);
+		return treasuries?.Select(t => new TreasuryData
+		{
+			Cusip = cusip,
+			AuctionDate = t.AuctionDate,
+			IssueDate = t.IssueDate,
+			Type = t.Type.ToString(),
+			Term = t.SecurityTerm
+		}).ToList() ?? [];
+	}
+
+	[KernelFunction]
+	[Description("Deletes the investment with given id from user's portfolio")]
+	public async Task DeleteInvestmentById(int id)
+	{
+		await dataProvider.DeleteInvesmentByIdAsync(id);
 	}
 
 	[KernelFunction]

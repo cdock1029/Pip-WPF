@@ -93,6 +93,16 @@ public class TreasuryDataProvider : ITreasuryDataProvider
 		_dbContext.SaveChanges();
 	}
 
+	public async Task DeleteInvesmentByIdAsync(int id)
+	{
+		var investment = await _dbContext.Investments.FindAsync(id);
+		if (investment is not null)
+		{
+			_dbContext.Investments.Remove(investment);
+			await _dbContext.SaveChangesAsync();
+		}
+	}
+
 	public void Add(Investment investment)
 	{
 		_dbContext.Investments.Add(investment);
