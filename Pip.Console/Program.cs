@@ -23,12 +23,15 @@ using Pip.Model;
 
 //var builder = Host.CreateApplicationBuilder(args);
 
-//using var logger = CreateLoggerFactory();
+using var loggerFactory = CreateLoggerFactory();
 
 var builder = Kernel.CreateBuilder();
 
-var config = new ConfigurationBuilder().AddUserSecrets<Program>().Build();
-var azureConfig = config.GetSection("AzureAI").Get<AzureAiConfig>() ?? throw new ArgumentNullException();
+var azureConfig =
+	new ConfigurationBuilder()
+		.AddUserSecrets<Program>()
+		.Build()
+		.GetSection("AzureAI").Get<AzureAiConfig>() ?? throw new ArgumentNullException();
 
 builder.Plugins
 	//.AddFromType<WeatherPlugin3>()
@@ -38,11 +41,13 @@ builder.Services
 	.AddHttpClient<ITreasuryDataProvider, TreasuryDataProvider>();
 
 builder.Services
+	//.AddSingleton(loggerFactory)
 	.AddMemoryCache()
 	.AddSingleton<ITreasuryDataProvider, TreasuryDataProvider>()
 	.AddDbContext<PipDbContext>(ServiceLifetime.Singleton);
 
-builder.AddGoogleAIGeminiChatCompletion(apiKey: azureConfig.GeminiKey, modelId: "gemini-2.0-flash", serviceId: "gemini")
+builder
+	.AddGoogleAIGeminiChatCompletion(apiKey: azureConfig.GeminiKey, modelId: "gemini-2.0-flash", serviceId: "gemini")
 	.AddAzureAIInferenceChatCompletion(azureConfig.ModelId, endpoint: new Uri(azureConfig.ModelInferenceEndpoint),
 		apiKey: azureConfig.AzureKeyCredential, serviceId: "azure")
 	.AddOllamaChatCompletion("qwen2.5", new Uri(azureConfig.OllamaEndpoint), "ollama");
@@ -63,7 +68,11 @@ var kernel = builder.Build();
 //]);
 
 
-var chatHistory = new ChatHistory();
+var chatHistory = new ChatHistory(
+	"""
+	You're a financial support agent that can provide information on US treasuries, the user's personal investment portfolio of saved treasuries, and other assorted financial knowlege and info.
+	Be succint, clear, and feel free to call functions available to you to give the user information he desires.
+	""");
 
 var sb = new StringBuilder();
 
@@ -90,6 +99,7 @@ while (true)
 	Console.Write("You: ");
 
 	var prompt = Console.ReadLine() ?? throw new ArgumentNullException();
+	if (string.IsNullOrEmpty(prompt)) continue;
 	if (prompt == "q")
 	{
 		Console.WriteLine("\nGoodbye!\n");

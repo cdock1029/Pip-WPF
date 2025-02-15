@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:investments="clr-namespace:Pip.UI.Components.Investments"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type={x:Type investments:InvestmentItemViewModel}}"
              d:DesignHeight="300" d:DesignWidth="300">
@@ -14,7 +15,18 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <dxlc:DataLayoutControl
-            AutoGenerateItems="True"
-            CurrentItem="{Binding Mode=OneWay}" />
+            AutoGenerateItems="False"
+            Orientation="Vertical"
+            CurrentItem="{Binding Mode=OneWay}">
+            <dxlc:LayoutGroup Orientation="Vertical">
+                <dxlc:LayoutItem Label="Issue Date" AddColonToLabel="True">
+                    <dxe:DateEdit EditValue="{Binding IssueDate, Mode=TwoWay}" />
+                </dxlc:LayoutItem>
+
+                <dxlc:LayoutItem Label="Par" AddColonToLabel="True">
+                    <dxe:SpinEdit EditValue="{Binding Par, Mode=TwoWay}" MaskType="Numeric" Mask="c" DisplayFormatString="c" />
+                </dxlc:LayoutItem>
+            </dxlc:LayoutGroup>
+        </dxlc:DataLayoutControl>
     </Grid>
 </UserControl>

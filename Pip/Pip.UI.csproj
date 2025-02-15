@@ -30,17 +30,17 @@
 		<PackageReference Include="DevExpress.Wpf.Ribbon" Version="24.2.3" />
 		<PackageReference Include="DevExpress.Wpf.Themes.All" Version="24.2.*-*" />
 		<PackageReference Include="DevExpress.Wpf.ThemesLW" Version="24.2.*-*" />
-		<PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.1" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.1">
+		<PackageReference Include="JetBrains.Annotations" Version="2025.1.0-eap1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.2">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.1" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.AutoActivation" Version="9.1.0" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.1" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.2" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.AutoActivation" Version="9.2.0" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.2" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
-		<PackageReference Include="System.Formats.Asn1" Version="9.0.1" />
+		<PackageReference Include="System.Formats.Asn1" Version="9.0.2" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Pip.DataAccess\Pip.DataAccess.csproj" />
