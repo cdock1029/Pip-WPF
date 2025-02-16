@@ -1,0 +1,20 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="Pip.Console/Pip.Console.csproj" />
+  <Project Path="Pip.DataAccess/Pip.DataAccess.csproj" />
+  <Project Path="Pip.Model/Pip.Model.csproj" />
+  <Project Path="Pip.WinUI.Core/Pip.WinUI.Core.csproj">
+    <Platform Solution="*|x64" Project="x64" />
+  </Project>
+  <Project Path="Pip.WinUI/Pip.WinUI.csproj">
+    <Platform Project="x64" />
+    <Deploy />
+  </Project>
+  <Project Path="Pip/Pip.UI.csproj">
+    <Platform Solution="*|x64" Project="x64" />
+  </Project>
+  <Project Path="Td/Td.csproj" />
+</Solution>

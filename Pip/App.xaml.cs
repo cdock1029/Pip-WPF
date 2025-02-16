@@ -13,9 +13,7 @@ using Pip.UI.Components.Home;
 using Pip.UI.Components.Investments;
 using Pip.UI.Components.Search;
 using Pip.UI.Properties;
-using Pip.UI.Services;
 using Pip.UI.ViewModel;
-using INavigationService = Pip.UI.Services.INavigationService;
 
 namespace Pip.UI;
 
@@ -51,7 +49,6 @@ public partial class App
 	{
 		serviceCollection
 			.AddMemoryCache()
-			.AddSingleton<INavigationService, NavigationService>()
 			.AddSingleton<IMessageBoxService, DXMessageBoxService>()
 			.AddSingleton<ITreasuryDataProvider, TreasuryDataProvider>()
 			.AddSingleton<PipSettings>()

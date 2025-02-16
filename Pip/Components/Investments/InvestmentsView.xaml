@@ -46,7 +46,7 @@
                                     EditFormShowMode="None"
                                     AutoWidth="True"
                                     IsTotalSummaryMenuEnabled="True"
-                                    ShowGroupedColumns="False"
+                                    ShowGroupedColumns="True"
                                     ValidateRowCommand="{Binding ValidateRowCommand}"
                                     ValidateRowDeletionCommand="{Binding ValidateRowDeletionCommand}"
                                     DataSourceRefreshCommand="{Binding DataSourceRefreshCommand}"
