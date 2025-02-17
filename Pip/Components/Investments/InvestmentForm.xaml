@@ -18,7 +18,7 @@
             AutoGenerateItems="False"
             Orientation="Vertical"
             CurrentItem="{Binding Mode=OneWay}">
-            <dxlc:LayoutGroup Orientation="Vertical">
+            <dxlc:LayoutGroup View="GroupBox" IsCollapsible="True" Header="Treasury items" Orientation="Vertical">
                 <dxlc:LayoutItem Label="Issue Date" AddColonToLabel="True">
                     <dxe:DateEdit EditValue="{Binding IssueDate, Mode=TwoWay}" />
                 </dxlc:LayoutItem>

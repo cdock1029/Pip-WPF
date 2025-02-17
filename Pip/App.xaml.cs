@@ -23,8 +23,9 @@ public partial class App
 	{
 		CompatibilitySettings.UseLightweightThemes = true;
 		ThemedWindow.UseNativeWindow = true;
-		//ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win10SystemColors.Name;
+		//ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Office2019BlackBrickwork.Name;
 		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
+		//ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.VS2019System.Name;
 	}
 
 	private IServiceProvider ServiceProvider { get; set; } = null!;

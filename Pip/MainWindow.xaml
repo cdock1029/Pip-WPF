@@ -83,7 +83,17 @@
                 <RowDefinition Height="3*" />
                 <RowDefinition Height="2*" />
             </Grid.RowDefinitions>
-            <dxa:AccordionControl ItemsSource="{Binding Pages}" SelectedItem="{Binding SelectedPage, Mode=TwoWay}">
+            <dxa:AccordionControl
+                ItemsSource="{Binding RootItems, Mode=OneWay}"
+                ChildrenPath="Pages"
+                ViewMode="NavigationPane"
+                IsCollapseButtonVisible="True"
+                CompactNavigation="False"
+                AutoExpandAllItems="True"
+                ExpandItemOnHeaderClick="False"
+                RootItemExpandButtonPosition="None"
+                SelectedRootItem="{Binding RootPipPageWrapper,Mode=OneWay}"
+                SelectedItem="{Binding SelectedPage, Mode=TwoWay}">
                 <dxmvvm:Interaction.Behaviors>
                     <dxmvvm:EventToCommand EventName="SelectedItemChanged"
                                            Command="{Binding NavigateToSelectedCommand}" />

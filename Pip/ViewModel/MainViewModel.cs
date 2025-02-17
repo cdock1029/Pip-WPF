@@ -22,28 +22,29 @@ public partial class MainViewModel : PipViewModel
 		DetailsViewModel detailsViewModel,
 		HomeViewModel homeViewModel)
 	{
-		InvestmentsViewModel = investmentsViewModel;
 		SearchViewModel = searchViewModel;
-		AuctionsViewModel = auctionsViewModel;
 		DetailsViewModel = detailsViewModel;
-		HomeViewModel = homeViewModel;
+		InvestmentsViewModel = investmentsViewModel;
 
 		Messenger.Default.Register<AfterInsertInvestmentMessage>(this, ReceiveAfterInvestmentMessage);
 
-		SelectedPage = HomeViewModel;
+		SelectedPage = homeViewModel;
+
+		RootPipPageWrapper = new PipPageWrapper(homeViewModel, auctionsViewModel, investmentsViewModel);
 	}
 
-	public IEnumerable<IPipPage> Pages => [HomeViewModel, AuctionsViewModel, InvestmentsViewModel];
-
-	private AuctionsViewModel AuctionsViewModel { get; }
-
-	public SearchViewModel SearchViewModel { get; }
 
 	private InvestmentsViewModel InvestmentsViewModel { get; }
 
+	public IEnumerable<IPipPage> RootItems => [RootPipPageWrapper];
+
+	public PipPageWrapper RootPipPageWrapper { get; }
+
+	public SearchViewModel SearchViewModel { get; }
+
+
 	public DetailsViewModel DetailsViewModel { get; }
 
-	public HomeViewModel HomeViewModel { get; }
 
 	private INavigationService NavigationService => GetService<INavigationService>();
 
@@ -72,5 +73,15 @@ public partial class MainViewModel : PipViewModel
 	private void ReceiveAfterInvestmentMessage(AfterInsertInvestmentMessage msg)
 	{
 		SelectedPage = InvestmentsViewModel;
+	}
+
+	public class PipPageWrapper(
+		params IEnumerable<IPipPage> pages) : IPipPage
+	{
+		public IEnumerable<IPipPage> Pages => pages;
+
+		public string? View { get; } = null!;
+		public string Title { get; set; } = "Navigation";
+		public Uri? Image { get; } = null!;
 	}
 }
