@@ -8,6 +8,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Data\**" />
+	  <Content Remove="Data\**" />
+	  <EmbeddedResource Remove="Data\**" />
+	  <None Remove="Data\**" />
+	  <Page Remove="Data\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Remove="Assets\cat.ico" />
 	</ItemGroup>
 
@@ -18,30 +26,27 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Mvvm"  />
-		<PackageReference Include="DevExpress.Blazor"  />
-		<PackageReference Include="JetBrains.Annotations"  />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf"  />
-		<PackageReference Include="Microsoft.EntityFrameworkCore"  />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" >
+		<PackageReference Include="CommunityToolkit.Mvvm" />
+		<PackageReference Include="DevExpress.Blazor" />
+		<PackageReference Include="JetBrains.Annotations" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite"  />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug"  />
-		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components"  />
-		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Emoji"  />
-		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons"  />
-		<PackageReference Include="Syncfusion.Blazor.Grid"  />
-		<PackageReference Include="Syncfusion.Blazor.Themes"  />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" />
+		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" />
+		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Emoji" />
+		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" />
+		<PackageReference Include="Syncfusion.Blazor.Grid" />
+		<PackageReference Include="Syncfusion.Blazor.Themes" />
+		<PackageReference Include="WPF-UI" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Pip.DataAccess\Pip.DataAccess.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Data\" />
 	</ItemGroup>
 
 </Project>

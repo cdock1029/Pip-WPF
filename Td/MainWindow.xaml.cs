@@ -1,13 +1,14 @@
 ﻿using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Interop;
 using Microsoft.AspNetCore.Components.WebView;
 using Microsoft.Web.WebView2.Core;
+using Wpf.Ui.Appearance;
+using Wpf.Ui.Controls;
 using Color = System.Drawing.Color;
 using Lock = System.Threading.Lock;
+using MenuItem = System.Windows.Controls.MenuItem;
 
 namespace Td;
 
@@ -22,19 +23,23 @@ public partial class MainWindow
 
 	public MainWindow(ReloadNotifierService reloadService, Settings settings, AppState appState)
 	{
+		const WindowBackdropType wb = WindowBackdropType.Tabbed;
+		WindowBackdropType = wb;
+		SystemThemeWatcher.Watch(this);
+
+		ApplicationThemeManager.ApplySystemTheme();
+
+
 		InitializeComponent();
 		_settings = settings;
 		_appState = appState;
 		_reloadService = reloadService;
 
-		var currentApp = (App)Application.Current;
-		Resources.Add("services", currentApp.ServiceProvider);
-
 		BlazorWebView.BlazorWebViewInitializing += BlazorWebViewInitializing;
 
 		BlazorWebView.BlazorWebViewInitialized += BlazorWebViewInitialized;
 
-		BackButton.Click += BackButton_Click;
+		//BackButton.Click += BackButton_Click;
 	}
 
 
@@ -61,7 +66,7 @@ public partial class MainWindow
 	private void CoreWebView2_HistoryChanged(object? sender, object e)
 	{
 		CanGoBack = BlazorWebView.WebView.CoreWebView2.CanGoBack;
-		BindingOperations.GetBindingExpression(BackButton, IsEnabledProperty)?.UpdateTarget();
+		//BindingOperations.GetBindingExpression(BackButton, IsEnabledProperty)?.UpdateTarget();
 	}
 
 	private void BackButton_Click(object sender, RoutedEventArgs e)

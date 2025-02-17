@@ -18,19 +18,18 @@ public partial class App
 			"Ngo9BigBOggjHTQxAR8/V1NMaF5cXmBCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWX5ednVWQmReWUR+XkE=");
 	}
 
-	public IServiceProvider ServiceProvider { get; private set; } = null!;
-
 	protected override void OnStartup(StartupEventArgs e)
 	{
 		var serviceCollection = new ServiceCollection();
 		ConfigureServices(serviceCollection);
 
-		ServiceProvider = serviceCollection.BuildServiceProvider();
+		var serviceProvider = serviceCollection.BuildServiceProvider();
+		Resources.Add("services", serviceProvider);
 
-		var dbContext = ServiceProvider.GetRequiredService<PipDbContext>();
+		var dbContext = serviceProvider.GetRequiredService<PipDbContext>();
 		dbContext.Database.Migrate();
 
-		var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
+		var mainWindow = serviceProvider.GetRequiredService<MainWindow>();
 		mainWindow.Show();
 	}
 
