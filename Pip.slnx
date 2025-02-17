@@ -3,6 +3,10 @@
     <Platform Name="Any CPU" />
     <Platform Name="x64" />
   </Configurations>
+  <Folder Name="/Solution Items/" Id="02ea681e-c7d8-13c7-8484-4ac65e1b71e8">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+  </Folder>
   <Project Path="Pip.Console/Pip.Console.csproj" />
   <Project Path="Pip.DataAccess/Pip.DataAccess.csproj" />
   <Project Path="Pip.Model/Pip.Model.csproj" />

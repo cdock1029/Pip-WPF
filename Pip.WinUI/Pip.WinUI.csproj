@@ -9,28 +9,25 @@
 		<Platforms>x86;x64;arm64</Platforms>
 		<RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
 		<PublishProfile>Properties\PublishProfiles\win10-$(Platform).pubxml</PublishProfile>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
 		<UseWinUI>true</UseWinUI>
 		<EnableMsixTooling>true</EnableMsixTooling>
-		<LangVersion>preview</LangVersion>
 	</PropertyGroup>
 	<ItemGroup>
 		<Manifest Include="$(ApplicationManifest)" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.2">
+		<PackageReference Include="CommunityToolkit.Mvvm"  />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.2" />
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250208002-preview1" />
-		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
-		<PackageReference Include="Syncfusion.Grid.WinUI" Version="28.2.5" />
-		<PackageReference Include="System.Private.Uri" Version="4.3.2" />
-		<PackageReference Include="WinUIEx" Version="2.5.1" />
+		<PackageReference Include="Microsoft.Extensions.Hosting"  />
+		<PackageReference Include="Microsoft.WindowsAppSDK"  />
+		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed"  />
+		<PackageReference Include="Syncfusion.Grid.WinUI"  />
+		<PackageReference Include="System.Private.Uri"  />
+		<PackageReference Include="WinUIEx"  />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Pip.DataAccess\Pip.DataAccess.csproj" />

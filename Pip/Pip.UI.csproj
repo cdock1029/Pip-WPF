@@ -2,11 +2,7 @@
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net9.0-windows</TargetFramework>
-		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
 		<UseWPF>true</UseWPF>
-		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<LangVersion>preview</LangVersion>
 		<IncludePackageReferencesDuringMarkupCompilation>true</IncludePackageReferencesDuringMarkupCompilation>
 	</PropertyGroup>
 	<ItemGroup>
@@ -18,29 +14,29 @@
 	  </Content>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-		<PackageReference Include="DevExpress.Images" Version="24.2.*-*" />
-		<PackageReference Include="DevExpress.Mvvm.CodeGenerators" Version="22.1.1" />
-		<PackageReference Include="DevExpress.Wpf.Accordion" Version="24.2.3" />
-		<PackageReference Include="DevExpress.Wpf.Controls" Version="24.2.3" />
-		<PackageReference Include="DevExpress.Wpf.Core" Version="24.2.*-*" />
-		<PackageReference Include="devexpress.wpf.docking" Version="24.2.*-*" />
-		<PackageReference Include="DevExpress.Wpf.Grid" Version="24.2.3" />
-		<PackageReference Include="devexpress.wpf.propertygrid" Version="24.2.*-*" />
-		<PackageReference Include="DevExpress.Wpf.Ribbon" Version="24.2.3" />
-		<PackageReference Include="DevExpress.Wpf.Themes.All" Version="24.2.*-*" />
-		<PackageReference Include="DevExpress.Wpf.ThemesLW" Version="24.2.*-*" />
-		<PackageReference Include="JetBrains.Annotations" Version="2025.1.0-eap1" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.2">
+		<PackageReference Include="CommunityToolkit.Mvvm"  />
+		<PackageReference Include="DevExpress.Images"  />
+		<PackageReference Include="DevExpress.Mvvm.CodeGenerators"  />
+		<PackageReference Include="DevExpress.Wpf.Accordion"  />
+		<PackageReference Include="DevExpress.Wpf.Controls"  />
+		<PackageReference Include="DevExpress.Wpf.Core"  />
+		<PackageReference Include="devexpress.wpf.docking"  />
+		<PackageReference Include="DevExpress.Wpf.Grid"  />
+		<PackageReference Include="devexpress.wpf.propertygrid"  />
+		<PackageReference Include="DevExpress.Wpf.Ribbon"  />
+		<PackageReference Include="DevExpress.Wpf.Themes.All"  />
+		<PackageReference Include="DevExpress.Wpf.ThemesLW"  />
+		<PackageReference Include="JetBrains.Annotations"  />
+		<PackageReference Include="Microsoft.EntityFrameworkCore"  />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" >
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.2" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.AutoActivation" Version="9.2.0" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.2" />
-		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
-		<PackageReference Include="System.Formats.Asn1" Version="9.0.2" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection"  />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.AutoActivation"  />
+		<PackageReference Include="Microsoft.Extensions.Http"  />
+		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf"  />
+		<PackageReference Include="System.Formats.Asn1"  />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Pip.DataAccess\Pip.DataAccess.csproj" />
