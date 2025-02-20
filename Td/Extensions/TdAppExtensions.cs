@@ -1,6 +1,4 @@
-﻿using Pip.Model;
-
-namespace Td.Extensions;
+﻿namespace Td.Extensions;
 
 public static class TdAppExtensions
 {

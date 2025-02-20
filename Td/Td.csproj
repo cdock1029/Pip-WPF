@@ -5,6 +5,7 @@
 		<TargetFramework>net9.0-windows</TargetFramework>
 		<UseWPF>true</UseWPF>
 		<RootNamespace>Td</RootNamespace>
+		<Features>use-roslyn-tokenizer;$(Features)</Features>
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -9,9 +9,12 @@
                  mc:Ignorable="d"
                  Icon="/Assets/cat.ico"
                  ExtendsContentIntoTitleBar="True"
-                 Height="600" Width="800">
-    <DockPanel Margin="2">
-        <ui:TitleBar DockPanel.Dock="Top" Title="Treasury Director" Margin="0, -2, -2, 0">
+                 WindowCornerPreference="Default"
+                 MinHeight="300"
+                 MinWidth="300"
+                 UseLayoutRounding="True">
+    <DockPanel>
+        <ui:TitleBar DockPanel.Dock="Top" Margin="0">
             <ui:TitleBar.Icon>
                 <ui:ImageIcon Source="Assets/cat.ico" />
             </ui:TitleBar.Icon>
@@ -23,11 +26,13 @@
                 </Menu>
             </ui:TitleBar.Header>
         </ui:TitleBar>
-        <blazor:BlazorWebView Margin="-1, 0, -1, -1" Name="BlazorWebView" HostPage="wwwroot\index.html"
+
+        <blazor:BlazorWebView Margin="20" Name="BlazorWebView" HostPage="wwwroot\index.html"
                               Services="{DynamicResource services}">
             <blazor:BlazorWebView.RootComponents>
                 <blazor:RootComponent Selector="#app" ComponentType="{x:Type local:Root}" />
             </blazor:BlazorWebView.RootComponents>
         </blazor:BlazorWebView>
+
     </DockPanel>
 </ui:FluentWindow>

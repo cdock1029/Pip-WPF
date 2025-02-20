@@ -12,8 +12,6 @@
     xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
     xmlns:dxa="http://schemas.devexpress.com/winfx/2008/xaml/accordion"
     xmlns:home="clr-namespace:Pip.UI.Components.Home"
-    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
-    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     x:Class="Pip.UI.MainWindow"
     Width="800"
     Height="800"
@@ -56,9 +54,9 @@
     <dx:ThemedWindow.ToolbarItems>
         <dxb:MainMenuControl VerticalAlignment="Center">
             <dxb:BarSubItem Content="_File">
-                <dxb:BarButtonItem x:Name="btnNew" Content="_New" Glyph="{dx:DXImage Image=New_16x16.png}"
+                <dxb:BarButtonItem x:Name="BtnNew" Content="_New" Glyph="{dx:DXImage Image=New_32x32.png}"
                                    Command="{Binding ShowFormCommand}" />
-                <dxb:BarButtonItem x:Name="btnOpen" Content="_Open" Glyph="{dx:DXImage Image=Open_16x16.png}" />
+                <dxb:BarButtonItem x:Name="BtnOpen" Content="_Open" Glyph="{dx:DXImage Image=Open_32x32.png}" />
                 <dxb:BarButtonItem Content="_Quit" Glyph="{dx:DXImage SvgImages/XAF/Action_Close.svg}">
                     <b:Interaction.Triggers>
                         <b:EventTrigger EventName="ItemClick">
@@ -69,16 +67,16 @@
                 </dxb:BarButtonItem>
             </dxb:BarSubItem>
             <dxb:BarSubItem Content="_Edit">
-                <dxb:BarButtonItem x:Name="btnCut" Content="Cu_t" Glyph="{dx:DXImage Image=Cut_16x16.png}" />
-                <dxb:BarButtonItem x:Name="btnCopy" Content="_Copy" Glyph="{dx:DXImage Image=Copy_16x16.png}" />
-                <dxb:BarButtonItem x:Name="btnPaste" Content="_Paste" Glyph="{dx:DXImage Image=Paste_16x16.png}" />
+                <dxb:BarButtonItem x:Name="BtnCut" Content="Cu_t" Glyph="{dx:DXImage Image=Cut_32x32.png}" />
+                <dxb:BarButtonItem x:Name="BtnCopy" Content="_Copy" Glyph="{dx:DXImage Image=Copy_32x32.png}" />
+                <dxb:BarButtonItem x:Name="BtnPaste" Content="_Paste" Glyph="{dx:DXImage Image=Paste_32x32.png}" />
             </dxb:BarSubItem>
         </dxb:MainMenuControl>
     </dx:ThemedWindow.ToolbarItems>
 
 
     <DockPanel Margin="10, 20, 10, 0">
-        <Grid DockPanel.Dock="Left" Width="280">
+        <Grid DockPanel.Dock="Left">
             <Grid.RowDefinitions>
                 <RowDefinition Height="3*" />
                 <RowDefinition Height="2*" />
@@ -102,14 +100,14 @@
                 <dxa:AccordionControl.ItemContainerStyle>
                     <Style d:DataContext="{d:DesignInstance Type={x:Type viewModel:IPipPage}}"
                            TargetType="{x:Type dxa:AccordionItem}">
-                        <Setter Property="GlyphSize" Value="16,16" />
+                        <Setter Property="GlyphSize" Value="20,20" />
                         <Setter Property="Glyph" Value="{Binding Image}" />
                         <Setter Property="Header" Value="{Binding Title}" />
                     </Style>
                 </dxa:AccordionControl.ItemContainerStyle>
             </dxa:AccordionControl>
 
-            <Grid Grid.Row="1">
+            <!--<Grid Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
@@ -146,17 +144,15 @@
                     </dxg:GridControl.Columns>
                 </dxg:GridControl>
 
-            </Grid>
+            </Grid>-->
         </Grid>
-        <Grid Margin="20,0,0,0">
-            <dxwui:NavigationFrame NavigationCacheMode="Required" AnimationType="None">
-                <dxwui:NavigationFrame.Source>
-                    <home:HomeView DataContext="{Binding HomeViewModel}" />
-                </dxwui:NavigationFrame.Source>
-                <dxmvvm:Interaction.Behaviors>
-                    <navigation:FrameNavigationService />
-                </dxmvvm:Interaction.Behaviors>
-            </dxwui:NavigationFrame>
-        </Grid>
+        <dxwui:NavigationFrame Margin="20,0,0,0" NavigationCacheMode="Required" AnimationType="None">
+            <dxwui:NavigationFrame.Source>
+                <home:HomeView DataContext="{Binding HomeViewModel}" />
+            </dxwui:NavigationFrame.Source>
+            <dxmvvm:Interaction.Behaviors>
+                <navigation:FrameNavigationService />
+            </dxmvvm:Interaction.Behaviors>
+        </dxwui:NavigationFrame>
     </DockPanel>
 </dx:ThemedWindow>

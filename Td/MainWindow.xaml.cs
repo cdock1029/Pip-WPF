@@ -7,8 +7,6 @@ using Microsoft.Web.WebView2.Core;
 using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
 using Color = System.Drawing.Color;
-using Lock = System.Threading.Lock;
-using MenuItem = System.Windows.Controls.MenuItem;
 
 namespace Td;
 
@@ -16,24 +14,21 @@ public partial class MainWindow
 {
 	private const int ShowNormal = 1;
 	private const int ShowMinimized = 2;
-	private readonly AppState _appState;
-	private readonly Lock _lockObj = new();
 	private readonly ReloadNotifierService _reloadService;
 	private readonly Settings _settings;
 
-	public MainWindow(ReloadNotifierService reloadService, Settings settings, AppState appState)
+	public MainWindow(ReloadNotifierService reloadService, Settings settings)
 	{
+		_settings = settings;
+		_reloadService = reloadService;
+
 		const WindowBackdropType wb = WindowBackdropType.Tabbed;
 		WindowBackdropType = wb;
 		SystemThemeWatcher.Watch(this);
 
 		ApplicationThemeManager.ApplySystemTheme();
 
-
 		InitializeComponent();
-		_settings = settings;
-		_appState = appState;
-		_reloadService = reloadService;
 
 		BlazorWebView.BlazorWebViewInitializing += BlazorWebViewInitializing;
 
@@ -69,11 +64,6 @@ public partial class MainWindow
 		//BindingOperations.GetBindingExpression(BackButton, IsEnabledProperty)?.UpdateTarget();
 	}
 
-	private void BackButton_Click(object sender, RoutedEventArgs e)
-	{
-		BlazorWebView.WebView.CoreWebView2.GoBack();
-	}
-
 	private void WebView2_NavigationStarting(object? sender, CoreWebView2NavigationStartingEventArgs e)
 	{
 		Dispatcher.InvokeAsync(() => _reloadService.Update(true));
@@ -99,7 +89,7 @@ public partial class MainWindow
 			wp.flags = 0;
 			wp.showCmd = wp.showCmd == ShowMinimized ? ShowNormal : wp.showCmd;
 			var hwnd = new WindowInteropHelper(this).Handle;
-			SetWindowPlacement(hwnd, ref wp);
+			var _ = SetWindowPlacement(hwnd, ref wp);
 		}
 		catch
 		{
@@ -114,7 +104,7 @@ public partial class MainWindow
 
 		// Persist window placement details to application settings
 		var hwnd = new WindowInteropHelper(this).Handle;
-		GetWindowPlacement(hwnd, out var wp);
+		var _ = GetWindowPlacement(hwnd, out var wp);
 		_settings.WindowPlacement = wp;
 		_settings.Save();
 	}
@@ -132,6 +122,7 @@ public partial class MainWindow
 		Close();
 	}
 
+	/*
 	private void Settings_OnClick(object sender, RoutedEventArgs e)
 	{
 		lock (_lockObj)
@@ -153,4 +144,5 @@ public partial class MainWindow
 			});
 		}
 	}
+	*/
 }

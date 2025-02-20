@@ -22,9 +22,10 @@ public partial class App
 	public App()
 	{
 		CompatibilitySettings.UseLightweightThemes = true;
-		ThemedWindow.UseNativeWindow = true;
-		//ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Office2019BlackBrickwork.Name;
-		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
+		ThemedWindow.UseNativeWindow = false;
+		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Office2019BlackBrickwork.Name;
+		//ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win10SystemColors.Name;
+		//ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
 		//ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.VS2019System.Name;
 	}
 

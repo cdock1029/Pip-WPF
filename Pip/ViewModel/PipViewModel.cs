@@ -22,7 +22,7 @@ public abstract class PipViewModel : ViewModelBase, INotifyDataErrorInfo
 	{
 		return string.IsNullOrEmpty(propertyName)
 			? _errors.SelectMany(p => p.Value)
-			: _errors.GetValueOrDefault(propertyName!, []);
+			: _errors.GetValueOrDefault(propertyName, []);
 	}
 
 	protected void AddError(string errorMsg, [CallerMemberName] string propertyName = "")

@@ -48,7 +48,6 @@ public class TreasuryDataProvider : ITreasuryDataProvider
 			return _client.GetFromJsonAsync<IEnumerable<Treasury>>(
 				"securities/auctioned?format=json&limitByTerm=true&days=720");
 		}).ConfigureAwait(false);
-		;
 	}
 
 	public ValueTask<Treasury?> LookupTreasuryAsync(string cusip, DateOnly? issueDate, CancellationToken ct)

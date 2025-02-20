@@ -24,8 +24,11 @@ public partial class AuctionsViewModel(ITreasuryDataProvider treasuryDataProvide
 	public DetailsViewModel DetailsViewModel => detailsViewModel;
 
 	public string View => "AuctionsView";
+
 	public string Title => "Auctions";
-	public Uri Image { get; } = DXImageHelper.GetImageUri("SvgImages/Business Objects/BO_Sale.svg");
+
+	//public Uri Image { get; } = DXImageHelper.GetImageUri("SvgImages/Business Objects/BO_Sale.svg");
+	public Uri Image { get; } = DXImageHelper.GetImageUri("Images/Business Objects/BOSale_32x32.png");
 
 	public override async Task LoadAsync()
 	{

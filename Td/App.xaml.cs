@@ -33,7 +33,7 @@ public partial class App
 		mainWindow.Show();
 	}
 
-	private void ConfigureServices(IServiceCollection serviceCollection)
+	private static void ConfigureServices(IServiceCollection serviceCollection)
 	{
 		serviceCollection.AddSingleton<MainWindow>();
 		serviceCollection.AddDbContext<PipDbContext>(ServiceLifetime.Singleton);
