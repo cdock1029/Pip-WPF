@@ -1,13 +1,12 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
-using DevExpress.Xpf.Core;
 using Pip.UI.Properties;
 using Pip.UI.ViewModel;
 
 namespace Pip.UI;
 
-public partial class MainWindow : ThemedWindow
+public partial class MainWindow
 {
 	private const int ShowNormal = 1;
 	private const int ShowMinimized = 2;

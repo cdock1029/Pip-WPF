@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics.Tracing;
 using System.Text;
+using Azure.Core.Diagnostics;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -21,8 +23,11 @@ using Pip.Model;
 
 #pragma warning disable SKEXP0070
 
+//Environment.SetEnvironmentVariable("AZURE_TENANT_ID", "1132211e-aefb-4f3e-9416-0fcdb8857c8d");
+
 //var builder = Host.CreateApplicationBuilder(args);
 
+using var listener = AzureEventSourceListener.CreateConsoleLogger(EventLevel.Verbose);
 using var loggerFactory = CreateLoggerFactory();
 
 var builder = Kernel.CreateBuilder();
@@ -34,6 +39,7 @@ var azureConfig =
 		.GetSection("AzureAI").Get<AzureAiConfig>() ?? throw new ArgumentNullException();
 
 builder.Plugins
+	.AddFromType<Utilities>()
 	.AddFromType<TreasuryPlugin>();
 
 builder.Services
@@ -270,19 +276,21 @@ public sealed class TreasuryPlugin(ITreasuryDataProvider dataProvider)
 	public async Task AddTreasuryInvestmentToPorfolio(
 		[Description("Unique number Treasury Dept. uses to identify securities maturing on a specific date")]
 		string cusip,
-		[Description("When the Treasury puts the security into the buyer's account")]
-		DateOnly issueDate,
+		[Description(
+			"When the Treasury is issued to the buyer. ISO 8601 extended format date-only string (example: 2024-01-31)")]
+		string issueDate,
 		[Description("The stated $ value of a security on its original issue date, defaults to 0")]
 		int parValue = 0)
 	{
-		var t = await dataProvider.LookupTreasuryAsync(cusip, issueDate);
+		var issueDateOnly = DateOnly.Parse(issueDate);
+		var t = await dataProvider.LookupTreasuryAsync(cusip, issueDateOnly);
 		ArgumentNullException.ThrowIfNull(t);
 		await Task.Run(() =>
 		{
 			dataProvider.Insert(new Investment
 			{
 				Cusip = cusip,
-				IssueDate = issueDate,
+				IssueDate = issueDateOnly,
 				AuctionDate = t.AuctionDate,
 				Par = parValue,
 				MaturityDate = t.MaturityDate,
@@ -343,6 +351,17 @@ public sealed class TreasuryPlugin(ITreasuryDataProvider dataProvider)
 	}
 }
 
+[UsedImplicitly]
+public sealed class Utilities
+{
+	[KernelFunction]
+	public string GetCurrentUtcTime()
+	{
+		return DateTime.UtcNow.ToString("R");
+	}
+}
+
+[UsedImplicitly]
 public class AddReturnTypeSchemaFilter : IAutoFunctionInvocationFilter
 {
 	public async Task OnAutoFunctionInvocationAsync(AutoFunctionInvocationContext context,
@@ -355,7 +374,7 @@ public class AddReturnTypeSchemaFilter : IAutoFunctionInvocationFilter
 		FunctionResultWithSchema resultWithSchema = new()
 		{
 			Value = context.Result.GetValue<object>(), // Get the original result
-			Schema = context.Function.Metadata.ReturnParameter?.Schema // Get the function return type schema
+			Schema = context.Function.Metadata.ReturnParameter.Schema // Get the function return type schema
 		};
 
 		// Return the result with the schema instead of the original one
@@ -364,8 +383,8 @@ public class AddReturnTypeSchemaFilter : IAutoFunctionInvocationFilter
 
 	private sealed class FunctionResultWithSchema
 	{
-		public object? Value { get; set; }
+		public object? Value { [UsedImplicitly] get; set; }
 
-		public KernelJsonSchema? Schema { get; set; }
+		public KernelJsonSchema? Schema { [UsedImplicitly] get; set; }
 	}
 }

@@ -25,6 +25,7 @@ public partial class MainViewModel : PipViewModel
 		SearchViewModel = searchViewModel;
 		DetailsViewModel = detailsViewModel;
 		InvestmentsViewModel = investmentsViewModel;
+		HomeViewModel = homeViewModel;
 
 		Messenger.Default.Register<AfterInsertInvestmentMessage>(this, ReceiveAfterInvestmentMessage);
 
@@ -33,6 +34,7 @@ public partial class MainViewModel : PipViewModel
 		RootPipPageWrapper = new PipPageWrapper(homeViewModel, auctionsViewModel, investmentsViewModel);
 	}
 
+	public HomeViewModel HomeViewModel { get; }
 
 	private InvestmentsViewModel InvestmentsViewModel { get; }
 

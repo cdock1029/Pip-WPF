@@ -29,8 +29,11 @@ public partial class InvestmentsViewModel : PipViewModel, IPipPage
 	public DetailsViewModel DetailsViewModel { get; }
 
 	public string View => "InvestmentsView";
+
 	public string Title => "Investments";
-	public Uri Image { get; } = DXImageHelper.GetImageUri("SvgImages/Spreadsheet/Financial.svg");
+
+	//public Uri Image { get; } = DXImageHelper.GetImageUri("SvgImages/Spreadsheet/Financial.svg");
+	public Uri Image { get; } = DXImageHelper.GetImageUri("Images/Spreadsheet/FunctionsFinancial_32x32.png");
 
 	public override async Task LoadAsync()
 	{

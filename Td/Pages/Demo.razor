@@ -9,7 +9,7 @@
         <DxCalendar @bind-SelectedDate="@DatePickerValue" MinDate="_minDate" MaxDate="_maxDate"/>
     </div> *@
     <div>
-        <SfCalendar TValue="DateTime" @bind-Value="DatePickerValue"></SfCalendar>
+        <SfCalendar TValue="DateTime" @bind-Value="DatePickerValue" Min="_minDate" Max="_maxDate"></SfCalendar>
     </div>
 
 </div>

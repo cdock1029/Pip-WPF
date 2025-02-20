@@ -1,6 +1,4 @@
 ﻿@page "/investments"
-@using Microsoft.FluentUI.AspNetCore.Components.Icons.Regular
-@using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.Grids
 @inherits BaseStateComponent<InvestmentPageState>
 
@@ -143,7 +141,8 @@
         }
     };
     */
-
+    
+    /*
     private void OnDataItemDeleting(GridDataItemDeletingEventArgs args)
     {
         var investment = (Investment)args.DataItem;
@@ -165,6 +164,7 @@
 
         StateContainer.LoadData();
     }
+    */
 
     public class TermComparer : IComparer<object>
     {
@@ -173,12 +173,12 @@
             var investmentX = x as Investment;
             var investmentY = y as Investment;
 
-            var xSpan = investmentX?.MaturityDate is null || investmentX?.IssueDate is null
+            var xSpan = investmentX?.MaturityDate is null
                 ? 0
                 : investmentX.MaturityDate.Value.DayNumber - investmentX.IssueDate.DayNumber;
 
 
-            var ySpan = investmentY?.MaturityDate is null || investmentY?.IssueDate is null
+            var ySpan = investmentY?.MaturityDate is null
                 ? 0
                 : investmentY.MaturityDate.Value.DayNumber - investmentY.IssueDate.DayNumber;
 

@@ -1,8 +1,6 @@
-﻿using DevExpress.Xpf.Core;
+﻿namespace Pip.UI.View;
 
-namespace Pip.UI.View;
-
-public partial class SplashScreen1 : SplashScreenWindow
+public partial class SplashScreen1
 {
 	public SplashScreen1()
 	{

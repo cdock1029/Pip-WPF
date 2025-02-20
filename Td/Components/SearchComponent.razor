@@ -3,7 +3,7 @@
 @inject IDialogService DialogService
 @inject NavigationManager Navigation
 
-<div style="padding-left:calc(1rem + 2px); display:flex;flex-direction:column;">
+<div style="padding-left:2px; display:flex;flex-direction:column;">
     <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Left" HorizontalGap="10" Class="pt-4">
 
         <FluentSearch @ref="_fluentSearchRef" @onfocusin="() => SetMenuOpen(true)" @onfocusout="() => SetMenuOpen(false)" @bind-Value="StateContainer.SearchString" Immediate="true" Placeholder="Search CUSIP" AutoComplete="off" Autofocus="true"/>
