@@ -5,13 +5,10 @@
 <div class="flex flex-col">
     <p> The DatePicker Value is: @DatePickerValue.ToShortDateString() </p>
 
-   @*  <div class="mb-4">
+   <div class="mb-4">
         <DxCalendar @bind-SelectedDate="@DatePickerValue" MinDate="_minDate" MaxDate="_maxDate"/>
-    </div> *@
-    <div>
-        <SfCalendar TValue="DateTime" @bind-Value="DatePickerValue" Min="_minDate" Max="_maxDate"></SfCalendar>
+        @*<SfCalendar TValue="DateTime" @bind-Value="DatePickerValue" Min="_minDate" Max="_maxDate"></SfCalendar>*@
     </div>
-
 </div>
 
 

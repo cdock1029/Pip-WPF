@@ -39,18 +39,13 @@ public partial class App
 		serviceCollection.AddDbContext<PipDbContext>(ServiceLifetime.Singleton);
 		serviceCollection.AddWpfBlazorWebView();
 
-		serviceCollection.AddDevExpressBlazor(configure =>
-		{
-			configure.BootstrapVersion = BootstrapVersion.v5;
-			configure.SizeMode = SizeMode.Medium;
-		});
+		serviceCollection.AddDevExpressBlazor(configure => { configure.SizeMode = SizeMode.Medium; });
 
 		serviceCollection.AddSyncfusionBlazor();
 
 		serviceCollection.AddMemoryCache();
 		serviceCollection.AddHttpClient<ITreasuryDataProvider, TreasuryDataProvider>();
 		serviceCollection.AddSingleton<SearchComponentState>();
-		serviceCollection.AddSingleton<InvestmentPageState>();
 		serviceCollection.AddSingleton<ReloadNotifierService>();
 		serviceCollection.AddSingleton<Settings>();
 		serviceCollection.AddSingleton<AppState>();

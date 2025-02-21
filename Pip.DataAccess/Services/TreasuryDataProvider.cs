@@ -68,8 +68,9 @@ public class TreasuryDataProvider : ITreasuryDataProvider
 
 	public void Update(Investment investment)
 	{
-		if (_dbContext.Investments.Find(investment.Id) is { } inv)
-			_dbContext.Entry(inv).CurrentValues.SetValues(investment);
+		if (_dbContext.Investments.Find(investment.Id) is not { } inv) return;
+		_dbContext.Entry(inv).CurrentValues.SetValues(investment);
+		_dbContext.SaveChanges();
 	}
 
 	// sync I/O faster. https://x.com/davkean/status/1821875521954963742
@@ -94,11 +95,11 @@ public class TreasuryDataProvider : ITreasuryDataProvider
 
 	public async Task DeleteInvesmentByIdAsync(int id)
 	{
-		var investment = await _dbContext.Investments.FindAsync(id);
+		var investment = await _dbContext.Investments.FindAsync(id).ConfigureAwait(false);
 		if (investment is not null)
 		{
 			_dbContext.Investments.Remove(investment);
-			await _dbContext.SaveChangesAsync();
+			await _dbContext.SaveChangesAsync().ConfigureAwait(false);
 		}
 	}
 

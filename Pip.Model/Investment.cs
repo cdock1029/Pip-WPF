@@ -37,3 +37,37 @@ public class Investment
 	[MaxLength(20)]
 	public string? SecurityTerm { get; set; }
 }
+
+public static class InvestmentMapper
+{
+	public static Investment Clone(Investment source)
+	{
+		return new Investment
+		{
+			Id = source.Id,
+			AuctionDate = source.AuctionDate,
+			Confirmation = source.Confirmation,
+			Cusip = source.Cusip,
+			IssueDate = source.IssueDate,
+			MaturityDate = source.MaturityDate,
+			Par = source.Par,
+			Reinvestments = source.Reinvestments,
+			SecurityTerm = source.SecurityTerm,
+			Type = source.Type
+		};
+	}
+
+	public static void CopyFrom(this Investment target, Investment source)
+	{
+		target.Id = source.Id;
+		target.AuctionDate = source.AuctionDate;
+		target.Confirmation = source.Confirmation;
+		target.Cusip = source.Cusip;
+		target.IssueDate = source.IssueDate;
+		target.MaturityDate = source.MaturityDate;
+		target.Par = source.Par;
+		target.Reinvestments = source.Reinvestments;
+		target.SecurityTerm = source.SecurityTerm;
+		target.Type = source.Type;
+	}
+}
