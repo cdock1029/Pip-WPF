@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 namespace Pip.Model;
@@ -36,6 +37,8 @@ public class Investment
 	[Description("The length of time the security earns interest, from issue date to maturity date")]
 	[MaxLength(20)]
 	public string? SecurityTerm { get; set; }
+
+	[NotMapped] public int TermSpan => MaturityDate is null ? 0 : MaturityDate.Value.DayNumber - IssueDate.DayNumber;
 }
 
 public static class InvestmentMapper

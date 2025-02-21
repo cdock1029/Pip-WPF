@@ -26,13 +26,14 @@
         EditMode="GridEditMode.EditRow"
         EditModelSaving="OnEditModelSaving"
         DataItemDeleting="OnDataItemDeleting"
+        CustomSort="OnCustomSort"
         VirtualScrollingEnabled="false">
             <Columns>
                 <DxGridDataColumn FieldName="@nameof(Investment.Id)" Name="ID" MinWidth="20" DataRowEditorVisible="false"/>
                 <DxGridDataColumn FieldName="@nameof(Investment.Cusip)" Name="CUSIP" MinWidth="50" DataRowEditorVisible="false"/>
                 <DxGridDataColumn FieldName="@nameof(Investment.Type)" GroupIndex="0" MinWidth="50" DataRowEditorVisible="false"/>
                 <DxGridDataColumn FieldName="@nameof(Investment.IssueDate)" Name="Issue date" MinWidth="100" DataRowEditorVisible="false"/>
-                <DxGridDataColumn FieldName="@nameof(Investment.SecurityTerm)" Name="Term" MinWidth="100" DataRowEditorVisible="false"/>
+                <DxGridDataColumn FieldName="@nameof(Investment.SecurityTerm)" Name="Term" MinWidth="100" DataRowEditorVisible="false" SortMode="GridColumnSortMode.Custom"/>
                 <DxGridDataColumn FieldName="@nameof(Investment.Par)" DisplayFormat="c0" MinWidth="100">
                     <EditSettings>
                         <DxSpinEditSettings Mask="@NumericMask.Currency" Increment="1"/>
@@ -103,7 +104,7 @@
             e.KeyExpression = "Id";
             e.QueryableSource = DbContext.Investments.AsQueryable();
         });
-        SearchComponentState.OnSearchResultSaveInvestment += ReloadGrid;
+        SearchComponentState.OnSaveSearchResultInvestment += ReloadGrid;
     }
 
     void OnDataItemDeleting(GridDataItemDeletingEventArgs e)
@@ -129,6 +130,7 @@
             var curr = DbContext.Investments.Find(editModel.Id);
             curr?.CopyFrom(editModel);
         }
+
         DbContext.SaveChanges();
     }
 
@@ -140,8 +142,18 @@
 
     public void Dispose()
     {
-        Debug.WriteLine("disposing in Investments page");
         InvestmentsFeedbackSource.Dispose();
-        SearchComponentState.OnSearchResultSaveInvestment -= ReloadGrid;
+        SearchComponentState.OnSaveSearchResultInvestment -= ReloadGrid;
+    }
+
+    void OnCustomSort(GridCustomSortEventArgs e)
+    {
+        if (e.FieldName != nameof(Investment.SecurityTerm)) return;
+
+        var inv1 = (Investment)e.DataItem1;
+        var inv2 = (Investment)e.DataItem2;
+        Debug.WriteLine($"sort: inv1:[{inv1.TermSpan}, {inv1.SecurityTerm}] inv2:[{inv2.TermSpan}, {inv2.SecurityTerm}]");
+        e.Result = inv1.TermSpan - inv2.TermSpan;
+        e.Handled = true;
     }
 }

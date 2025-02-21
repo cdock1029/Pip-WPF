@@ -60,13 +60,13 @@ public class SearchComponentState(ITreasuryDataProvider treasuryDataProvider)
 				});
 	}
 
-	public event Action? OnSearchResultSaveInvestment;
+	public event Action? OnSaveSearchResultInvestment;
 
 	public void AddInvestmentAndResetList(Investment newInvestment)
 	{
 		treasuryDataProvider.Add(newInvestment);
 		treasuryDataProvider.Save();
 
-		OnSearchResultSaveInvestment?.Invoke();
+		OnSaveSearchResultInvestment?.Invoke();
 	}
 }
