@@ -1,6 +1,8 @@
 ﻿@page "/investments"
-@using Syncfusion.Blazor.Grids
-@inherits BaseStateComponent<InvestmentPageState>
+@using DevExpress.Data.Linq
+@implements IDisposable 
+@inject PipDbContext DbContext
+@inject SearchComponentState SearchComponentState
 
 
 <PageTitle>Investments</PageTitle>
@@ -12,21 +14,21 @@
 
     <div style="flex:1 0 auto;height:1px;display:flex;">
 
-
-        @*   <DxGrid @ref="_grid" Data="@StateContainer.Investments"
-                CssClass="flex-auto"
-                ShowGroupPanel="true"
-                ShowFilterRow="false"
-                ShowSearchBox="true"
-                AutoExpandAllGroupRows="true"
-                ColumnResizeMode="GridColumnResizeMode.NextColumn"
-                TextWrapEnabled="false"
-                EditMode="GridEditMode.EditRow"
-                EditModelSaving="OnEditModelSaving"
-                DataItemDeleting="OnDataItemDeleting"
-                VirtualScrollingEnabled="false">
+        <DxGrid @ref="_grid"
+        Data="InvestmentsFeedbackSource"
+        CssClass="flex-auto"
+        ShowGroupPanel="true"
+        ShowFilterRow="false"
+        ShowSearchBox="true"
+        AutoExpandAllGroupRows="true"
+        ColumnResizeMode="GridColumnResizeMode.NextColumn"
+        TextWrapEnabled="false"
+        EditMode="GridEditMode.EditRow"
+        EditModelSaving="OnEditModelSaving"
+        DataItemDeleting="OnDataItemDeleting"
+        VirtualScrollingEnabled="false">
             <Columns>
-
+                <DxGridDataColumn FieldName="@nameof(Investment.Id)" Name="ID" MinWidth="20" DataRowEditorVisible="false"/>
                 <DxGridDataColumn FieldName="@nameof(Investment.Cusip)" Name="CUSIP" MinWidth="50" DataRowEditorVisible="false"/>
                 <DxGridDataColumn FieldName="@nameof(Investment.Type)" GroupIndex="0" MinWidth="50" DataRowEditorVisible="false"/>
                 <DxGridDataColumn FieldName="@nameof(Investment.IssueDate)" Name="Issue date" MinWidth="100" DataRowEditorVisible="false"/>
@@ -45,35 +47,32 @@
                             var isEditing = _grid.IsEditing();
                         }
                         <div class="flex items-center justify-center">
-                            <FluentIcon Value="@(new Size16.Edit())"
-                                        Color="isEditing ? Color.Disabled : Color.Accent"
-                                        Title="Edit"
-                                        Class="mx-3"
-                                        OnClick="() => { if (!isEditing) _grid.StartEditRowAsync(index); }"/>
+                            <FluentIcon Value="@(new Icons.Regular.Size16.Edit())"
+                            Color="isEditing ? Color.Disabled : Color.Accent"
+                            Title="Edit"
+                            Class="mx-3"
+                            OnClick="() => { if (!isEditing) _grid.StartEditRowAsync(index); }"/>
 
-                            <FluentIcon Value="@(new Size16.Delete())"
-                                        Color="isEditing ? Color.Disabled : Color.Accent"
-                                        Title="Delete"
-                                        Class="mx-3"
-                                        OnClick="@(() =>
-                                                 {
-                                                     if (!isEditing) _grid.ShowRowDeleteConfirmation(index);
-                                                 })"/>
+                            <FluentIcon Value="@(new Icons.Regular.Size16.Delete())"
+                            Color="isEditing ? Color.Disabled : Color.Accent"
+                            Title="Delete"
+                            Class="mx-3"
+                            OnClick="() => { if (!isEditing) _grid.ShowRowDeleteConfirmation(index); }"/>
                         </div>
                     </CellDisplayTemplate>
                     <CellEditTemplate>
                         <div class="flex items-center justify-center">
-                            <FluentIcon Value="@(new Size16.Save())"
-                                        Color="Color.Accent"
-                                        Title="Save"
-                                        OnClick="@(() => _grid.SaveChangesAsync())"
-                                        Class="mx-3"/>
+                            <FluentIcon Value="@(new Icons.Regular.Size16.Save())"
+                            Color="Color.Accent"
+                            Title="Save"
+                            OnClick="@(() => _grid.SaveChangesAsync())"
+                            Class="mx-3"/>
 
-                            <FluentIcon Value="@(new Size16.ArrowUndo())"
-                                        Color="Color.Accent"
-                                        Title="Cancel"
-                                        OnClick="@(() => _grid.CancelEditAsync())"
-                                        Class="mx-3"/>
+                            <FluentIcon Value="@(new Icons.Regular.Size16.ArrowUndo())"
+                            Color="Color.Accent"
+                            Title="Cancel"
+                            OnClick="@(() => _grid.CancelEditAsync())"
+                            Class="mx-3"/>
                         </div>
                     </CellEditTemplate>
 
@@ -85,44 +84,7 @@
             <TotalSummary>
                 <DxGridSummaryItem SummaryType="GridSummaryItemType.Sum" FieldName="Par" DisplayText="Total: {0}"/>
             </TotalSummary>
-        </DxGrid> *@
-
-        <div class="flex-auto">
-            <SfGrid DataSource="@StateContainer.Investments" Toolbar="_toolbarItems" AllowPaging="false" AllowGrouping="true" AllowSorting="true" Height="100%" Width="100%" RowHeight="30">
-                <GridGroupSettings Columns="[nameof(Investment.Type)]"></GridGroupSettings>
-                <GridEditSettings AllowEditing="true" AllowAdding="true" AllowDeleting="true"></GridEditSettings>
-                <GridColumns>
-                    <GridColumn Field="@nameof(Investment.Id)" HeaderText="ID" TextAlign="TextAlign.Right" Width="120"></GridColumn>
-                    <GridColumn Field="@nameof(Investment.Cusip)" HeaderText="Customer ID" Width="150"></GridColumn>
-                    <GridColumn Field="@nameof(Investment.Type)" EditType="EditType.DropDownEdit" Width="130"></GridColumn>
-                    <GridColumn Field="@nameof(Investment.IssueDate)" HeaderText="Issue Date" Format="d" Type="ColumnType.DateOnly" TextAlign="TextAlign.Right" Width="130"></GridColumn>
-                    <GridColumn Field="@nameof(Investment.Par)" Format="C2" TextAlign="TextAlign.Right" Width="120"></GridColumn>
-                    <GridColumn Field="@nameof(Investment.SecurityTerm)" HeaderText="Term" SortComparer="new TermComparer()" Width="150"></GridColumn>
-                </GridColumns>
-                <GridAggregates>
-                    <GridAggregate>
-                        <GridAggregateColumns>
-                            <GridAggregateColumn Field="@nameof(Investment.Par)" Type="AggregateType.Sum" Format="C0">
-                                <GroupFooterTemplate>
-                                    @{
-                                        var groupTotalContext = context as AggregateTemplateContext;
-                                    }
-                                    <div>Subtotal: @groupTotalContext?.Sum</div>
-                                </GroupFooterTemplate>
-                            </GridAggregateColumn>
-                            <GridAggregateColumn Field="@nameof(Investment.Par)" Type="AggregateType.Sum" Format="C0">
-                                <FooterTemplate>
-                                    @{
-                                        var totalContext = context as AggregateTemplateContext;
-                                    }
-                                    <div class="py-1">Total: @totalContext?.Sum</div>
-                                </FooterTemplate>
-                            </GridAggregateColumn>
-                        </GridAggregateColumns>
-                    </GridAggregate>
-                </GridAggregates>
-            </SfGrid>
-        </div>
+        </DxGrid>
 
     </div>
 </div>
@@ -130,60 +92,56 @@
 @code
 {
 
-    private readonly string[] _toolbarItems = ["Add", "Edit", "Delete", "Update", "Cancel"];
+    DxGrid _grid = null!;
 
-    /*
-    private IEditorSettings _typeEditParams = new DropDownEditCellParams()
+    EntityInstantFeedbackSource InvestmentsFeedbackSource { get; set; } = null!;
+
+    protected override void OnInitialized()
     {
-        Params = new DropDownListModel<object, TreasuryType>()
+        InvestmentsFeedbackSource = new EntityInstantFeedbackSource(e =>
         {
-            DataSource = Enum.GetValues<TreasuryType>().AsEnumerable()
-        }
-    };
-    */
-    
-    /*
-    private void OnDataItemDeleting(GridDataItemDeletingEventArgs args)
-    {
-        var investment = (Investment)args.DataItem;
-        StateContainer.DeleteInvestment(investment);
-        StateContainer.LoadData();
+            e.KeyExpression = "Id";
+            e.QueryableSource = DbContext.Investments.AsQueryable();
+        });
+        SearchComponentState.OnSearchResultSaveInvestment += ReloadGrid;
     }
 
-    private void OnEditModelSaving(GridEditModelSavingEventArgs args)
+    void OnDataItemDeleting(GridDataItemDeletingEventArgs e)
     {
-        var editInvestment = (Investment)args.EditModel;
+        var id = e.Grid.GetDataItemValue(e.DataItem, "Id");
+        var inv = DbContext.Investments.Find(id);
+        if (inv == null) return;
 
+        DbContext.Remove(inv);
+        DbContext.SaveChanges();
+    }
+
+    void OnEditModelSaving(GridEditModelSavingEventArgs args)
+    {
+        var editModel = (Investment)args.EditModel;
         if (args.IsNew)
-            StateContainer.Create(editInvestment);
+        {
+            var inv = InvestmentMapper.Clone(editModel);
+            DbContext.Add(inv);
+        }
         else
         {
-            args.CopyChangesToDataItem();
-            StateContainer.Update((Investment)args.DataItem);
+            var curr = DbContext.Investments.Find(editModel.Id);
+            curr?.CopyFrom(editModel);
         }
-
-        StateContainer.LoadData();
+        DbContext.SaveChanges();
     }
-    */
 
-    public class TermComparer : IComparer<object>
+    void ReloadGrid()
     {
-        public int Compare(object? x, object? y)
-        {
-            var investmentX = x as Investment;
-            var investmentY = y as Investment;
+        _grid.Reload();
+        StateHasChanged();
+    }
 
-            var xSpan = investmentX?.MaturityDate is null
-                ? 0
-                : investmentX.MaturityDate.Value.DayNumber - investmentX.IssueDate.DayNumber;
-
-
-            var ySpan = investmentY?.MaturityDate is null
-                ? 0
-                : investmentY.MaturityDate.Value.DayNumber - investmentY.IssueDate.DayNumber;
-
-
-            return xSpan.CompareTo(ySpan);
-        }
+    public void Dispose()
+    {
+        Debug.WriteLine("disposing in Investments page");
+        InvestmentsFeedbackSource.Dispose();
+        SearchComponentState.OnSearchResultSaveInvestment -= ReloadGrid;
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Td.ViewModels;
 
-public class SearchComponentState(ITreasuryDataProvider treasuryDataProvider, InvestmentPageState investmentPageState)
+public class SearchComponentState(ITreasuryDataProvider treasuryDataProvider)
 	: BaseStateContainer
 {
 	public string SearchString
@@ -60,10 +60,13 @@ public class SearchComponentState(ITreasuryDataProvider treasuryDataProvider, In
 				});
 	}
 
+	public event Action? OnSearchResultSaveInvestment;
+
 	public void AddInvestmentAndResetList(Investment newInvestment)
 	{
 		treasuryDataProvider.Add(newInvestment);
 		treasuryDataProvider.Save();
-		investmentPageState.LoadData();
+
+		OnSearchResultSaveInvestment?.Invoke();
 	}
 }
