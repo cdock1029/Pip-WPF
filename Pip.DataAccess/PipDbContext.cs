@@ -3,7 +3,7 @@ using Pip.Model;
 
 namespace Pip.DataAccess;
 
-public class PipDbContext : DbContext
+public class PipDbContext(DbContextOptions<PipDbContext> options) : DbContext(options)
 {
 	public DbSet<Investment> Investments { get; init; }
 

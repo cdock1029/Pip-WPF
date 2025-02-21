@@ -43,8 +43,6 @@
     <PackageVersion Include="DevExpress.Wpf.Themes.All" Version="24.2.3" />
     <PackageVersion Include="DevExpress.Wpf.ThemesLW" Version="24.2.3" />
     <PackageVersion Include="DevExpress.Blazor" Version="24.2.5" />
-    <PackageVersion Include="Syncfusion.Blazor.Grid" Version="28.2.6" />
-    <PackageVersion Include="Syncfusion.Blazor.Themes" Version="28.2.6" />
     <PackageVersion Include="JetBrains.Annotations" Version="2025.1.0-eap1" />
     <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="1.11.1" />
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.11.1" />

@@ -1,5 +1,5 @@
 ﻿@page "/investments"
-@using DevExpress.Data.Linq
+@using Microsoft.FluentUI.AspNetCore.Components.Icons.Regular
 @implements IDisposable 
 @inject PipDbContext DbContext
 @inject SearchComponentState SearchComponentState
@@ -15,25 +15,26 @@
     <div style="flex:1 0 auto;height:1px;display:flex;">
 
         <DxGrid @ref="_grid"
-        Data="InvestmentsFeedbackSource"
-        CssClass="flex-auto"
-        ShowGroupPanel="true"
-        ShowFilterRow="false"
-        ShowSearchBox="true"
-        AutoExpandAllGroupRows="true"
-        ColumnResizeMode="GridColumnResizeMode.NextColumn"
-        TextWrapEnabled="false"
-        EditMode="GridEditMode.EditRow"
-        EditModelSaving="OnEditModelSaving"
-        DataItemDeleting="OnDataItemDeleting"
-        CustomSort="OnCustomSort"
-        VirtualScrollingEnabled="false">
+                Data="DataSource"
+                CssClass="flex-auto"
+                ShowGroupPanel="true"
+                ShowFilterRow="false"
+                ShowSearchBox="true"
+                AutoExpandAllGroupRows="true"
+                ColumnResizeMode="GridColumnResizeMode.NextColumn"
+                TextWrapEnabled="false"
+                EditMode="GridEditMode.EditRow"
+                EditModelSaving="OnEditModelSaving"
+                DataItemDeleting="OnDataItemDeleting"
+                CustomSort="OnCustomSort"
+                VirtualScrollingEnabled="false">
             <Columns>
                 <DxGridDataColumn FieldName="@nameof(Investment.Id)" Name="ID" MinWidth="20" DataRowEditorVisible="false"/>
                 <DxGridDataColumn FieldName="@nameof(Investment.Cusip)" Name="CUSIP" MinWidth="50" DataRowEditorVisible="false"/>
                 <DxGridDataColumn FieldName="@nameof(Investment.Type)" GroupIndex="0" MinWidth="50" DataRowEditorVisible="false"/>
-                <DxGridDataColumn FieldName="@nameof(Investment.IssueDate)" Name="Issue date" MinWidth="100" DataRowEditorVisible="false"/>
-                <DxGridDataColumn FieldName="@nameof(Investment.SecurityTerm)" Name="Term" MinWidth="100" DataRowEditorVisible="false" SortMode="GridColumnSortMode.Custom"/>
+                <DxGridDataColumn FieldName="@nameof(Investment.IssueDate)" MinWidth="100" DataRowEditorVisible="false"/>
+                <DxGridDataColumn FieldName="@nameof(Investment.MaturityDate)" MinWidth="100" DataRowEditorVisible="false"/>
+                <DxGridDataColumn FieldName="@nameof(Investment.SecurityTerm)" MinWidth="100" DataRowEditorVisible="false" SortMode="GridColumnSortMode.Custom"/>
                 <DxGridDataColumn FieldName="@nameof(Investment.Par)" DisplayFormat="c0" MinWidth="100">
                     <EditSettings>
                         <DxSpinEditSettings Mask="@NumericMask.Currency" Increment="1"/>
@@ -48,32 +49,32 @@
                             var isEditing = _grid.IsEditing();
                         }
                         <div class="flex items-center justify-center">
-                            <FluentIcon Value="@(new Icons.Regular.Size16.Edit())"
-                            Color="isEditing ? Color.Disabled : Color.Accent"
-                            Title="Edit"
-                            Class="mx-3"
-                            OnClick="() => { if (!isEditing) _grid.StartEditRowAsync(index); }"/>
+                            <FluentIcon Value="@(new Size16.Edit())"
+                                        Color="isEditing ? Color.Disabled : Color.Accent"
+                                        Title="Edit"
+                                        Class="mx-3"
+                                        OnClick="() => { if (!isEditing) _grid.StartEditRowAsync(index); }"/>
 
-                            <FluentIcon Value="@(new Icons.Regular.Size16.Delete())"
-                            Color="isEditing ? Color.Disabled : Color.Accent"
-                            Title="Delete"
-                            Class="mx-3"
-                            OnClick="() => { if (!isEditing) _grid.ShowRowDeleteConfirmation(index); }"/>
+                            <FluentIcon Value="@(new Size16.Delete())"
+                                        Color="isEditing ? Color.Disabled : Color.Accent"
+                                        Title="Delete"
+                                        Class="mx-3"
+                                        OnClick="() => { if (!isEditing) _grid.ShowRowDeleteConfirmation(index); }"/>
                         </div>
                     </CellDisplayTemplate>
                     <CellEditTemplate>
                         <div class="flex items-center justify-center">
-                            <FluentIcon Value="@(new Icons.Regular.Size16.Save())"
-                            Color="Color.Accent"
-                            Title="Save"
-                            OnClick="@(() => _grid.SaveChangesAsync())"
-                            Class="mx-3"/>
+                            <FluentIcon Value="@(new Size16.Save())"
+                                        Color="Color.Accent"
+                                        Title="Save"
+                                        OnClick="@(() => _grid.SaveChangesAsync())"
+                                        Class="mx-3"/>
 
-                            <FluentIcon Value="@(new Icons.Regular.Size16.ArrowUndo())"
-                            Color="Color.Accent"
-                            Title="Cancel"
-                            OnClick="@(() => _grid.CancelEditAsync())"
-                            Class="mx-3"/>
+                            <FluentIcon Value="@(new Size16.ArrowUndo())"
+                                        Color="Color.Accent"
+                                        Title="Cancel"
+                                        OnClick="@(() => _grid.CancelEditAsync())"
+                                        Class="mx-3"/>
                         </div>
                     </CellEditTemplate>
 
@@ -95,15 +96,12 @@
 
     DxGrid _grid = null!;
 
-    EntityInstantFeedbackSource InvestmentsFeedbackSource { get; set; } = null!;
+    object DataSource { get; set; } = null!;
 
     protected override void OnInitialized()
     {
-        InvestmentsFeedbackSource = new EntityInstantFeedbackSource(e =>
-        {
-            e.KeyExpression = "Id";
-            e.QueryableSource = DbContext.Investments.AsQueryable();
-        });
+        DataSource = DbContext.Investments.ToList();
+
         SearchComponentState.OnSaveSearchResultInvestment += ReloadGrid;
     }
 
@@ -115,6 +113,8 @@
 
         DbContext.Remove(inv);
         DbContext.SaveChanges();
+
+        DataSource = DbContext.Investments.ToList();
     }
 
     void OnEditModelSaving(GridEditModelSavingEventArgs args)
@@ -122,7 +122,7 @@
         var editModel = (Investment)args.EditModel;
         if (args.IsNew)
         {
-            var inv = InvestmentMapper.Clone(editModel);
+            var inv = InvestmentUtils.Clone(editModel);
             DbContext.Add(inv);
         }
         else
@@ -132,28 +132,28 @@
         }
 
         DbContext.SaveChanges();
+        DataSource = DbContext.Investments.ToList();
+    }
+
+    private static void OnCustomSort(GridCustomSortEventArgs e)
+    {
+        if (e.FieldName != nameof(Investment.SecurityTerm)) return;
+        var inv1 = (Investment)e.DataItem1;
+        var inv2 = (Investment)e.DataItem2;
+
+        e.Result = inv1.CompareTerm(inv2);
+        e.Handled = true;
     }
 
     void ReloadGrid()
     {
-        _grid.Reload();
+        DataSource = DbContext.Investments.ToList();
         StateHasChanged();
     }
 
     public void Dispose()
     {
-        InvestmentsFeedbackSource.Dispose();
         SearchComponentState.OnSaveSearchResultInvestment -= ReloadGrid;
     }
 
-    void OnCustomSort(GridCustomSortEventArgs e)
-    {
-        if (e.FieldName != nameof(Investment.SecurityTerm)) return;
-
-        var inv1 = (Investment)e.DataItem1;
-        var inv2 = (Investment)e.DataItem2;
-        Debug.WriteLine($"sort: inv1:[{inv1.TermSpan}, {inv1.SecurityTerm}] inv2:[{inv2.TermSpan}, {inv2.SecurityTerm}]");
-        e.Result = inv1.TermSpan - inv2.TermSpan;
-        e.Handled = true;
-    }
 }

@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 namespace Pip.Model;
@@ -37,11 +36,9 @@ public class Investment
 	[Description("The length of time the security earns interest, from issue date to maturity date")]
 	[MaxLength(20)]
 	public string? SecurityTerm { get; set; }
-
-	[NotMapped] public int TermSpan => MaturityDate is null ? 0 : MaturityDate.Value.DayNumber - IssueDate.DayNumber;
 }
 
-public static class InvestmentMapper
+public static class InvestmentUtils
 {
 	public static Investment Clone(Investment source)
 	{
@@ -72,5 +69,12 @@ public static class InvestmentMapper
 		target.Reinvestments = source.Reinvestments;
 		target.SecurityTerm = source.SecurityTerm;
 		target.Type = source.Type;
+	}
+
+	public static int CompareTerm(this Investment inv, Investment other)
+	{
+		var thisSpan = inv.MaturityDate is null ? 0 : inv.MaturityDate.Value.DayNumber - inv.IssueDate.DayNumber;
+		var otherSpan = other.MaturityDate is null ? 0 : other.MaturityDate.Value.DayNumber - other.IssueDate.DayNumber;
+		return thisSpan.CompareTo(otherSpan);
 	}
 }

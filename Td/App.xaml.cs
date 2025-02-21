@@ -4,20 +4,12 @@ using DevExpress.Blazor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Syncfusion.Blazor;
-using Syncfusion.Licensing;
 using MessageBox = System.Windows.MessageBox;
 
 namespace Td;
 
 public partial class App
 {
-	public App()
-	{
-		SyncfusionLicenseProvider.RegisterLicense(
-			"Ngo9BigBOggjHTQxAR8/V1NMaF5cXmBCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWX5ednVWQmReWUR+XkE=");
-	}
-
 	protected override void OnStartup(StartupEventArgs e)
 	{
 		var serviceCollection = new ServiceCollection();
@@ -36,12 +28,12 @@ public partial class App
 	private static void ConfigureServices(IServiceCollection serviceCollection)
 	{
 		serviceCollection.AddSingleton<MainWindow>();
+
 		serviceCollection.AddDbContext<PipDbContext>(ServiceLifetime.Singleton);
 		serviceCollection.AddWpfBlazorWebView();
 
 		serviceCollection.AddDevExpressBlazor(configure => { configure.SizeMode = SizeMode.Medium; });
 
-		serviceCollection.AddSyncfusionBlazor();
 
 		serviceCollection.AddMemoryCache();
 		serviceCollection.AddHttpClient<ITreasuryDataProvider, TreasuryDataProvider>();
