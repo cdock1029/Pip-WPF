@@ -24,12 +24,6 @@
     dx:DXSerializer.Enabled="True"
     dx:WindowRestoreLayoutOptions.AllowRestoreStateForDisplayedWindow="True">
 
-    <Window.Resources>
-        <Style TargetType="{x:Type dxa:AccordionItem}">
-            <Setter Property="GlyphSize" Value="20,20" />
-        </Style>
-    </Window.Resources>
-
     <dxmvvm:Interaction.Behaviors>
 
         <dx:DialogService DialogWindowStartupLocation="CenterOwner">
@@ -50,6 +44,12 @@
 
 
     </dxmvvm:Interaction.Behaviors>
+
+    <dx:ThemedWindow.Resources>
+        <Style TargetType="{x:Type Image}">
+            <Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor" />
+        </Style>
+    </dx:ThemedWindow.Resources>
 
     <dx:ThemedWindow.ToolbarItems>
         <dxb:MainMenuControl VerticalAlignment="Center">
@@ -100,7 +100,8 @@
                 <dxa:AccordionControl.ItemContainerStyle>
                     <Style d:DataContext="{d:DesignInstance Type={x:Type viewModel:IPipPage}}"
                            TargetType="{x:Type dxa:AccordionItem}">
-                        <Setter Property="GlyphSize" Value="20,20" />
+                        <Setter Property="GlyphSize" Value="16,16" />
+                        <Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor" />
                         <Setter Property="Glyph" Value="{Binding Image}" />
                         <Setter Property="Header" Value="{Binding Title}" />
                     </Style>

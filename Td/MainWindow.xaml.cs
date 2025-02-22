@@ -22,11 +22,12 @@ public partial class MainWindow
 		_settings = settings;
 		_reloadService = reloadService;
 
-		const WindowBackdropType wb = WindowBackdropType.Tabbed;
-		WindowBackdropType = wb;
-		SystemThemeWatcher.Watch(this);
-
 		ApplicationThemeManager.ApplySystemTheme();
+
+		const WindowBackdropType wb = WindowBackdropType.Mica;
+		WindowBackdropType = wb;
+
+		SystemThemeWatcher.Watch(this);
 
 		InitializeComponent();
 

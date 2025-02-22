@@ -1,5 +1,5 @@
-﻿@import '/_content/Microsoft.FluentUI.AspNetCore.Components/css/reboot.css';
-
+/*@import '/_content/Microsoft.FluentUI.AspNetCore.Components/css/reboot.css';
+    */
 
 /* Fix reboot table margin */
 table {
@@ -18,6 +18,10 @@ body {
     margin: 0;
     overflow: hidden;
     background: transparent !important;
+}
+
+body button, body [role=button] {
+    cursor: default !important;
 }
 
 .navmenu-icon {

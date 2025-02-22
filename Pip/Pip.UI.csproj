@@ -14,29 +14,29 @@
 	  </Content>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Mvvm"  />
-		<PackageReference Include="DevExpress.Images"  />
-		<PackageReference Include="DevExpress.Mvvm.CodeGenerators"  />
-		<PackageReference Include="DevExpress.Wpf.Accordion"  />
-		<PackageReference Include="DevExpress.Wpf.Controls"  />
-		<PackageReference Include="DevExpress.Wpf.Core"  />
-		<PackageReference Include="devexpress.wpf.docking"  />
-		<PackageReference Include="DevExpress.Wpf.Grid"  />
-		<PackageReference Include="devexpress.wpf.propertygrid"  />
-		<PackageReference Include="DevExpress.Wpf.Ribbon"  />
-		<PackageReference Include="DevExpress.Wpf.Themes.All"  />
-		<PackageReference Include="DevExpress.Wpf.ThemesLW"  />
-		<PackageReference Include="JetBrains.Annotations"  />
-		<PackageReference Include="Microsoft.EntityFrameworkCore"  />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" >
+		<PackageReference Include="CommunityToolkit.Mvvm" />
+		<PackageReference Include="DevExpress.Images" />
+		<PackageReference Include="DevExpress.Mvvm.CodeGenerators" />
+		<PackageReference Include="DevExpress.Wpf.Accordion" />
+		<PackageReference Include="DevExpress.Wpf.Controls" />
+		<PackageReference Include="DevExpress.Wpf.Core" />
+		<PackageReference Include="devexpress.wpf.docking" />
+		<PackageReference Include="DevExpress.Wpf.Grid" />
+		<PackageReference Include="devexpress.wpf.propertygrid" />
+		<PackageReference Include="DevExpress.Wpf.Ribbon" />
+		<PackageReference Include="DevExpress.Wpf.Themes.All" />
+		<PackageReference Include="DevExpress.Wpf.ThemesLW" />
+		<PackageReference Include="JetBrains.Annotations" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection"  />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.AutoActivation"  />
-		<PackageReference Include="Microsoft.Extensions.Http"  />
-		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf"  />
-		<PackageReference Include="System.Formats.Asn1"  />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.AutoActivation" />
+		<PackageReference Include="Microsoft.Extensions.Http" />
+		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" />
+		<PackageReference Include="System.Formats.Asn1" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Pip.DataAccess\Pip.DataAccess.csproj" />
