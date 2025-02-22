@@ -31,17 +31,17 @@
     <PackageVersion Include="System.Text.Json" Version="9.0.2" />
     <PackageVersion Include="System.Formats.Asn1" Version="9.0.2" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageVersion Include="DevExpress.Images" Version="24.2.3" />
+    <PackageVersion Include="DevExpress.Images" Version="24.2.5" />
     <PackageVersion Include="DevExpress.Mvvm.CodeGenerators" Version="22.1.1" />
-    <PackageVersion Include="DevExpress.Wpf.Accordion" Version="24.2.3" />
-    <PackageVersion Include="DevExpress.Wpf.Controls" Version="24.2.3" />
-    <PackageVersion Include="DevExpress.Wpf.Core" Version="24.2.3" />
-    <PackageVersion Include="devexpress.wpf.docking" Version="24.2.3" />
-    <PackageVersion Include="DevExpress.Wpf.Grid" Version="24.2.3" />
-    <PackageVersion Include="devexpress.wpf.propertygrid" Version="24.2.3" />
-    <PackageVersion Include="DevExpress.Wpf.Ribbon" Version="24.2.3" />
-    <PackageVersion Include="DevExpress.Wpf.Themes.All" Version="24.2.3" />
-    <PackageVersion Include="DevExpress.Wpf.ThemesLW" Version="24.2.3" />
+    <PackageVersion Include="DevExpress.Wpf.Accordion" Version="24.2.5" />
+    <PackageVersion Include="DevExpress.Wpf.Controls" Version="24.2.5" />
+    <PackageVersion Include="DevExpress.Wpf.Core" Version="24.2.5" />
+    <PackageVersion Include="devexpress.wpf.docking" Version="24.2.5" />
+    <PackageVersion Include="DevExpress.Wpf.Grid" Version="24.2.5" />
+    <PackageVersion Include="devexpress.wpf.propertygrid" Version="24.2.5" />
+    <PackageVersion Include="DevExpress.Wpf.Ribbon" Version="24.2.5" />
+    <PackageVersion Include="DevExpress.Wpf.Themes.All" Version="24.2.5" />
+    <PackageVersion Include="DevExpress.Wpf.ThemesLW" Version="24.2.5" />
     <PackageVersion Include="DevExpress.Blazor" Version="24.2.5" />
     <PackageVersion Include="JetBrains.Annotations" Version="2025.1.0-eap1" />
     <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="1.11.1" />
