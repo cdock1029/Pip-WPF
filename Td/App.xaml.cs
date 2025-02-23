@@ -10,55 +10,54 @@ namespace Td;
 
 public partial class App
 {
-	protected override void OnStartup(StartupEventArgs e)
-	{
-		var serviceCollection = new ServiceCollection();
-		ConfigureServices(serviceCollection);
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        ServiceCollection serviceCollection = new();
+        ConfigureServices(serviceCollection);
 
-		var serviceProvider = serviceCollection.BuildServiceProvider();
-		Resources.Add("services", serviceProvider);
+        ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
+        Resources.Add("services", serviceProvider);
 
-		var dbContext = serviceProvider.GetRequiredService<PipDbContext>();
-		dbContext.Database.Migrate();
+        PipDbContext dbContext = serviceProvider.GetRequiredService<PipDbContext>();
+        dbContext.Database.Migrate();
 
-		var mainWindow = serviceProvider.GetRequiredService<MainWindow>();
-		mainWindow.Show();
-	}
+        MainWindow mainWindow = serviceProvider.GetRequiredService<MainWindow>();
+        mainWindow.Show();
+    }
 
-	private static void ConfigureServices(IServiceCollection serviceCollection)
-	{
-		serviceCollection.AddSingleton<MainWindow>();
+    private static void ConfigureServices(IServiceCollection serviceCollection)
+    {
+        serviceCollection.AddSingleton<MainWindow>();
 
-		serviceCollection.AddDbContext<PipDbContext>(ServiceLifetime.Singleton);
-		serviceCollection.AddWpfBlazorWebView();
+        serviceCollection.AddDbContext<PipDbContext>(ServiceLifetime.Singleton);
+        serviceCollection.AddWpfBlazorWebView();
 
-		serviceCollection.AddDevExpressBlazor(configure => { configure.SizeMode = SizeMode.Medium; });
+        serviceCollection.AddDevExpressBlazor(configure => { configure.SizeMode = SizeMode.Medium; });
 
 
-		serviceCollection.AddMemoryCache();
-		serviceCollection.AddHttpClient<ITreasuryDataProvider, TreasuryDataProvider>();
-		serviceCollection.AddSingleton<SearchComponentState>();
-		serviceCollection.AddSingleton<ReloadNotifierService>();
-		serviceCollection.AddSingleton<Settings>();
-		serviceCollection.AddSingleton<AppState>();
-		serviceCollection.AddFluentUIComponents();
+        serviceCollection.AddMemoryCache();
+        serviceCollection.AddHttpClient<ITreasuryDataProvider, TreasuryDataProvider>();
+        serviceCollection.AddSingleton<ReloadNotifierService>();
+        serviceCollection.AddSingleton<Settings>();
+        serviceCollection.AddSingleton<AppState>();
+        serviceCollection.AddFluentUIComponents();
 #if DEBUG
-		serviceCollection.AddBlazorWebViewDeveloperTools();
-		serviceCollection.AddLogging(logging =>
-		{
-			logging.AddFilter("Microsoft.AspNetCore.Components.WebView", LogLevel.Trace);
-			logging.AddDebug();
-		});
+        serviceCollection.AddBlazorWebViewDeveloperTools();
+        serviceCollection.AddLogging(logging =>
+        {
+            logging.AddFilter("Microsoft.AspNetCore.Components.WebView", LogLevel.Trace);
+            logging.AddDebug();
+        });
 #endif
-	}
+    }
 
-	private void App_OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
-	{
+    private void App_OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+    {
 #if DEBUG
-		MessageBox.Show(e.Exception.ToString(), "Error");
+        MessageBox.Show(e.Exception.ToString(), "Error");
 #else
 		MessageBox.Show("An error has occurred.", "Error");
 #endif
-		Debug.WriteLine($"Unhandled Exception: {e.Exception}");
-	}
+        Debug.WriteLine($"Unhandled Exception: {e.Exception}");
+    }
 }

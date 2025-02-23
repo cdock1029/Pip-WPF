@@ -2,8 +2,7 @@
 @using Microsoft.FluentUI.AspNetCore.Components.Icons.Regular
 @implements IDisposable 
 @inject PipDbContext DbContext
-@inject SearchComponentState SearchComponentState
-
+@inject AppState AppState
 
 <PageTitle>Investments</PageTitle>
 
@@ -45,8 +44,8 @@
 
                     <CellDisplayTemplate>
                         @{
-                            var index = context.VisibleIndex;
-                            var isEditing = _grid.IsEditing();
+                            int index = context.VisibleIndex;
+                            bool isEditing = _grid.IsEditing();
                         }
                         <div class="flex items-center justify-center">
                             <FluentIcon Value="@(new Size16.Edit())"
@@ -102,13 +101,13 @@
     {
         DataSource = DbContext.Investments.ToList();
 
-        SearchComponentState.OnSaveSearchResultInvestment += ReloadGrid;
+        if (AppState.SearchComponent != null) AppState.SearchComponent.OnSaveSearchResultInvestment += ReloadGrid;
     }
 
     void OnDataItemDeleting(GridDataItemDeletingEventArgs e)
     {
-        var id = e.Grid.GetDataItemValue(e.DataItem, "Id");
-        var inv = DbContext.Investments.Find(id);
+        object? id = e.Grid.GetDataItemValue(e.DataItem, "Id");
+        Investment? inv = DbContext.Investments.Find(id);
         if (inv == null) return;
 
         DbContext.Remove(inv);
@@ -119,15 +118,15 @@
 
     void OnEditModelSaving(GridEditModelSavingEventArgs args)
     {
-        var editModel = (Investment)args.EditModel;
+        Investment? editModel = (Investment)args.EditModel;
         if (args.IsNew)
         {
-            var inv = InvestmentUtils.Clone(editModel);
+            Investment inv = InvestmentUtils.Clone(editModel);
             DbContext.Add(inv);
         }
         else
         {
-            var curr = DbContext.Investments.Find(editModel.Id);
+            Investment? curr = DbContext.Investments.Find(editModel.Id);
             curr?.CopyFrom(editModel);
         }
 
@@ -138,8 +137,8 @@
     private static void OnCustomSort(GridCustomSortEventArgs e)
     {
         if (e.FieldName != nameof(Investment.SecurityTerm)) return;
-        var inv1 = (Investment)e.DataItem1;
-        var inv2 = (Investment)e.DataItem2;
+        Investment? inv1 = (Investment)e.DataItem1;
+        Investment? inv2 = (Investment)e.DataItem2;
 
         e.Result = inv1.CompareTerm(inv2);
         e.Handled = true;
@@ -153,7 +152,7 @@
 
     public void Dispose()
     {
-        SearchComponentState.OnSaveSearchResultInvestment -= ReloadGrid;
+        if (AppState.SearchComponent != null) AppState.SearchComponent.OnSaveSearchResultInvestment -= ReloadGrid;
     }
 
 }
