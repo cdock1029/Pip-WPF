@@ -5,6 +5,7 @@
 @inject IMemoryCache Cache
 @inject IDialogService DialogService
 @inject NavigationManager Navigation
+@inject IToastNotificationService ToastService
 
 <PageTitle>Auctions</PageTitle>
 
@@ -84,7 +85,7 @@
             });
 
 
-            var treasuries = await TreasuryDataProvider.GetRecentAsync();
+            IEnumerable<Treasury>? treasuries = await TreasuryDataProvider.GetRecentAsync();
             if (treasuries is null) return [];
 
             return treasuries.Select(t => new TreasuryItemViewModel
@@ -108,7 +109,7 @@
                 AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10)
             });
 
-            var treasuries = await TreasuryDataProvider.GetUpcomingAsync();
+            IEnumerable<Treasury>? treasuries = await TreasuryDataProvider.GetUpcomingAsync();
             if (treasuries is null) return [];
             return treasuries.Select(t => new TreasuryItemViewModel
             {
@@ -124,10 +125,19 @@
 
     private async Task AddInvestment(TreasuryItemViewModel treasuryItem)
     {
-        var result = await DialogService.OpenCreateInvestmentDialogAsync(treasuryItem);
+        DialogResult result = await DialogService.OpenCreateInvestmentDialogAsync(treasuryItem);
         if (result.Data is Investment newInvestment)
         {
             TreasuryDataProvider.Insert(newInvestment);
+
+            ToastService.ShowToast(new ToastOptions()
+            {
+                RenderStyle = ToastRenderStyle.Success,
+                Title = "Success",
+                Text = "The investment was saved.",
+                ThemeMode = ToastThemeMode.Pastel
+
+            });
             Navigation.NavigateTo("investments");
         }
     }

@@ -3,6 +3,7 @@
 @implements IDisposable 
 @inject PipDbContext DbContext
 @inject AppState AppState
+@inject IToastNotificationService ToastService
 
 <PageTitle>Investments</PageTitle>
 
@@ -113,6 +114,14 @@
         DbContext.Remove(inv);
         DbContext.SaveChanges();
 
+        ToastService.ShowToast(new ToastOptions(){
+            RenderStyle = ToastRenderStyle.Info,
+            Title = "Confirmed",
+            Text = "The investment was deleted.",
+            ThemeMode = ToastThemeMode.Pastel
+            
+        });
+
         DataSource = DbContext.Investments.ToList();
     }
 
@@ -131,6 +140,13 @@
         }
 
         DbContext.SaveChanges();
+        ToastService.ShowToast(new ToastOptions(){
+            RenderStyle = ToastRenderStyle.Success,
+            Title = "Success",
+            Text = "The investment was saved.",
+            ThemeMode = ToastThemeMode.Pastel
+            
+        });
         DataSource = DbContext.Investments.ToList();
     }
 

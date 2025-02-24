@@ -32,7 +32,11 @@ public partial class App
         serviceCollection.AddDbContext<PipDbContext>(ServiceLifetime.Singleton);
         serviceCollection.AddWpfBlazorWebView();
 
-        serviceCollection.AddDevExpressBlazor(configure => { configure.SizeMode = SizeMode.Medium; });
+        serviceCollection.AddDevExpressBlazor(configure =>
+        {
+            configure.SizeMode = SizeMode.Medium;
+            //configure.BootstrapVersion = BootstrapVersion.v5;
+        });
 
 
         serviceCollection.AddMemoryCache();
