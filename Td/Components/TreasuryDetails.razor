@@ -3,7 +3,7 @@
 
 <h3>Treasury details</h3>
 
-<FluentGrid>
+@* <FluentGrid>
     <FluentGridItem xs="12" sm="3">
         <div>
             <small>Cusip:</small>
@@ -39,6 +39,17 @@
         </FluentGridItem>
     }
 </FluentGrid>
+ *@
+@if (Treasury is not null)
+{
+    <DxFormLayout Data="Treasury">
+        <DxFormLayoutItem Field="@(nameof(Treasury.Cusip))" Caption="Cusip" ReadOnly="true"/>
+        <DxFormLayoutItem Field="@(nameof(Treasury.IssueDate))" Caption="Issue date" ReadOnly="true"/>
+        <DxFormLayoutItem Field="@(nameof(Treasury.MaturityDate))" Caption="Maturity date" ReadOnly="true"/>
+        <DxFormLayoutItem Field="@(nameof(Treasury.SecurityTerm))" Caption="Term" ReadOnly="true"/>
+        <DxFormLayoutItem Field="@(nameof(Treasury.HighInvestmentRate))" Caption="High investment rate" ReadOnly="true"/>
+    </DxFormLayout>
+}
 
 @code {
 
@@ -50,7 +61,7 @@
 
     protected override void OnParametersSet()
     {
-        var treasuryTask = TreasuryDataProvider.LookupTreasuryAsync(Cusip, DateOnly.FromDateTime(IssueDate));
+        ValueTask<Treasury?> treasuryTask = TreasuryDataProvider.LookupTreasuryAsync(Cusip, DateOnly.FromDateTime(IssueDate));
 
         if (treasuryTask.IsCompleted)
         {
@@ -58,11 +69,9 @@
         }
         else
         {
-            InvokeAsync(async () =>
-            {
-                Treasury = await treasuryTask;
-            });
+            InvokeAsync(async () => { Treasury = await treasuryTask; StateHasChanged(); });
         }
     }
 
 }
+

@@ -218,15 +218,15 @@ while (true)
 
 public class AzureAiConfig
 {
-    public string AzureKeyCredential { get; set; } = null!;
+    public string AzureKeyCredential { get; init; } = null!;
 
-    public string GeminiKey { get; set; } = null!;
+    public string GeminiKey { get; init; } = null!;
 
-    public string ModelInferenceEndpoint { get; set; } = null!;
+    public string ModelInferenceEndpoint { get; init; } = null!;
 
-    public string ModelId { get; set; } = null!;
+    public string ModelId { get; init; } = null!;
 
-    public string OllamaEndpoint { get; set; } = null!;
+    public string OllamaEndpoint { get; init; } = null!;
 }
 
 [UsedImplicitly]
@@ -235,6 +235,7 @@ public sealed class TreasuryPlugin(ITreasuryDataProvider dataProvider)
     [KernelFunction("list_upcoming_treasury_auctions")]
     [Description(
         "Returns a list of the upcoming US treasury auction securities of various terms and types, i.e 4-week T-Bills, 2-year Notes, 20-year Bonds etc.")]
+    [UsedImplicitly]
     public async Task<List<TreasuryData>> ListUpcomingTreasuryAuctions()
     {
         IEnumerable<Treasury>? treasuries = await dataProvider.GetUpcomingAsync();
@@ -252,6 +253,7 @@ public sealed class TreasuryPlugin(ITreasuryDataProvider dataProvider)
     [KernelFunction("list_saved_invested_treasuries_in_portfolio")]
     [Description(
         "Returns a list of saved investments of US treasuries in my portfolio")]
+    [UsedImplicitly]
     public async Task<List<Investment>> ListSavedInvestedTreasuriesInPortfolio()
     {
         IEnumerable<Investment> usts = await Task.Run(dataProvider.GetInvestments);
@@ -262,6 +264,7 @@ public sealed class TreasuryPlugin(ITreasuryDataProvider dataProvider)
     [KernelFunction("add_treasury_investment_to_portfolio")]
     [Description(
         "Adds an investment to the portfolio for the treasury with given CUSIP and issue date. Par value is optional and defaults to 0 if not passed in.")]
+    [UsedImplicitly]
     public async Task AddTreasuryInvestmentToPorfolio(
         [Description("Unique number Treasury Dept. uses to identify securities maturing on a specific date")]
         string cusip,
@@ -291,6 +294,7 @@ public sealed class TreasuryPlugin(ITreasuryDataProvider dataProvider)
 
     [KernelFunction("lookup_treasuries_by_cusip")]
     [Description("Returns a list of treasuries that have the given CUSIP identifier")]
+    [UsedImplicitly]
     public async Task<List<TreasuryData>> LookupTreasuriesByCusip(
         [Description("Unique number Treasury Dept. uses to identify securities maturing on a specific date")]
         string cusip)
@@ -309,6 +313,7 @@ public sealed class TreasuryPlugin(ITreasuryDataProvider dataProvider)
     [KernelFunction("delete_investment_by_id")]
     [Description(
         "Deletes the investment with given id from user's portfolio, returns a boolean signaling success or failure")]
+    [UsedImplicitly]
     public async Task<bool> DeleteInvestmentById(int id)
     {
         await dataProvider.DeleteInvesmentByIdAsync(id);
@@ -318,6 +323,7 @@ public sealed class TreasuryPlugin(ITreasuryDataProvider dataProvider)
     [KernelFunction("get_investments_total")]
     [Description(
         "Total par dollar value of all treasuries invested in my portfolio")]
+    [UsedImplicitly]
     public int GetInvestmentsTotal()
     {
         return dataProvider.GetInvestments().Sum(i => i.Par);
@@ -328,19 +334,19 @@ public sealed class TreasuryPlugin(ITreasuryDataProvider dataProvider)
     public sealed class TreasuryData
     {
         [Description("Nine digit identifier for a treasury security")]
-        public string Cusip { get; set; } = null!;
+        public string Cusip { [UsedImplicitly] get; set; } = null!;
 
         [Description("Date when treasury will be sold at auction")]
-        public DateOnly? AuctionDate { get; set; }
+        public DateOnly? AuctionDate { [UsedImplicitly] get; set; }
 
         [Description("Date when treasury will be issued to buyers")]
-        public DateOnly? IssueDate { get; set; }
+        public DateOnly? IssueDate { [UsedImplicitly] get; set; }
 
         [Description("The length of time the security earns interest, from issue date to maturity date")]
-        public string? Term { get; set; }
+        public string? Term { [UsedImplicitly] get; set; }
 
         [Description("Which type of treasury: Bill, Note, Bond, CMB, TIPS, or FRN")]
-        public string? Type { get; set; }
+        public string? Type { [UsedImplicitly] get; set; }
     }
 }
 
@@ -348,6 +354,7 @@ public sealed class TreasuryPlugin(ITreasuryDataProvider dataProvider)
 public sealed class Utilities
 {
     [KernelFunction]
+    [UsedImplicitly]
     public string GetCurrentUtcTime()
     {
         return DateTime.UtcNow.ToString("R");
