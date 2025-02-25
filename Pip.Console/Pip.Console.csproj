@@ -16,6 +16,7 @@
 		<PackageReference Include="Microsoft.SemanticKernel.Connectors.AzureAIInference" />
 		<PackageReference Include="Microsoft.SemanticKernel.Connectors.Google" />
 		<PackageReference Include="Microsoft.SemanticKernel.Connectors.Ollama" />
+		<PackageReference Include="Microsoft.SemanticKernel.Connectors.OpenAI" />
 		<PackageReference Include="OpenTelemetry.Exporter.Console" />
 		<PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" />
 	</ItemGroup>
