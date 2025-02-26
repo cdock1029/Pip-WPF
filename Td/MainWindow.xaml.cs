@@ -52,7 +52,7 @@ public partial class MainWindow
 
 	private void BlazorWebViewInitialized(object? sender, BlazorWebViewInitializedEventArgs args)
 	{
-		var webView2 = args.WebView.CoreWebView2;
+		CoreWebView2? webView2 = args.WebView.CoreWebView2;
 		webView2.Settings.AreDefaultContextMenusEnabled = true;
 		webView2.NavigationStarting += WebView2_NavigationStarting;
 		webView2.NavigationCompleted += WebView2_NavigationCompleted;
@@ -82,15 +82,12 @@ public partial class MainWindow
 
 		try
 		{
-			// Load window placement details for previous application session from application settings
-			// Note - if window was closed on a monitor that is now disconnected from the computer,
-			//        SetWindowPlacement will place the window onto a visible monitor.
-			var wp = _settings.WindowPlacement;
+			WindowPlacement wp = _settings.WindowPlacement;
 			wp.length = Marshal.SizeOf(typeof(WindowPlacement));
 			wp.flags = 0;
 			wp.showCmd = wp.showCmd == ShowMinimized ? ShowNormal : wp.showCmd;
-			var hwnd = new WindowInteropHelper(this).Handle;
-			var _ = SetWindowPlacement(hwnd, ref wp);
+			IntPtr hwnd = new WindowInteropHelper(this).Handle;
+			bool _ = SetWindowPlacement(hwnd, ref wp);
 		}
 		catch
 		{
@@ -98,14 +95,12 @@ public partial class MainWindow
 		}
 	}
 
-	// WARNING - Not fired when Application.SessionEnding is fired
 	protected override void OnClosing(CancelEventArgs e)
 	{
 		base.OnClosing(e);
 
-		// Persist window placement details to application settings
-		var hwnd = new WindowInteropHelper(this).Handle;
-		var _ = GetWindowPlacement(hwnd, out var wp);
+		IntPtr hwnd = new WindowInteropHelper(this).Handle;
+		bool _ = GetWindowPlacement(hwnd, out WindowPlacement wp);
 		_settings.WindowPlacement = wp;
 		_settings.Save();
 	}
@@ -122,28 +117,4 @@ public partial class MainWindow
 	{
 		Close();
 	}
-
-	/*
-	private void Settings_OnClick(object sender, RoutedEventArgs e)
-	{
-		lock (_lockObj)
-		{
-			var menuItem = (MenuItem)sender;
-			menuItem.IsEnabled = false;
-
-			Dispatcher.InvokeAsync(async () =>
-			{
-				try
-				{
-					if (_appState.MainLayoutComponent is not null)
-						await _appState.MainLayoutComponent.OpenSiteSettingsAsync();
-				}
-				finally
-				{
-					menuItem.IsEnabled = true;
-				}
-			});
-		}
-	}
-	*/
 }
