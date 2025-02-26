@@ -1,0 +1,119 @@
+﻿@page "/previous"
+@using System.Collections.Immutable
+@inject ITreasuryDataProvider TreasuryDataProvider
+@inject AppState AppState
+
+<div class="investments-container" style="height:100%;display:flex;flex-direction:column;">
+    <FluentLabel Typo="Typography.PageTitle" MarginBlock="default">
+        Previous Auctions
+    </FluentLabel>
+
+    <div style="flex:1 0 auto;height:1px;display:flex;">
+        <DxGrid
+            SizeMode="SizeMode.Small"
+            Data="Data"
+            CssClass="flex-auto"
+            ShowGroupPanel="true"
+            ShowFilterRow="false"
+            ShowSearchBox="true"
+            AutoExpandAllGroupRows="false"
+            ShowAllRows="true"
+            ColumnResizeMode="GridColumnResizeMode.NextColumn"
+            TextWrapEnabled="false"
+            CustomSort="OnCustomSort"
+            VirtualScrollingEnabled="true">
+            <Columns>
+                <DxGridDataColumn FieldName="@nameof(Treasury.AnnouncementDate)" DisplayFormat="yyyy-MM-d" SortOrder="GridColumnSortOrder.Descending" MinWidth="100" DataRowEditorVisible="false"/>
+                <DxGridDataColumn FieldName="@nameof(Treasury.AuctionDate)" MinWidth="100" DataRowEditorVisible="false"/>
+                <DxGridDataColumn FieldName="@nameof(Treasury.Cusip)" Name="CUSIP" MinWidth="50" DataRowEditorVisible="false"/>
+                <DxGridDataColumn FieldName="@nameof(Treasury.Type)" GroupIndex="0" MinWidth="50" DataRowEditorVisible="false" SortMode="GridColumnSortMode.Value"/>
+                <DxGridDataColumn FieldName="@nameof(Treasury.IssueDate)" MinWidth="100" DataRowEditorVisible="false"/>
+                <DxGridDataColumn FieldName="@nameof(Treasury.MaturityDate)" MinWidth="100" DataRowEditorVisible="false"/>
+                <DxGridDataColumn FieldName="@nameof(Treasury.SecurityTerm)" GroupIndex="1" MinWidth="100" DataRowEditorVisible="false" SortMode="GridColumnSortMode.Custom"/>
+                <DxGridDataColumn FieldName="@nameof(Treasury.SecurityType)" MinWidth="100" DataRowEditorVisible="false" SortMode="GridColumnSortMode.Value"/>
+                <DxGridBandColumn Caption="Announcement">
+                    <Columns>
+                        <DxGridDataColumn FieldName="@nameof(Treasury.PdfFilenameAnnouncement)" Caption="PDF"/>
+                    </Columns>
+                </DxGridBandColumn>
+            </Columns>
+            <ToolbarTemplate>
+                <DxToolbar ItemRenderStyleMode="ToolbarRenderStyleMode.Contained">
+                    <Items>
+                        <DxToolbarItem BeginGroup="true" Alignment="ToolbarItemAlignment.Left">
+                            <Template Context="toolbar_item_context">
+                                <div class="flex h-full items-center">
+                                    <div class="mr-2">Year:</div>
+                                    <DxComboBox Data="_years" @bind-Value="_selectedYear" SelectedItemChanged="@((Year year) => OnSelectedYearChanged(year))"/>
+                                </div>
+                            </Template>
+                        </DxToolbarItem>
+                    </Items>
+                </DxToolbar>
+            </ToolbarTemplate>
+        </DxGrid>
+
+    </div>
+</div>
+
+@code {
+
+
+    IEnumerable<Treasury>? Data { get; set; }
+
+    Year? _selectedYear;
+
+    List<Year>? _years;
+
+    protected override async Task OnInitializedAsync()
+    {
+        AppState.Years ??= await Task.Run(GenerateYears);
+        _years = AppState.Years;
+    }
+
+    private static List<Year> GenerateYears()
+    {
+        int currYear = DateTime.Now.Year;
+        List<Year> yrs = [];
+        for (int i = currYear; i >= 1997; i--)
+        {
+            yrs.Add(new Year(i));
+        }
+
+        return yrs;
+    }
+
+    public class Year(int value)
+    {
+        public (DateOnly start, DateOnly end) Range { get; } = (new DateOnly(value, 1, 1), new DateOnly(value, 12, 31));
+        public string Text { get; } = value.ToString();
+    };
+
+
+    //TODO: fix something wrong with custom sort first rows
+    private static void OnCustomSort(GridCustomSortEventArgs e)
+    {
+        switch (e.FieldName)
+        {
+            case nameof(Treasury.SecurityTerm):
+            {
+
+                Treasury? t1 = (Treasury)e.DataItem1;
+                Treasury? t2 = (Treasury)e.DataItem2;
+
+                e.Result = t1.CompareTerm(t2);
+                e.Handled = true;
+                break;
+            }
+        }
+    }
+
+    private async Task OnSelectedYearChanged(Year year)
+    {
+        Data = null;
+        StateHasChanged();
+        IEnumerable<Treasury>? data = await TreasuryDataProvider.AnnouncementsResultsSearch(year.Range.start, year.Range.end);
+        await InvokeAsync(() => { Data = data; });
+    }
+
+}

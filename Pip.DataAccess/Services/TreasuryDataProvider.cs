@@ -27,6 +27,19 @@ public class TreasuryDataProvider : ITreasuryDataProvider
             $"securities/search/?format=json&cusip={cusip}").ConfigureAwait(false);
     }
 
+    public async Task<IEnumerable<Treasury>?> AnnouncementsResultsSearch(DateOnly startDate, DateOnly endDate)
+    {
+        IEnumerable<Treasury>? result = await _cache.GetOrCreateAsync(
+            (nameof(AnnouncementsResultsSearch), startDate, endDate), e =>
+            {
+                e.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10);
+                return _client.GetFromJsonAsync<IEnumerable<Treasury>>(
+                    $"securities/search?startDate={startDate.ToString("yyyy-MM-dd")}&endDate={endDate.ToString("yyyy-MM-dd")}&compact=false&dateFieldName=auctionDate&format=json&pdfFilenameAnnouncement=notNull&filterscount=0&groupscount=2&group0=z3a&group1=t3a&pagenum=0&pagesize=500&recordstartindex=0&recordendindex=20");
+            });
+
+        return result;
+    }
+
     public async Task<IEnumerable<Treasury>?> GetUpcomingAsync()
     {
         return await _cache.GetOrCreateAsync(nameof(GetUpcomingAsync), e =>

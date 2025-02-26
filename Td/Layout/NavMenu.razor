@@ -11,6 +11,7 @@
         <FluentNavMenu Id="main-menu" Width="280" Collapsible="false" Title="Navigation menu" @bind-Expanded:get="_expanded" @bind-Expanded:set="HandleSetExpanded" CustomToggle="true">
             <FluentNavLink Tooltip="Home" Href="/" Match="NavLinkMatch.All" Icon="@(new Size24.Home())" IconColor="Color.Accent">Home</FluentNavLink>
             <FluentNavLink Tooltip="Auctions" Href="/auctions" Icon="@(new Size24.ClipboardTextEdit())" IconColor="Color.Accent">Auctions</FluentNavLink>
+            <FluentNavLink Tooltip="Previous" Href="/previous" Icon="@(new Size24.QuestionCircle())" IconColor="Color.Accent">Previous</FluentNavLink>
             <FluentNavLink Tooltip="Investments" Href="/investments" Icon="@(new Size24.ArrowTrendingLines())" IconColor="Color.Accent">Investments</FluentNavLink>
             <FluentNavLink Tooltip="Demo" Href="/demo" Icon="@(new Size24.Beach())" IconColor="Color.Accent">Demo</FluentNavLink>
         </FluentNavMenu>
