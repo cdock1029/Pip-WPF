@@ -77,44 +77,59 @@
 
     private async Task LoadRecent()
     {
-        IAsyncEnumerable<Treasury> treasuries = TreasuryDataProvider.GetRecentAsyncEnumerable();
-
-        RecentTreasuries = [];
-
-        await foreach (Treasury? treasury in treasuries)
+        RecentTreasuries = await Cache.GetOrCreateAsync(nameof(RecentTreasuries), async e =>
         {
-            RecentTreasuries.Add(
-                new TreasuryItemViewModel
-                {
-                    Cusip = treasury.Cusip,
-                    IssueDate = treasury.IssueDate,
-                    MaturityDate = treasury.MaturityDate,
-                    AuctionDate = treasury.AuctionDate,
-                    Term = treasury.SecurityTerm,
-                    Type = treasury.Type
-                });
-        }
+            e.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5);
+
+            IAsyncEnumerable<Treasury?> treasuries = TreasuryDataProvider.GetRecentAsyncEnumerable();
+
+            IList<TreasuryItemViewModel> entries = [];
+            await foreach (Treasury? treasury in treasuries)
+            {
+                if (treasury is null) continue;
+                entries.Add(
+                    new TreasuryItemViewModel
+                    {
+                        Cusip = treasury.Cusip,
+                        IssueDate = treasury.IssueDate,
+                        MaturityDate = treasury.MaturityDate,
+                        AuctionDate = treasury.AuctionDate,
+                        Term = treasury.SecurityTerm,
+                        Type = treasury.Type
+                    });
+            }
+
+            return entries;
+        });
     }
 
     private async Task LoadUpcoming()
     {
-        IAsyncEnumerable<Treasury> treasuries = TreasuryDataProvider.GetUpcomingAsyncEnumerable();
-
-        UpcomingTreasuries = [];
-
-        await foreach (Treasury? treasury in treasuries)
+        UpcomingTreasuries = await Cache.GetOrCreateAsync(nameof(UpcomingTreasuries), async e =>
         {
-            UpcomingTreasuries.Add(
-                new TreasuryItemViewModel
-                {
-                    Cusip = treasury.Cusip,
-                    IssueDate = treasury.IssueDate,
-                    MaturityDate = treasury.MaturityDate,
-                    AuctionDate = treasury.AuctionDate,
-                    Term = treasury.SecurityTerm,
-                    Type = treasury.Type
-                });
-        }
+            e.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5);
+
+            IAsyncEnumerable<Treasury?> treasuries = TreasuryDataProvider.GetUpcomingAsyncEnumerable();
+
+            IList<TreasuryItemViewModel> entries = [];
+
+            await foreach (Treasury? treasury in treasuries)
+            {
+                if (treasury is null) continue;
+                entries.Add(
+                    new TreasuryItemViewModel
+                    {
+                        Cusip = treasury.Cusip,
+                        IssueDate = treasury.IssueDate,
+                        MaturityDate = treasury.MaturityDate,
+                        AuctionDate = treasury.AuctionDate,
+                        Term = treasury.SecurityTerm,
+                        Type = treasury.Type
+                    });
+            }
+
+            return entries;
+        });
     }
 
     private async Task AddInvestment(TreasuryItemViewModel treasuryItem)
