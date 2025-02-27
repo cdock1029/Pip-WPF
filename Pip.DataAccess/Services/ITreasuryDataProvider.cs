@@ -8,6 +8,8 @@ public interface ITreasuryDataProvider
     Task<IEnumerable<Treasury>?> AnnouncementsResultsSearch(DateOnly startDate, DateOnly endDate);
     Task<IEnumerable<Treasury>?> GetUpcomingAsync();
     Task<IEnumerable<Treasury>?> GetRecentAsync();
+    IAsyncEnumerable<Treasury> GetRecentAsyncEnumerable();
+    IAsyncEnumerable<Treasury> GetUpcomingAsyncEnumerable();
     void Save();
     void Update(Investment investment);
     IEnumerable<Investment> GetInvestments();

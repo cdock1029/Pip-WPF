@@ -63,6 +63,36 @@ public class TreasuryDataProvider : ITreasuryDataProvider
         }).ConfigureAwait(false);
     }
 
+    public async IAsyncEnumerable<Treasury> GetRecentAsyncEnumerable()
+    {
+        IAsyncEnumerable<Treasury?>? treasuries = _cache.GetOrCreate(nameof(GetRecentAsyncEnumerable), e =>
+        {
+            e.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5);
+
+            return _client.GetFromJsonAsAsyncEnumerable<Treasury>(
+                "securities/auctioned?format=json&limitByTerm=true&days=720");
+        });
+
+        if (treasuries == null) yield break;
+
+        await foreach (Treasury? treasury in treasuries)
+            if (treasury != null)
+                yield return treasury;
+    }
+
+    public async IAsyncEnumerable<Treasury> GetUpcomingAsyncEnumerable()
+    {
+        IAsyncEnumerable<Treasury?>? treasuries = _cache.GetOrCreate(nameof(GetUpcomingAsyncEnumerable), e =>
+        {
+            e.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5);
+            return _client.GetFromJsonAsAsyncEnumerable<Treasury>("securities/upcoming/?format=json");
+        });
+        if (treasuries == null) yield break;
+        await foreach (Treasury? treasury in treasuries)
+            if (treasury != null)
+                yield return treasury;
+    }
+
     public ValueTask<Treasury?> LookupTreasuryAsync(string cusip, DateOnly? issueDate, CancellationToken ct)
     {
         ArgumentNullException.ThrowIfNull(issueDate);
