@@ -9,6 +9,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="Assets\cat.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="Assets\cat.ico">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" />
 		<PackageReference Include="DevExpress.Blazor" />
 		<PackageReference Include="JetBrains.Annotations" />
