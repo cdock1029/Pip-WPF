@@ -15,4 +15,6 @@ public class AzureAiConfig
     public string ModelId { get; init; } = null!;
 
     public string OllamaEndpoint { get; init; } = null!;
+
+    public string AnthropicSecretKey { get; init; } = null!;
 }

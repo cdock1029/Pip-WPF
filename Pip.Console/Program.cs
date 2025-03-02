@@ -1,6 +1,8 @@
 ﻿using System.Text;
+using Anthropic.SDK;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -21,6 +23,7 @@ using Pip.DataAccess;
 using Pip.DataAccess.Services;
 
 #pragma warning disable SKEXP0070
+#pragma warning disable SKEXP0001
 
 //using ILoggerFactory loggerFactory = CreateLoggerFactory();
 
@@ -37,24 +40,32 @@ builder.Plugins
     .AddFromType<TreasuryPlugin>();
 
 builder.Services
-    .AddHttpClient<ITreasuryDataProvider, TreasuryDataProvider>();
-
-builder.Services
     //.AddSingleton(loggerFactory)
     .AddMemoryCache()
     .AddSingleton<ITreasuryDataProvider, TreasuryDataProvider>()
-    .AddDbContext<PipDbContext>();
+    .AddDbContext<PipDbContext>()
+    .AddHttpClient<ITreasuryDataProvider, TreasuryDataProvider>();
 
 builder
     .AddGoogleAIGeminiChatCompletion(apiKey: azureConfig.GeminiKey, modelId: "gemini-2.0-flash", serviceId: "gemini")
-    //.AddVertexAIGeminiChatCompletion("claude-3-7-sonnet@20250219", azureConfig.VertexBearerKey, "us-central1",
-    //    "gen-lang-client-0833800389",
-    //    serviceId: "claude")
-    .AddAzureAIInferenceChatCompletion("gpt-4o", endpoint: new Uri(azureConfig.ModelInferenceEndpoint),
-        apiKey: azureConfig.AzureKeyCredential, serviceId: "azure")
-    .AddOpenAIChatCompletion(apiKey: azureConfig.OpenAiApiKey, modelId: "gpt-4o", serviceId: "openai")
+    //.AddAzureAIInferenceChatCompletion("gpt-4o", endpoint: new Uri(azureConfig.ModelInferenceEndpoint),
+    //    apiKey: azureConfig.AzureKeyCredential, serviceId: "azure")
+    .AddAzureAIInferenceChatCompletion("Phi-4-mini-instruct-viuux",
+        endpoint: new Uri("https://Phi-4-mini-instruct-viuux.eastus2.models.ai.azure.com"),
+        apiKey: "H61a2oLoWYyiqGXtKy2nJrCCt6W6Zbvf", serviceId: "azure")
+    .AddOpenAIChatCompletion(apiKey: azureConfig.OpenAiApiKey, modelId: "gpt-4.5-preview-2025-02-27",
+        serviceId: "openai")
     .AddOllamaChatCompletion("qwen2.5", new Uri(azureConfig.OllamaEndpoint), "ollama");
 
+{
+    IChatCompletionService anthropicChatService =
+    new ChatClientBuilder(new AnthropicClient(new APIAuthentication(azureConfig.AnthropicSecretKey)).Messages)
+        .UseFunctionInvocation()
+        .Build()
+        .AsChatCompletionService();
+
+    builder.Services.AddKeyedSingleton("claude", anthropicChatService);
+}
 
 Kernel kernel = builder.Build();
 
@@ -96,11 +107,17 @@ GeminiPromptExecutionSettings googlePromptExecutionSettings =
         FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
     };
 
+OpenAIPromptExecutionSettings anthropicPromptExecutionSettings = new()
+{
+    FunctionChoiceBehavior = FunctionChoiceBehavior.Auto(),
+    ModelId = AnthropicModels.Claude35Sonnet,
+    MaxTokens = 1024
+};
 
 IChatCompletionService chatService = kernel.GetRequiredService<IChatCompletionService>("openai");
 var agentLabel = "OpenAI";
 PromptExecutionSettings settings = openAiPromptExecutionSettings;
-Console.WriteLine($@"Using {agentLabel}. Switch service: \openai \gemini, \azure, or \ollama");
+Console.WriteLine($@"Using {agentLabel}. Switch service: \openai \gemini, \azure, \claude or \ollama");
 while (true)
 {
     Console.ForegroundColor = ConsoleColor.Green;
@@ -138,6 +155,11 @@ while (true)
                 chatService = kernel.GetRequiredService<IChatCompletionService>("openai");
                 settings = openAiPromptExecutionSettings;
                 agentLabel = "OpenAI";
+                break;
+            case @"\claude":
+                chatService = kernel.GetRequiredService<IChatCompletionService>("claude");
+                settings = anthropicPromptExecutionSettings;
+                agentLabel = "Claude";
                 break;
             case @"\clear":
             case @"\c":
