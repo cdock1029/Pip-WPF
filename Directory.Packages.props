@@ -1,6 +1,7 @@
 ﻿<Project>
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+	<CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Anthropic.SDK" Version="4.7.1" />
@@ -8,6 +9,7 @@
     <PackageVersion Include="DevExpress.AIIntegration" Version="24.2.5" />
     <PackageVersion Include="DevExpress.AIIntegration.Blazor" Version="24.2.5" />
     <PackageVersion Include="DevExpress.AIIntegration.Blazor.Chat.WebView" Version="24.2.5" />
+    <PackageVersion Include="DevExpress.AIIntegration.Blazor.Common" Version="24.2.5" />
     <PackageVersion Include="DevExpress.AIIntegration.Desktop" Version="24.2.5" />
     <PackageVersion Include="DevExpress.AIIntegration.OpenAI" Version="24.2.5" />
     <PackageVersion Include="DevExpress.AIIntegration.Wpf" Version="24.2.5" />
@@ -19,7 +21,8 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.2" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Abstractions" Version="9.0.2" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.2" />
-    <PackageVersion Include="Microsoft.Extensions.AI" Version="9.3.0-preview.1.25114.11" />
+    <PackageVersion Include="Microsoft.Extensions.AI" Version="9.0.0-preview.9.24556.5" />
+    <PackageVersion Include="Microsoft.Extensions.AI.OpenAI" Version="9.0.0-preview.9.24556.5" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.2" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.AutoActivation" Version="9.2.0" />
     <PackageVersion Include="Microsoft.Extensions.Http" Version="9.0.2" />

@@ -11,7 +11,7 @@
 
 <div class="flex h-full flex-col">
 
-    <DxAIChat CssClass="h-[1px] flex-1" Initialized="Initialized" ResponseContentFormat="ResponseContentFormat.Markdown">
+    <DxAIChat CssClass="h-[1px] flex-1" Initialized="Initialized" UseStreaming="true" ResponseContentFormat="ResponseContentFormat.Markdown">
         <MessageContentTemplate>
             @ToHtml(context.Content)
         </MessageContentTemplate>
@@ -32,8 +32,8 @@
 
     void Initialized(IAIChat chat)
     {
-        // chat.LoadMessages(_messages);
-        // _messages = chat.SaveMessages();
+        chat.LoadMessages(_messages);
+        _messages = chat.SaveMessages();
     }
 
     static MarkupString ToHtml(string text)

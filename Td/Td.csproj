@@ -22,6 +22,7 @@
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" />
 		<PackageReference Include="DevExpress.AIIntegration.Blazor.Chat.WebView" />
+		<PackageReference Include="DevExpress.AIIntegration.Blazor.Common" />
 		<PackageReference Include="DevExpress.AIIntegration.Desktop" />
 		<PackageReference Include="DevExpress.AIIntegration.OpenAI" />
 		<PackageReference Include="DevExpress.AIIntegration.Wpf" />
@@ -36,6 +37,8 @@
 		</PackageReference>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
 		<PackageReference Include="Microsoft.Extensions.AI" />
+		<PackageReference Include="Microsoft.Extensions.AI.Abstractions" VersionOverride="9.0.0-preview.9.24556.5"/>
+		<PackageReference Include="Microsoft.Extensions.AI.OpenAI" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" />
 		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" />
