@@ -1,8 +1,6 @@
 ﻿using System.Text;
-using Anthropic.SDK;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -56,13 +54,13 @@ builder
 	.AddOllamaChatCompletion("qwen2.5", new Uri(azureConfig.OllamaEndpoint), "ollama");
 
 {
-	IChatCompletionService anthropicChatService =
-		new ChatClientBuilder(new AnthropicClient(new APIAuthentication(azureConfig.AnthropicSecretKey)).Messages)
-			.UseFunctionInvocation()
-			.Build()
-			.AsChatCompletionService();
+    //IChatCompletionService anthropicChatService =
+    //	new ChatClientBuilder(new AnthropicClient(new APIAuthentication(azureConfig.AnthropicSecretKey)).Messages)
+    //		.UseFunctionInvocation()
+    //		.Build()
+    //		.AsChatCompletionService();
 
-	builder.Services.AddKeyedSingleton("claude", anthropicChatService);
+    //builder.Services.AddKeyedSingleton("claude", anthropicChatService);
 }
 
 Kernel kernel = builder.Build();

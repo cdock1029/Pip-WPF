@@ -10,13 +10,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Assets\cat.ico" />
+		<None Remove="Assets\cat.ico" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Content Include="Assets\cat.ico">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
+		<Content Include="Assets\cat.ico">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -37,7 +37,7 @@
 		</PackageReference>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
 		<PackageReference Include="Microsoft.Extensions.AI" />
-		<PackageReference Include="Microsoft.Extensions.AI.Abstractions" VersionOverride="9.0.0-preview.9.24556.5"/>
+		<PackageReference Include="Microsoft.Extensions.AI.Abstractions" />
 		<PackageReference Include="Microsoft.Extensions.AI.OpenAI" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" />
@@ -45,13 +45,14 @@
 		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Emoji" />
 		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" />
 		<PackageReference Include="Microsoft.SemanticKernel.Connectors.OpenAI" />
+		<PackageReference Include="Microsoft.SemanticKernel.Abstractions" />
 		<PackageReference Include="OpenTelemetry.Exporter.Console" />
 		<PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" />
 		<PackageReference Include="WPF-UI" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Pip.DataAccess\Pip.DataAccess.csproj" />
+		<ProjectReference Include="..\Pip.DataAccess\Pip.DataAccess.csproj" />
 	</ItemGroup>
 
 </Project>
