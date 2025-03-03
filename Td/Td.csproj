@@ -5,7 +5,8 @@
 		<TargetFramework>net9.0-windows</TargetFramework>
 		<UseWPF>true</UseWPF>
 		<RootNamespace>Td</RootNamespace>
-		<!--<Features>use-roslyn-tokenizer;$(Features)</Features>-->
+		<UserSecretsId>366caaf5-c0b1-47f5-998c-2828d9bc5142</UserSecretsId>
+		<Features>use-roslyn-tokenizer;$(Features)</Features>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -20,8 +21,13 @@
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" />
+		<PackageReference Include="DevExpress.AIIntegration.Blazor.Chat.WebView" />
+		<PackageReference Include="DevExpress.AIIntegration.Desktop" />
+		<PackageReference Include="DevExpress.AIIntegration.OpenAI" />
+		<PackageReference Include="DevExpress.AIIntegration.Wpf" />
 		<PackageReference Include="DevExpress.Blazor" />
 		<PackageReference Include="JetBrains.Annotations" />
+		<PackageReference Include="Markdig" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design">
@@ -29,10 +35,15 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
+		<PackageReference Include="Microsoft.Extensions.AI" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" />
 		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" />
 		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Emoji" />
 		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" />
+		<PackageReference Include="Microsoft.SemanticKernel.Connectors.OpenAI" />
+		<PackageReference Include="OpenTelemetry.Exporter.Console" />
+		<PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" />
 		<PackageReference Include="WPF-UI" />
 	</ItemGroup>
 

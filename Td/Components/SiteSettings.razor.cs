@@ -1,4 +1,7 @@
-﻿namespace Td.Components;
+﻿using DialogResult = Microsoft.FluentUI.AspNetCore.Components.DialogResult;
+using HorizontalAlignment = Microsoft.FluentUI.AspNetCore.Components.HorizontalAlignment;
+
+namespace Td.Components;
 
 public partial class SiteSettings
 {
@@ -16,6 +19,6 @@ public partial class SiteSettings
 			ShowDismiss = true
 		});
 
-		var _ = await _dialog.Result;
+		DialogResult _ = await _dialog.Result;
 	}
 }
