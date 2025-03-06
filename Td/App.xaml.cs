@@ -80,9 +80,7 @@ public partial class App
 
         serviceCollection
             .AddKernel()
-            //.AddOpenAIChatCompletion(apiKey: chatConfig!.OpenAiApiKey!, modelId: "gpt-4o-mini")
-            .AddAzureAIInferenceChatCompletion("gpt-4o-mini", chatConfig!.AzureKeyCredential!,
-                new Uri("https://ai-ms4367ai129857141164.services.ai.azure.com/models"))
+            .AddOpenAIChatCompletion(apiKey: chatConfig!.OpenAiApiKey!, modelId: "gpt-4o-mini")
             .Plugins
             .AddFromType<UtilitiesPlugin>()
             .AddFromType<TreasuryPlugin>();
