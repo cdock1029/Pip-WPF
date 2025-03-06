@@ -16,7 +16,6 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Pip.Console;
-using Pip.Console.Plugins;
 using Pip.DataAccess;
 using Pip.DataAccess.Plugins;
 using Pip.DataAccess.Services;

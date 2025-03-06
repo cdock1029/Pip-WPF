@@ -1,23 +1,30 @@
 ﻿@page "/demo"
 
-<PageTitle>Demo</PageTitle>
+<h2>Items Diff</h2>
 
-<div class="flex flex-col">
-    <p> The DatePicker Value is: @DatePickerValue.ToShortDateString() </p>
-
-   <div class="mb-4">
-        <DxCalendar @bind-SelectedDate="@DatePickerValue" MinDate="_minDate" MaxDate="_maxDate"/>
-        @*<SfCalendar TValue="DateTime" @bind-Value="DatePickerValue" Min="_minDate" Max="_maxDate"></SfCalendar>*@
-    </div>
+<div class="flex items-end">
+    @foreach ((int idx, int n) in _nums.Index())
+    {
+        <div class="mx-4 w-20">
+            @{
+                int diff = @Diff(_nums, idx);
+            }
+            <span>Diff = @diff</span>
+            <div class="@(diff > 0 ? "bg-green-400" : "bg-red-400") flex flex-col items-center justify-end text-2xl"
+                 style="height: @(n)0px;">
+                @n
+            </div>
+        </div>
+    }
 </div>
 
-
 @code {
-    private DateTime DatePickerValue { get; set; } = DateTime.Today;
+    private readonly List<int> _nums = [24, 13, 15, 20, 17, 25];
 
-    private readonly DateTime _minDate = DateTime.Today.AddMonths(-1);
-
-    private readonly DateTime _maxDate = DateTime.Today.AddMonths(1);
-
+    static int Diff(List<int> list, int idx)
+    {
+        return idx == 0 ? list[0] : list[idx] - list[idx - 1];
+    }
 
 }
+

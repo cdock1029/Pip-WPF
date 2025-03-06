@@ -1,12 +1,12 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.SemanticKernel;
 
-namespace Pip.Console.Plugins;
+namespace Pip.DataAccess.Plugins;
 
 [UsedImplicitly]
 public sealed class UtilitiesPlugin
 {
-    [KernelFunction]
+    [KernelFunction("get_current_utc_time")]
     [UsedImplicitly]
     public string GetCurrentUtcTime()
     {

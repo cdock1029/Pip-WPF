@@ -11,17 +11,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
-using Microsoft.SemanticKernel.Connectors.OpenAI;
 using OpenTelemetry;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using Pip.Console.Plugins;
 using Pip.DataAccess.Plugins;
 using MessageBox = System.Windows.MessageBox;
 
 #pragma warning disable SKEXP0001
+#pragma warning disable SKEXP0070
 
 namespace Td;
 
@@ -69,83 +68,46 @@ public partial class App
 		serviceCollection.AddSingleton<AppState>();
 		serviceCollection.AddFluentUIComponents();
 
-		ChatConfig? chatConfig = config.GetSection("ChatConfig").Get<ChatConfig>();
-		ArgumentNullException.ThrowIfNull(chatConfig);
+        ChatConfig? chatConfig = config.GetSection("ChatConfig").Get<ChatConfig>();
 
+        //IKernelBuilder kernelBuilder = Kernel.CreateBuilder()
+        //    .AddOpenAIChatCompletion(apiKey: chatConfig!.OpenAiApiKey, modelId: "gpt-4o-mini");
+        //Kernel kernel = kernelBuilder.Build();
+        //IChatClient chatClient = kernel.GetRequiredService<IChatCompletionService>().AsChatClient();
 
-		serviceCollection
-			.AddKernel()
-			.AddOpenAIChatCompletion(apiKey: chatConfig.OpenAiApiKey, modelId: "gpt-4o-mini");
+        //serviceCollection.AddChatClient(builder => builder.Use(chatClient));
+        //serviceCollection.AddSingleton(chatClient);
 
-		serviceCollection.AddSingleton<KernelPlugin>(
-			sp => KernelPluginFactory.CreateFromType<UtilitiesPlugin>(serviceProvider: sp));
-		serviceCollection.AddSingleton<KernelPlugin>(
-			sp => KernelPluginFactory.CreateFromType<TreasuryPlugin>(serviceProvider: sp));
+        serviceCollection
+            .AddKernel()
+            //.AddOpenAIChatCompletion(apiKey: chatConfig!.OpenAiApiKey!, modelId: "gpt-4o-mini")
+            .AddAzureAIInferenceChatCompletion("gpt-4o-mini", chatConfig!.AzureKeyCredential!,
+                new Uri("https://ai-ms4367ai129857141164.services.ai.azure.com/models"))
+            .Plugins
+            .AddFromType<UtilitiesPlugin>()
+            .AddFromType<TreasuryPlugin>();
 
-		serviceCollection.AddSingleton<OpenAIPromptExecutionSettings>(sp => new OpenAIPromptExecutionSettings
-			{ FunctionChoiceBehavior = FunctionChoiceBehavior.Auto() });
+        serviceCollection.AddChatClient(serviceProvider =>
+        {
+            Kernel kernel = serviceProvider.GetRequiredService<Kernel>();
+            IChatCompletionService completionService = kernel.GetRequiredService<IChatCompletionService>();
+            IChatClient client = completionService.AsChatClient();
+            ChatClientBuilder builder = new ChatClientBuilder(client)
+                .UseFunctionInvocation()
+                .ConfigureOptions(options =>
+                {
+                    IEnumerable<AIFunction> aiFunctions =
+                        kernel.Plugins.SelectMany(kp => kp.AsAIFunctions());
+                    options.Tools = [..aiFunctions];
+                    options.ToolMode = ChatToolMode.Auto;
+                });
+            return builder.Build();
+        });
 
-
-		serviceCollection.AddChatClient(builder =>
-		{
-			Kernel kernel = builder.Services.GetRequiredService<Kernel>();
-			OpenAIPromptExecutionSettings promptSettings =
-				builder.Services.GetRequiredService<OpenAIPromptExecutionSettings>();
-			IChatCompletionService completionService = kernel.GetRequiredService<IChatCompletionService>();
-			IChatClient client = completionService.AsChatClient();
-			return builder
-				.UseFunctionInvocation()
-				.UseLogging()
-				.UseChatOptions(options =>
-				{
-					ChatOptions newOptions = options?.Clone() ?? new ChatOptions();
-
-					if (promptSettings.FunctionChoiceBehavior
-						    ?.GetConfiguration(new FunctionChoiceBehaviorConfigurationContext([]) { Kernel = kernel })
-						    .Functions is { Count: > 0 } funcs)
-					{
-						newOptions.Tools = funcs.Select(f => f.AsAIFunction(kernel)).Cast<AITool>().ToList();
-						newOptions.ToolMode = promptSettings.FunctionChoiceBehavior is RequiredFunctionChoiceBehavior
-							? ChatToolMode.RequireAny
-							: ChatToolMode.Auto;
-					}
-
-					return options;
-				})
-				.Use(client);
-		});
-
-		serviceCollection.AddDevExpressAI(settings =>
-		{
-			//Kernel kernel = settings.GetRequiredService<Kernel>();
-			//OpenAIPromptExecutionSettings promptSettings = settings.GetRequiredService<OpenAIPromptExecutionSettings>();
-			//IChatCompletionService completionService = kernel.GetRequiredService<IChatCompletionService>();
-
-			//IChatClient client = new ChatClientBuilder(settings)
-			//    .UseFunctionInvocation()
-			//    .UseLogging()
-			//    .UseChatOptions(options =>
-			//    {
-			//        ChatOptions newOptions = options?.Clone() ?? new ChatOptions();
-
-			//        if (promptSettings.FunctionChoiceBehavior
-			//                ?.GetConfiguration(new FunctionChoiceBehaviorConfigurationContext([]) { Kernel = kernel })
-			//                .Functions is { Count: > 0 } funcs)
-			//        {
-			//            newOptions.Tools = funcs.Select(f => f.AsAIFunction(kernel)).Cast<AITool>().ToList();
-			//            newOptions.ToolMode = promptSettings.FunctionChoiceBehavior is RequiredFunctionChoiceBehavior
-			//                ? ChatToolMode.RequireAny
-			//                : ChatToolMode.Auto;
-			//        }
-
-			//        return options;
-			//    })
-			//    .Use(completionService.AsChatClient());
-
-			//settings.RegisterChatClient(client);
-			//settings.RegisterAIChatClientCustomizeMessageRequest(new PipMessageHandler());
-			settings.RegisterAIExceptionHandler(new PipAiExceptionHandler());
-		});
+        serviceCollection.AddDevExpressAI(settings =>
+        {
+            settings.RegisterAIExceptionHandler(new PipAiExceptionHandler());
+        });
 
 
 #if DEBUG
@@ -203,25 +165,33 @@ public partial class App
 
 file sealed class ChatConfig
 {
-	public string OpenAiApiKey { get; init; } = null!;
+    public string? OpenAiApiKey { get; init; }
+    public string? AzureKeyCredential { get; init; }
 }
 
 file class PipAiExceptionHandler : IAIExceptionHandler
 {
-	public Exception ProcessException(Exception e)
-	{
-		Debug.WriteLine($"AI Exception in PIP: {e}");
-		return e;
-	}
+    public Exception ProcessException(Exception e)
+    {
+        Debug.WriteLine($"\n\nAI Exception MESSAGE in PIP: {e.Message}\n");
+
+        Debug.WriteLine($"\nInner Exception MESSAGE in PIP: {e.InnerException?.Message}");
+
+        Debug.WriteLine($"\nAI Exception in PIP: {e}");
+
+        Debug.WriteLine($"\nInner Exception in PIP: {e.InnerException}");
+        return e;
+    }
 }
 
 file class PipMessageHandler : IAIChatClientCustomizeMessageRequest
 {
-	public void Customize(ChatMessageRequest messageRequest, BaseRequest originalRequest, RequestContext context)
-	{
-		messageRequest.Options.Tools =
-		[
-			//AIFunctionFactory.Create()
-		];
-	}
+    public void Customize(ChatMessageRequest messageRequest, BaseRequest originalRequest, RequestContext context)
+    {
+        messageRequest.Options.Tools =
+        [
+            //AIFunctionFactory.Create()
+        ];
+    }
 }
+

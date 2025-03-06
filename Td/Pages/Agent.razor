@@ -1,30 +1,33 @@
 ﻿@page "/agent"
-@using DevExpress.AIIntegration.OpenAI.Services
 @using DevExpress.AIIntegration.Blazor.Chat
-@using DevExpress.AIIntegration.Services.Assistant
-@using DevExpress.AIIntegration.Services.Chat
 @using Markdig
 @using Microsoft.Extensions.AI
+@using ChatCompletion = Microsoft.Extensions.AI.ChatCompletion
+
+@inject IChatClient Client
 
 <PageTitle>Agent</PageTitle>
 
 
 <div class="flex h-full flex-col">
 
-    <DxAIChat CssClass="h-[1px] flex-1" Initialized="Initialized" UseStreaming="true" ResponseContentFormat="ResponseContentFormat.Markdown">
+    <DxAIChat CssClass="h-[1px] flex-1" UseStreaming="true" Initialized="Initialized" ResponseContentFormat="ResponseContentFormat.Markdown">
         <MessageContentTemplate>
             @ToHtml(context.Content)
         </MessageContentTemplate>
     </DxAIChat>
+
+    <div class="m-8">
+        <button @onclick="HandleClick">Test</button>
+    </div>
 </div>
 
 @code {
 
     private const string SystemPrompt =
         """
-        You're a financial support agent that can provide information on US treasuries, the user's personal investment portfolio of saved treasuries, and other assorted financial knowlege and info.
-        Be succint, clear, call functions available to you as needed. Show internal database ID's when displaying results, so user can modify entries.
-        Do not use markdown style. Rather, format your output for a terminal console, with any lists of data shown in a table.
+         You're a financial support agent that can provide information on US treasuries, the user's personal investment portfolio of saved treasuries, and other assorted financial knowlege and info.
+         Be succint, clear, call functions available to you as needed. Show internal database ID's when displaying results, so user can modify entries.
         """;
 
     IEnumerable<BlazorChatMessage> _messages = [new(ChatRole.System, SystemPrompt)];
@@ -39,6 +42,13 @@
     static MarkupString ToHtml(string text)
     {
         return (MarkupString)Markdown.ToHtml(text);
+    }
+
+    private async Task HandleClick()
+    {
+        ChatCompletion result = await Client.CompleteAsync("Who are you?");
+
+        Debug.WriteLine($"Chat result: {result.Message.Text}");
     }
 
 }
