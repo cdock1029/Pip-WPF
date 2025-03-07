@@ -1,28 +1,62 @@
 ﻿@page "/agent"
-@using DevExpress.AIIntegration.Blazor.Chat
+@using System.Text
 @using Markdig
 @using Microsoft.Extensions.AI
-@using ChatCompletion = Microsoft.Extensions.AI.ChatCompletion
+@using Microsoft.SemanticKernel
+@using Microsoft.SemanticKernel.ChatCompletion
+@using Microsoft.SemanticKernel.Connectors.OpenAI
 
 @inject IChatClient Client
+@inject IChatCompletionService ChatService
+@inject Kernel TreasuryKernel
 
 <PageTitle>Agent</PageTitle>
 
 
-<div class="flex h-full flex-col">
-
-    <DxAIChat CssClass="h-[1px] flex-1" UseStreaming="true" Initialized="Initialized" ResponseContentFormat="ResponseContentFormat.Markdown">
+@*  <DxAIChat CssClass="h-[1px] flex-1" UseStreaming="true" Initialized="Initialized" ResponseContentFormat="ResponseContentFormat.Markdown">
         <MessageContentTemplate>
             @ToHtml(context.Content)
         </MessageContentTemplate>
-    </DxAIChat>
+    </DxAIChat> *@
 
-    <div class="m-8">
-        <button @onclick="HandleClick">Test</button>
+<div class="flex h-full flex-col">
+    <div class="mt-auto overflow-y-auto">
+        <div id="message-list" class="flex flex-col justify-end">
+            @foreach (ChatMessageContent m in _history.Where(_filter))
+            {
+                @if (!string.IsNullOrEmpty(m.Content))
+                {
+                    string self = m.Role == AuthorRole.Assistant ? "self-start" : "self-end";
+                    <div @key=m class="@($"m-2 {self} rounded bg-white p-2 shadow-sm dark:bg-gray-600")">
+                        @ToHtml(m.Content)
+                    </div>
+                }
+            }
+
+            @if (_currentWorkingItem.Length > 0)
+            {
+
+                <div id="curr-working-item" class="m-2 self-start rounded bg-white p-2 shadow-sm dark:bg-gray-600">
+                    @ToHtml(_currentWorkingItem.ToString())
+                </div>
+            }
+            @if (_isLoading)
+            {
+                <p class="p-4 font-bold italic">..thinking..</p>
+            }
+        </div>
     </div>
+
+    <form class="m-8 flex items-center" @onsubmit="SubmitMessage">
+        <InputTextArea class="mr-8! flex-1 p-2" @bind-Value="_textInput" placeholder="Enter message"></InputTextArea>
+        <button type="submit" class="px-4 py-2">Send</button>
+    </form>
 </div>
 
+
 @code {
+
+    Kernel? _modifiedKernel;
 
     private const string SystemPrompt =
         """
@@ -30,25 +64,89 @@
          Be succint, clear, call functions available to you as needed. Show internal database ID's when displaying results, so user can modify entries.
         """;
 
-    IEnumerable<BlazorChatMessage> _messages = [new(ChatRole.System, SystemPrompt)];
+    ChatHistory _history =
+    [
+        new ChatMessageContent(AuthorRole.Developer, SystemPrompt),
+        new ChatMessageContent(AuthorRole.User, "what can you do?"),
+        new ChatMessageContent(AuthorRole.Assistant, """
+                                                         I can assist you with the following regarding US Treasuries and your investment portfolio:
+                                                         Provide information about upcoming US Treasury auctions, including various terms and types of securities.
+                                                         List your saved investments of US Treasuries in your portfolio.
+                                                         Add investments to your portfolio for specific Treasuries, using their CUSIP and issue date.
+                                                         Look up details of Treasuries by their CUSIP identifier.
+                                                         Delete an investment from your portfolio.
+                                                         Calculate the total par dollar value of all Treasuries in your portfolio.
+                                                         Update specific fields for your existing Treasury investments.
+                                                         Feel free to ask for any specific information or assistance!
+                                                     """)
+    ];
 
+    readonly StringBuilder _currentWorkingItem = new();
 
-    void Initialized(IAIChat chat)
+    string _textInput = "";
+
+    bool _isLoading;
+
+    readonly Func<ChatMessageContent, bool> _filter = m => m.Role == AuthorRole.Assistant || m.Role == AuthorRole.User;
+
+    readonly OpenAIPromptExecutionSettings _settings = new() { FunctionChoiceBehavior = FunctionChoiceBehavior.Auto() };
+
+    protected override void OnInitialized()
     {
-        chat.LoadMessages(_messages);
-        _messages = chat.SaveMessages();
+        _modifiedKernel = TreasuryKernel.Clone();
+        // _modifiedKernel.ImportPluginFromFunctions("ChatUtils", [
+        //     _modifiedKernel.CreateFunctionFromMethod(ClearChatHistory, "clear_chat", "clears the chat history of this conversation and deletes messages.")
+        // ]);
     }
+
+
+    // void Initialized(IAIChat chat)
+    // {
+    //     chat.LoadMessages(_messages);
+    //     _messages = chat.SaveMessages();
+    // }
 
     static MarkupString ToHtml(string text)
     {
         return (MarkupString)Markdown.ToHtml(text);
     }
 
-    private async Task HandleClick()
+    void ClearChatHistory()
     {
-        ChatCompletion result = await Client.CompleteAsync("Who are you?");
+        _history = new ChatHistory(_history.Where(m => m.Role != AuthorRole.User && m.Role != AuthorRole.Assistant));
+        InvokeAsync(StateHasChanged);
+    }
 
-        Debug.WriteLine($"Chat result: {result.Message.Text}");
+    private async Task SubmitMessage()
+    {
+        string trimmed = _textInput.Trim();
+        _textInput = "";
+        if (trimmed == "clear") {
+            ClearChatHistory();
+            return;
+        }
+        _history.AddUserMessage(trimmed);
+        //_isLoading = true;
+
+        await InvokeAsync(StateHasChanged);
+
+        //ChatMessageContent result = await ChatService.GetChatMessageContentAsync(_history, _settings, Kernel);
+
+        await foreach(StreamingChatMessageContent update in ChatService.GetStreamingChatMessageContentsAsync(_history, _settings, _modifiedKernel))
+        {
+            if (update.Content is null) continue;
+
+            _currentWorkingItem.Append(update.Content);
+
+            await InvokeAsync(StateHasChanged);
+        }
+        //_isLoading = false;
+        //Debug.WriteLine($"Chat result: {result.Content}");
+
+        _history.AddAssistantMessage(_currentWorkingItem.ToString());
+        _currentWorkingItem.Clear();
+
+        await InvokeAsync(StateHasChanged);
     }
 
 }

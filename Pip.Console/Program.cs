@@ -1,6 +1,8 @@
 ﻿using System.Text;
+using Anthropic.SDK;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -23,7 +25,7 @@ using Pip.DataAccess.Services;
 #pragma warning disable SKEXP0070
 #pragma warning disable SKEXP0001
 
-//using ILoggerFactory loggerFactory = CreateLoggerFactory();
+using ILoggerFactory loggerFactory = CreateLoggerFactory();
 
 ChatConfig azureConfig =
 	new ConfigurationBuilder()
@@ -38,28 +40,28 @@ builder.Plugins
 	.AddFromType<TreasuryPlugin>();
 
 builder.Services
-	//.AddSingleton(loggerFactory)
-	.AddMemoryCache()
-	.AddSingleton<ITreasuryDataProvider, TreasuryDataProvider>()
-	.AddDbContext<PipDbContext>()
-	.AddHttpClient<ITreasuryDataProvider, TreasuryDataProvider>();
+    //.AddSingleton(loggerFactory)
+    .AddMemoryCache()
+    .AddSingleton<ITreasuryDataProvider, TreasuryDataProvider>()
+    .AddDbContext<PipDbContext>()
+    .AddHttpClient<ITreasuryDataProvider, TreasuryDataProvider>();
 
 builder
-	.AddGoogleAIGeminiChatCompletion(apiKey: azureConfig.GeminiKey, modelId: "gemini-2.0-flash", serviceId: "gemini")
-	//.AddAzureAIInferenceChatCompletion("gpt-4o", endpoint: new Uri(azureConfig.ModelInferenceEndpoint),
-	//    apiKey: azureConfig.AzureKeyCredential, serviceId: "azure")
-	.AddOpenAIChatCompletion(apiKey: azureConfig.OpenAiApiKey, modelId: "gpt-4.5-preview-2025-02-27",
-		serviceId: "openai")
-	.AddOllamaChatCompletion("qwen2.5", new Uri(azureConfig.OllamaEndpoint), "ollama");
+    .AddGoogleAIGeminiChatCompletion(apiKey: azureConfig.GeminiKey, modelId: "gemini-2.0-flash", serviceId: "gemini")
+    .AddAzureAIInferenceChatCompletion("gpt-4o", endpoint: new Uri(azureConfig.ModelInferenceEndpoint),
+        apiKey: azureConfig.AzureKeyCredential, serviceId: "azure")
+    .AddOpenAIChatCompletion(apiKey: azureConfig.OpenAiApiKey, modelId: "gpt-4o",
+        serviceId: "openai")
+    .AddOllamaChatCompletion("qwen2.5", new Uri(azureConfig.OllamaEndpoint), "ollama");
 
 {
-    //IChatCompletionService anthropicChatService =
-    //	new ChatClientBuilder(new AnthropicClient(new APIAuthentication(azureConfig.AnthropicSecretKey)).Messages)
-    //		.UseFunctionInvocation()
-    //		.Build()
-    //		.AsChatCompletionService();
+    IChatCompletionService anthropicChatService =
+        new ChatClientBuilder(new AnthropicClient(new APIAuthentication(azureConfig.AnthropicSecretKey)).Messages)
+            .UseFunctionInvocation()
+            .Build()
+            .AsChatCompletionService();
 
-    //builder.Services.AddKeyedSingleton("claude", anthropicChatService);
+    builder.Services.AddKeyedSingleton("claude", anthropicChatService);
 }
 
 Kernel kernel = builder.Build();
@@ -84,7 +86,6 @@ ChatHistory chatHistory = new(
 	Do not use markdown style. Rather, format your output for a terminal console, with any lists of data shown in a table.
 	""");
 
-StringBuilder sb = new();
 
 OpenAIPromptExecutionSettings openAiPromptExecutionSettings =
 	new() { FunctionChoiceBehavior = FunctionChoiceBehavior.Auto() };
@@ -104,15 +105,17 @@ GeminiPromptExecutionSettings googlePromptExecutionSettings =
 
 OpenAIPromptExecutionSettings anthropicPromptExecutionSettings = new()
 {
-	FunctionChoiceBehavior = FunctionChoiceBehavior.Auto(),
-	ModelId = AnthropicModels.Claude35Sonnet,
-	MaxTokens = 1024
+    FunctionChoiceBehavior = FunctionChoiceBehavior.Auto(),
+    ModelId = AnthropicModels.Claude35Sonnet,
+    MaxTokens = 4096
 };
 
 IChatCompletionService chatService = kernel.GetRequiredService<IChatCompletionService>("openai");
 var agentLabel = "OpenAI";
 PromptExecutionSettings settings = openAiPromptExecutionSettings;
 Console.WriteLine($@"Using {agentLabel}. Switch service: \openai \gemini, \azure, \claude or \ollama");
+
+StringBuilder sb = new();
 while (true)
 {
 	Console.ForegroundColor = ConsoleColor.Green;
@@ -129,48 +132,43 @@ while (true)
 
 	if (prompt.StartsWith("\\"))
 	{
-		switch (prompt)
-		{
-			case @"\gemini":
-				chatService = kernel.GetRequiredService<IChatCompletionService>("gemini");
-				settings = googlePromptExecutionSettings;
-				agentLabel = "Gemini";
-				break;
-			case @"\azure":
-				chatService = kernel.GetRequiredService<IChatCompletionService>("azure");
-				settings = azureAiInferencePromptExecutionSettings;
-				agentLabel = "Azure";
-				break;
-			case @"\ollama":
-				chatService = kernel.GetRequiredService<IChatCompletionService>("ollama");
-				settings = ollamaPromptExecutionSettings;
-				agentLabel = "Ollama";
-				break;
-			case @"\openai":
-				chatService = kernel.GetRequiredService<IChatCompletionService>("openai");
-				settings = openAiPromptExecutionSettings;
-				agentLabel = "OpenAI";
-				break;
-			case @"\claude":
-				chatService = kernel.GetRequiredService<IChatCompletionService>("claude");
-				settings = anthropicPromptExecutionSettings;
-				agentLabel = "Claude";
-				break;
-			case @"\clear":
-			case @"\c":
-				Console.Clear();
-				Console.WriteLine("clearing message context...\n");
-				chatHistory.Clear();
-				continue;
-			//case @"\claude":
-			//    chatService = kernel.GetRequiredService<IChatCompletionService>("claude");
-			//    settings = googlePromptExecutionSettings;
-			//    agentLabel = "Claude";
-			//    break;
-			default:
-				Console.WriteLine("\nUnrecognized service. No change.\n");
-				continue;
-		}
+        switch (prompt)
+        {
+            case @"\gemini":
+                chatService = kernel.GetRequiredService<IChatCompletionService>("gemini");
+                settings = googlePromptExecutionSettings;
+                agentLabel = "Gemini";
+                break;
+            case @"\azure":
+                chatService = kernel.GetRequiredService<IChatCompletionService>("azure");
+                settings = azureAiInferencePromptExecutionSettings;
+                agentLabel = "Azure";
+                break;
+            case @"\ollama":
+                chatService = kernel.GetRequiredService<IChatCompletionService>("ollama");
+                settings = ollamaPromptExecutionSettings;
+                agentLabel = "Ollama";
+                break;
+            case @"\openai":
+                chatService = kernel.GetRequiredService<IChatCompletionService>("openai");
+                settings = openAiPromptExecutionSettings;
+                agentLabel = "OpenAI";
+                break;
+            case @"\claude":
+                chatService = kernel.GetRequiredService<IChatCompletionService>("claude");
+                settings = anthropicPromptExecutionSettings;
+                agentLabel = "Claude";
+                break;
+            case @"\clear":
+            case @"\c":
+                Console.Clear();
+                Console.WriteLine("clearing message context...\n");
+                chatHistory.Clear();
+                continue;
+            default:
+                Console.WriteLine("\nUnrecognized service. No change.\n");
+                continue;
+        }
 
 		Console.WriteLine($"\nSwitched to {prompt[1..]}\n");
 		continue;
@@ -180,46 +178,64 @@ while (true)
 	Console.WriteLine();
 
 
-	if (settings is OllamaPromptExecutionSettings ollamaSettings)
-		try
-		{
-			ChatMessageContent msg = await chatService.GetChatMessageContentAsync(chatHistory, ollamaSettings, kernel);
-			chatHistory.Add(msg);
-			Console.WriteLine($"{agentLabel}: {msg.Content}");
-		}
-		catch (HttpRequestException e)
-		{
-			Console.WriteLine($"There's a problem connecting: {e.Message}\n");
-			continue;
-		}
-	else
-		try
-		{
-			Console.ForegroundColor = ConsoleColor.Green;
-			Console.Write($"{agentLabel}: ");
-			Console.ResetColor();
-			await foreach (StreamingChatMessageContent update in chatService.GetStreamingChatMessageContentsAsync(
-				               chatHistory,
-				               settings,
-				               kernel))
-			{
-				sb.Append(update);
-				Console.ForegroundColor = ConsoleColor.Green;
-				Console.Write(update);
-				Console.ResetColor();
-			}
+    if (settings is OllamaPromptExecutionSettings or GeminiPromptExecutionSettings)
+        try
+        {
+            ChatMessageContent msg = await chatService.GetChatMessageContentAsync(chatHistory, settings, kernel);
+            chatHistory.Add(msg);
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"{agentLabel}: {msg.Content}");
+            Console.ResetColor();
+        }
+        catch (HttpRequestException e)
+        {
+            Console.WriteLine($"There's a problem connecting: {e.Message}\n");
+            continue;
+        }
+    else if (settings == anthropicPromptExecutionSettings)
+        try
+        {
+            ChatMessageContent msg =
+                await chatService.GetChatMessageContentAsync(chatHistory, anthropicPromptExecutionSettings, kernel);
+            chatHistory.Add(msg);
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"{agentLabel}: {msg.Content}");
+            Console.ResetColor();
+        }
+        catch (HttpRequestException e)
+        {
+            Console.WriteLine($"There's a problem connecting: {e.Message}\n");
+            continue;
+        }
+    else
+        try
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write($"{agentLabel}: ");
+            Console.ResetColor();
+            await foreach (StreamingChatMessageContent update in chatService.GetStreamingChatMessageContentsAsync(
+                               chatHistory,
+                               settings,
+                               kernel))
+            {
+                if (string.IsNullOrEmpty(update.Content)) continue;
+                sb.Append(update.Content);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write(update.Content);
+                Console.ResetColor();
+            }
 
-			chatHistory.AddAssistantMessage(sb.ToString());
-		}
-		catch (HttpRequestException e)
-		{
-			Console.WriteLine($"There's a problem connecting: {e.Message}\n");
-			continue;
-		}
-		finally
-		{
-			sb.Clear();
-		}
+            chatHistory.AddAssistantMessage(sb.ToString());
+        }
+        catch (HttpRequestException e)
+        {
+            Console.WriteLine($"There's a problem connecting: {e.Message}\n");
+            continue;
+        }
+        finally
+        {
+            sb.Clear();
+        }
 
 	Console.WriteLine("\n-------------------------------------\n");
 }

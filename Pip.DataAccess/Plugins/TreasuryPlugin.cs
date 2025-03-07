@@ -44,18 +44,18 @@ public sealed class TreasuryPlugin(ITreasuryDataProvider dataProvider, PipDbCont
 		return usts.ToList();
 	}
 
-	[KernelFunction("add_treasury_investment_to_portfolio")]
-	[Description(
-		"Adds an investment to the portfolio for the treasury with given CUSIP and issue date. Par value is optional and defaults to 0 if not passed in.")]
-	[UsedImplicitly]
-	public async Task AddTreasuryInvestmentToPorfolio(
-		[Description("Unique number Treasury Dept. uses to identify securities maturing on a specific date")]
-		string cusip,
-		[Description(
-			"When the Treasury is issued to the buyer. ISO 8601 extended format date-only string (example: 2024-01-31)")]
-		string issueDate,
-		[Description("The stated $ value of a security on its original issue date, defaults to 0")]
-		int parValue = 0)
+    [KernelFunction("add_treasury_investment_to_portfolio")]
+    [Description(
+        "Adds an investment to the portfolio for the treasury with given CUSIP and issue date. Par value is optional and defaults to 0 if not passed in.")]
+    [UsedImplicitly]
+    public async Task AddTreasuryInvestmentToPorfolio(
+        [Description("Unique number Treasury Dept. uses to identify securities maturing on a specific date")]
+        string cusip,
+        [Description(
+            "ISO 8601 extended format date-only string (example: 2024-01-31)")]
+        string issueDate,
+        [Description("The stated $ value of a security on its original issue date, defaults to 0")]
+        int parValue = 0)
 	{
 		DateOnly issueDateOnly = DateOnly.Parse(issueDate.Trim());
 		Treasury? t = await dataProvider.LookupTreasuryAsync(cusip, issueDateOnly);
