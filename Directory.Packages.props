@@ -39,10 +39,9 @@
     <PackageVersion Include="Microsoft.SemanticKernel.Connectors.Ollama" Version="1.40.1-alpha" />
     <PackageVersion Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="9.0.40" />
-    <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.11.5" />
-    <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components.Emoji" Version="4.11.5" />
-    <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.11.5" />
-    <PackageVersion Include="OpenTelemetry" Version="1.11.1" />
+    <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.11.6" />
+    <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components.Emoji" Version="4.11.6" />
+    <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.11.6" />
     <PackageVersion Include="System.Drawing.Common" Version="9.0.2" />
     <PackageVersion Include="System.Text.Json" Version="9.0.2" />
     <PackageVersion Include="System.Formats.Asn1" Version="9.0.2" />
@@ -60,8 +59,8 @@
     <PackageVersion Include="DevExpress.Wpf.ThemesLW" Version="24.2.5" />
     <PackageVersion Include="DevExpress.Blazor" Version="24.2.5" />
     <PackageVersion Include="JetBrains.Annotations" Version="2025.1.0-eap1" />
-    <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="1.11.1" />
-    <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.11.1" />
+    <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="1.11.2" />
+    <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.11.2" />
     <PackageVersion Include="WPF-UI" Version="4.0.2" />
   </ItemGroup>
 </Project>

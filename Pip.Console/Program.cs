@@ -48,9 +48,9 @@ builder.Services
 
 builder
     .AddGoogleAIGeminiChatCompletion(apiKey: azureConfig.GeminiKey, modelId: "gemini-2.0-flash", serviceId: "gemini")
-    .AddAzureAIInferenceChatCompletion("gpt-4o", endpoint: new Uri(azureConfig.ModelInferenceEndpoint),
+    .AddAzureAIInferenceChatCompletion("gpt-4o-mini", endpoint: new Uri(azureConfig.ModelInferenceEndpoint),
         apiKey: azureConfig.AzureKeyCredential, serviceId: "azure")
-    .AddOpenAIChatCompletion(apiKey: azureConfig.OpenAiApiKey, modelId: "gpt-4o",
+    .AddOpenAIChatCompletion(apiKey: azureConfig.OpenAiApiKey, modelId: "gpt-4o-mini",
         serviceId: "openai")
     .AddOllamaChatCompletion("qwen2.5", new Uri(azureConfig.OllamaEndpoint), "ollama");
 
