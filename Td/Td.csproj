@@ -6,6 +6,7 @@
 		<UseWPF>true</UseWPF>
 		<RootNamespace>Td</RootNamespace>
 		<UserSecretsId>366caaf5-c0b1-47f5-998c-2828d9bc5142</UserSecretsId>
+		<NoWarn>$(NoWarn);WFO1000</NoWarn>
 		<Features>use-roslyn-tokenizer;$(Features)</Features>
 	</PropertyGroup>
 
