@@ -6,7 +6,6 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Anthropic.SDK" />
 		<PackageReference Include="JetBrains.Annotations" />
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" />
@@ -15,6 +14,7 @@
 		<PackageReference Include="Microsoft.SemanticKernel" />
 		<PackageReference Include="Microsoft.SemanticKernel.Connectors.AzureAIInference" />
 		<PackageReference Include="Microsoft.SemanticKernel.Connectors.Google" />
+		<PackageReference Include="Microsoft.SemanticKernel.Connectors.HuggingFace" />
 		<PackageReference Include="Microsoft.SemanticKernel.Connectors.Ollama" />
 		<PackageReference Include="Microsoft.SemanticKernel.Connectors.OpenAI" />
 		<PackageReference Include="OpenTelemetry.Exporter.Console" />

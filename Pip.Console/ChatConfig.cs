@@ -17,4 +17,6 @@ public class ChatConfig
 	public string OllamaEndpoint { get; init; } = null!;
 
 	public string AnthropicSecretKey { get; init; } = null!;
+
+    public string HuggingFaceToken { get; set; } = null!;
 }

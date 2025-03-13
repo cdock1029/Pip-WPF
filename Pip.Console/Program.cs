@@ -1,8 +1,6 @@
 ﻿using System.Text;
-using Anthropic.SDK;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -10,6 +8,7 @@ using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.AzureAIInference;
 using Microsoft.SemanticKernel.Connectors.Google;
+using Microsoft.SemanticKernel.Connectors.HuggingFace;
 using Microsoft.SemanticKernel.Connectors.Ollama;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 using OpenTelemetry;
@@ -52,17 +51,9 @@ builder
         apiKey: azureConfig.AzureKeyCredential, serviceId: "azure")
     .AddOpenAIChatCompletion(apiKey: azureConfig.OpenAiApiKey, modelId: "gpt-4o-mini",
         serviceId: "openai")
+    .AddHuggingFaceChatCompletion(apiKey: azureConfig.HuggingFaceToken, model: "google/gemma-3-27b-it",
+        serviceId: "hf")
     .AddOllamaChatCompletion("qwen2.5", new Uri(azureConfig.OllamaEndpoint), "ollama");
-
-{
-    IChatCompletionService anthropicChatService =
-        new ChatClientBuilder(new AnthropicClient(new APIAuthentication(azureConfig.AnthropicSecretKey)).Messages)
-            .UseFunctionInvocation()
-            .Build()
-            .AsChatCompletionService();
-
-    builder.Services.AddKeyedSingleton("claude", anthropicChatService);
-}
 
 Kernel kernel = builder.Build();
 
@@ -103,6 +94,9 @@ GeminiPromptExecutionSettings googlePromptExecutionSettings =
 		FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
 	};
 
+HuggingFacePromptExecutionSettings huggingFacePromptExecutionSettings =
+    new() { FunctionChoiceBehavior = FunctionChoiceBehavior.Auto() };
+
 OpenAIPromptExecutionSettings anthropicPromptExecutionSettings = new()
 {
     FunctionChoiceBehavior = FunctionChoiceBehavior.Auto(),
@@ -113,7 +107,7 @@ OpenAIPromptExecutionSettings anthropicPromptExecutionSettings = new()
 IChatCompletionService chatService = kernel.GetRequiredService<IChatCompletionService>("openai");
 var agentLabel = "OpenAI";
 PromptExecutionSettings settings = openAiPromptExecutionSettings;
-Console.WriteLine($@"Using {agentLabel}. Switch service: \openai \gemini, \azure, \claude or \ollama");
+Console.WriteLine($@"Using {agentLabel}. Switch service: \openai \gemini, \azure, \hf or \ollama");
 
 StringBuilder sb = new();
 while (true)
@@ -154,10 +148,10 @@ while (true)
                 settings = openAiPromptExecutionSettings;
                 agentLabel = "OpenAI";
                 break;
-            case @"\claude":
-                chatService = kernel.GetRequiredService<IChatCompletionService>("claude");
-                settings = anthropicPromptExecutionSettings;
-                agentLabel = "Claude";
+            case @"\hf":
+                chatService = kernel.GetRequiredService<IChatCompletionService>("hf");
+                settings = huggingFacePromptExecutionSettings;
+                agentLabel = "HuggingFace";
                 break;
             case @"\clear":
             case @"\c":
