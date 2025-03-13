@@ -1,12 +1,10 @@
 ﻿@page "/agent"
 @using System.Text
 @using Markdig
-@using Microsoft.Extensions.AI
 @using Microsoft.SemanticKernel
 @using Microsoft.SemanticKernel.ChatCompletion
 @using Microsoft.SemanticKernel.Connectors.OpenAI
 
-@inject IChatClient Client
 @inject IChatCompletionService ChatService
 @inject Kernel TreasuryKernel
 
@@ -35,14 +33,9 @@
 
             @if (_currentWorkingItem.Length > 0)
             {
-
                 <div id="curr-working-item" class="m-2 self-start rounded bg-white p-2 shadow-sm dark:bg-gray-600">
                     @ToHtml(_currentWorkingItem.ToString())
                 </div>
-            }
-            @if (_isLoading)
-            {
-                <p class="p-4 font-bold italic">..thinking..</p>
             }
         </div>
     </div>
@@ -85,7 +78,6 @@
 
     string _textInput = "";
 
-    bool _isLoading;
 
     readonly Func<ChatMessageContent, bool> _filter = m => m.Role == AuthorRole.Assistant || m.Role == AuthorRole.User;
 
@@ -121,10 +113,12 @@
     {
         string trimmed = _textInput.Trim();
         _textInput = "";
-        if (trimmed == "clear") {
+        if (trimmed == "clear")
+        {
             ClearChatHistory();
             return;
         }
+
         _history.AddUserMessage(trimmed);
         //_isLoading = true;
 
@@ -132,7 +126,7 @@
 
         //ChatMessageContent result = await ChatService.GetChatMessageContentAsync(_history, _settings, Kernel);
 
-        await foreach(StreamingChatMessageContent update in ChatService.GetStreamingChatMessageContentsAsync(_history, _settings, _modifiedKernel))
+        await foreach (StreamingChatMessageContent update in ChatService.GetStreamingChatMessageContentsAsync(_history, _settings, _modifiedKernel))
         {
             if (update.Content is null) continue;
 
