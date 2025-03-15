@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
+using JetBrains.Annotations;
 using Pip.UI.Properties;
-using Pip.UI.ViewModel;
 
-namespace Pip.UI;
+namespace Pip.UI.Components.Main;
 
 public partial class MainWindow
 {
@@ -28,11 +28,11 @@ public partial class MainWindow
 	{
 		try
 		{
-			var wp = _pipSettings.WindowPlacement;
+			WindowPlacement wp = _pipSettings.WindowPlacement;
 			wp.Length = Marshal.SizeOf<WindowPlacement>();
 			wp.Flags = 0;
 			if (wp.ShowCmd == ShowMinimized) wp.ShowCmd = ShowNormal;
-			var hwnd = new WindowInteropHelper(this).Handle;
+			IntPtr hwnd = new WindowInteropHelper(this).Handle;
 			WindowPlacementHelper.SetWindowPlacement(hwnd, ref wp);
 		}
 
@@ -46,8 +46,8 @@ public partial class MainWindow
 	{
 		try
 		{
-			var hwnd = new WindowInteropHelper(this).Handle;
-			WindowPlacementHelper.GetWindowPlacement(hwnd, out var wp);
+			IntPtr hwnd = new WindowInteropHelper(this).Handle;
+			WindowPlacementHelper.GetWindowPlacement(hwnd, out WindowPlacement wp);
 
 			Debug.WriteLine($"closing wp: MinPos={wp.MinPosition}, MaxPos={wp.MaxPosition}");
 			_pipSettings.WindowPlacement = wp;
@@ -73,6 +73,7 @@ public static partial class WindowPlacementHelper
 
 [Serializable]
 [StructLayout(LayoutKind.Sequential)]
+[PublicAPI]
 public record struct WindowPlacement(
 	int Length = 0,
 	int Flags = 0,

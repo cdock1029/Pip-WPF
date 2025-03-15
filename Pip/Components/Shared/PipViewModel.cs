@@ -5,7 +5,7 @@ using System.Windows.Threading;
 using DevExpress.Mvvm;
 using Application = System.Windows.Application;
 
-namespace Pip.UI.ViewModel;
+namespace Pip.UI.Components.Shared;
 
 public abstract class PipViewModel : ViewModelBase, INotifyDataErrorInfo
 {

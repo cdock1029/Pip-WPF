@@ -6,20 +6,21 @@
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewModel="clr-namespace:Pip.UI.ViewModel"
     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
     xmlns:navigation="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
     xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
     xmlns:dxa="http://schemas.devexpress.com/winfx/2008/xaml/accordion"
     xmlns:home="clr-namespace:Pip.UI.Components.Home"
-    x:Class="Pip.UI.MainWindow"
+    xmlns:main="clr-namespace:Pip.UI.Components.Main"
+    xmlns:shared="clr-namespace:Pip.UI.Components.Shared"
+    x:Class="Pip.UI.Components.Main.MainWindow"
     Width="800"
     Height="800"
-    d:DataContext="{d:DesignInstance Type={x:Type viewModel:MainViewModel}}"
+    d:DataContext="{d:DesignInstance Type={x:Type main:MainViewModel}}"
     SizeToContent="Manual"
     WindowStartupLocation="Manual"
     UseLayoutRounding="True"
-    Icon="Assets/cat.ico"
+    Icon="/Assets/cat.ico"
     mc:Ignorable="d"
     dx:DXSerializer.Enabled="True"
     dx:WindowRestoreLayoutOptions.AllowRestoreStateForDisplayedWindow="True">
@@ -31,7 +32,7 @@
                 <Style TargetType="Window">
                     <Setter Property="SizeToContent" Value="Height" />
                     <Setter Property="Width" Value="400" />
-                    <Setter Property="Icon" Value="Assets/cat.ico" />
+                    <Setter Property="Icon" Value="/Assets/cat.ico" />
                 </Style>
             </dx:DialogService.DialogStyle>
         </dx:DialogService>
@@ -98,7 +99,7 @@
                 </dxmvvm:Interaction.Behaviors>
 
                 <dxa:AccordionControl.ItemContainerStyle>
-                    <Style d:DataContext="{d:DesignInstance Type={x:Type viewModel:IPipPage}}"
+                    <Style d:DataContext="{d:DesignInstance Type={x:Type shared:IPipPage}}"
                            TargetType="{x:Type dxa:AccordionItem}">
                         <Setter Property="GlyphSize" Value="16,16" />
                         <Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor" />

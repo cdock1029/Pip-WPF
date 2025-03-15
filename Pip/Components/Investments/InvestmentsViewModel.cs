@@ -5,8 +5,8 @@ using DevExpress.Mvvm.Xpf;
 using DevExpress.Xpf.Core;
 using Pip.DataAccess.Services;
 using Pip.UI.Components.Details;
-using Pip.UI.Messages;
-using Pip.UI.ViewModel;
+using Pip.UI.Components.Investments.Messages;
+using Pip.UI.Components.Shared;
 
 namespace Pip.UI.Components.Investments;
 

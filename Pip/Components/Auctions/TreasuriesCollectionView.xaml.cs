@@ -3,7 +3,7 @@ using System.Windows.Input;
 using DevExpress.Mvvm;
 using Pip.Model;
 
-namespace Pip.UI.View;
+namespace Pip.UI.Components.Auctions;
 
 public partial class TreasuriesCollectionView
 {

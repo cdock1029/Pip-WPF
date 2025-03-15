@@ -1,4 +1,4 @@
-﻿namespace Pip.UI.ViewModel;
+﻿namespace Pip.UI.Components.Shared;
 
 public interface IPipPage
 {

@@ -1,11 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
+using JetBrains.Annotations;
 using Pip.DataAccess.Services;
 using Pip.Model;
 using Pip.UI.Components.Details;
-using Pip.UI.Messages;
-using Pip.UI.ViewModel;
+using Pip.UI.Components.Investments.Messages;
+using Pip.UI.Components.Shared;
 
 namespace Pip.UI.Components.Search;
 
@@ -46,11 +47,11 @@ public partial class SearchViewModel : PipViewModel
 	{
 		ArgumentException.ThrowIfNullOrWhiteSpace(SearchText);
 
-		var treasuries = await _treasuryDataProvider.SearchTreasuriesAsync(SearchText.Trim());
+		IEnumerable<Treasury>? treasuries = await _treasuryDataProvider.SearchTreasuriesAsync(SearchText.Trim());
 
 		SearchResults.Clear();
 		if (treasuries == null) return;
-		foreach (var treasury in treasuries)
+		foreach (Treasury treasury in treasuries)
 			SearchResults.Add(new TreasuryItemViewModel(treasury));
 	}
 
@@ -64,9 +65,9 @@ public partial class SearchViewModel : PipViewModel
 	{
 		ArgumentNullException.ThrowIfNull(SelectedTreasuryItem);
 
-		var treasury = SelectedTreasuryItem.Treasury;
+		Treasury treasury = SelectedTreasuryItem.Treasury;
 
-		var investment = new Investment
+		Investment investment = new()
 		{
 			Cusip = treasury.Cusip,
 			IssueDate = treasury.IssueDate!.Value,
@@ -82,5 +83,24 @@ public partial class SearchViewModel : PipViewModel
 	private bool CanCreateInvestment()
 	{
 		return SelectedTreasuryItem is not null;
+	}
+}
+
+[PublicAPI]
+public class TreasuryItemViewModel(Treasury treasury)
+{
+	public string Cusip { get; set; } = treasury.Cusip;
+
+	public DateOnly? IssueDate { get; set; } = treasury.IssueDate;
+
+	public TreasuryType? Type { get; set; } = treasury.Type;
+
+	public string? Term { get; set; } = treasury.SecurityTerm;
+
+	public Treasury Treasury { get; set; } = treasury;
+
+	public override string ToString()
+	{
+		return $"Issue: {IssueDate:dd MMM yyyy} Type: {Type} Term: {Term}";
 	}
 }

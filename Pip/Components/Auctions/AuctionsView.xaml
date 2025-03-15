@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
-             xmlns:view="clr-namespace:Pip.UI.View"
              xmlns:auctions="clr-namespace:Pip.UI.Components.Auctions"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type={x:Type auctions:AuctionsViewModel}}"
@@ -17,7 +16,7 @@
                                     ShowCaption="True"
                                     SelectedTabIndex="0">
                     <dxdo:DocumentPanel Caption="Recent" ShowBorder="False" x:Name="RecentTab">
-                        <view:TreasuriesCollectionView
+                        <auctions:TreasuriesCollectionView
                             HandleSelectionChangedCommand="{Binding DetailsViewModel.HandleSelectionChangedCommand, Mode=OneWay}"
                             SelectedTreasury="{Binding SelectedTreasuryRecent, Mode=TwoWay}"
                             Treasuries="{Binding TreasuriesRecent}"
@@ -25,7 +24,7 @@
                     </dxdo:DocumentPanel>
 
                     <dxdo:DocumentPanel Caption="Upcoming" ShowBorder="False" x:Name="UpcomingTab">
-                        <view:TreasuriesCollectionView
+                        <auctions:TreasuriesCollectionView
                             HandleSelectionChangedCommand="{Binding DetailsViewModel.HandleSelectionChangedCommand, Mode=OneWay}"
                             SelectedTreasury="{Binding  SelectedTreasuryUpcoming, Mode=TwoWay}"
                             Treasuries="{Binding  TreasuriesUpcoming}"

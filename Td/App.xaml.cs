@@ -1,8 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Threading;
 using DevExpress.AIIntegration;
-using DevExpress.AIIntegration.Extensions;
-using DevExpress.AIIntegration.Services.Chat;
 using DevExpress.Blazor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.AI;
@@ -182,14 +180,4 @@ file class PipAiExceptionHandler : IAIExceptionHandler
     }
 }
 
-file class PipMessageHandler : IAIChatClientCustomizeMessageRequest
-{
-    public void Customize(ChatMessageRequest messageRequest, BaseRequest originalRequest, RequestContext context)
-    {
-        messageRequest.Options.Tools =
-        [
-            //AIFunctionFactory.Create()
-        ];
-    }
-}
 

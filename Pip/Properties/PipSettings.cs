@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using Pip.UI.Components.Main;
 
 namespace Pip.UI.Properties;
 

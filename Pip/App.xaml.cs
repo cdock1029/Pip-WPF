@@ -11,9 +11,10 @@ using Pip.UI.Components.Auctions;
 using Pip.UI.Components.Details;
 using Pip.UI.Components.Home;
 using Pip.UI.Components.Investments;
+using Pip.UI.Components.Main;
 using Pip.UI.Components.Search;
+using Pip.UI.Components.Shared;
 using Pip.UI.Properties;
-using Pip.UI.ViewModel;
 
 namespace Pip.UI;
 
@@ -40,10 +41,10 @@ public partial class App
 		ConfigureServices(serviceCollection);
 		ServiceProvider = serviceCollection.BuildServiceProvider();
 
-		var dbContext = ServiceProvider.GetRequiredService<PipDbContext>();
+		PipDbContext dbContext = ServiceProvider.GetRequiredService<PipDbContext>();
 		dbContext.Database.Migrate();
 
-		var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
+		MainWindow mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
 		mainWindow.Show();
 	}
 
@@ -71,7 +72,7 @@ public partial class App
 	{
 		e.Handled = true;
 		Debug.WriteLine(e.Exception);
-		var messageBoxService = ServiceProvider.GetRequiredService<IMessageBoxService>();
+		IMessageBoxService messageBoxService = ServiceProvider.GetRequiredService<IMessageBoxService>();
 		messageBoxService.Show($"Unhandled Exception. Contact administrator: [{e.Exception}]", "Error",
 			MessageBoxButton.OK);
 	}

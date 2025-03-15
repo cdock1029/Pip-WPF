@@ -6,10 +6,11 @@ using Pip.UI.Components.Auctions;
 using Pip.UI.Components.Details;
 using Pip.UI.Components.Home;
 using Pip.UI.Components.Investments;
+using Pip.UI.Components.Investments.Messages;
 using Pip.UI.Components.Search;
-using Pip.UI.Messages;
+using Pip.UI.Components.Shared;
 
-namespace Pip.UI.ViewModel;
+namespace Pip.UI.Components.Main;
 
 [GenerateViewModel]
 public partial class MainViewModel : PipViewModel
@@ -54,13 +55,14 @@ public partial class MainViewModel : PipViewModel
 	[GenerateCommand]
 	private void ShowForm()
 	{
-		var model = new InvestmentItemViewModel
+		InvestmentItemViewModel model = new()
 		{
 			Cusip = "",
 			IssueDate = DateTime.Now.ToDateOnly()
 		};
 
-		var result = DialogService.ShowDialog(MessageButton.OKCancel, "Investment form", nameof(InvestmentForm), model);
+		MessageResult result =
+			DialogService.ShowDialog(MessageButton.OKCancel, "Investment form", nameof(InvestmentForm), model);
 
 		Debug.WriteLine(
 			$"result: {result}, model par: {model.Par}, confirmation: {model.Confirmation}, re-investments: {model.Reinvestments}");

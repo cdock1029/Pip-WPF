@@ -1,6 +1,6 @@
 ﻿using DevExpress.Mvvm.CodeGenerators;
 using DevExpress.Xpf.Core;
-using Pip.UI.ViewModel;
+using Pip.UI.Components.Shared;
 
 namespace Pip.UI.Components.Home;
 

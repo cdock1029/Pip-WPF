@@ -66,14 +66,14 @@
                         Command="{Binding SearchCommand}" />
                 </TextBox.InputBindings>
             </TextBox>
-            <Button
+            <!--<Button
                 Command="{Binding ClearResultsCommand}"
-                Content="Clear" />
+                Content="Clear" />-->
         </StackPanel>
 
         <!-- Search Results ListBox -->
         <ListBox
-            Name="SearchList"
+            x:Name="SearchList"
             Grid.Row="1"
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Stretch"

@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
 
-namespace Pip.UI.Messages;
+namespace Pip.UI.Components.Investments.Messages;
 
 public class AfterInsertInvestmentMessage(AfterInsertInvestmentArgs value)
 	: ValueChangedMessage<AfterInsertInvestmentArgs>(value);

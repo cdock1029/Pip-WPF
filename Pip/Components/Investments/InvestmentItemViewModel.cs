@@ -2,7 +2,7 @@
 using DevExpress.Mvvm.CodeGenerators;
 using JetBrains.Annotations;
 using Pip.Model;
-using Pip.UI.ViewModel;
+using Pip.UI.Components.Shared;
 
 namespace Pip.UI.Components.Investments;
 

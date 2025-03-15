@@ -1,4 +1,4 @@
-﻿namespace Pip.UI.View;
+﻿namespace Pip.UI.Components.Main;
 
 public partial class SplashScreen1
 {
