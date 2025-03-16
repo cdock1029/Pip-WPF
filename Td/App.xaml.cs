@@ -21,8 +21,11 @@ public partial class App
 {
     protected override void OnStartup(StartupEventArgs e)
     {
-        ServiceCollection serviceCollection = new();
-        IConfiguration configuration =
+	    AppDomain.CurrentDomain.UnhandledException += App_DomainUnhandledException;
+	    Current.DispatcherUnhandledException += App_OnDispatcherUnhandledException;
+
+	    ServiceCollection serviceCollection = new();
+	    IConfiguration configuration =
             new ConfigurationBuilder()
                 .AddUserSecrets<App>()
                 .Build();
@@ -37,6 +40,7 @@ public partial class App
         MainWindow mainWindow = serviceProvider.GetRequiredService<MainWindow>();
         mainWindow.Show();
     }
+
 
     private static void ConfigureServices(ServiceCollection serviceCollection,
         IConfiguration _)
@@ -139,14 +143,22 @@ public partial class App
 #endif
     }
 
-    private void App_OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+    private static void App_OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
     {
 #if DEBUG
-        MessageBox.Show(e.Exception.Message, "Error");
+	    MessageBox.Show($"UI Dispatcher error: {e.Exception.Message}", "Error", MessageBoxButton.OK,
+		    MessageBoxImage.Error);
 #else
-		MessageBox.Show("An error has occurred.", "Error");
+        MessageBox.Show($"A User Interface error has occurred. {e.Exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 #endif
-        Debug.WriteLine($"Unhandled Exception: {e.Exception}");
+	    Debug.WriteLine($"Unhandled Dispatcher Exception: {e.Exception.Message}");
+	    e.Handled = true;
+    }
+
+    private static void App_DomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
+    {
+	    MessageBox.Show($"App error: {e.ExceptionObject}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+	    Debug.WriteLine($"Unhandled Domain Exception: {e.ExceptionObject}");
     }
 }
 
