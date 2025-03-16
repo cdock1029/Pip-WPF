@@ -9,6 +9,12 @@ table {
 
 :root {
     --bs-body-bg: transparent;
+    view-transition-name: root;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: 0.4s;
 }
 
 body {
