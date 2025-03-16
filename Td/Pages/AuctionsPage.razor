@@ -18,19 +18,19 @@
         <FluentTab Label="Recent" Id="tab-recent">
             @if (_activeTabId == "tab-recent")
             {
-                <FluentDataGrid AutoFit="true" Items="RecentTreasuries?.AsQueryable()" Loading="RecentTreasuries is null">
-                    <TemplateColumn Align="Align.Center" Title="Details">
+                <FluentDataGrid AutoFit="false" Items="RecentTreasuries?.AsQueryable()" Loading="RecentTreasuries is null">
+                    <TemplateColumn Width="100px" Align="Align.Center" Title="Details">
                         <div class="flex items-center justify-center">
                             <FluentIcon Value="new Size20.Link()" OnClick="() => NavigateTreasuryItem(context)"/>
                         </div>
                     </TemplateColumn>
-                    <PropertyColumn Style="@Statics.GridFont" Property="@(p => p.Cusip)" Sortable="true"/>
-                    <PropertyColumn Align="Align.End" Style="@Statics.GridFont" Property="@(p => p.AuctionDate)" Title="Auction date" Format="@Statics.DateFormatString" Sortable="true"/>
-                    <PropertyColumn Align="Align.End" Style="@Statics.GridFont" Property="@(p => p.IssueDate)" Title="Issue date" Format="@Statics.DateFormatString" Sortable="true"/>
-                    <PropertyColumn Align="Align.End" Style="@Statics.GridFont" Property="@(p => p.MaturityDate)" Title="Maturity date" Format="@Statics.DateFormatString" Sortable="true"/>
-                    <PropertyColumn Style="@Statics.GridFont" Property="@(p => p.Type)" Title="Type" Sortable="true"/>
-                    <PropertyColumn Style="@Statics.GridFont" Property="@(p => p.Term)" Title="Term" Sortable="true" SortBy="@Statics.TermSpanSort"/>
-                    <TemplateColumn Title="Save" Align="Align.Center">
+                    <PropertyColumn Width="130px" Style="@Statics.GridFont" Property="@(p => p.Cusip)" Sortable="true"/>
+                    <PropertyColumn Width="180px" Align="Align.End" Style="@Statics.GridFont" Property="@(p => p.AuctionDate)" Title="Auction date" Format="@Statics.DateFormatString" Sortable="true"/>
+                    <PropertyColumn Width="180px" Align="Align.End" Style="@Statics.GridFont" Property="@(p => p.IssueDate)" Title="Issue date" Format="@Statics.DateFormatString" Sortable="true"/>
+                    <PropertyColumn Width="180px" Align="Align.End" Style="@Statics.GridFont" Property="@(p => p.MaturityDate)" Title="Maturity date" Format="@Statics.DateFormatString" Sortable="true"/>
+                    <PropertyColumn Width="100px" Style="@Statics.GridFont" Property="@(p => p.Type)" Title="Type" Sortable="true"/>
+                    <PropertyColumn Width="200px" Style="@Statics.GridFont" Property="@(p => p.Term)" Title="Term" Sortable="true" SortBy="@Statics.TermSpanSort"/>
+                    <TemplateColumn Width="100px" Title="Save" Align="Align.Center">
                         <div class="flex items-center justify-center">
                             <FluentIcon Title="@($"Save {context.Type} {context.Term}")" Value="new Size20.Save()" OnClick="() => AddInvestment(context)"/>
                         </div>
@@ -42,16 +42,16 @@
         <FluentTab Label="Upcoming" Id="tab-upcoming">
             @if (_activeTabId == "tab-upcoming")
             {
-                <FluentDataGrid AutoFit="true" Items="UpcomingTreasuries?.AsQueryable()" Loading="UpcomingTreasuries is null">
-                    <PropertyColumn Style="@Statics.GridFont" Property="@(p => p.Cusip)" Sortable="true"/>
-                    <PropertyColumn Align="Align.End" Style="@Statics.GridFont" Property="@(p => p.AuctionDate)" Title="Auction date" Format="@Statics.DateFormatString" Sortable="true"/>
-                    <PropertyColumn Align="Align.End" Style="@Statics.GridFont" Property="@(p => p.IssueDate)" Title="Issue date" Format="@Statics.DateFormatString" Sortable="true"/>
-                    <PropertyColumn Align="Align.End" Style="@Statics.GridFont" Property="@(p => p.MaturityDate)" Title="Maturity date" Format="@Statics.DateFormatString" Sortable="true"/>
-                    <PropertyColumn Style="@Statics.GridFont" Property="@(p => p.Type)" Title="Type" Sortable="true"/>
-                    <PropertyColumn Style="@Statics.GridFont" Property="@(p => p.Term)" Title="Term" Sortable="true" SortBy="@Statics.TermSpanSort"/>
-                    <TemplateColumn Align="Align.Center" Class="flex items-center justify-center">
+                <FluentDataGrid AutoFit="false" Items="UpcomingTreasuries?.AsQueryable()" Loading="UpcomingTreasuries is null">
+                    <PropertyColumn Width="130px" Style="@Statics.GridFont" Property="@(p => p.Cusip)" Sortable="true"/>
+                    <PropertyColumn Width="180px" Align="Align.End" Style="@Statics.GridFont" Property="@(p => p.AuctionDate)" Title="Auction date" Format="@Statics.DateFormatString" Sortable="true"/>
+                    <PropertyColumn Width="180px" Align="Align.End" Style="@Statics.GridFont" Property="@(p => p.IssueDate)" Title="Issue date" Format="@Statics.DateFormatString" Sortable="true"/>
+                    <PropertyColumn Width="180px" Align="Align.End" Style="@Statics.GridFont" Property="@(p => p.MaturityDate)" Title="Maturity date" Format="@Statics.DateFormatString" Sortable="true"/>
+                    <PropertyColumn Width="100px" Style="@Statics.GridFont" Property="@(p => p.Type)" Title="Type" Sortable="true"/>
+                    <PropertyColumn Width="200px" Style="@Statics.GridFont" Property="@(p => p.Term)" Title="Term" Sortable="true" SortBy="@Statics.TermSpanSort"/>
+                    <TemplateColumn Width="100px" Title="Save" Align="Align.Center">
                         <div class="flex items-center justify-center">
-                            <FluentIcon Value="@(new Size20.Save())" OnClick="@(_ => AddInvestment(context))"/>
+                            <FluentIcon Title="@($"Save {context.Type} {context.Term}")" Value="@(new Size20.Save())" OnClick="@(_ => AddInvestment(context))"/>
                         </div>
                     </TemplateColumn>
                 </FluentDataGrid>

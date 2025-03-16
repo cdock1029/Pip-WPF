@@ -7,147 +7,153 @@
         Previous Auctions
     </FluentLabel>
 
-    <div style="flex:1 0 auto;height:1px;display:flex;">
-        <DxGrid
-            SizeMode="SizeMode.Small"
-            Data="Data"
-            CssClass="flex-auto"
-            ShowGroupPanel="true"
-            ShowFilterRow="false"
-            ShowSearchBox="true"
-            AutoExpandAllGroupRows="false"
-            ShowAllRows="true"
-            ColumnResizeMode="GridColumnResizeMode.NextColumn"
-            TextWrapEnabled="true"
-            CustomSort="OnCustomSort"
-            VirtualScrollingEnabled="true">
-            <Columns>
-                <DxGridDataColumn FieldName="@nameof(Treasury.AnnouncementDate)" DisplayFormat="yyyy-MM-d" SortOrder="GridColumnSortOrder.Descending" MinWidth="100" DataRowEditorVisible="false"/>
-                <DxGridDataColumn FieldName="@nameof(Treasury.AuctionDate)" MinWidth="100" DataRowEditorVisible="false"/>
-                <DxGridDataColumn FieldName="@nameof(Treasury.Cusip)" Name="CUSIP" MinWidth="50" DataRowEditorVisible="false"/>
-                <DxGridDataColumn FieldName="@nameof(Treasury.Type)" GroupIndex="0" MinWidth="50" DataRowEditorVisible="false" SortMode="GridColumnSortMode.Value"/>
-                <DxGridDataColumn FieldName="@nameof(Treasury.IssueDate)" MinWidth="100" DataRowEditorVisible="false"/>
-                <DxGridDataColumn FieldName="@nameof(Treasury.MaturityDate)" MinWidth="100" DataRowEditorVisible="false"/>
-                <DxGridDataColumn FieldName="@nameof(Treasury.SecurityTerm)" GroupIndex="1" MinWidth="100" DataRowEditorVisible="false" SortMode="GridColumnSortMode.Custom"/>
-                <DxGridDataColumn FieldName="@nameof(Treasury.SecurityType)" MinWidth="100" DataRowEditorVisible="false" SortMode="GridColumnSortMode.Value"/>
-                <DxGridBandColumn Caption="Announcement">
-                    <Columns>
-                        <DxGridDataColumn FieldName="@nameof(Treasury.PdfFilenameAnnouncement)" Caption="PDF">
-                            <CellDisplayTemplate>
-                                @if (!string.IsNullOrEmpty((string)context.Value))
-                                {
-                                    <a
-                                        class="inline-flex items-center px-1"
-                                        href="@($"https://www.treasurydirect.gov/instit/annceresult/press/preanre/{_selectedYear?.Value}/{(string)context.Value}")"
-                                        target="_blank">
-                                        <span>PDF</span>
-                                    </a>
-                                }
-                            </CellDisplayTemplate>
-                        </DxGridDataColumn>
-                        <DxGridDataColumn FieldName="@nameof(Treasury.XmlFilenameAnnouncement)" Caption="XML">
-                            <CellDisplayTemplate>
-                                @if (!string.IsNullOrEmpty((string)context.Value))
-                                {
-                                    <a
-                                        class="inline-flex items-center px-1"
-                                        href="@($"https://www.treasurydirect.gov/xml/{(string)context.Value}")"
-                                        target="_blank">
-                                        <span>XML</span>
-                                    </a>
-                                }
-                            </CellDisplayTemplate>
-                        </DxGridDataColumn>
-                    </Columns>
-                </DxGridBandColumn>
-                <DxGridBandColumn Caption="Noncomp Results">
-                    <Columns>
-                        <DxGridDataColumn FieldName="@nameof(Treasury.PdfFilenameNoncompetitiveResults)" Caption="PDF">
-                            <CellDisplayTemplate>
-                                @if (!string.IsNullOrEmpty((string)context.Value))
-                                {
-                                    <a
-                                        class="inline-flex items-center px-1"
-                                        href="@($"https://www.treasurydirect.gov/instit/annceresult/press/preanre/{_selectedYear?.Value}/{(string)context.Value}")"
-                                        target="_blank">
-                                        <span>PDF</span>
-                                    </a>
-                                }
-                            </CellDisplayTemplate>
-                        </DxGridDataColumn>
-                    </Columns>
-                </DxGridBandColumn>
-                <DxGridBandColumn Caption="Competitive Results">
-                    <Columns>
-                        <DxGridDataColumn FieldName="@nameof(Treasury.PdfFilenameCompetitiveResults)" Caption="PDF">
-                            <CellDisplayTemplate>
-                                @if (!string.IsNullOrEmpty((string)context.Value))
-                                {
-                                    <a
-                                        class="inline-flex items-center px-1"
-                                        href="@($"https://www.treasurydirect.gov/instit/annceresult/press/preanre/{_selectedYear?.Value}/{(string)context.Value}")"
-                                        target="_blank">
-                                        <span>PDF</span>
-                                    </a>
-                                }
-                            </CellDisplayTemplate>
-                        </DxGridDataColumn>
-                        <DxGridDataColumn FieldName="@nameof(Treasury.XmlFilenameCompetitiveResults)" Caption="XML">
-                            <CellDisplayTemplate>
-                                @if (!string.IsNullOrEmpty((string)context.Value))
-                                {
-                                    <a
-                                        class="inline-flex items-center px-1"
-                                        href="@($"https://www.treasurydirect.gov/xml/{(string)context.Value}")"
-                                        target="_blank">
-                                        <span>XML</span>
-                                    </a>
-                                }
-                            </CellDisplayTemplate>
-                        </DxGridDataColumn>
-                    </Columns>
-                </DxGridBandColumn>
-                <DxGridBandColumn Caption="Special Announcement">
-                    <Columns>
-                        <DxGridDataColumn FieldName="@nameof(Treasury.PdfFilenameSpecialAnnouncement)" Caption="PDF">
-                            <CellDisplayTemplate>
-                                @if (!string.IsNullOrEmpty((string)context.Value))
-                                {
-                                    <a
-                                        class="inline-flex items-center px-1"
-                                        href="@($"https://www.treasurydirect.gov/instit/annceresult/press/preanre/{_selectedYear?.Value}/{(string)context.Value}")"
-                                        target="_blank">
-                                        <span>PDF</span>
-                                    </a>
-                                }
-                            </CellDisplayTemplate>
-                        </DxGridDataColumn>
-                    </Columns>
-                </DxGridBandColumn>
-            </Columns>
-            <ToolbarTemplate>
-                <DxToolbar ItemRenderStyleMode="ToolbarRenderStyleMode.Contained">
-                    <Items>
-                        <DxToolbarItem BeginGroup="true" Alignment="ToolbarItemAlignment.Left">
-                            <Template Context="toolbar_item_context">
-                                <div class="flex h-full items-center">
-                                    <div class="mr-2">Year:</div>
-                                    <DxComboBox Data="_years" @bind-Value="_selectedYear" SelectedItemChanged="@((Year year) => OnSelectedYearChanged(year))"/>
-                                </div>
-                            </Template>
-                        </DxToolbarItem>
-                    </Items>
-                </DxToolbar>
-            </ToolbarTemplate>
-        </DxGrid>
-
-    </div>
+        <DxLoadingPanel @bind-Visible="@IsLoading"
+                        CssClass="flex h-px flex-auto"
+                        IsContentBlocked="true"
+                        ApplyBackgroundShading="true"
+                        IndicatorAreaVisible="false"
+                        Text="Fetching Data...">
+            <DxGrid
+                SizeMode="SizeMode.Small"
+                Data="Data"
+                CssClass="h-full"
+                ShowGroupPanel="true"
+                ShowFilterRow="false"
+                ShowSearchBox="true"
+                AutoExpandAllGroupRows="false"
+                ShowAllRows="true"
+                ColumnResizeMode="GridColumnResizeMode.NextColumn"
+                TextWrapEnabled="true"
+                CustomSort="OnCustomSort"
+                VirtualScrollingEnabled="true">
+                <Columns>
+                    <DxGridDataColumn FieldName="@nameof(Treasury.AnnouncementDate)" DisplayFormat="yyyy-MM-d" SortOrder="GridColumnSortOrder.Descending" MinWidth="100" DataRowEditorVisible="false"/>
+                    <DxGridDataColumn FieldName="@nameof(Treasury.AuctionDate)" MinWidth="100" DataRowEditorVisible="false"/>
+                    <DxGridDataColumn FieldName="@nameof(Treasury.Cusip)" Name="CUSIP" MinWidth="50" DataRowEditorVisible="false"/>
+                    <DxGridDataColumn FieldName="@nameof(Treasury.Type)" GroupIndex="0" MinWidth="50" DataRowEditorVisible="false" SortMode="GridColumnSortMode.Value"/>
+                    <DxGridDataColumn FieldName="@nameof(Treasury.IssueDate)" MinWidth="100" DataRowEditorVisible="false"/>
+                    <DxGridDataColumn FieldName="@nameof(Treasury.MaturityDate)" MinWidth="100" DataRowEditorVisible="false"/>
+                    <DxGridDataColumn FieldName="@nameof(Treasury.SecurityTerm)" GroupIndex="1" MinWidth="100" DataRowEditorVisible="false" SortMode="GridColumnSortMode.Custom"/>
+                    <DxGridDataColumn FieldName="@nameof(Treasury.SecurityType)" MinWidth="100" DataRowEditorVisible="false" SortMode="GridColumnSortMode.Value"/>
+                    <DxGridBandColumn Caption="Announcement">
+                        <Columns>
+                            <DxGridDataColumn FieldName="@nameof(Treasury.PdfFilenameAnnouncement)" Caption="PDF">
+                                <CellDisplayTemplate>
+                                    @if (!string.IsNullOrEmpty((string)context.Value))
+                                    {
+                                        <a
+                                            class="inline-flex items-center px-1"
+                                            href="@($"https://www.treasurydirect.gov/instit/annceresult/press/preanre/{_selectedYear?.Value}/{(string)context.Value}")"
+                                            target="_blank">
+                                            <span>PDF</span>
+                                        </a>
+                                    }
+                                </CellDisplayTemplate>
+                            </DxGridDataColumn>
+                            <DxGridDataColumn FieldName="@nameof(Treasury.XmlFilenameAnnouncement)" Caption="XML">
+                                <CellDisplayTemplate>
+                                    @if (!string.IsNullOrEmpty((string)context.Value))
+                                    {
+                                        <a
+                                            class="inline-flex items-center px-1"
+                                            href="@($"https://www.treasurydirect.gov/xml/{(string)context.Value}")"
+                                            target="_blank">
+                                            <span>XML</span>
+                                        </a>
+                                    }
+                                </CellDisplayTemplate>
+                            </DxGridDataColumn>
+                        </Columns>
+                    </DxGridBandColumn>
+                    <DxGridBandColumn Caption="Noncomp Results">
+                        <Columns>
+                            <DxGridDataColumn FieldName="@nameof(Treasury.PdfFilenameNoncompetitiveResults)" Caption="PDF">
+                                <CellDisplayTemplate>
+                                    @if (!string.IsNullOrEmpty((string)context.Value))
+                                    {
+                                        <a
+                                            class="inline-flex items-center px-1"
+                                            href="@($"https://www.treasurydirect.gov/instit/annceresult/press/preanre/{_selectedYear?.Value}/{(string)context.Value}")"
+                                            target="_blank">
+                                            <span>PDF</span>
+                                        </a>
+                                    }
+                                </CellDisplayTemplate>
+                            </DxGridDataColumn>
+                        </Columns>
+                    </DxGridBandColumn>
+                    <DxGridBandColumn Caption="Competitive Results">
+                        <Columns>
+                            <DxGridDataColumn FieldName="@nameof(Treasury.PdfFilenameCompetitiveResults)" Caption="PDF">
+                                <CellDisplayTemplate>
+                                    @if (!string.IsNullOrEmpty((string)context.Value))
+                                    {
+                                        <a
+                                            class="inline-flex items-center px-1"
+                                            href="@($"https://www.treasurydirect.gov/instit/annceresult/press/preanre/{_selectedYear?.Value}/{(string)context.Value}")"
+                                            target="_blank">
+                                            <span>PDF</span>
+                                        </a>
+                                    }
+                                </CellDisplayTemplate>
+                            </DxGridDataColumn>
+                            <DxGridDataColumn FieldName="@nameof(Treasury.XmlFilenameCompetitiveResults)" Caption="XML">
+                                <CellDisplayTemplate>
+                                    @if (!string.IsNullOrEmpty((string)context.Value))
+                                    {
+                                        <a
+                                            class="inline-flex items-center px-1"
+                                            href="@($"https://www.treasurydirect.gov/xml/{(string)context.Value}")"
+                                            target="_blank">
+                                            <span>XML</span>
+                                        </a>
+                                    }
+                                </CellDisplayTemplate>
+                            </DxGridDataColumn>
+                        </Columns>
+                    </DxGridBandColumn>
+                    <DxGridBandColumn Caption="Special Announcement">
+                        <Columns>
+                            <DxGridDataColumn FieldName="@nameof(Treasury.PdfFilenameSpecialAnnouncement)" Caption="PDF">
+                                <CellDisplayTemplate>
+                                    @if (!string.IsNullOrEmpty((string)context.Value))
+                                    {
+                                        <a
+                                            class="inline-flex items-center px-1"
+                                            href="@($"https://www.treasurydirect.gov/instit/annceresult/press/preanre/{_selectedYear?.Value}/{(string)context.Value}")"
+                                            target="_blank">
+                                            <span>PDF</span>
+                                        </a>
+                                    }
+                                </CellDisplayTemplate>
+                            </DxGridDataColumn>
+                        </Columns>
+                    </DxGridBandColumn>
+                </Columns>
+                <ToolbarTemplate>
+                    <DxToolbar ItemRenderStyleMode="ToolbarRenderStyleMode.Contained">
+                        <Items>
+                            <DxToolbarItem BeginGroup="true" Alignment="ToolbarItemAlignment.Left">
+                                <Template Context="toolbar_item_context">
+                                    <div class="flex h-full items-center">
+                                        <div class="mr-2">Year:</div>
+                                        <DxComboBox Data="_years" @bind-Value="_selectedYear" SelectedItemChanged="@((Year year) => OnSelectedYearChanged(year))"/>
+                                    </div>
+                                </Template>
+                            </DxToolbarItem>
+                        </Items>
+                    </DxToolbar>
+                </ToolbarTemplate>
+            </DxGrid>
+        </DxLoadingPanel>
 </div>
 
 @code {
 
 
     IEnumerable<Treasury>? Data { get; set; }
+
+    bool IsLoading { get; set; }
 
     Year? _selectedYear;
 
@@ -199,9 +205,14 @@
     private async Task OnSelectedYearChanged(Year year)
     {
         Data = null;
+        IsLoading = true;
         StateHasChanged();
         IEnumerable<Treasury>? data = await TreasuryDataProvider.AnnouncementsResultsSearch(year.Range.start, year.Range.end);
-        await InvokeAsync(() => { Data = data; });
+        await InvokeAsync(() =>
+        {
+            Data = data;
+            IsLoading = false;
+        });
     }
 
 }

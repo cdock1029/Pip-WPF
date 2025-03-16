@@ -1,5 +1,6 @@
 ﻿@using System.Windows
 @using Microsoft.Win32
+@using Color = System.Windows.Media.Color
 @inherits LayoutComponentBase
 @implements IDisposable
 @inject IDialogService DialogService
@@ -34,12 +35,13 @@
             </ErrorBoundary>
         </FluentBodyContent>
     </FluentStack>
-@*     <FluentFooter>
+    @*     <FluentFooter>
         <a href="https://www.treasurydirect.gov/" target="_blank">TreasuryDirect.gov</a>
         <FluentSpacer/>
         <a href="https://home.treasury.gov/" target="_blank">U.S. Department of the Treasury</a>
     </FluentFooter>
- *@</FluentLayout>
+ *@
+</FluentLayout>
 
 @code
 {
@@ -76,12 +78,12 @@
             ShowDismiss = true
         });
 
-        var _ = await _dialog.Result;
+        DialogResult _ = await _dialog.Result;
     }
 
     private static string SystemAccentToHex()
     {
-        var ac = SystemColors.AccentColor;
+        Color ac = SystemColors.AccentColor;
         var str = $"#{ac.R:X2}{ac.G:X2}{ac.B:X2}";
         return str;
     }

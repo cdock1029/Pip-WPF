@@ -73,7 +73,7 @@ public partial class App
 		e.Handled = true;
 		Debug.WriteLine(e.Exception);
 		IMessageBoxService messageBoxService = ServiceProvider.GetRequiredService<IMessageBoxService>();
-		messageBoxService.Show($"Unhandled Exception. Contact administrator: [{e.Exception}]", "Error",
-			MessageBoxButton.OK);
+        messageBoxService.Show($"Unhandled Exception. Contact administrator: [{e.Exception.Message}]", "Error",
+            MessageBoxButton.OK);
 	}
 }

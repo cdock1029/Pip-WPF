@@ -7,7 +7,6 @@
     <File Path="Directory.Build.props" />
     <File Path="Directory.Packages.props" />
   </Folder>
-  <Project Path="Pip.Console/Pip.Console.csproj" />
   <Project Path="Pip.DataAccess/Pip.DataAccess.csproj" />
   <Project Path="Pip.Model/Pip.Model.csproj" />
   <Project Path="Pip/Pip.UI.csproj">

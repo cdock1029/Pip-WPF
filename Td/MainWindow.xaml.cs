@@ -57,7 +57,7 @@ public partial class MainWindow
 		webView2.NavigationStarting += WebView2_NavigationStarting;
 		webView2.NavigationCompleted += WebView2_NavigationCompleted;
 		webView2.HistoryChanged += CoreWebView2_HistoryChanged;
-	}
+    }
 
 	private void CoreWebView2_HistoryChanged(object? sender, object e)
 	{

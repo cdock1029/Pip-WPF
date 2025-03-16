@@ -37,13 +37,6 @@
             </dx:DialogService.DialogStyle>
         </dx:DialogService>
 
-
-        <!--<dxmvvm:CurrentWindowSerializationBehavior />
-        <dxmvvm:LayoutSerializationService />
-        <dxmvvm:CurrentWindowService ClosingCommand="{Binding OnWindowClosingCommand}" />
-        <dxmvvm:EventToCommand EventName="Initialized" Command="{Binding OnWindowLoadedCommand}" />-->
-
-
     </dxmvvm:Interaction.Behaviors>
 
     <dx:ThemedWindow.Resources>

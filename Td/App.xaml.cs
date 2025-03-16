@@ -1,20 +1,15 @@
 ﻿using System.Windows;
 using System.Windows.Threading;
-using DevExpress.AIIntegration;
 using DevExpress.Blazor;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.ChatCompletion;
 using OpenTelemetry;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using Pip.DataAccess.Plugins;
 using MessageBox = System.Windows.MessageBox;
 
 #pragma warning disable SKEXP0001
@@ -24,160 +19,154 @@ namespace Td;
 
 public partial class App
 {
-	protected override void OnStartup(StartupEventArgs e)
-	{
-		ServiceCollection serviceCollection = new();
-		IConfiguration configuration =
-			new ConfigurationBuilder()
-				.AddUserSecrets<App>()
-				.Build();
-		ConfigureServices(serviceCollection, configuration);
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        ServiceCollection serviceCollection = new();
+        IConfiguration configuration =
+            new ConfigurationBuilder()
+                .AddUserSecrets<App>()
+                .Build();
+        ConfigureServices(serviceCollection, configuration);
 
-		ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
-		Resources.Add("services", serviceProvider);
+        ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
+        Resources.Add("services", serviceProvider);
 
-		PipDbContext dbContext = serviceProvider.GetRequiredService<PipDbContext>();
-		dbContext.Database.Migrate();
+        PipDbContext dbContext = serviceProvider.GetRequiredService<PipDbContext>();
+        dbContext.Database.Migrate();
 
-		MainWindow mainWindow = serviceProvider.GetRequiredService<MainWindow>();
-		mainWindow.Show();
-	}
+        MainWindow mainWindow = serviceProvider.GetRequiredService<MainWindow>();
+        mainWindow.Show();
+    }
 
-	private static void ConfigureServices(ServiceCollection serviceCollection,
-		IConfiguration config)
-	{
-		serviceCollection.AddSingleton<MainWindow>();
+    private static void ConfigureServices(ServiceCollection serviceCollection,
+        IConfiguration _)
+    {
+        serviceCollection.AddSingleton<MainWindow>();
 
-		// TODO: determine what lifetime is ok, prefer scoped for semantic kernel
-		serviceCollection.AddDbContext<PipDbContext>(ServiceLifetime.Scoped);
-		serviceCollection.AddWpfBlazorWebView();
+        // TODO: determine what lifetime is ok, prefer scoped for semantic kernel
+        serviceCollection.AddDbContext<PipDbContext>(ServiceLifetime.Scoped);
+        serviceCollection.AddWpfBlazorWebView();
 
-		serviceCollection.AddDevExpressBlazor(configure =>
-		{
-			configure.SizeMode = SizeMode.Medium;
-			//configure.BootstrapVersion = BootstrapVersion.v5;
-		});
+        serviceCollection.AddDevExpressBlazor(configure =>
+        {
+            configure.SizeMode = SizeMode.Medium;
+            //configure.BootstrapVersion = BootstrapVersion.v5;
+        });
 
 
-		serviceCollection.AddMemoryCache();
-		serviceCollection.AddHttpClient<ITreasuryDataProvider, TreasuryDataProvider>();
-		serviceCollection.AddSingleton<ReloadNotifierService>();
-		serviceCollection.AddSingleton<Settings>();
-		serviceCollection.AddSingleton<AppState>();
-		serviceCollection.AddFluentUIComponents();
-
-        ChatConfig? chatConfig = config.GetSection("ChatConfig").Get<ChatConfig>();
-
-        //IKernelBuilder kernelBuilder = Kernel.CreateBuilder()
-        //    .AddOpenAIChatCompletion(apiKey: chatConfig!.OpenAiApiKey, modelId: "gpt-4o-mini");
-        //Kernel kernel = kernelBuilder.Build();
-        //IChatClient chatClient = kernel.GetRequiredService<IChatCompletionService>().AsChatClient();
-
-        //serviceCollection.AddChatClient(builder => builder.Use(chatClient));
-        //serviceCollection.AddSingleton(chatClient);
+        serviceCollection.AddMemoryCache();
 
         serviceCollection
-            .AddKernel()
-            .AddOpenAIChatCompletion(apiKey: chatConfig!.OpenAiApiKey!, modelId: "gpt-4o-mini")
-            .Plugins
-            .AddFromType<UtilitiesPlugin>()
-            .AddFromType<TreasuryPlugin>();
+            .AddHttpClient<ITreasuryDataProvider, TreasuryDataProvider>()
+            .AddStandardResilienceHandler();
 
-        serviceCollection.AddChatClient(serviceProvider =>
-        {
-            Kernel kernel = serviceProvider.GetRequiredService<Kernel>();
-            IChatCompletionService completionService = kernel.GetRequiredService<IChatCompletionService>();
-            IChatClient client = completionService.AsChatClient();
-            ChatClientBuilder builder = new ChatClientBuilder(client)
-                .UseFunctionInvocation()
-                .ConfigureOptions(options =>
-                {
-                    IEnumerable<AIFunction> aiFunctions =
-                        kernel.Plugins.SelectMany(kp => kp.AsAIFunctions());
-                    options.Tools = [..aiFunctions];
-                    options.ToolMode = ChatToolMode.Auto;
-                });
-            return builder.Build();
-        });
+        serviceCollection.AddSingleton<ReloadNotifierService>();
+        serviceCollection.AddSingleton<Settings>();
+        serviceCollection.AddSingleton<AppState>();
+        serviceCollection.AddFluentUIComponents();
 
-        serviceCollection.AddDevExpressAI(settings =>
-        {
-            settings.RegisterAIExceptionHandler(new PipAiExceptionHandler());
-        });
+        //ChatConfig? chatConfig = config.GetSection("ChatConfig").Get<ChatConfig>();
+
+        //serviceCollection
+        //    .AddKernel()
+        //    .AddOpenAIChatCompletion(apiKey: chatConfig!.OpenAiApiKey!, modelId: "gpt-4o-mini")
+        //    .Plugins
+        //    .AddFromType<UtilitiesPlugin>()
+        //    .AddFromType<TreasuryPlugin>();
+
+        //serviceCollection.AddChatClient(serviceProvider =>
+        //{
+        //    Kernel kernel = serviceProvider.GetRequiredService<Kernel>();
+        //    IChatCompletionService completionService = kernel.GetRequiredService<IChatCompletionService>();
+        //    IChatClient client = completionService.AsChatClient();
+        //    ChatClientBuilder builder = new ChatClientBuilder(client)
+        //        .UseFunctionInvocation()
+        //        .ConfigureOptions(options =>
+        //        {
+        //            IEnumerable<AIFunction> aiFunctions =
+        //                kernel.Plugins.SelectMany(kp => kp.AsAIFunctions());
+        //            options.Tools = [..aiFunctions];
+        //            options.ToolMode = ChatToolMode.Auto;
+        //        });
+        //    return builder.Build();
+        //});
+
+        //serviceCollection.AddDevExpressAI(settings =>
+        //{
+        //    settings.RegisterAIExceptionHandler(new PipAiExceptionHandler());
+        //});
 
 
 #if DEBUG
-		serviceCollection.AddBlazorWebViewDeveloperTools();
-		serviceCollection.AddLogging(logging =>
-		{
-			ResourceBuilder resourceBuilder = ResourceBuilder
-				.CreateDefault()
-				.AddService("TelemetryConsoleQuickstart");
+        serviceCollection.AddBlazorWebViewDeveloperTools();
+        serviceCollection.AddLogging(logging =>
+        {
+            ResourceBuilder resourceBuilder = ResourceBuilder
+                .CreateDefault()
+                .AddService("TelemetryConsoleQuickstart");
 
-			// Enable model diagnostics with sensitive data.
-			AppContext.SetSwitch("Microsoft.SemanticKernel.Experimental.GenAI.EnableOTelDiagnosticsSensitive", true);
+            // Enable model diagnostics with sensitive data.
+            AppContext.SetSwitch("Microsoft.SemanticKernel.Experimental.GenAI.EnableOTelDiagnosticsSensitive", true);
 
-			using TracerProvider traceProvider = Sdk.CreateTracerProviderBuilder()
-				.SetResourceBuilder(resourceBuilder)
-				.AddSource("Microsoft.SemanticKernel*")
-				.AddConsoleExporter()
-				.Build();
+            using TracerProvider traceProvider = Sdk.CreateTracerProviderBuilder()
+                .SetResourceBuilder(resourceBuilder)
+                .AddSource("Microsoft.SemanticKernel*")
+                .AddConsoleExporter()
+                .Build();
 
-			using MeterProvider meterProvider = Sdk.CreateMeterProviderBuilder()
-				.SetResourceBuilder(resourceBuilder)
-				.AddMeter("Microsoft.SemanticKernel*")
-				.AddConsoleExporter()
-				.Build();
+            using MeterProvider meterProvider = Sdk.CreateMeterProviderBuilder()
+                .SetResourceBuilder(resourceBuilder)
+                .AddMeter("Microsoft.SemanticKernel*")
+                .AddConsoleExporter()
+                .Build();
 
-			/* old logging */
-			logging.AddFilter("Microsoft.AspNetCore.Components.WebView", LogLevel.Trace);
-			logging.AddDebug();
-			/* old logging */
+            /* old logging */
+            logging.AddFilter("Microsoft.AspNetCore.Components.WebView", LogLevel.Trace);
+            logging.AddDebug();
+            /* old logging */
 
-			// Add OpenTelemetry as a logging provider
-			logging.AddOpenTelemetry(options =>
-			{
-				options.SetResourceBuilder(resourceBuilder);
-				options.AddConsoleExporter();
-				// Format log messages. This is default to false.
-				options.IncludeFormattedMessage = true;
-				options.IncludeScopes = true;
-			});
-			logging.SetMinimumLevel(LogLevel.Information);
-		});
+            // Add OpenTelemetry as a logging provider
+            logging.AddOpenTelemetry(options =>
+            {
+                options.SetResourceBuilder(resourceBuilder);
+                options.AddConsoleExporter();
+                // Format log messages. This is default to false.
+                options.IncludeFormattedMessage = true;
+                options.IncludeScopes = true;
+            });
+            logging.SetMinimumLevel(LogLevel.Information);
+        });
 #endif
-	}
+    }
 
-	private void App_OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
-	{
+    private void App_OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+    {
 #if DEBUG
-		MessageBox.Show(e.Exception.ToString(), "Error");
+        MessageBox.Show(e.Exception.Message, "Error");
 #else
 		MessageBox.Show("An error has occurred.", "Error");
 #endif
-		Debug.WriteLine($"Unhandled Exception: {e.Exception}");
-	}
-}
-
-file sealed class ChatConfig
-{
-    public string? OpenAiApiKey { get; init; }
-    public string? AzureKeyCredential { get; init; }
-}
-
-file class PipAiExceptionHandler : IAIExceptionHandler
-{
-    public Exception ProcessException(Exception e)
-    {
-        Debug.WriteLine($"\n\nAI Exception MESSAGE in PIP: {e.Message}\n");
-
-        Debug.WriteLine($"\nInner Exception MESSAGE in PIP: {e.InnerException?.Message}");
-
-        Debug.WriteLine($"\nAI Exception in PIP: {e}");
-
-        Debug.WriteLine($"\nInner Exception in PIP: {e.InnerException}");
-        return e;
+        Debug.WriteLine($"Unhandled Exception: {e.Exception}");
     }
 }
 
+//file sealed class ChatConfig
+//{
+//    public string? OpenAiApiKey { get; init; }
+//    public string? AzureKeyCredential { get; init; }
+//}
 
+//file class PipAiExceptionHandler : IAIExceptionHandler
+//{
+//    public Exception ProcessException(Exception e)
+//    {
+//        Debug.WriteLine($"\n\nAI Exception MESSAGE in PIP: {e.Message}\n");
+
+//        Debug.WriteLine($"\nInner Exception MESSAGE in PIP: {e.InnerException?.Message}");
+
+//        Debug.WriteLine($"\nAI Exception in PIP: {e}");
+
+//        Debug.WriteLine($"\nInner Exception in PIP: {e.InnerException}");
+//        return e;
+//    }
+//}
