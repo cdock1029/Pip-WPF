@@ -42,7 +42,7 @@
     {
         //NavigationManager.NavigateTo(href);
         await Js.InvokeVoidAsync("NavJs", _objRef, href);
-        await InvokeAsync(StateHasChanged);
+        //await InvokeAsync(StateHasChanged);
     }
 
     [JSInvokable]

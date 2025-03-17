@@ -1,5 +1,5 @@
-﻿using Td.Layout;
-using Td.Pages;
+﻿using Td.Components.Layout;
+using Td.Components.Pages;
 
 namespace Td.ViewModels;
 
@@ -10,4 +10,6 @@ public class AppState
     public SearchComponent? SearchComponent { get; set; }
 
     public List<PreviousAuctionsPage.Year>? Years { get; set; }
+
+    public HashSet<string> RenderedPages { get; set; } = [];
 }

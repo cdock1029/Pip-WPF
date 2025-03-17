@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using Pip.Model;
 
 namespace Pip.DataAccess;
@@ -9,7 +10,9 @@ public class PipDbContext(DbContextOptions<PipDbContext> options) : DbContext(op
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("Data Source=pip.db");
+        string dbPath = DatabasePathHelper.GetDatabasePath("pip.db");
+        Debug.WriteLine($"dbPath={dbPath}");
+        optionsBuilder.UseSqlite($"Data Source={dbPath}");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

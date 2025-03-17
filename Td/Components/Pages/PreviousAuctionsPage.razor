@@ -3,10 +3,12 @@
 @inject AppState AppState
 
 <div class="investments-container" style="height:100%;display:flex;flex-direction:column;">
-    <FluentLabel Typo="Typography.PageTitle" MarginBlock="default">
+    <FluentLabel Class="page-title" Typo="Typography.PageTitle" MarginBlock="default">
         Previous Auctions
     </FluentLabel>
 
+    @if (_showContent)
+    {
         <DxLoadingPanel @bind-Visible="@IsLoading"
                         CssClass="flex h-px flex-auto"
                         IsContentBlocked="true"
@@ -146,6 +148,8 @@
                 </ToolbarTemplate>
             </DxGrid>
         </DxLoadingPanel>
+    }
+
 </div>
 
 @code {
@@ -155,14 +159,40 @@
 
     bool IsLoading { get; set; }
 
+    bool _showContent = true;
+
     Year? _selectedYear;
 
     List<Year>? _years;
 
+    protected override void OnInitialized()
+    {
+        if (!AppState.RenderedPages.Contains(nameof(PreviousAuctionsPage)))
+        {
+            _showContent = false;
+            AppState.RenderedPages.Add(nameof(PreviousAuctionsPage));
+        }
+    }
+
     protected override async Task OnInitializedAsync()
     {
-        AppState.Years ??= await Task.Run(GenerateYears);
-        _years = AppState.Years;
+        if (_showContent)
+        {
+            AppState.Years ??= await Task.Run(GenerateYears);
+            _years = AppState.Years;
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!_showContent && firstRender)
+        {
+            _showContent = true;
+            AppState.Years ??= await Task.Run(GenerateYears);
+            _years = AppState.Years;
+            await Task.Delay(200);
+            await InvokeAsync(StateHasChanged);
+        }
     }
 
     private static List<Year> GenerateYears()
@@ -182,7 +212,7 @@
         public int Value => value;
         public (DateOnly start, DateOnly end) Range { get; } = (new DateOnly(value, 1, 1), new DateOnly(value, 12, 31));
         public string Text { get; } = value.ToString();
-    };
+    }
 
 
     //TODO: fix something wrong with custom sort first rows

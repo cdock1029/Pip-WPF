@@ -1,6 +1,5 @@
 ﻿@page "/demo"
 
-<h2>Items Diff</h2>
 
 <div class="flex items-end">
     @foreach ((int idx, int n) in _nums.Index())
@@ -16,6 +15,8 @@
             </div>
         </div>
     }
+
+<FluentLabel Class="page-title" Typo="Typography.PageTitle" MarginBlock="default">Items diff</FluentLabel>
 </div>
 
 @code {

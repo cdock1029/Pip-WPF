@@ -13,7 +13,8 @@ table {
 }
 
 ::view-transition-old(root),
-::view-transition-new(root) {
+::view-transition-new(root)
+{
     animation-duration: 0.4s;
 }
 
@@ -44,6 +45,8 @@ body button, body [role=button] {
 .body-content {
     /*height: calc(100dvh - 36px) !important;*/
     height: 100dvh !important;
+    view-transition-name: body-content;
+    contain: layout;
 }
 
 .content {
