@@ -21,6 +21,7 @@
     WindowStartupLocation="Manual"
     UseLayoutRounding="True"
     Icon="/Assets/cat.ico"
+    ShowGlow="False"
     mc:Ignorable="d"
     dx:DXSerializer.Enabled="True"
     dx:WindowRestoreLayoutOptions.AllowRestoreStateForDisplayedWindow="True">
@@ -76,20 +77,20 @@
                 <RowDefinition Height="2*" />
             </Grid.RowDefinitions>
             <dxa:AccordionControl
-                ItemsSource="{Binding RootItems, Mode=OneWay}"
-                ChildrenPath="Pages"
-                ViewMode="NavigationPane"
                 IsCollapseButtonVisible="True"
                 CompactNavigation="False"
-                AutoExpandAllItems="True"
                 ExpandItemOnHeaderClick="False"
                 RootItemExpandButtonPosition="None"
-                SelectedRootItem="{Binding RootPipPageWrapper,Mode=OneWay}"
+                ViewMode="Accordion"
+                AutoExpandAllItems="True"
                 SelectedItem="{Binding SelectedPage, Mode=TwoWay}">
                 <dxmvvm:Interaction.Behaviors>
                     <dxmvvm:EventToCommand EventName="SelectedItemChanged"
                                            Command="{Binding NavigateToSelectedCommand}" />
                 </dxmvvm:Interaction.Behaviors>
+                <dxa:AccordionItem Header="Home" />
+                <dxa:AccordionItem Header="Auctions" />
+                <dxa:AccordionItem Header="Investments" />
 
                 <dxa:AccordionControl.ItemContainerStyle>
                     <Style d:DataContext="{d:DesignInstance Type={x:Type shared:IPipPage}}"
