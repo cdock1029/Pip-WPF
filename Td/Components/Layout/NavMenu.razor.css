@@ -1,3 +1,7 @@
+::deep .fluent-nav-item .positioning-region:hover {
+    cursor: pointer !important;
+}
+
 nav.sitenav {
     padding: 0.5rem 0;
 }

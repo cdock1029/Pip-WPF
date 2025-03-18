@@ -9,13 +9,20 @@ table {
 
 :root {
     --bs-body-bg: transparent;
-    view-transition-name: root;
 }
 
 ::view-transition-old(root),
 ::view-transition-new(root)
 {
     animation-duration: 0.4s;
+}
+
+::view-transition-image-pair(sidebar) {
+    isolation: auto;
+}
+
+::view-transition-old(sidebar),
+::view-transition-new(sidebar) {
 }
 
 body {
@@ -42,11 +49,22 @@ body button, body [role=button] {
     align-items: stretch !important;
 }
 
+
 .body-content {
     /*height: calc(100dvh - 36px) !important;*/
     height: 100dvh !important;
     view-transition-name: body-content;
-    contain: layout;
+    contain: contents;
+}
+
+.sidebar {
+    view-transition-name: sidebar;
+    contain: contents;
+}
+
+.fluent-nav-item .positioning-region {
+    view-transition-class: nav-item-positioning-region;
+    contain: contents;
 }
 
 .content {

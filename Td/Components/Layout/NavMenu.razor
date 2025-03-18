@@ -11,11 +11,11 @@
     </label>
     <nav class="sitenav" aria-labelledby="main-menu">
         <FluentNavMenu Id="main-menu" Width="280" Collapsible="false" Title="Navigation menu" @bind-Expanded:get="_expanded" @bind-Expanded:set="HandleSetExpanded" CustomToggle="true">
-            <FluentNavLink @onmousedown="@(() => HandleNavClick("/"))"  Tooltip="Home" Icon="@(new Size24.Home())" IconColor="Color.Accent">Home</FluentNavLink>
-            <FluentNavLink @onmousedown="@(() => HandleNavClick("/auctions"))" Tooltip="Auctions" Icon="@(new Size24.ClipboardTextEdit())" IconColor="Color.Accent">Auctions</FluentNavLink>
-            <FluentNavLink @onmousedown="@(() => HandleNavClick("/previous"))" Tooltip="Historical" Icon="@(new Size24.CalendarClock())" IconColor="Color.Accent">Historical</FluentNavLink>
-            <FluentNavLink @onmousedown="@(() => HandleNavClick("/investments"))"  Tooltip="Investments" Icon="@(new Size24.ArrowTrendingLines())" IconColor="Color.Accent">Investments</FluentNavLink>
-            <FluentNavLink @onmousedown="@(() => HandleNavClick("/demo"))"  Tooltip="Demo" Icon="@(new Size24.Beach())" IconColor="Color.Accent">Demo</FluentNavLink>
+            <FluentNavLink @onmousedown="@(async () => await HandleNavClick(""))" Href="/" Match="NavLinkMatch.All" Tooltip="Home" Icon="@(new Size24.Home())" IconColor="Color.Accent">Home</FluentNavLink>
+            <FluentNavLink @onmousedown="@(async () => await HandleNavClick("auctions"))" Href="auctions" Tooltip="Auctions" Icon="@(new Size24.ClipboardTextEdit())" IconColor="Color.Accent">Auctions</FluentNavLink>
+            <FluentNavLink @onmousedown="@(async () => await HandleNavClick("previous"))" Href="previous" Tooltip="Historical" Icon="@(new Size24.CalendarClock())" IconColor="Color.Accent">Historical</FluentNavLink>
+            <FluentNavLink @onmousedown="@(async () => await HandleNavClick("investments"))" Href="investments" Tooltip="Investments" Icon="@(new Size24.ArrowTrendingLines())" IconColor="Color.Accent">Investments</FluentNavLink>
+            <FluentNavLink @onmousedown="@(async () => await HandleNavClick("demo"))" Href="demo" Tooltip="Demo" Icon="@(new Size24.Beach())" IconColor="Color.Accent">Demo</FluentNavLink>
         </FluentNavMenu>
     </nav>
 </div>
@@ -24,7 +24,7 @@
     // maybe add to NavLinks?
     // preventDefault_onclick="@true"
     // Steve Sanderson https://github.com/dotnet/aspnetcore/issues/18460#issuecomment-578232512
-        
+
     bool _expanded = true;
 
     DotNetObjectReference<NavMenu>? _objRef;
@@ -40,7 +40,6 @@
 
     async Task HandleNavClick(string href)
     {
-        //NavigationManager.NavigateTo(href);
         await Js.InvokeVoidAsync("NavJs", _objRef, href);
         //await InvokeAsync(StateHasChanged);
     }
