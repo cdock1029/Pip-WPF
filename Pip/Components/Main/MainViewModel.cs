@@ -15,44 +15,36 @@ namespace Pip.UI.Components.Main;
 [GenerateViewModel]
 public partial class MainViewModel : PipViewModel
 {
-	[GenerateProperty] private IPipPage? _selectedPage;
-
-	public MainViewModel(InvestmentsViewModel investmentsViewModel,
-		SearchViewModel searchViewModel,
-		AuctionsViewModel auctionsViewModel,
-		DetailsViewModel detailsViewModel,
-		HomeViewModel homeViewModel)
+    public MainViewModel(InvestmentsViewModel investmentsViewModel,
+        SearchViewModel searchViewModel,
+        AuctionsViewModel auctionsViewModel,
+        DetailsViewModel detailsViewModel,
+        HomeViewModel homeViewModel)
 	{
-		SearchViewModel = searchViewModel;
-		DetailsViewModel = detailsViewModel;
-		InvestmentsViewModel = investmentsViewModel;
-		HomeViewModel = homeViewModel;
+        SearchViewModel = searchViewModel;
+        DetailsViewModel = detailsViewModel;
+        InvestmentsViewModel = investmentsViewModel;
+        HomeViewModel = homeViewModel;
+        AuctionsViewModel = auctionsViewModel;
 
-		Messenger.Default.Register<AfterInsertInvestmentMessage>(this, ReceiveAfterInvestmentMessage);
+        SelectedRoute = HomeViewModel;
 
-		SelectedPage = homeViewModel;
+        Messenger.Default.Register<AfterInsertInvestmentMessage>(this, ReceiveAfterInvestmentMessage);
+    }
 
-		RootPipPageWrapper = new PipPageWrapper(homeViewModel, auctionsViewModel, investmentsViewModel);
-	}
+    [GenerateProperty] private IPipRoute _selectedRoute;
 
-	public HomeViewModel HomeViewModel { get; }
+    public HomeViewModel HomeViewModel { get; }
+    public InvestmentsViewModel InvestmentsViewModel { get; }
+    public SearchViewModel SearchViewModel { get; }
+    public DetailsViewModel DetailsViewModel { get; }
+    public AuctionsViewModel AuctionsViewModel { get; }
 
-	private InvestmentsViewModel InvestmentsViewModel { get; }
+    private INavigationService NavigationService => GetService<INavigationService>();
 
-	public IEnumerable<IPipPage> RootItems => [RootPipPageWrapper];
+    public IPipRoute[] Routes => [HomeViewModel, AuctionsViewModel, InvestmentsViewModel];
 
-	public PipPageWrapper RootPipPageWrapper { get; }
-
-	public SearchViewModel SearchViewModel { get; }
-
-
-	public DetailsViewModel DetailsViewModel { get; }
-
-
-	private INavigationService NavigationService => GetService<INavigationService>();
-
-
-	[GenerateCommand]
+    [GenerateCommand]
 	private void ShowForm()
 	{
 		InvestmentItemViewModel model = new()
@@ -68,24 +60,15 @@ public partial class MainViewModel : PipViewModel
 			$"result: {result}, model par: {model.Par}, confirmation: {model.Confirmation}, re-investments: {model.Reinvestments}");
 	}
 
-	[GenerateCommand]
-	private void NavigateToSelected()
-	{
-		NavigationService.Navigate(SelectedPage!.View, SelectedPage);
-	}
+    [GenerateCommand]
+    private void NavigateToSelected()
+    {
+        NavigationService.Navigate(SelectedRoute.View, SelectedRoute);
+    }
 
-	private void ReceiveAfterInvestmentMessage(AfterInsertInvestmentMessage msg)
-	{
-		SelectedPage = InvestmentsViewModel;
-	}
-
-	public class PipPageWrapper(
-		params IEnumerable<IPipPage> pages) : IPipPage
-	{
-		public IEnumerable<IPipPage> Pages => pages;
-
-		public string? View { get; } = null!;
-		public string Title { get; set; } = "Navigation";
-		public Uri? Image { get; } = null!;
-	}
+    private void ReceiveAfterInvestmentMessage(AfterInsertInvestmentMessage msg)
+    {
+        SelectedRoute = InvestmentsViewModel;
+        //NavigateInvestments();
+    }
 }

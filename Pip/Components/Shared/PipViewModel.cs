@@ -51,3 +51,10 @@ public abstract class PipViewModel : ViewModelBase, INotifyDataErrorInfo
 	{
 	}
 }
+
+public interface IPipRoute
+{
+    public string? View { get; }
+    public string Title { get; }
+    public Uri? Image { get; }
+}

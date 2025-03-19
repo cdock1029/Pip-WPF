@@ -3,7 +3,7 @@ using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using DevExpress.Mvvm.Xpf;
 using DevExpress.Xpf.Core;
-using Pip.DataAccess.Services;
+using Pip.DataAccess;
 using Pip.Model;
 using Pip.UI.Components.Details;
 using Pip.UI.Components.Investments.Messages;
@@ -12,15 +12,18 @@ using Pip.UI.Components.Shared;
 namespace Pip.UI.Components.Investments;
 
 [GenerateViewModel]
-public partial class InvestmentsViewModel : PipViewModel, IPipPage
+public partial class InvestmentsViewModel : PipViewModel, IPipRoute, ISupportNavigation
 {
-    private readonly ITreasuryDataProvider _treasuryDataProvider;
     [GenerateProperty] private bool _isWaitIndicatorVisible;
     [GenerateProperty] private InvestmentItemViewModel? _selectedInvestment;
+    private readonly PipDbContext _dbContext;
 
-    public InvestmentsViewModel(ITreasuryDataProvider treasuryDataProvider, DetailsViewModel detailsViewModel)
+    private INavigationService NavigationService => GetService<INavigationService>();
+
+    public InvestmentsViewModel(DetailsViewModel detailsViewModel,
+        PipDbContext dbContext)
     {
-        _treasuryDataProvider = treasuryDataProvider;
+        _dbContext = dbContext;
         DetailsViewModel = detailsViewModel;
         Messenger.Default.Register<AfterInsertInvestmentMessage>(this, Receive);
     }
@@ -29,16 +32,20 @@ public partial class InvestmentsViewModel : PipViewModel, IPipPage
 
     public DetailsViewModel DetailsViewModel { get; }
 
-    public string View => "InvestmentsView";
+    public string View => nameof(InvestmentsView);
 
     public string Title => "Investments";
 
     //public Uri Image { get; } = DXImageHelper.GetImageUri("SvgImages/Spreadsheet/Financial.svg");
     public Uri Image { get; } = DXImageHelper.GetImageUri("Images/Spreadsheet/FunctionsFinancial_32x32.png");
 
-    public override async Task LoadAsync()
+    public override void Load()
     {
-        await Task.Run(LoadDataAsync).ConfigureAwait(false);
+        if (Investments.Any()) return;
+
+        //foreach (Investment investment in _treasuryDataProvider.GetInvestments())
+        foreach (Investment investment in _dbContext.Investments.ToArray())
+            Investments.Add(new InvestmentItemViewModel(investment));
     }
 
     private void Receive(AfterInsertInvestmentMessage message)
@@ -47,7 +54,8 @@ public partial class InvestmentsViewModel : PipViewModel, IPipPage
         {
             await Task.Delay(1000);
             Investments.Clear();
-            await LoadDataAsync();
+            //await LoadDataAsync();
+            Load();
             SelectedInvestment = Investments.FirstOrDefault(i => i.Id == message.Value.Id);
         });
     }
@@ -56,7 +64,7 @@ public partial class InvestmentsViewModel : PipViewModel, IPipPage
     private void DataSourceRefresh(DataSourceRefreshArgs args)
     {
         Investments.Clear();
-        LoadData();
+        Load();
     }
 
     [GenerateCommand]
@@ -67,9 +75,11 @@ public partial class InvestmentsViewModel : PipViewModel, IPipPage
 
         Investment inv = investmentItem.SyncToInvestment();
         if (args.IsNewItem)
-            _treasuryDataProvider.Add(inv);
+            //_treasuryDataProvider.Add(inv);
+            _dbContext.Investments.Add(inv);
 
-        _treasuryDataProvider.Save();
+        //_treasuryDataProvider.Save();
+        _dbContext.SaveChanges();
     }
 
     [GenerateCommand]
@@ -78,7 +88,9 @@ public partial class InvestmentsViewModel : PipViewModel, IPipPage
         try
         {
             InvestmentItemViewModel? investmentItem = (InvestmentItemViewModel)args.Items.Single();
-            _treasuryDataProvider.Delete(investmentItem.SyncToInvestment());
+            //_treasuryDataProvider.Delete(investmentItem.SyncToInvestment());
+            _dbContext.Investments.Remove(investmentItem.SyncToInvestment());
+            _dbContext.SaveChanges();
         }
         catch (Exception e)
         {
@@ -86,22 +98,11 @@ public partial class InvestmentsViewModel : PipViewModel, IPipPage
         }
     }
 
-    private void LoadData()
+    public void OnNavigatedTo()
     {
-        if (Investments.Any()) return;
-
-        foreach (Investment investment in _treasuryDataProvider.GetInvestments())
-            Investments.Add(new InvestmentItemViewModel(investment));
     }
 
-    private async Task LoadDataAsync()
+    public void OnNavigatedFrom()
     {
-        if (Investments.Any()) return;
-        IEnumerable<Investment> investments = _treasuryDataProvider.GetInvestments();
-        await Dispatcher.InvokeAsync(() =>
-        {
-            foreach (Investment investment in investments)
-                Investments.Add(new InvestmentItemViewModel(investment));
-        });
     }
 }

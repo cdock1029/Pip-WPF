@@ -13,7 +13,6 @@ using Pip.UI.Components.Home;
 using Pip.UI.Components.Investments;
 using Pip.UI.Components.Main;
 using Pip.UI.Components.Search;
-using Pip.UI.Components.Shared;
 using Pip.UI.Properties;
 
 namespace Pip.UI;
@@ -24,10 +23,10 @@ public partial class App
 	{
 		CompatibilitySettings.UseLightweightThemes = true;
 		ThemedWindow.UseNativeWindow = false;
-		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Office2019BlackBrickwork.Name;
-		//ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win10SystemColors.Name;
-		//ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
-		//ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.VS2019System.Name;
+        //ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Office2019BlackBrickwork.Name;
+        //ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win10SystemColors.Name;
+        ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
+        //ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.VS2019System.Name;
 	}
 
 	private IServiceProvider ServiceProvider { get; set; } = null!;
@@ -49,24 +48,21 @@ public partial class App
 	}
 
 	private static void ConfigureServices(ServiceCollection serviceCollection)
-	{
-		serviceCollection
-			.AddMemoryCache()
-			.AddSingleton<IMessageBoxService, DXMessageBoxService>()
-			.AddSingleton<ITreasuryDataProvider, TreasuryDataProvider>()
-			.AddSingleton<PipSettings>()
-			.AddSingleton<MainViewModel>()
-			.AddSingleton<HomeViewModel>()
-			.AddSingleton<SearchViewModel>()
-			.AddSingleton<InvestmentsViewModel>()
-			.AddSingleton<AuctionsViewModel>()
-			.AddSingleton<DetailsViewModel>()
-			.AddSingleton<MainWindow>()
-			.AddSingleton<Func<Type, PipViewModel>>(p =>
-				viewModelType => (PipViewModel)p.GetRequiredService(viewModelType))
-			.AddDbContext<PipDbContext>(ServiceLifetime.Transient)
-			.AddHttpClient<ITreasuryDataProvider, TreasuryDataProvider>();
-	}
+    {
+        serviceCollection
+            .AddMemoryCache()
+            .AddSingleton<IMessageBoxService, DXMessageBoxService>()
+            .AddSingleton<PipSettings>()
+            .AddSingleton<MainViewModel>()
+            .AddSingleton<HomeViewModel>()
+            .AddSingleton<SearchViewModel>()
+            .AddSingleton<InvestmentsViewModel>()
+            .AddSingleton<AuctionsViewModel>()
+            .AddSingleton<DetailsViewModel>()
+            .AddSingleton<MainWindow>()
+            .AddDbContext<PipDbContext>(ServiceLifetime.Transient)
+            .AddHttpClient<ITreasuryDataProvider, TreasuryDataProvider>();
+    }
 
 	private void App_OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
 	{

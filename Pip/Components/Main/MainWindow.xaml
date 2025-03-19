@@ -10,7 +10,6 @@
     xmlns:navigation="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/navigation"
     xmlns:dxwui="http://schemas.devexpress.com/winfx/2008/xaml/windowsui"
     xmlns:dxa="http://schemas.devexpress.com/winfx/2008/xaml/accordion"
-    xmlns:home="clr-namespace:Pip.UI.Components.Home"
     xmlns:main="clr-namespace:Pip.UI.Components.Main"
     xmlns:shared="clr-namespace:Pip.UI.Components.Shared"
     x:Class="Pip.UI.Components.Main.MainWindow"
@@ -76,78 +75,44 @@
                 <RowDefinition Height="3*" />
                 <RowDefinition Height="2*" />
             </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{DXBinding '@e(NavAccordion).IsExpanded ? 200 : `Auto`'}" />
+            </Grid.ColumnDefinitions>
             <dxa:AccordionControl
+                x:Name="NavAccordion"
                 IsCollapseButtonVisible="True"
                 CompactNavigation="False"
+                CollapsedItemClickAction="Select"
                 ExpandItemOnHeaderClick="False"
                 RootItemExpandButtonPosition="None"
                 ViewMode="Accordion"
-                AutoExpandAllItems="True"
-                SelectedItem="{Binding SelectedPage, Mode=TwoWay}">
+                ItemsSource="{Binding Routes}"
+                SelectedItem="{Binding SelectedRoute, Mode=TwoWay}"
+                AutoExpandAllItems="True">
+                <dxa:AccordionControl.ItemContainerStyle>
+                    <Style d:DataContext="{d:DesignInstance Type={x:Type shared:IPipRoute}}"
+                           TargetType="{x:Type dxa:AccordionItem}">
+
+                        <Setter Property="Header" Value="{Binding Title}" />
+                        <Setter Property="Glyph" Value="{Binding Image}" />
+                        <Setter Property="GlyphSize" Value="16,16" />
+                        <Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor" />
+                    </Style>
+                </dxa:AccordionControl.ItemContainerStyle>
                 <dxmvvm:Interaction.Behaviors>
                     <dxmvvm:EventToCommand EventName="SelectedItemChanged"
                                            Command="{Binding NavigateToSelectedCommand}" />
                 </dxmvvm:Interaction.Behaviors>
-                <dxa:AccordionItem Header="Home" />
-                <dxa:AccordionItem Header="Auctions" />
-                <dxa:AccordionItem Header="Investments" />
 
-                <dxa:AccordionControl.ItemContainerStyle>
-                    <Style d:DataContext="{d:DesignInstance Type={x:Type shared:IPipPage}}"
-                           TargetType="{x:Type dxa:AccordionItem}">
-                        <Setter Property="GlyphSize" Value="16,16" />
-                        <Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor" />
-                        <Setter Property="Glyph" Value="{Binding Image}" />
-                        <Setter Property="Header" Value="{Binding Title}" />
-                    </Style>
-                </dxa:AccordionControl.ItemContainerStyle>
             </dxa:AccordionControl>
 
-            <!--<Grid Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <dxe:ButtonEdit NullText="Search CUSIP" AllowDefaultButton="False"
-                                Text="{Binding SearchViewModel.SearchText, UpdateSourceTrigger=PropertyChanged}"
-                                ShowNullValueButtonOnFocusOnly="True"
-                                NullValueButtonPlacement="EditBox">
-                    <dxe:ButtonInfo IsLeft="False" GlyphKind="Search" Command="{Binding SearchViewModel.SearchCommand}" />
-                </dxe:ButtonEdit>
-                <dxg:GridControl Grid.Row="1"
-                                 SelectedItem="{Binding SearchViewModel.SelectedTreasuryItem, Mode=TwoWay}"
-                                 ItemsSource="{Binding SearchViewModel.SearchResults}"
-                                 SelectionMode="Row"
-                                 ShowBorder="False">
-                    <dxg:GridControl.View>
-                        <dxg:TableView AllowPerPixelScrolling="True"
-                                       AllowGrouping="False"
-                                       NavigationStyle="Row"
-                                       AutoWidth="True"
-                                       ShowGroupPanel="False">
-                            <dxg:TableView.RowCellMenuCustomizations>
-                                <dxb:BarButtonItem
-                                    DataContext="{Binding RelativeSource={RelativeSource AncestorType={x:Type dx:ThemedWindow}}, Path=DataContext.SearchViewModel}"
-                                    Content="Save..."
-                                    Command="{Binding CreateInvestmentCommand}" />
-                            </dxg:TableView.RowCellMenuCustomizations>
-                        </dxg:TableView>
-                    </dxg:GridControl.View>
-                    <dxg:GridControl.Columns>
-                        <dxg:GridColumn FieldName="IssueDate" IsSmart="True" />
-                        <dxg:GridColumn FieldName="Type" IsSmart="True" />
-                        <dxg:GridColumn FieldName="Term" IsSmart="True" />
-                    </dxg:GridControl.Columns>
-                </dxg:GridControl>
-
-            </Grid>-->
         </Grid>
+        <!--<dxwui:NavigationFrame Margin="20,0,0,0" NavigationCacheMode="Required" AnimationType="Fade"
+                               AnimationDelay="0:0:0.040" AnimationSpeedRatio="1.6">-->
         <dxwui:NavigationFrame Margin="20,0,0,0" NavigationCacheMode="Required" AnimationType="None">
-            <dxwui:NavigationFrame.Source>
-                <home:HomeView DataContext="{Binding HomeViewModel}" />
-            </dxwui:NavigationFrame.Source>
             <dxmvvm:Interaction.Behaviors>
                 <navigation:FrameNavigationService />
+                <dxmvvm:EventToCommand EventName="Loaded" Command="{Binding NavigateToSelectedCommand}" />
             </dxmvvm:Interaction.Behaviors>
         </dxwui:NavigationFrame>
     </DockPanel>
