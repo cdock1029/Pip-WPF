@@ -12,6 +12,7 @@
     xmlns:dxa="http://schemas.devexpress.com/winfx/2008/xaml/accordion"
     xmlns:main="clr-namespace:Pip.UI.Components.Main"
     xmlns:shared="clr-namespace:Pip.UI.Components.Shared"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     x:Class="Pip.UI.Components.Main.MainWindow"
     Width="800"
     Height="800"
@@ -20,7 +21,8 @@
     WindowStartupLocation="Manual"
     UseLayoutRounding="True"
     Icon="/Assets/cat.ico"
-    ShowGlow="False"
+    ShowGlow="True"
+    UseGlowColors="True"
     mc:Ignorable="d"
     dx:DXSerializer.Enabled="True"
     dx:WindowRestoreLayoutOptions.AllowRestoreStateForDisplayedWindow="True">
@@ -67,6 +69,29 @@
             </dxb:BarSubItem>
         </dxb:MainMenuControl>
     </dx:ThemedWindow.ToolbarItems>
+
+    <dx:ThemedWindow.HeaderItems>
+        <Grid VerticalAlignment="Center" Margin="0,0,20,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <dxe:ButtonEdit x:Name="ButtonEdit" Width="200" AllowDefaultButton="False"
+                            AllowFocusEditorButtons="True">
+                <dxe:ButtonInfo x:Name="Search" Click="Show_Flyout" GlyphKind="Search" ToolTipService.ToolTip="Search" />
+            </dxe:ButtonEdit>
+        </Grid>
+        <dxe:FlyoutControl x:Name="FlyoutControl" IsOpen="False" AllowMoveAnimation="True" AnimationDuration="0:0:0.4"
+                           Width="200">
+                <dxe:FlyoutControl.Settings>
+                    <dxe:FlyoutSettings Placement="Bottom" />
+                </dxe:FlyoutControl.Settings>
+                <dxe:ListBoxEdit>
+                    <dxe:ListBoxEditItem Content="UST 1" />
+                    <dxe:ListBoxEditItem Content="UST 2" />
+                    <dxe:ListBoxEditItem Content="UST 3" />
+                </dxe:ListBoxEdit>
+            </dxe:FlyoutControl>
+    </dx:ThemedWindow.HeaderItems>
 
 
     <DockPanel Margin="10, 20, 10, 0">

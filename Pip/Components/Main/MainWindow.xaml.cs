@@ -1,8 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Windows;
 using System.Windows.Interop;
 using JetBrains.Annotations;
 using Pip.UI.Properties;
+using SystemColors = System.Windows.SystemColors;
 
 namespace Pip.UI.Components.Main;
 
@@ -15,6 +17,7 @@ public partial class MainWindow
 
 	public MainWindow(MainViewModel mainViewModel, PipSettings pipSettings)
 	{
+		ActiveGlowColor = SystemColors.AccentColorBrush;
 		InitializeComponent();
 
 		DataContext = mainViewModel;
@@ -57,6 +60,12 @@ public partial class MainWindow
 		{
 			Debug.WriteLine($"Exception saving settings: {ex}");
 		}
+	}
+
+	private void Show_Flyout(object sender, RoutedEventArgs e)
+	{
+		FlyoutControl.IsOpen = true;
+		FlyoutControl.PlacementTarget = ButtonEdit;
 	}
 }
 
