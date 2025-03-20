@@ -21,7 +21,7 @@
     <Grid>
         <dxdo:DockLayoutManager>
             <dxdo:LayoutGroup>
-                <dxdo:DocumentGroup>
+                <dxdo:DocumentGroup Margin="0,0,0,10">
                     <dxdo:DocumentPanel Caption="Investments" ShowBorder="False">
                         <dxg:GridControl
                             x:Name="InvestmentsGrid"

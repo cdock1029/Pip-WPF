@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using DevExpress.Xpf.Core.Native;
@@ -33,6 +34,8 @@ public partial class MainViewModel : PipViewModel
     }
 
     [GenerateProperty] private IPipRoute _selectedRoute;
+
+    public ObservableCollection<string> SearchResults { get; } = ["Issue Date 1", "Issue Date 2", "Issue Date 3"];
 
     public HomeViewModel HomeViewModel { get; }
     public InvestmentsViewModel InvestmentsViewModel { get; }

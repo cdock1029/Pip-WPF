@@ -71,26 +71,55 @@
     </dx:ThemedWindow.ToolbarItems>
 
     <dx:ThemedWindow.HeaderItems>
-        <Grid VerticalAlignment="Center" Margin="0,0,20,0">
+        <Grid VerticalAlignment="Center" Margin="0,0,30,0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <dxe:ButtonEdit x:Name="ButtonEdit" Width="200" AllowDefaultButton="False"
+            <dxe:ButtonEdit x:Name="ButtonEdit" Width="200"
+                            AllowDefaultButton="False"
                             AllowFocusEditorButtons="True">
-                <dxe:ButtonInfo x:Name="Search" Click="Show_Flyout" GlyphKind="Search" ToolTipService.ToolTip="Search" />
+                <dxe:ButtonInfo x:Name="Search" Click="Show_Flyout" GlyphKind="Search"
+                                ToolTipService.ToolTip="Search" />
             </dxe:ButtonEdit>
         </Grid>
-        <dxe:FlyoutControl x:Name="FlyoutControl" IsOpen="False" AllowMoveAnimation="True" AnimationDuration="0:0:0.4"
-                           Width="200">
-                <dxe:FlyoutControl.Settings>
-                    <dxe:FlyoutSettings Placement="Bottom" />
-                </dxe:FlyoutControl.Settings>
-                <dxe:ListBoxEdit>
-                    <dxe:ListBoxEditItem Content="UST 1" />
-                    <dxe:ListBoxEditItem Content="UST 2" />
-                    <dxe:ListBoxEditItem Content="UST 3" />
-                </dxe:ListBoxEdit>
-            </dxe:FlyoutControl>
+        <dxe:FlyoutControl x:Name="FlyoutControl" IsOpen="False"
+                           PlacementTarget="{Binding ElementName=ButtonEdit}"
+                           AllowMoveAnimation="False"
+                           AnimationDuration="0:0:0.0"
+                           MaxHeight="300" Width="200">
+            <dxe:FlyoutControl.Settings>
+                <dxe:FlyoutSettings Placement="Bottom" />
+            </dxe:FlyoutControl.Settings>
+            <dxe:ListBoxEdit VerticalAlignment="Top" ItemsSource="{Binding SearchResults}">
+                <dxe:ListBoxEdit.Style>
+                    <Style TargetType="dxe:ListBoxEdit">
+                        <Setter Property="BorderTemplate">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ContentControl}">
+                                    <Border Background="#00FFFFFF">
+                                        <Grid>
+                                            <TextBlock x:Name="tb"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"
+                                                       Text="Not found"
+                                                       Visibility="Collapsed" />
+                                            <ContentPresenter />
+                                        </Grid>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <DataTrigger Value="{x:Null}"
+                                                     Binding="{Binding Path=(dxe:BaseEdit.OwnerEdit).ItemsSource, RelativeSource={RelativeSource Self}}">
+                                            <Setter TargetName="tb" Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </dxe:ListBoxEdit.Style>
+
+            </dxe:ListBoxEdit>
+        </dxe:FlyoutControl>
     </dx:ThemedWindow.HeaderItems>
 
 
@@ -106,6 +135,10 @@
             <dxa:AccordionControl
                 x:Name="NavAccordion"
                 IsCollapseButtonVisible="True"
+                CollapsedItemDisplayMode="ContentAndGlyph"
+                SummaryItemGlyph="{dx:DXImage 'Images/Navigation/NavigationBar_32x32.png'}"
+                SummaryItemGlyphSize="16,16"
+                SummaryItemHeader="Navigation"
                 CompactNavigation="False"
                 CollapsedItemClickAction="Select"
                 ExpandItemOnHeaderClick="False"

@@ -1,8 +1,4 @@
-﻿using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Windows;
-using System.Windows.Interop;
-using JetBrains.Annotations;
+﻿using System.Windows;
 using Pip.UI.Properties;
 using SystemColors = System.Windows.SystemColors;
 
@@ -10,92 +6,56 @@ namespace Pip.UI.Components.Main;
 
 public partial class MainWindow
 {
-	private const int ShowNormal = 1;
-	private const int ShowMinimized = 2;
-
-	private readonly PipSettings _pipSettings;
-
-	public MainWindow(MainViewModel mainViewModel, PipSettings pipSettings)
-	{
+    public MainWindow(MainViewModel mainViewModel)
+    {
 		ActiveGlowColor = SystemColors.AccentColorBrush;
 		InitializeComponent();
 
 		DataContext = mainViewModel;
-		_pipSettings = pipSettings;
 
-		SourceInitialized += MainWindow_SourceInitialized;
+        SourceInitialized += MainWindow_SourceInitialized;
 		Closing += MainWindow_Closing;
 	}
 
 	private void MainWindow_SourceInitialized(object? sender, EventArgs e)
-	{
-		try
-		{
-			WindowPlacement wp = _pipSettings.WindowPlacement;
-			wp.Length = Marshal.SizeOf<WindowPlacement>();
-			wp.Flags = 0;
-			if (wp.ShowCmd == ShowMinimized) wp.ShowCmd = ShowNormal;
-			IntPtr hwnd = new WindowInteropHelper(this).Handle;
-			WindowPlacementHelper.SetWindowPlacement(hwnd, ref wp);
-		}
+    {
+        if (Settings.Default.WindowWidth > 0 && Settings.Default.WindowHeight > 0)
+        {
+            Left = Settings.Default.WindowLeft;
+            Top = Settings.Default.WindowTop;
+            Width = Settings.Default.WindowWidth;
+            Height = Settings.Default.WindowHeight;
 
-		catch (ExternalException ex)
-		{
-			Debug.WriteLine($"Error accessing WindowPosition: {ex}");
-		}
-	}
+            WindowState savedState = Settings.Default.WindowState;
+            WindowState = savedState != WindowState.Minimized ? savedState : WindowState.Normal;
+        }
+    }
 
-	private void MainWindow_Closing(object? sender, EventArgs e)
-	{
-		try
-		{
-			IntPtr hwnd = new WindowInteropHelper(this).Handle;
-			WindowPlacementHelper.GetWindowPlacement(hwnd, out WindowPlacement wp);
+    private void MainWindow_Closing(object? sender, EventArgs e)
+    {
+        if (WindowState == WindowState.Normal)
+        {
+            Settings.Default.WindowLeft = Left;
+            Settings.Default.WindowTop = Top;
+            Settings.Default.WindowWidth = Width;
+            Settings.Default.WindowHeight = Height;
+        }
+        else
+        {
+            Rect bounds = RestoreBounds;
+            Settings.Default.WindowLeft = bounds.Left;
+            Settings.Default.WindowTop = bounds.Top;
+            Settings.Default.WindowWidth = bounds.Width;
+            Settings.Default.WindowHeight = bounds.Height;
+        }
 
-			Debug.WriteLine($"closing wp: MinPos={wp.MinPosition}, MaxPos={wp.MaxPosition}");
-			_pipSettings.WindowPlacement = wp;
-			_pipSettings.Save();
-		}
-		catch (ExternalException ex)
-		{
-			Debug.WriteLine($"Exception saving settings: {ex}");
-		}
-	}
+        Settings.Default.WindowState = WindowState;
+        Settings.Default.Save();
+    }
 
-	private void Show_Flyout(object sender, RoutedEventArgs e)
-	{
-		FlyoutControl.IsOpen = true;
-		FlyoutControl.PlacementTarget = ButtonEdit;
-	}
+    private void Show_Flyout(object sender, RoutedEventArgs e)
+    {
+        FlyoutControl.IsOpen = true;
+    }
 }
 
-public static partial class WindowPlacementHelper
-{
-	[LibraryImport("user32.dll", SetLastError = true)]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static partial bool SetWindowPlacement(IntPtr hWnd, ref WindowPlacement windowPlacement);
-
-	[LibraryImport("user32.dll", SetLastError = true)]
-	[return: MarshalAs(UnmanagedType.Bool)]
-	public static partial bool GetWindowPlacement(IntPtr hWnd, out WindowPlacement windowPlacement);
-}
-
-[Serializable]
-[StructLayout(LayoutKind.Sequential)]
-[PublicAPI]
-public record struct WindowPlacement(
-	int Length = 0,
-	int Flags = 0,
-	int ShowCmd = 0,
-	Point MinPosition = default,
-	Point MaxPosition = default,
-	Rect NormalPosition = default
-);
-
-[Serializable]
-[StructLayout(LayoutKind.Sequential)]
-public record struct Rect(int Left = 20, int Top = 20, int Right = 200, int Bottom = 200);
-
-[Serializable]
-[StructLayout(LayoutKind.Sequential)]
-public record struct Point(int X, int Y);

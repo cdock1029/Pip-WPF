@@ -13,7 +13,6 @@ using Pip.UI.Components.Home;
 using Pip.UI.Components.Investments;
 using Pip.UI.Components.Main;
 using Pip.UI.Components.Search;
-using Pip.UI.Properties;
 
 namespace Pip.UI;
 
@@ -52,7 +51,6 @@ public partial class App
         serviceCollection
             .AddMemoryCache()
             .AddSingleton<IMessageBoxService, DXMessageBoxService>()
-            .AddSingleton<PipSettings>()
             .AddSingleton<MainViewModel>()
             .AddSingleton<HomeViewModel>()
             .AddSingleton<SearchViewModel>()
