@@ -5,9 +5,45 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
              xmlns:auctions="clr-namespace:Pip.UI.Components.Auctions"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:attachedProperties="clr-namespace:Pip.UI.AttachedProperties"
+             xmlns:model="clr-namespace:Pip.Model;assembly=Pip.Model"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type={x:Type auctions:AuctionsViewModel}}"
              d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <dxg:TableView
+            x:Key="CommonTableView" x:Shared="False"
+            AllowBestFit="True"
+            AllowGrouping="True"
+            AllowScrollAnimation="True"
+            AutoWidth="True"
+            AllowCellMerge="True"
+            NavigationStyle="Row"
+            ShowGroupedColumns="False">
+            <dxg:TableView.RowCellMenuCustomizations>
+                <dxb:BarButtonItem Content="Save to Investments...">
+                    <dxmvvm:Interaction.Behaviors>
+                        <dxmvvm:ConfirmationBehavior
+                            Command="{Binding Path=(attachedProperties:GridControlProperties.RowCellMenuCommand), RelativeSource={RelativeSource AncestorType={x:Type dxg:GridControl}}}"
+                            EnableConfirmationMessage="True"
+                            MessageIcon="Exclamation"
+                            MessageButton="OKCancel"
+                            MessageText="Confirm save?" />
+                    </dxmvvm:Interaction.Behaviors>
+                </dxb:BarButtonItem>
+            </dxg:TableView.RowCellMenuCustomizations>
+        </dxg:TableView>
+        <Style TargetType="{x:Type dxg:GridControl}">
+            <Setter Property="AutoExpandAllGroups" Value="True" />
+            <Setter Property="ShowBorder" Value="False" />
+            <Setter Property="SelectionMode" Value="Row" />
+            <Setter Property="View" Value="{StaticResource CommonTableView}" />
+        </Style>
+    </UserControl.Resources>
 
     <Grid>
         <dxdo:DockLayoutManager>
@@ -17,19 +53,67 @@
                                     Margin="0,0,0,10"
                                     SelectedTabIndex="0">
                     <dxdo:DocumentPanel Caption="Recent" ShowBorder="False" x:Name="RecentTab">
-                        <auctions:TreasuriesCollectionView
-                            HandleSelectionChangedCommand="{Binding DetailsViewModel.HandleSelectionChangedCommand, Mode=OneWay}"
-                            SelectedTreasury="{Binding SelectedTreasuryRecent, Mode=TwoWay}"
-                            Treasuries="{Binding TreasuriesRecent}"
-                            SaveToInvestmentsCommand="{Binding SaveRecentToInvestmentsCommand}" />
+                        <dxg:GridControl
+                            ItemsSource="{Binding TreasuriesRecent}"
+                            SelectedItem="{Binding SelectedTreasuryRecent, Mode=TwoWay}"
+                            attachedProperties:GridControlProperties.RowCellMenuCommand="{Binding SaveRecentToInvestmentsCommand}">
+                            <dxg:GridControl.Columns>
+                                <dxg:GridColumn
+                                    Binding="{Binding Path=(model:Treasury.Cusip)}"
+                                    Header="CUSIP"
+                                    ReadOnly="True" />
+                                <dxg:GridColumn
+                                    Binding="{Binding Path=(model:Treasury.IssueDate)}"
+                                    Header="Issue Date"
+                                    ReadOnly="True" />
+                                <dxg:GridColumn
+                                    Binding="{Binding Path=(model:Treasury.MaturityDate), FallbackValue=''}"
+                                    Header="Maturity Date"
+                                    ReadOnly="True" />
+                                <dxg:GridColumn
+                                    Binding="{Binding Path=(model:Treasury.SecurityTerm)}"
+                                    Header="Term"
+                                    SortFieldName="TermSpan"
+                                    ReadOnly="True" />
+                                <dxg:GridColumn
+                                    Binding="{Binding Path=(model:Treasury.Type)}"
+                                    GroupIndex="0"
+                                    Header="Type"
+                                    ReadOnly="True" />
+                            </dxg:GridControl.Columns>
+                        </dxg:GridControl>
                     </dxdo:DocumentPanel>
 
                     <dxdo:DocumentPanel Caption="Upcoming" ShowBorder="False" x:Name="UpcomingTab">
-                        <auctions:TreasuriesCollectionView
-                            HandleSelectionChangedCommand="{Binding DetailsViewModel.HandleSelectionChangedCommand, Mode=OneWay}"
-                            SelectedTreasury="{Binding  SelectedTreasuryUpcoming, Mode=TwoWay}"
-                            Treasuries="{Binding  TreasuriesUpcoming}"
-                            SaveToInvestmentsCommand="{Binding SaveUpcomingtToInvestmentsCommand}" />
+                        <dxg:GridControl
+                            ItemsSource="{Binding TreasuriesUpcoming}"
+                            SelectedItem="{Binding SelectedTreasuryUpcoming}"
+                            attachedProperties:GridControlProperties.RowCellMenuCommand="{Binding SaveUpcomingtToInvestmentsCommand}">
+                            <dxg:GridControl.Columns>
+                                <dxg:GridColumn
+                                    Binding="{Binding Path=(model:Treasury.Cusip)}"
+                                    Header="CUSIP"
+                                    ReadOnly="True" />
+                                <dxg:GridColumn
+                                    Binding="{Binding Path=(model:Treasury.IssueDate)}"
+                                    Header="Issue Date"
+                                    ReadOnly="True" />
+                                <dxg:GridColumn
+                                    Binding="{Binding Path=(model:Treasury.MaturityDate), FallbackValue=''}"
+                                    Header="Maturity Date"
+                                    ReadOnly="True" />
+                                <dxg:GridColumn
+                                    Binding="{Binding Path=(model:Treasury.SecurityTerm)}"
+                                    Header="Term"
+                                    SortFieldName="TermSpan"
+                                    ReadOnly="True" />
+                                <dxg:GridColumn
+                                    Binding="{Binding Path=(model:Treasury.Type)}"
+                                    GroupIndex="0"
+                                    Header="Type"
+                                    ReadOnly="True" />
+                            </dxg:GridControl.Columns>
+                        </dxg:GridControl>
                     </dxdo:DocumentPanel>
                 </dxdo:DocumentGroup>
             </dxdo:LayoutGroup>

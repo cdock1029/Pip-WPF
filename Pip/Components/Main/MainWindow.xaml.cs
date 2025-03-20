@@ -8,16 +8,16 @@ public partial class MainWindow
 {
     public MainWindow(MainViewModel mainViewModel)
     {
-		ActiveGlowColor = SystemColors.AccentColorBrush;
-		InitializeComponent();
+        ActiveGlowColor = SystemColors.AccentColorBrush;
+        InitializeComponent();
 
-		DataContext = mainViewModel;
+        DataContext = mainViewModel;
 
         SourceInitialized += MainWindow_SourceInitialized;
-		Closing += MainWindow_Closing;
-	}
+        Closing += MainWindow_Closing;
+    }
 
-	private void MainWindow_SourceInitialized(object? sender, EventArgs e)
+    private void MainWindow_SourceInitialized(object? sender, EventArgs e)
     {
         if (Settings.Default.WindowWidth > 0 && Settings.Default.WindowHeight > 0)
         {
@@ -58,4 +58,3 @@ public partial class MainWindow
         FlyoutControl.IsOpen = true;
     }
 }
-
