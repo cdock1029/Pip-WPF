@@ -42,8 +42,10 @@
                                     AllowGrouping="True"
                                     AllowScrollAnimation="True"
                                     NewItemRowPosition="Top"
-                                    ShowUpdateRowButtons="OnCellEditorOpen"
-                                    EditFormShowMode="None"
+
+                                    ShowUpdateRowButtons="Never"
+                                    EditFormShowMode="Dialog"
+
                                     AutoWidth="True"
                                     IsTotalSummaryMenuEnabled="True"
                                     ShowGroupedColumns="True"

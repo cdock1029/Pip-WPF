@@ -5,13 +5,14 @@
 		<UseWPF>true</UseWPF>
 		<IncludePackageReferencesDuringMarkupCompilation>true</IncludePackageReferencesDuringMarkupCompilation>
 		<XamlDebuggingInformation>True</XamlDebuggingInformation>
+		<ApplicationIcon>Assets\cat.ico</ApplicationIcon>
 	</PropertyGroup>
 	<ItemGroup>
 	  <None Remove="Assets\cat.ico" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Content Include="Assets\cat.ico">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </Content>
 	</ItemGroup>
 	<ItemGroup>

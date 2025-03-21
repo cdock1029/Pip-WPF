@@ -1,16 +1,10 @@
 <Solution>
-  <Configurations>
-    <Platform Name="Any CPU" />
-    <Platform Name="x64" />
-  </Configurations>
   <Folder Name="/Solution Items/" Id="02ea681e-c7d8-13c7-8484-4ac65e1b71e8">
     <File Path="Directory.Build.props" />
     <File Path="Directory.Packages.props" />
   </Folder>
   <Project Path="Pip.DataAccess/Pip.DataAccess.csproj" />
   <Project Path="Pip.Model/Pip.Model.csproj" />
-  <Project Path="Pip/Pip.UI.csproj">
-    <Platform Solution="*|x64" Project="x64" />
-  </Project>
+  <Project Path="Pip/Pip.UI.csproj" />
   <Project Path="Td/Td.csproj" />
 </Solution>

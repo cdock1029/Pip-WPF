@@ -20,7 +20,7 @@
     SizeToContent="Manual"
     WindowStartupLocation="Manual"
     UseLayoutRounding="True"
-    Icon="/Assets/cat.ico"
+    SnapsToDevicePixels="True"
     ShowGlow="True"
     UseGlowColors="True"
     mc:Ignorable="d"
@@ -31,10 +31,11 @@
 
         <dx:DialogService DialogWindowStartupLocation="CenterOwner">
             <dx:DialogService.DialogStyle>
-                <Style TargetType="Window">
+                <Style TargetType="dx:ThemedWindow">
                     <Setter Property="SizeToContent" Value="Height" />
                     <Setter Property="Width" Value="400" />
-                    <Setter Property="Icon" Value="/Assets/cat.ico" />
+                    <Setter Property="UseLayoutRounding" Value="True" />
+                    <Setter Property="SnapsToDevicePixels" Value="True" />
                 </Style>
             </dx:DialogService.DialogStyle>
         </dx:DialogService>

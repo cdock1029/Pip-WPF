@@ -19,23 +19,25 @@ namespace Pip.UI;
 public partial class App
 {
 	public App()
-	{
-		CompatibilitySettings.UseLightweightThemes = true;
-		ThemedWindow.UseNativeWindow = false;
-        //ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Office2019BlackBrickwork.Name;
-        //ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win10SystemColors.Name;
-        ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
-        //ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.VS2019System.Name;
-	}
+    {
+        //CompatibilitySettings.UseLightweightThemes = true;
+        CompatibilitySettings.AllowThemePreload = true;
 
-	private IServiceProvider ServiceProvider { get; set; } = null!;
+        //ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
+        //ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Office2019BlackBrickwork.Name;
+    }
+
+    private IServiceProvider ServiceProvider { get; set; } = null!;
 
 	protected override void OnStartup(StartupEventArgs e)
 	{
-		base.OnStartup(e);
-		Task.Run(() => ApplicationThemeHelper.PreloadAsync(PreloadCategories.Grid, PreloadCategories.LayoutControl));
+        ApplicationThemeHelper.ApplicationThemeName = Theme.Win11System.Name;
+        base.OnStartup(e);
+        Dispatcher.CurrentDispatcher.InvokeAsync(() =>
+            ApplicationThemeHelper.PreloadAsync(PreloadCategories.Grid, PreloadCategories.LayoutControl,
+                PreloadCategories.Dialogs));
 
-		ServiceCollection serviceCollection = [];
+        ServiceCollection serviceCollection = [];
 		ConfigureServices(serviceCollection);
 		ServiceProvider = serviceCollection.BuildServiceProvider();
 
