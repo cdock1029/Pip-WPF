@@ -18,10 +18,8 @@ public partial class InvestmentsViewModel : PipViewModel, IPipRoute, ISupportNav
     [GenerateProperty] private InvestmentItemViewModel? _selectedInvestment;
     private readonly PipDbContext _dbContext;
 
-    private INavigationService NavigationService => GetService<INavigationService>();
-
     public InvestmentsViewModel(DetailsViewModel detailsViewModel,
-        PipDbContext dbContext)
+	    PipDbContext dbContext)
     {
         _dbContext = dbContext;
         DetailsViewModel = detailsViewModel;

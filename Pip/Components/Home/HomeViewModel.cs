@@ -8,17 +8,13 @@ namespace Pip.UI.Components.Home;
 [GenerateViewModel]
 public partial class HomeViewModel : PipViewModel, IPipRoute, ISupportNavigation
 {
-    private INavigationService NavigationService => GetService<INavigationService>();
+	public string View => nameof(HomeView);
 
+	public string Title => "Home";
 
-    public string View => nameof(HomeView);
-
-    public string Title => "Home";
-
-	//public Uri Image { get; } = DXImageHelper.GetImageUri("SvgImages/Icon Builder/Actions_Home.svg");
 	public Uri Image { get; } = DXImageHelper.GetImageUri("Office2013/Navigation/Home_32x32.png");
 
-    public void OnNavigatedTo()
+	public void OnNavigatedTo()
     {
     }
 
