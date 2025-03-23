@@ -20,19 +20,17 @@ public partial class App
 {
 	public App()
     {
-        //CompatibilitySettings.UseLightweightThemes = true;
-        CompatibilitySettings.AllowThemePreload = true;
-
-        //ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
-        //ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Office2019BlackBrickwork.Name;
+        CompatibilitySettings.UseLightweightThemes = true;
+        CompatibilitySettings.EnableDPICorrection = true;
     }
 
     private IServiceProvider ServiceProvider { get; set; } = null!;
 
 	protected override void OnStartup(StartupEventArgs e)
 	{
-        ApplicationThemeHelper.ApplicationThemeName = Theme.Win11System.Name;
         base.OnStartup(e);
+        ThemedWindow.UseNativeWindow = false;
+        ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
         Dispatcher.CurrentDispatcher.InvokeAsync(() =>
             ApplicationThemeHelper.PreloadAsync(PreloadCategories.Grid, PreloadCategories.LayoutControl,
                 PreloadCategories.Dialogs));

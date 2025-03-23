@@ -17,12 +17,12 @@
     Width="800"
     Height="800"
     d:DataContext="{d:DesignInstance Type={x:Type main:MainViewModel}}"
-    SizeToContent="Manual"
-    WindowStartupLocation="Manual"
+    WindowStartupLocation="CenterScreen"
     UseLayoutRounding="True"
     SnapsToDevicePixels="True"
-    ShowGlow="True"
-    UseGlowColors="True"
+    ShowGlow="False"
+    UseGlowColors="False"
+    ActiveGlowColor="{x:Static SystemColors.AccentColorBrush}"
     mc:Ignorable="d"
     dx:DXSerializer.Enabled="True"
     dx:WindowRestoreLayoutOptions.AllowRestoreStateForDisplayedWindow="True">
@@ -32,8 +32,8 @@
         <dx:DialogService DialogWindowStartupLocation="CenterOwner">
             <dx:DialogService.DialogStyle>
                 <Style TargetType="dx:ThemedWindow">
-                    <Setter Property="SizeToContent" Value="Height" />
                     <Setter Property="Width" Value="400" />
+                    <Setter Property="SizeToContent" Value="Height" />
                     <Setter Property="UseLayoutRounding" Value="True" />
                     <Setter Property="SnapsToDevicePixels" Value="True" />
                 </Style>

@@ -12,19 +12,6 @@
                 <ResourceDictionary Source="/Resources/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <!-- Optionally, apply to all Panels (Grid, StackPanel, etc.) -->
-            <Style TargetType="{x:Type Panel}" BasedOn="{StaticResource {x:Type Panel}}">
-                <Setter Property="UseLayoutRounding" Value="True" />
-                <Setter Property="SnapsToDevicePixels" Value="True" />
-            </Style>
-            <!-- Apply to all Windows -->
-            <Style TargetType="dx:ThemedWindow" BasedOn="{StaticResource {x:Type dx:ThemedWindow}}">
-                <Setter Property="UseLayoutRounding" Value="True" />
-                <Setter Property="SnapsToDevicePixels" Value="True" />
-                <Setter Property="UseGlowColors" Value="True" />
-                <Setter Property="ActiveGlowColor" Value="{x:Static SystemColors.AccentColorBrush}" />
-            </Style>
-
 
         </ResourceDictionary>
 
