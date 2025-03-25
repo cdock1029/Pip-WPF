@@ -18,35 +18,38 @@ namespace Pip.UI;
 
 public partial class App
 {
-	public App()
+    public App()
     {
         CompatibilitySettings.UseLightweightThemes = true;
+        CompatibilitySettings.AllowThemePreload = true;
         CompatibilitySettings.EnableDPICorrection = true;
+
+        //ThemedWindow.UseNativeWindow = false;
     }
 
     private IServiceProvider ServiceProvider { get; set; } = null!;
 
-	protected override void OnStartup(StartupEventArgs e)
-	{
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win10System.Name;
         base.OnStartup(e);
-        ThemedWindow.UseNativeWindow = false;
-        ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
-        Dispatcher.CurrentDispatcher.InvokeAsync(() =>
-            ApplicationThemeHelper.PreloadAsync(PreloadCategories.Grid, PreloadCategories.LayoutControl,
-                PreloadCategories.Dialogs));
+
+        Dispatcher.InvokeAsync(() =>
+            ApplicationThemeHelper.PreloadAsync(PreloadCategories.Grid, PreloadCategories.Docking));
 
         ServiceCollection serviceCollection = [];
-		ConfigureServices(serviceCollection);
-		ServiceProvider = serviceCollection.BuildServiceProvider();
+        ConfigureServices(serviceCollection);
+        ServiceProvider = serviceCollection.BuildServiceProvider();
 
-		PipDbContext dbContext = ServiceProvider.GetRequiredService<PipDbContext>();
-		dbContext.Database.Migrate();
+        PipDbContext dbContext = ServiceProvider.GetRequiredService<PipDbContext>();
+        dbContext.Database.Migrate();
+        dbContext.Investments.Load();
 
-		MainWindow mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
-		mainWindow.Show();
-	}
+        MainWindow mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
+        mainWindow.Show();
+    }
 
-	private static void ConfigureServices(ServiceCollection serviceCollection)
+    private static void ConfigureServices(ServiceCollection serviceCollection)
     {
         serviceCollection
             .AddMemoryCache()
@@ -62,12 +65,12 @@ public partial class App
             .AddHttpClient<ITreasuryDataProvider, TreasuryDataProvider>();
     }
 
-	private void App_OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
-	{
-		e.Handled = true;
-		Debug.WriteLine(e.Exception);
-		IMessageBoxService messageBoxService = ServiceProvider.GetRequiredService<IMessageBoxService>();
+    private void App_OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+    {
+        e.Handled = true;
+        Debug.WriteLine(e.Exception);
+        IMessageBoxService messageBoxService = ServiceProvider.GetRequiredService<IMessageBoxService>();
         messageBoxService.Show($"Unhandled Exception. Contact administrator: [{e.Exception.Message}]", "Error",
             MessageBoxButton.OK);
-	}
+    }
 }

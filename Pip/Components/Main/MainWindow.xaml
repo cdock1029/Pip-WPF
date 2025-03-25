@@ -20,9 +20,6 @@
     WindowStartupLocation="CenterScreen"
     UseLayoutRounding="True"
     SnapsToDevicePixels="True"
-    ShowGlow="False"
-    UseGlowColors="False"
-    ActiveGlowColor="{x:Static SystemColors.AccentColorBrush}"
     mc:Ignorable="d"
     dx:DXSerializer.Enabled="True"
     dx:WindowRestoreLayoutOptions.AllowRestoreStateForDisplayedWindow="True">
@@ -72,17 +69,14 @@
     </dx:ThemedWindow.ToolbarItems>
 
     <dx:ThemedWindow.HeaderItems>
-        <Grid VerticalAlignment="Center" Margin="0,0,30,0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
+        <StackPanel VerticalAlignment="Center" Orientation="Horizontal" Margin="0,0,30,0">
             <dxe:ButtonEdit x:Name="ButtonEdit" Width="200"
                             AllowDefaultButton="False"
                             AllowFocusEditorButtons="True">
                 <dxe:ButtonInfo x:Name="Search" Click="Show_Flyout" GlyphKind="Search"
                                 ToolTipService.ToolTip="Search" />
             </dxe:ButtonEdit>
-        </Grid>
+        </StackPanel>
         <dxe:FlyoutControl x:Name="FlyoutControl" IsOpen="False"
                            PlacementTarget="{Binding ElementName=ButtonEdit}"
                            AllowMoveAnimation="False"
@@ -166,8 +160,6 @@
             </dxa:AccordionControl>
 
         </Grid>
-        <!--<dxwui:NavigationFrame Margin="20,0,0,0" NavigationCacheMode="Required" AnimationType="Fade"
-                               AnimationDelay="0:0:0.040" AnimationSpeedRatio="1.6">-->
         <dxwui:NavigationFrame Margin="20,0,0,0" NavigationCacheMode="Required" AnimationType="None">
             <dxmvvm:Interaction.Behaviors>
                 <navigation:FrameNavigationService />

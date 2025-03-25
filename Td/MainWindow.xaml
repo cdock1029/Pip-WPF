@@ -10,9 +10,13 @@
                  Icon="/Assets/cat.ico"
                  ExtendsContentIntoTitleBar="True"
                  WindowCornerPreference="Default"
+                 ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+                 ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                  MinHeight="300"
                  MinWidth="300"
-                 UseLayoutRounding="True">
+                 UseLayoutRounding="True"
+                 SnapsToDevicePixels="True">
     <DockPanel>
         <ui:TitleBar DockPanel.Dock="Top" Margin="0">
             <ui:TitleBar.Icon>

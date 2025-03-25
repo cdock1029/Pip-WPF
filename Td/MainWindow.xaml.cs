@@ -22,26 +22,26 @@ public partial class MainWindow
 		_settings = settings;
 		_reloadService = reloadService;
 
-		ApplicationThemeManager.ApplySystemTheme();
 
-		const WindowBackdropType wb = WindowBackdropType.Mica;
-		WindowBackdropType = wb;
+        const WindowBackdropType wb = WindowBackdropType.Mica;
+        WindowBackdropType = wb;
 
-		SystemThemeWatcher.Watch(this);
+        ApplicationThemeManager.ApplySystemTheme(true);
 
-		InitializeComponent();
+        SystemThemeWatcher.Watch(this);
 
-		BlazorWebView.BlazorWebViewInitializing += BlazorWebViewInitializing;
+        InitializeComponent();
 
-		BlazorWebView.BlazorWebViewInitialized += BlazorWebViewInitialized;
+        BlazorWebView.BlazorWebViewInitializing += BlazorWebViewInitializing;
+
+        BlazorWebView.BlazorWebViewInitialized += BlazorWebViewInitialized;
 
 		//BackButton.Click += BackButton_Click;
 	}
 
+    public bool CanGoBack { get; set; }
 
-	public bool CanGoBack { get; set; }
-
-	private void BlazorWebViewInitializing(object? sender, BlazorWebViewInitializingEventArgs args)
+    private void BlazorWebViewInitializing(object? sender, BlazorWebViewInitializingEventArgs args)
 	{
 		args.EnvironmentOptions = new CoreWebView2EnvironmentOptions
 		{
