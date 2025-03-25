@@ -35,7 +35,8 @@ public partial class MainViewModel : PipViewModel
 
     [GenerateProperty] private IPipRoute _selectedRoute;
 
-    public ObservableCollection<string> SearchResults { get; } = ["Issue Date 1", "Issue Date 2", "Issue Date 3"];
+    public ObservableCollection<string> SearchResults { get; } =
+        ["Issue Date 1", "Issue Date 2", "Issue Date 3", "Issue Date 4", "Issue Date 5"];
 
     public HomeViewModel HomeViewModel { get; }
     public InvestmentsViewModel InvestmentsViewModel { get; }

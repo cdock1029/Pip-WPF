@@ -24,18 +24,20 @@ public partial class App
         CompatibilitySettings.AllowThemePreload = true;
         CompatibilitySettings.EnableDPICorrection = true;
 
-        //ThemedWindow.UseNativeWindow = false;
+        ThemedWindow.UseNativeWindow = true;
     }
 
     private IServiceProvider ServiceProvider { get; set; } = null!;
 
     protected override void OnStartup(StartupEventArgs e)
     {
-        ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win10System.Name;
+        ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
+        //ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Office2019BlackBrickwork.Name;
         base.OnStartup(e);
 
         Dispatcher.InvokeAsync(() =>
-            ApplicationThemeHelper.PreloadAsync(PreloadCategories.Grid, PreloadCategories.Docking));
+            ApplicationThemeHelper.PreloadAsync(PreloadCategories.Grid, PreloadCategories.Docking,
+                PreloadCategories.Dialogs, PreloadCategories.Accordion));
 
         ServiceCollection serviceCollection = [];
         ConfigureServices(serviceCollection);

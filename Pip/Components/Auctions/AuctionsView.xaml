@@ -15,33 +15,39 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.Resources>
-        <dxg:TableView
-            x:Key="CommonTableView" x:Shared="False"
-            AllowBestFit="True"
-            AllowGrouping="True"
-            AllowScrollAnimation="True"
-            AutoWidth="True"
-            AllowCellMerge="True"
-            NavigationStyle="Row"
-            ShowGroupedColumns="False">
-            <dxg:TableView.RowCellMenuCustomizations>
-                <dxb:BarButtonItem Content="Save to Investments...">
-                    <dxmvvm:Interaction.Behaviors>
-                        <dxmvvm:ConfirmationBehavior
-                            Command="{Binding Path=(attachedProperties:GridControlProperties.RowCellMenuCommand), RelativeSource={RelativeSource AncestorType={x:Type dxg:GridControl}}}"
-                            EnableConfirmationMessage="True"
-                            MessageIcon="Exclamation"
-                            MessageButton="OKCancel"
-                            MessageText="Confirm save?" />
-                    </dxmvvm:Interaction.Behaviors>
-                </dxb:BarButtonItem>
-            </dxg:TableView.RowCellMenuCustomizations>
-        </dxg:TableView>
         <Style TargetType="{x:Type dxg:GridControl}">
             <Setter Property="AutoExpandAllGroups" Value="True" />
             <Setter Property="ShowBorder" Value="False" />
             <Setter Property="SelectionMode" Value="Row" />
-            <Setter Property="View" Value="{StaticResource CommonTableView}" />
+            <Setter Property="View">
+                <Setter.Value>
+                    <dxmvvm:ValueFactory>
+                        <DataTemplate>
+                            <dxg:TableView
+                                AllowBestFit="True"
+                                AllowGrouping="True"
+                                AllowScrollAnimation="True"
+                                AutoWidth="True"
+                                AllowCellMerge="True"
+                                NavigationStyle="Row"
+                                ShowGroupedColumns="False">
+                                <dxg:TableView.RowCellMenuCustomizations>
+                                    <dxb:BarButtonItem Content="Save to Investments...">
+                                        <dxmvvm:Interaction.Behaviors>
+                                            <dxmvvm:ConfirmationBehavior
+                                                Command="{Binding Path=(attachedProperties:GridControlProperties.RowCellMenuCommand), RelativeSource={RelativeSource AncestorType={x:Type dxg:GridControl}}}"
+                                                EnableConfirmationMessage="True"
+                                                MessageIcon="Exclamation"
+                                                MessageButton="OKCancel"
+                                                MessageText="Confirm save?" />
+                                        </dxmvvm:Interaction.Behaviors>
+                                    </dxb:BarButtonItem>
+                                </dxg:TableView.RowCellMenuCustomizations>
+                            </dxg:TableView>
+                        </DataTemplate>
+                    </dxmvvm:ValueFactory>
+                </Setter.Value>
+            </Setter>
         </Style>
     </UserControl.Resources>
 
