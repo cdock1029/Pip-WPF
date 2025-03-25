@@ -44,7 +44,7 @@
 
     <dx:ThemedWindow.Resources>
         <Style TargetType="{x:Type Image}">
-            <Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor" />
+            <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
         </Style>
         <dxmvvm:ObjectToObjectConverter x:Key="PanelMinWidthConverter" DefaultTarget="130">
             <dxmvvm:MapItem Source="False" Target="20" />
@@ -161,13 +161,14 @@
                         x:Name="NavAccordion"
                         CompactNavigation="False"
                         IsCollapseButtonVisible="True"
-                        CollapsedItemDisplayMode="Content"
-                        SummaryItemGlyph="{dx:DXImage 'Images/Navigation/NavigationBar_32x32.png'}"
+                        CollapsedItemDisplayMode="ContentAndGlyph"
+                        SummaryItemGlyph="{dx:DXImage 'SvgImages/Icon Builder/Actions_NavigationBar.svg'}"
                         SummaryItemGlyphSize="16,16"
                         SummaryItemHeader="Navigation"
                         CollapsedItemClickAction="Select"
                         ExpandItemOnHeaderClick="False"
                         RootItemExpandButtonPosition="None"
+                        RootItemDisplayMode="Item"
                         ViewMode="Accordion"
                         ItemsSource="{Binding Routes}"
                         SelectedItem="{Binding SelectedRoute, Mode=TwoWay}"
@@ -178,8 +179,15 @@
 
                                 <Setter Property="Header" Value="{Binding Title}" />
                                 <Setter Property="Glyph" Value="{Binding Image}" />
-                                <Setter Property="GlyphSize" Value="16,16" />
+                                <Setter Property="FontSize" Value="14" />
                                 <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
+                                <Setter Property="GlyphTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <Image Height="18" Width="18" Source="{Binding}" Margin="8,6,10,6" />
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
                             </Style>
                         </dxa:AccordionControl.ItemContainerStyle>
                         <dxmvvm:Interaction.Behaviors>
@@ -190,7 +198,6 @@
                     </dxa:AccordionControl>
                 </dxdo:LayoutPanel>
 
-                <!--Margin="20,0,0,0"-->
                 <dxdo:LayoutPanel
                     ShowBorder="False">
                     <dxwui:NavigationFrame AllowMerging="True" NavigationCacheMode="Required" AnimationType="None">

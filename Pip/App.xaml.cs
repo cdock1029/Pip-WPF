@@ -33,6 +33,7 @@ public partial class App
     {
         ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
         //ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Office2019BlackBrickwork.Name;
+        //ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win10SystemColors.Name;
         base.OnStartup(e);
 
         Dispatcher.InvokeAsync(() =>

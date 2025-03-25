@@ -12,9 +12,10 @@ public partial class HomeViewModel : PipViewModel, IPipRoute, ISupportNavigation
 
 	public string Title => "Home";
 
-	public Uri Image { get; } = DXImageHelper.GetImageUri("Office2013/Navigation/Home_32x32.png");
+    //public Uri Image { get; } = DXImageHelper.GetImageUri("Office2013/Navigation/Home_32x32.png");
+    public Uri Image { get; } = DXImageHelper.GetImageUri("SvgImages/RichEdit/InsertTableOfFigures.svg");
 
-	public void OnNavigatedTo()
+    public void OnNavigatedTo()
     {
     }
 
