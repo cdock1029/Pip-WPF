@@ -15,7 +15,7 @@
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
     xmlns:native="http://schemas.devexpress.com/winfx/2008/xaml/core/internal"
-    xmlns:dxat="http://schemas.devexpress.com/winfx/2008/xaml/accordion/themekeys"
+    xmlns:utils="clr-namespace:Pip.UI.Utils"
     x:Class="Pip.UI.Components.Main.MainWindow"
     Width="800"
     Height="800"
@@ -46,6 +46,9 @@
         <Style TargetType="{x:Type Image}">
             <Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor" />
         </Style>
+        <dxmvvm:ObjectToObjectConverter x:Key="PanelMinWidthConverter" DefaultTarget="130">
+            <dxmvvm:MapItem Source="False" Target="20" />
+        </dxmvvm:ObjectToObjectConverter>
     </dx:ThemedWindow.Resources>
 
     <dx:ThemedWindow.ToolbarItems>
@@ -135,53 +138,70 @@
     </dx:ThemedWindow.HeaderItems>
 
 
-    <DockPanel Margin="10, 20, 10, 0">
-        <Grid DockPanel.Dock="Left">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="3*" />
-                <RowDefinition Height="2*" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="{DXBinding '@e(NavAccordion).IsExpanded ? 200 : `Auto`'}" />
-            </Grid.ColumnDefinitions>
-            <dxa:AccordionControl
-                x:Name="NavAccordion"
-                CompactNavigation="False"
-                IsCollapseButtonVisible="True"
-                CollapsedItemDisplayMode="ContentAndGlyph"
-                SummaryItemGlyph="{dx:DXImage 'Images/Navigation/NavigationBar_32x32.png'}"
-                SummaryItemGlyphSize="16,16"
-                SummaryItemHeader="Navigation"
-                CollapsedItemClickAction="Select"
-                ExpandItemOnHeaderClick="False"
-                RootItemExpandButtonPosition="None"
-                ViewMode="Accordion"
-                ItemsSource="{Binding Routes}"
-                SelectedItem="{Binding SelectedRoute, Mode=TwoWay}"
-                AutoExpandAllItems="True">
-                <dxa:AccordionControl.ItemContainerStyle>
-                    <Style d:DataContext="{d:DesignInstance Type={x:Type shared:IPipRoute}}"
-                           TargetType="{x:Type dxa:AccordionItem}">
-
-                        <Setter Property="Header" Value="{Binding Title}" />
-                        <Setter Property="Glyph" Value="{Binding Image}" />
-                        <Setter Property="GlyphSize" Value="16,16" />
-                        <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
+    <DockPanel Margin="0, 20, 8, 8">
+        <dxdo:DockLayoutManager ViewStyle="Default">
+            <dxdo:LayoutGroup>
+                <dxdo:LayoutGroup.Resources>
+                    <Style TargetType="{x:Type dxdo:LayoutPanel}">
+                        <Setter Property="AllowClose" Value="False" />
+                        <Setter Property="AllowFloat" Value="False" />
+                        <Setter Property="ShowPinButton" Value="False" />
+                        <Setter Property="ShowBorder" Value="False" />
+                        <Setter Property="ShowCaption" Value="False" />
                     </Style>
-                </dxa:AccordionControl.ItemContainerStyle>
-                <dxmvvm:Interaction.Behaviors>
-                    <dxmvvm:EventToCommand EventName="SelectedItemChanged"
-                                           Command="{Binding NavigateToSelectedCommand}" />
-                </dxmvvm:Interaction.Behaviors>
+                </dxdo:LayoutGroup.Resources>
 
-            </dxa:AccordionControl>
+                <dxdo:LayoutPanel
+                    ShowBorder="False"
+                    AllowSizing="{Binding ElementName=NavAccordion, Path=IsExpanded}"
+                    ItemWidth="{Binding ElementName=NavAccordion, Mode=TwoWay, Path=IsExpanded, Converter={utils:BoolToWidthConverter StartupWidth=200}}"
+                    MinWidth="{Binding ElementName=NavAccordion, Path=IsExpanded, Converter={StaticResource PanelMinWidthConverter}}"
+                    MaxWidth="500">
+                    <dxa:AccordionControl
+                        x:Name="NavAccordion"
+                        CompactNavigation="False"
+                        IsCollapseButtonVisible="True"
+                        CollapsedItemDisplayMode="Content"
+                        SummaryItemGlyph="{dx:DXImage 'Images/Navigation/NavigationBar_32x32.png'}"
+                        SummaryItemGlyphSize="16,16"
+                        SummaryItemHeader="Navigation"
+                        CollapsedItemClickAction="Select"
+                        ExpandItemOnHeaderClick="False"
+                        RootItemExpandButtonPosition="None"
+                        ViewMode="Accordion"
+                        ItemsSource="{Binding Routes}"
+                        SelectedItem="{Binding SelectedRoute, Mode=TwoWay}"
+                        AutoExpandAllItems="True">
+                        <dxa:AccordionControl.ItemContainerStyle>
+                            <Style d:DataContext="{d:DesignInstance Type={x:Type shared:IPipRoute}}"
+                                   TargetType="{x:Type dxa:AccordionItem}">
 
-        </Grid>
-        <dxwui:NavigationFrame Margin="20,0,0,0" NavigationCacheMode="Required" AnimationType="None">
-            <dxmvvm:Interaction.Behaviors>
-                <navigation:FrameNavigationService />
-                <dxmvvm:EventToCommand EventName="Loaded" Command="{Binding NavigateToSelectedCommand}" />
-            </dxmvvm:Interaction.Behaviors>
-        </dxwui:NavigationFrame>
+                                <Setter Property="Header" Value="{Binding Title}" />
+                                <Setter Property="Glyph" Value="{Binding Image}" />
+                                <Setter Property="GlyphSize" Value="16,16" />
+                                <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
+                            </Style>
+                        </dxa:AccordionControl.ItemContainerStyle>
+                        <dxmvvm:Interaction.Behaviors>
+                            <dxmvvm:EventToCommand EventName="SelectedItemChanged"
+                                                   Command="{Binding NavigateToSelectedCommand}" />
+                        </dxmvvm:Interaction.Behaviors>
+
+                    </dxa:AccordionControl>
+                </dxdo:LayoutPanel>
+
+                <!--Margin="20,0,0,0"-->
+                <dxdo:LayoutPanel
+                    ShowBorder="False">
+                    <dxwui:NavigationFrame AllowMerging="True" NavigationCacheMode="Required" AnimationType="None">
+                        <dxmvvm:Interaction.Behaviors>
+                            <navigation:FrameNavigationService />
+                            <dxmvvm:EventToCommand EventName="Loaded" Command="{Binding NavigateToSelectedCommand}" />
+                        </dxmvvm:Interaction.Behaviors>
+                    </dxwui:NavigationFrame>
+                </dxdo:LayoutPanel>
+
+            </dxdo:LayoutGroup>
+        </dxdo:DockLayoutManager>
     </DockPanel>
 </dx:ThemedWindow>

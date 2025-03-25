@@ -18,10 +18,9 @@
     mc:Ignorable="d"
     Loaded="{DXEvent Handler='Load()'}">
 
-    <Grid>
-        <dxdo:DockLayoutManager>
+    <dxdo:DockLayoutManager>
             <dxdo:LayoutGroup>
-                <dxdo:DocumentGroup Margin="0,0,0,10">
+                <dxdo:DocumentGroup>
                     <dxdo:DocumentPanel Caption="Investments" ShowBorder="False">
                         <dxg:GridControl
                             x:Name="InvestmentsGrid"
@@ -133,5 +132,4 @@
                 </dxdo:DocumentGroup>
             </dxdo:LayoutGroup>
         </dxdo:DockLayoutManager>
-    </Grid>
 </UserControl>

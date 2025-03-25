@@ -51,78 +51,75 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid>
-        <dxdo:DockLayoutManager>
-            <dxdo:LayoutGroup Orientation="Vertical" Loaded="{DXEvent Handler='LoadAsync()'}">
-                <dxdo:DocumentGroup Caption="Auctions"
-                                    ShowCaption="True"
-                                    Margin="0,0,0,10"
-                                    SelectedTabIndex="0">
-                    <dxdo:DocumentPanel Caption="Recent" ShowBorder="False" x:Name="RecentTab">
-                        <dxg:GridControl
-                            ItemsSource="{Binding TreasuriesRecent}"
-                            SelectedItem="{Binding SelectedTreasuryRecent, Mode=TwoWay}"
-                            attachedProperties:GridControlProperties.RowCellMenuCommand="{Binding SaveRecentToInvestmentsCommand}">
-                            <dxg:GridControl.Columns>
-                                <dxg:GridColumn
-                                    Binding="{Binding Path=(model:Treasury.Cusip)}"
-                                    Header="CUSIP"
-                                    ReadOnly="True" />
-                                <dxg:GridColumn
-                                    Binding="{Binding Path=(model:Treasury.IssueDate)}"
-                                    Header="Issue Date"
-                                    ReadOnly="True" />
-                                <dxg:GridColumn
-                                    Binding="{Binding Path=(model:Treasury.MaturityDate), FallbackValue=''}"
-                                    Header="Maturity Date"
-                                    ReadOnly="True" />
-                                <dxg:GridColumn
-                                    Binding="{Binding Path=(model:Treasury.SecurityTerm)}"
-                                    Header="Term"
-                                    SortFieldName="TermSpan"
-                                    ReadOnly="True" />
-                                <dxg:GridColumn
-                                    Binding="{Binding Path=(model:Treasury.Type)}"
-                                    GroupIndex="0"
-                                    Header="Type"
-                                    ReadOnly="True" />
-                            </dxg:GridControl.Columns>
-                        </dxg:GridControl>
-                    </dxdo:DocumentPanel>
+    <dxdo:DockLayoutManager>
+        <dxdo:LayoutGroup Orientation="Vertical" Loaded="{DXEvent Handler='LoadAsync()'}">
+            <dxdo:DocumentGroup Caption="Auctions"
+                                ShowCaption="True"
+                                SelectedTabIndex="0">
+                <dxdo:DocumentPanel Caption="Recent" x:Name="RecentTab">
+                    <dxg:GridControl
+                        ItemsSource="{Binding TreasuriesRecent}"
+                        SelectedItem="{Binding SelectedTreasuryRecent, Mode=TwoWay}"
+                        attachedProperties:GridControlProperties.RowCellMenuCommand="{Binding SaveRecentToInvestmentsCommand}">
+                        <dxg:GridControl.Columns>
+                            <dxg:GridColumn
+                                Binding="{Binding Path=(model:Treasury.Cusip)}"
+                                Header="CUSIP"
+                                ReadOnly="True" />
+                            <dxg:GridColumn
+                                Binding="{Binding Path=(model:Treasury.IssueDate)}"
+                                Header="Issue Date"
+                                ReadOnly="True" />
+                            <dxg:GridColumn
+                                Binding="{Binding Path=(model:Treasury.MaturityDate), FallbackValue=''}"
+                                Header="Maturity Date"
+                                ReadOnly="True" />
+                            <dxg:GridColumn
+                                Binding="{Binding Path=(model:Treasury.SecurityTerm)}"
+                                Header="Term"
+                                SortFieldName="TermSpan"
+                                ReadOnly="True" />
+                            <dxg:GridColumn
+                                Binding="{Binding Path=(model:Treasury.Type)}"
+                                GroupIndex="0"
+                                Header="Type"
+                                ReadOnly="True" />
+                        </dxg:GridControl.Columns>
+                    </dxg:GridControl>
+                </dxdo:DocumentPanel>
 
-                    <dxdo:DocumentPanel Caption="Upcoming" ShowBorder="False" x:Name="UpcomingTab">
-                        <dxg:GridControl
-                            ItemsSource="{Binding TreasuriesUpcoming}"
-                            SelectedItem="{Binding SelectedTreasuryUpcoming}"
-                            attachedProperties:GridControlProperties.RowCellMenuCommand="{Binding SaveUpcomingtToInvestmentsCommand}">
-                            <dxg:GridControl.Columns>
-                                <dxg:GridColumn
-                                    Binding="{Binding Path=(model:Treasury.Cusip)}"
-                                    Header="CUSIP"
-                                    ReadOnly="True" />
-                                <dxg:GridColumn
-                                    Binding="{Binding Path=(model:Treasury.IssueDate)}"
-                                    Header="Issue Date"
-                                    ReadOnly="True" />
-                                <dxg:GridColumn
-                                    Binding="{Binding Path=(model:Treasury.MaturityDate), FallbackValue=''}"
-                                    Header="Maturity Date"
-                                    ReadOnly="True" />
-                                <dxg:GridColumn
-                                    Binding="{Binding Path=(model:Treasury.SecurityTerm)}"
-                                    Header="Term"
-                                    SortFieldName="TermSpan"
-                                    ReadOnly="True" />
-                                <dxg:GridColumn
-                                    Binding="{Binding Path=(model:Treasury.Type)}"
-                                    GroupIndex="0"
-                                    Header="Type"
-                                    ReadOnly="True" />
-                            </dxg:GridControl.Columns>
-                        </dxg:GridControl>
-                    </dxdo:DocumentPanel>
-                </dxdo:DocumentGroup>
-            </dxdo:LayoutGroup>
-        </dxdo:DockLayoutManager>
-    </Grid>
+                <dxdo:DocumentPanel Caption="Upcoming" x:Name="UpcomingTab">
+                    <dxg:GridControl
+                        ItemsSource="{Binding TreasuriesUpcoming}"
+                        SelectedItem="{Binding SelectedTreasuryUpcoming}"
+                        attachedProperties:GridControlProperties.RowCellMenuCommand="{Binding SaveUpcomingtToInvestmentsCommand}">
+                        <dxg:GridControl.Columns>
+                            <dxg:GridColumn
+                                Binding="{Binding Path=(model:Treasury.Cusip)}"
+                                Header="CUSIP"
+                                ReadOnly="True" />
+                            <dxg:GridColumn
+                                Binding="{Binding Path=(model:Treasury.IssueDate)}"
+                                Header="Issue Date"
+                                ReadOnly="True" />
+                            <dxg:GridColumn
+                                Binding="{Binding Path=(model:Treasury.MaturityDate), FallbackValue=''}"
+                                Header="Maturity Date"
+                                ReadOnly="True" />
+                            <dxg:GridColumn
+                                Binding="{Binding Path=(model:Treasury.SecurityTerm)}"
+                                Header="Term"
+                                SortFieldName="TermSpan"
+                                ReadOnly="True" />
+                            <dxg:GridColumn
+                                Binding="{Binding Path=(model:Treasury.Type)}"
+                                GroupIndex="0"
+                                Header="Type"
+                                ReadOnly="True" />
+                        </dxg:GridControl.Columns>
+                    </dxg:GridControl>
+                </dxdo:DocumentPanel>
+            </dxdo:DocumentGroup>
+        </dxdo:LayoutGroup>
+    </dxdo:DockLayoutManager>
 </UserControl>
