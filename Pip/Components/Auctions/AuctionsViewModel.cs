@@ -11,7 +11,7 @@ namespace Pip.UI.Components.Auctions;
 
 [GenerateViewModel]
 public partial class AuctionsViewModel(ITreasuryDataProvider treasuryDataProvider, DetailsViewModel detailsViewModel)
-    : PipViewModel, IPipRoute, ISupportNavigation
+	: PipViewModel, IPipRoute
 {
     [GenerateProperty] private Treasury? _selectedTreasuryRecent;
 
@@ -21,7 +21,6 @@ public partial class AuctionsViewModel(ITreasuryDataProvider treasuryDataProvide
 
     [GenerateProperty] private IEnumerable<Treasury> _treasuriesUpcoming = [];
 
-    private INavigationService NavigationService => GetService<INavigationService>();
 
     public DetailsViewModel DetailsViewModel => detailsViewModel;
 
@@ -97,13 +96,5 @@ public partial class AuctionsViewModel(ITreasuryDataProvider treasuryDataProvide
         };
         treasuryDataProvider.Insert(investment);
         Messenger.Default.Send(new AfterInsertInvestmentMessage(new AfterInsertInvestmentArgs(investment.Id)));
-    }
-
-    public void OnNavigatedTo()
-    {
-    }
-
-    public void OnNavigatedFrom()
-    {
     }
 }

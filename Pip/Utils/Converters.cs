@@ -11,12 +11,12 @@ public class BoolToWidthConverter : MarkupExtension, IValueConverter
     public double StartupWidth { get; set; }
     private bool _isExpanded = true;
 
-    public override object? ProvideValue(IServiceProvider serviceProvider)
+    public override object ProvideValue(IServiceProvider serviceProvider)
     {
         return this;
     }
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         _isExpanded = value is not null && (bool)value;
         return _isExpanded ? new GridLength(StartupWidth) : GridLength.Auto;

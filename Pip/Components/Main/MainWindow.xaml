@@ -35,6 +35,8 @@
                     <Setter Property="Width" Value="400" />
                     <Setter Property="SizeToContent" Value="Height" />
                     <Setter Property="UseLayoutRounding" Value="True" />
+                    <Setter Property="ControlBoxButtonSet" Value="Close" />
+                    <Setter Property="ResizeMode" Value="NoResize" />
                     <Setter Property="SnapsToDevicePixels" Value="True" />
                 </Style>
             </dx:DialogService.DialogStyle>
@@ -199,6 +201,7 @@
                 </dxdo:LayoutPanel>
 
                 <dxdo:LayoutPanel
+                    Background="{x:Null}"
                     ShowBorder="False">
                     <dxwui:NavigationFrame AllowMerging="True" NavigationCacheMode="Required" AnimationType="None">
                         <dxmvvm:Interaction.Behaviors>
