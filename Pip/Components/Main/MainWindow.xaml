@@ -183,10 +183,17 @@
                                 <Setter Property="Glyph" Value="{Binding Image}" />
                                 <Setter Property="FontSize" Value="14" />
                                 <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
-                                <Setter Property="GlyphTemplate">
+                                <!--<Setter Property="GlyphTemplate">
                                     <Setter.Value>
                                         <DataTemplate>
                                             <Image Height="18" Width="18" Source="{Binding}" Margin="8,6,10,6" />
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>-->
+                                <Setter Property="GlyphTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <Image Height="18" Width="18" Source="{Binding}" Margin="4,6,10,6" />
                                         </DataTemplate>
                                     </Setter.Value>
                                 </Setter>

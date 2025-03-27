@@ -24,16 +24,16 @@ public partial class App
         CompatibilitySettings.AllowThemePreload = true;
         CompatibilitySettings.EnableDPICorrection = true;
 
-        ThemedWindow.UseNativeWindow = true;
+        ThemedWindow.UseNativeWindow = false;
     }
 
     private IServiceProvider ServiceProvider { get; set; } = null!;
 
     protected override void OnStartup(StartupEventArgs e)
     {
-        ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
+        //ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
         //ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Office2019BlackBrickwork.Name;
-        //ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win10SystemColors.Name;
+        ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win10SystemColors.Name;
         base.OnStartup(e);
 
         Dispatcher.InvokeAsync(() =>
