@@ -11,7 +11,7 @@ namespace Pip.UI.Components.Auctions;
 
 [GenerateViewModel]
 public partial class AuctionsViewModel(ITreasuryDataProvider treasuryDataProvider, DetailsViewModel detailsViewModel)
-	: PipViewModel, IPipRoute
+    : PipViewModel, IPipRoute
 {
     [GenerateProperty] private Treasury? _selectedTreasuryRecent;
 

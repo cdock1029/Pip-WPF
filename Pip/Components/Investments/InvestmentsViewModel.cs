@@ -14,12 +14,12 @@ namespace Pip.UI.Components.Investments;
 [GenerateViewModel]
 public partial class InvestmentsViewModel : PipViewModel, IPipRoute
 {
-	[GenerateProperty] private bool _isWaitIndicatorVisible;
-    [GenerateProperty] private InvestmentItemViewModel? _selectedInvestment;
     private readonly PipDbContext _dbContext;
+    [GenerateProperty] private bool _isWaitIndicatorVisible;
+    [GenerateProperty] private InvestmentItemViewModel? _selectedInvestment;
 
     public InvestmentsViewModel(DetailsViewModel detailsViewModel,
-	    PipDbContext dbContext)
+        PipDbContext dbContext)
     {
         _dbContext = dbContext;
         DetailsViewModel = detailsViewModel;
@@ -42,20 +42,20 @@ public partial class InvestmentsViewModel : PipViewModel, IPipRoute
         if (Investments.Any()) return;
 
         foreach (Investment investment in _dbContext.Investments.ToArray())
-	        Investments.Add(new InvestmentItemViewModel(investment));
+            Investments.Add(new InvestmentItemViewModel(investment));
     }
 
     public override async Task LoadAsync()
     {
-	    if (Investments.Any()) return;
+        if (Investments.Any()) return;
 
-	    Investment[] inv = await Task.Run(() => _dbContext.Investments.ToArray()).ConfigureAwait(false);
+        Investment[] inv = await Task.Run(() => _dbContext.Investments.ToArray()).ConfigureAwait(false);
 
-	    Dispatcher.InvokeAsync(() =>
-	    {
-		    foreach (Investment investment in inv)
-			    Investments.Add(new InvestmentItemViewModel(investment));
-	    });
+        Dispatcher.InvokeAsync(() =>
+        {
+            foreach (Investment investment in inv)
+                Investments.Add(new InvestmentItemViewModel(investment));
+        });
     }
 
     private void Receive(AfterInsertInvestmentMessage message)

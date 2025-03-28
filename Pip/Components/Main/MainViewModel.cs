@@ -16,12 +16,14 @@ namespace Pip.UI.Components.Main;
 [GenerateViewModel]
 public partial class MainViewModel : PipViewModel
 {
+    [GenerateProperty] private IPipRoute _selectedRoute;
+
     public MainViewModel(InvestmentsViewModel investmentsViewModel,
         SearchViewModel searchViewModel,
         AuctionsViewModel auctionsViewModel,
         DetailsViewModel detailsViewModel,
         HomeViewModel homeViewModel)
-	{
+    {
         SearchViewModel = searchViewModel;
         DetailsViewModel = detailsViewModel;
         InvestmentsViewModel = investmentsViewModel;
@@ -32,8 +34,6 @@ public partial class MainViewModel : PipViewModel
 
         Messenger.Default.Register<AfterInsertInvestmentMessage>(this, ReceiveAfterInvestmentMessage);
     }
-
-    [GenerateProperty] private IPipRoute _selectedRoute;
 
     public ObservableCollection<string> SearchResults { get; } =
         ["Issue Date 1", "Issue Date 2", "Issue Date 3", "Issue Date 4", "Issue Date 5"];
@@ -49,20 +49,20 @@ public partial class MainViewModel : PipViewModel
     public IPipRoute[] Routes => [HomeViewModel, AuctionsViewModel, InvestmentsViewModel];
 
     [GenerateCommand]
-	private void ShowForm()
-	{
-		InvestmentItemViewModel model = new()
-		{
-			Cusip = "",
-			IssueDate = DateTime.Now.ToDateOnly()
-		};
+    private void ShowForm()
+    {
+        InvestmentItemViewModel model = new()
+        {
+            Cusip = "",
+            IssueDate = DateTime.Now.ToDateOnly()
+        };
 
-		MessageResult result =
-			DialogService.ShowDialog(MessageButton.OKCancel, "Investment form", nameof(InvestmentForm), model);
+        MessageResult result =
+            DialogService.ShowDialog(MessageButton.OKCancel, "Investment form", nameof(InvestmentForm), model);
 
-		Debug.WriteLine(
-			$"result: {result}, model par: {model.Par}, confirmation: {model.Confirmation}, re-investments: {model.Reinvestments}");
-	}
+        Debug.WriteLine(
+            $"result: {result}, model par: {model.Par}, confirmation: {model.Confirmation}, re-investments: {model.Reinvestments}");
+    }
 
     [GenerateCommand]
     private void NavigateToSelected()

@@ -1,73 +1,75 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<OutputType>WinExe</OutputType>
-		<TargetFramework>net9.0-windows</TargetFramework>
-		<UseWPF>true</UseWPF>
-		<PublishSingleFile>false</PublishSingleFile>
-		<SelfContained>false</SelfContained>
-		<DebugType>pdbonly</DebugType>
-		<IncludeNativeLibrariesForSelfExtract>false</IncludeNativeLibrariesForSelfExtract>
-		<IncludeAllContentForSelfExtract>false</IncludeAllContentForSelfExtract>
-		<ApplicationIcon>Assets\cat.ico</ApplicationIcon>
-		<SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
-	</PropertyGroup>
-	<ItemGroup>
-	  <None Remove="Assets\cat.ico" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Content Include="Assets\cat.ico">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Mvvm" />
-		<PackageReference Include="DevExpress.Images" />
-		<PackageReference Include="DevExpress.Mvvm.CodeGenerators" />
-		<PackageReference Include="DevExpress.Wpf.Accordion" />
-		<PackageReference Include="DevExpress.Wpf.Controls" />
-		<PackageReference Include="DevExpress.Wpf.Core" />
-		<PackageReference Include="devexpress.wpf.docking" />
-		<PackageReference Include="DevExpress.Wpf.Grid" />
-		<PackageReference Include="Devexpress.Wpf.Propertygrid" />
-		<PackageReference Include="DevExpress.Wpf.Ribbon" />
-		<PackageReference Include="DevExpress.Wpf.Themes.All" />
-		<PackageReference Include="DevExpress.Wpf.ThemesLW" />
-		<PackageReference Include="JetBrains.Annotations" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.AutoActivation" />
-		<PackageReference Include="Microsoft.Extensions.Http" />
-		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" />
-		<PackageReference Include="System.Formats.Asn1" />
-	</ItemGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\Pip.DataAccess\Pip.DataAccess.csproj" />
-	</ItemGroup>
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net9.0-windows</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <PublishSingleFile>false</PublishSingleFile>
+        <SelfContained>false</SelfContained>
+        <DebugType>pdbonly</DebugType>
+        <IncludeNativeLibrariesForSelfExtract>false</IncludeNativeLibrariesForSelfExtract>
+        <IncludeAllContentForSelfExtract>false</IncludeAllContentForSelfExtract>
+        <ApplicationIcon>Assets\cat.ico</ApplicationIcon>
+        <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Remove="Assets\cat.ico" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="Assets\cat.ico">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="CommunityToolkit.Mvvm" />
+        <PackageReference Include="DevExpress.Images" />
+        <PackageReference Include="DevExpress.Mvvm.CodeGenerators" />
+        <PackageReference Include="DevExpress.Wpf.Accordion" />
+        <PackageReference Include="DevExpress.Wpf.Controls" />
+        <PackageReference Include="DevExpress.Wpf.Core" />
+        <PackageReference Include="devexpress.wpf.docking" />
+        <PackageReference Include="DevExpress.Wpf.Grid" />
+        <PackageReference Include="Devexpress.Wpf.Propertygrid" />
+        <PackageReference Include="DevExpress.Wpf.Ribbon" />
+        <PackageReference Include="DevExpress.Wpf.Themes.All" />
+        <PackageReference Include="DevExpress.Wpf.ThemesLW" />
+        <PackageReference Include="JetBrains.Annotations" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.AutoActivation" />
+        <PackageReference Include="Microsoft.Extensions.Http" />
+        <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" />
+        <PackageReference Include="System.Formats.Asn1" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Pip.DataAccess\Pip.DataAccess.csproj" />
+    </ItemGroup>
 
-	<ItemGroup>
-		<RuntimeHostConfigurationOption Include="Switch.System.Windows.Media.EnableHardwareAccelerationInRdp" Value="true" />
-	</ItemGroup>
+    <ItemGroup>
+        <RuntimeHostConfigurationOption Include="Switch.System.Windows.Media.EnableHardwareAccelerationInRdp"
+                                        Value="true" />
+    </ItemGroup>
 
-	<ItemGroup>
-		<RuntimeHostConfigurationOption Include="Switch.System.Windows.Controls.DisableDynamicResourceOptimization" Value="false" />
-	</ItemGroup>
+    <ItemGroup>
+        <RuntimeHostConfigurationOption Include="Switch.System.Windows.Controls.DisableDynamicResourceOptimization"
+                                        Value="false" />
+    </ItemGroup>
 
-	<ItemGroup>
-	  <Compile Update="Properties\Settings.Designer.cs">
-	    <DesignTimeSharedInput>True</DesignTimeSharedInput>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>Settings.settings</DependentUpon>
-	  </Compile>
-	</ItemGroup>
+    <ItemGroup>
+        <Compile Update="Properties\Settings.Designer.cs">
+            <DesignTimeSharedInput>True</DesignTimeSharedInput>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Settings.settings</DependentUpon>
+        </Compile>
+    </ItemGroup>
 
-	<ItemGroup>
-	  <None Update="Properties\Settings.settings">
-	    <Generator>SettingsSingleFileGenerator</Generator>
-	    <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-	  </None>
-	</ItemGroup>
+    <ItemGroup>
+        <None Update="Properties\Settings.settings">
+            <Generator>SettingsSingleFileGenerator</Generator>
+            <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+        </None>
+    </ItemGroup>
 </Project>

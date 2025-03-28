@@ -13,94 +13,94 @@ namespace Pip.UI.Components.Search;
 [GenerateViewModel]
 public partial class SearchViewModel : PipViewModel
 {
-	private readonly ITreasuryDataProvider _treasuryDataProvider;
+    private readonly ITreasuryDataProvider _treasuryDataProvider;
 
-	[GenerateProperty] private bool _hasSearchResults;
+    [GenerateProperty] private bool _hasSearchResults;
 
-	[GenerateProperty] private ObservableCollection<TreasuryItemViewModel> _searchResults = [];
-	[GenerateProperty] private TreasuryItemViewModel? _selectedTreasuryItem;
+    [GenerateProperty] private ObservableCollection<TreasuryItemViewModel> _searchResults = [];
+    [GenerateProperty] private TreasuryItemViewModel? _selectedTreasuryItem;
 
-	public SearchViewModel(ITreasuryDataProvider treasuryDataProvider,
-		DetailsViewModel detailsViewModel)
-	{
-		_treasuryDataProvider = treasuryDataProvider;
-		DetailsViewModel = detailsViewModel;
-		SearchResults.CollectionChanged += (_, _) => { HasSearchResults = SearchResults.Count > 0; };
-	}
+    public SearchViewModel(ITreasuryDataProvider treasuryDataProvider,
+        DetailsViewModel detailsViewModel)
+    {
+        _treasuryDataProvider = treasuryDataProvider;
+        DetailsViewModel = detailsViewModel;
+        SearchResults.CollectionChanged += (_, _) => { HasSearchResults = SearchResults.Count > 0; };
+    }
 
-	public string? SearchText
-	{
-		get;
-		set
-		{
-			field = value;
-			if (string.IsNullOrWhiteSpace(field)) SearchResults.Clear();
+    public string? SearchText
+    {
+        get;
+        set
+        {
+            field = value;
+            if (string.IsNullOrWhiteSpace(field)) SearchResults.Clear();
 
-			RaisePropertyChanged();
-		}
-	}
+            RaisePropertyChanged();
+        }
+    }
 
-	public DetailsViewModel DetailsViewModel { get; }
+    public DetailsViewModel DetailsViewModel { get; }
 
-	[GenerateCommand]
-	private async Task Search()
-	{
-		ArgumentException.ThrowIfNullOrWhiteSpace(SearchText);
+    [GenerateCommand]
+    private async Task Search()
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(SearchText);
 
-		IEnumerable<Treasury>? treasuries = await _treasuryDataProvider.SearchTreasuriesAsync(SearchText.Trim());
+        IEnumerable<Treasury>? treasuries = await _treasuryDataProvider.SearchTreasuriesAsync(SearchText.Trim());
 
-		SearchResults.Clear();
-		if (treasuries == null) return;
-		foreach (Treasury treasury in treasuries)
-			SearchResults.Add(new TreasuryItemViewModel(treasury));
-	}
+        SearchResults.Clear();
+        if (treasuries == null) return;
+        foreach (Treasury treasury in treasuries)
+            SearchResults.Add(new TreasuryItemViewModel(treasury));
+    }
 
-	private bool CanSearch()
-	{
-		return !string.IsNullOrWhiteSpace(SearchText);
-	}
+    private bool CanSearch()
+    {
+        return !string.IsNullOrWhiteSpace(SearchText);
+    }
 
-	[GenerateCommand]
-	private void CreateInvestment()
-	{
-		ArgumentNullException.ThrowIfNull(SelectedTreasuryItem);
+    [GenerateCommand]
+    private void CreateInvestment()
+    {
+        ArgumentNullException.ThrowIfNull(SelectedTreasuryItem);
 
-		Treasury treasury = SelectedTreasuryItem.Treasury;
+        Treasury treasury = SelectedTreasuryItem.Treasury;
 
-		Investment investment = new()
-		{
-			Cusip = treasury.Cusip,
-			IssueDate = treasury.IssueDate!.Value,
-			MaturityDate = treasury.MaturityDate,
-			SecurityTerm = treasury.SecurityTerm,
-			Type = treasury.Type
-		};
-		_treasuryDataProvider.Insert(investment);
-		Messenger.Default.Send(
-			new AfterInsertInvestmentMessage(new AfterInsertInvestmentArgs(investment.Id)));
-	}
+        Investment investment = new()
+        {
+            Cusip = treasury.Cusip,
+            IssueDate = treasury.IssueDate!.Value,
+            MaturityDate = treasury.MaturityDate,
+            SecurityTerm = treasury.SecurityTerm,
+            Type = treasury.Type
+        };
+        _treasuryDataProvider.Insert(investment);
+        Messenger.Default.Send(
+            new AfterInsertInvestmentMessage(new AfterInsertInvestmentArgs(investment.Id)));
+    }
 
-	private bool CanCreateInvestment()
-	{
-		return SelectedTreasuryItem is not null;
-	}
+    private bool CanCreateInvestment()
+    {
+        return SelectedTreasuryItem is not null;
+    }
 }
 
 [PublicAPI]
 public class TreasuryItemViewModel(Treasury treasury)
 {
-	public string Cusip { get; set; } = treasury.Cusip;
+    public string Cusip { get; set; } = treasury.Cusip;
 
-	public DateOnly? IssueDate { get; set; } = treasury.IssueDate;
+    public DateOnly? IssueDate { get; set; } = treasury.IssueDate;
 
-	public TreasuryType? Type { get; set; } = treasury.Type;
+    public TreasuryType? Type { get; set; } = treasury.Type;
 
-	public string? Term { get; set; } = treasury.SecurityTerm;
+    public string? Term { get; set; } = treasury.SecurityTerm;
 
-	public Treasury Treasury { get; set; } = treasury;
+    public Treasury Treasury { get; set; } = treasury;
 
-	public override string ToString()
-	{
-		return $"Issue: {IssueDate:dd MMM yyyy} Type: {Type} Term: {Term}";
-	}
+    public override string ToString()
+    {
+        return $"Issue: {IssueDate:dd MMM yyyy} Type: {Type} Term: {Term}";
+    }
 }

@@ -8,9 +8,9 @@ namespace Pip.UI.Components.Home;
 [GenerateViewModel]
 public partial class HomeViewModel : PipViewModel, IPipRoute, ISupportNavigation
 {
-	public string View => nameof(HomeView);
+    public string View => nameof(HomeView);
 
-	public string Title => "Home";
+    public string Title => "Home";
 
     //public Uri Image { get; } = DXImageHelper.GetImageUri("Office2013/Navigation/Home_32x32.png");
     public Uri Image { get; } = DXImageHelper.GetImageUri("SvgImages/RichEdit/InsertTableOfFigures.svg");
