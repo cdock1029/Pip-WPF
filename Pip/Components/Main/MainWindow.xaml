@@ -17,8 +17,8 @@
     xmlns:native="http://schemas.devexpress.com/winfx/2008/xaml/core/internal"
     xmlns:utils="clr-namespace:Pip.UI.Utils"
     x:Class="Pip.UI.Components.Main.MainWindow"
-    Width="800"
-    Height="800"
+    Width="600"
+    Height="600"
     d:DataContext="{d:DesignInstance Type={x:Type main:MainViewModel}}"
     WindowStartupLocation="CenterScreen"
     UseLayoutRounding="True"
@@ -182,9 +182,10 @@
                         </dxmvvm:Interaction.Behaviors>
 
                         <dxa:AccordionControl.ItemContainerStyle>
-                            <Style d:DataContext="{d:DesignInstance Type={x:Type shared:IPipRoute}}"
-                                   TargetType="{x:Type dxa:AccordionItem}">
-
+                            <Style TargetType="{x:Type dxa:AccordionItem}">
+                                <d:Style.DataContext>
+                                    <x:Type Type="shared:IPipRoute" />
+                                </d:Style.DataContext>
                                 <Setter Property="Header" Value="{Binding Title}" />
                                 <Setter Property="Glyph" Value="{Binding Image}" />
                                 <Setter Property="FontSize" Value="14" />

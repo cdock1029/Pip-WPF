@@ -58,6 +58,7 @@
                                 SelectedTabIndex="0">
                 <dxdo:DocumentPanel Caption="Recent" x:Name="RecentTab">
                     <dxg:GridControl
+                        ShowBorder="False"
                         ItemsSource="{Binding TreasuriesRecent}"
                         SelectedItem="{Binding SelectedTreasuryRecent, Mode=TwoWay}"
                         attachedProperties:GridControlProperties.RowCellMenuCommand="{Binding SaveRecentToInvestmentsCommand}">
@@ -90,6 +91,7 @@
 
                 <dxdo:DocumentPanel Caption="Upcoming" x:Name="UpcomingTab">
                     <dxg:GridControl
+                        ShowBorder="False"
                         ItemsSource="{Binding TreasuriesUpcoming}"
                         SelectedItem="{Binding SelectedTreasuryUpcoming}"
                         attachedProperties:GridControlProperties.RowCellMenuCommand="{Binding SaveUpcomingtToInvestmentsCommand}">

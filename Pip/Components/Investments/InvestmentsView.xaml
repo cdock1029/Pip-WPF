@@ -34,7 +34,7 @@
                 AllowBestFit="True"
                 AllowGrouping="True"
                 AllowScrollAnimation="True"
-                NewItemRowPosition="Top"
+                NewItemRowPosition="None"
 
                 ShowUpdateRowButtons="Never"
                 EditFormShowMode="Dialog"
