@@ -18,62 +18,64 @@ namespace Pip.UI;
 
 public partial class App
 {
-    public App()
-    {
-        CompatibilitySettings.UseLightweightThemes = true;
-        CompatibilitySettings.AllowThemePreload = true;
-        CompatibilitySettings.EnableDPICorrection = true;
+	private IServiceProvider _serviceProvider = null!;
 
-        ThemedWindow.UseNativeWindow = false;
-    }
+	public App()
+	{
+		CompatibilitySettings.UseLightweightThemes = true;
 
-    private IServiceProvider ServiceProvider { get; set; } = null!;
+		ThemedWindow.UseNativeWindow = true;
 
-    protected override void OnStartup(StartupEventArgs e)
-    {
-        //ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
-        //ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Office2019BlackBrickwork.Name;
-        ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win10SystemColors.Name;
-        base.OnStartup(e);
+		ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
+	}
 
-        Dispatcher.InvokeAsync(() =>
-            ApplicationThemeHelper.PreloadAsync(PreloadCategories.Grid, PreloadCategories.Docking,
-                PreloadCategories.Dialogs, PreloadCategories.Accordion));
+	protected override async void OnStartup(StartupEventArgs e)
+	{
+		try
+		{
+			base.OnStartup(e);
 
-        ServiceCollection serviceCollection = [];
-        ConfigureServices(serviceCollection);
-        ServiceProvider = serviceCollection.BuildServiceProvider();
+			await ApplicationThemeHelper.PreloadAsync(PreloadCategories.Grid, PreloadCategories.Docking);
 
-        PipDbContext dbContext = ServiceProvider.GetRequiredService<PipDbContext>();
-        dbContext.Database.Migrate();
-        dbContext.Investments.Load();
+			ConfigureServices(out ServiceCollection serviceCollection);
+			_serviceProvider = serviceCollection.BuildServiceProvider();
 
-        MainWindow mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
-        mainWindow.Show();
-    }
+			PipDbContext dbContext = _serviceProvider.GetRequiredService<PipDbContext>();
+			await Task.Run(() => dbContext.Database.Migrate());
 
-    private static void ConfigureServices(ServiceCollection serviceCollection)
-    {
-        serviceCollection
-            .AddMemoryCache()
-            .AddSingleton<IMessageBoxService, DXMessageBoxService>()
-            .AddSingleton<MainViewModel>()
-            .AddSingleton<HomeViewModel>()
-            .AddSingleton<SearchViewModel>()
-            .AddSingleton<InvestmentsViewModel>()
-            .AddSingleton<AuctionsViewModel>()
-            .AddSingleton<DetailsViewModel>()
-            .AddSingleton<MainWindow>()
-            .AddDbContext<PipDbContext>(ServiceLifetime.Transient)
-            .AddHttpClient<ITreasuryDataProvider, TreasuryDataProvider>();
-    }
+			MainWindow mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+			mainWindow.Show();
+		}
+		catch (Exception ex)
+		{
+			Debug.WriteLine($"OnStartup exception: {ex.Message}");
+			Environment.Exit(1);
+		}
+	}
 
-    private void App_OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
-    {
-        e.Handled = true;
-        Debug.WriteLine(e.Exception);
-        IMessageBoxService messageBoxService = ServiceProvider.GetRequiredService<IMessageBoxService>();
-        messageBoxService.Show($"Unhandled Exception. Contact administrator: [{e.Exception.Message}]", "Error",
-            MessageBoxButton.OK);
-    }
+	private static void ConfigureServices(out ServiceCollection serviceCollection)
+	{
+		serviceCollection = [];
+		serviceCollection
+			.AddMemoryCache()
+			.AddSingleton<IMessageBoxService, DXMessageBoxService>()
+			.AddSingleton<MainViewModel>()
+			.AddSingleton<HomeViewModel>()
+			.AddSingleton<SearchViewModel>()
+			.AddSingleton<InvestmentsViewModel>()
+			.AddSingleton<AuctionsViewModel>()
+			.AddSingleton<DetailsViewModel>()
+			.AddSingleton<MainWindow>()
+			.AddDbContext<PipDbContext>(ServiceLifetime.Transient)
+			.AddHttpClient<ITreasuryDataProvider, TreasuryDataProvider>();
+	}
+
+	private void App_OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+	{
+		e.Handled = true;
+		Debug.WriteLine(e.Exception);
+		IMessageBoxService messageBoxService = _serviceProvider.GetRequiredService<IMessageBoxService>();
+		messageBoxService.Show($"Unhandled Exception. Contact administrator: [{e.Exception.Message}]", "Error",
+			MessageBoxButton.OK);
+	}
 }

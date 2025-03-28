@@ -3,9 +3,13 @@
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net9.0-windows</TargetFramework>
 		<UseWPF>true</UseWPF>
-		<IncludePackageReferencesDuringMarkupCompilation>true</IncludePackageReferencesDuringMarkupCompilation>
-		<XamlDebuggingInformation>True</XamlDebuggingInformation>
+		<PublishSingleFile>false</PublishSingleFile>
+		<SelfContained>false</SelfContained>
+		<DebugType>pdbonly</DebugType>
+		<IncludeNativeLibrariesForSelfExtract>false</IncludeNativeLibrariesForSelfExtract>
+		<IncludeAllContentForSelfExtract>false</IncludeAllContentForSelfExtract>
 		<ApplicationIcon>Assets\cat.ico</ApplicationIcon>
+		<SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
 	</PropertyGroup>
 	<ItemGroup>
 	  <None Remove="Assets\cat.ico" />
@@ -24,7 +28,7 @@
 		<PackageReference Include="DevExpress.Wpf.Core" />
 		<PackageReference Include="devexpress.wpf.docking" />
 		<PackageReference Include="DevExpress.Wpf.Grid" />
-		<PackageReference Include="devexpress.wpf.propertygrid" />
+		<PackageReference Include="Devexpress.Wpf.Propertygrid" />
 		<PackageReference Include="DevExpress.Wpf.Ribbon" />
 		<PackageReference Include="DevExpress.Wpf.Themes.All" />
 		<PackageReference Include="DevExpress.Wpf.ThemesLW" />

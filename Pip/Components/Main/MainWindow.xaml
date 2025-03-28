@@ -175,6 +175,12 @@
                         ItemsSource="{Binding Routes}"
                         SelectedItem="{Binding SelectedRoute, Mode=TwoWay}"
                         AutoExpandAllItems="True">
+
+                        <dxmvvm:Interaction.Behaviors>
+                            <dxmvvm:EventToCommand EventName="SelectedItemChanged"
+                                                   Command="{Binding NavigateToSelectedCommand}" />
+                        </dxmvvm:Interaction.Behaviors>
+
                         <dxa:AccordionControl.ItemContainerStyle>
                             <Style d:DataContext="{d:DesignInstance Type={x:Type shared:IPipRoute}}"
                                    TargetType="{x:Type dxa:AccordionItem}">
@@ -199,25 +205,18 @@
                                 </Setter>
                             </Style>
                         </dxa:AccordionControl.ItemContainerStyle>
-                        <dxmvvm:Interaction.Behaviors>
-                            <dxmvvm:EventToCommand EventName="SelectedItemChanged"
-                                                   Command="{Binding NavigateToSelectedCommand}" />
-                        </dxmvvm:Interaction.Behaviors>
-
                     </dxa:AccordionControl>
                 </dxdo:LayoutPanel>
-
                 <dxdo:LayoutPanel
                     Background="{x:Null}"
                     ShowBorder="False">
                     <dxwui:NavigationFrame AllowMerging="True" NavigationCacheMode="Required" AnimationType="None">
                         <dxmvvm:Interaction.Behaviors>
                             <navigation:FrameNavigationService />
-                            <dxmvvm:EventToCommand EventName="Loaded" Command="{Binding NavigateToSelectedCommand}" />
+                            <!--<dxmvvm:EventToCommand EventName="Loaded" Command="{Binding NavigateToSelectedCommand}" />-->
                         </dxmvvm:Interaction.Behaviors>
                     </dxwui:NavigationFrame>
                 </dxdo:LayoutPanel>
-
             </dxdo:LayoutGroup>
         </dxdo:DockLayoutManager>
     </DockPanel>

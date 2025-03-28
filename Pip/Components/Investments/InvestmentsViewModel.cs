@@ -12,9 +12,9 @@ using Pip.UI.Components.Shared;
 namespace Pip.UI.Components.Investments;
 
 [GenerateViewModel]
-public partial class InvestmentsViewModel : PipViewModel, IPipRoute, ISupportNavigation
+public partial class InvestmentsViewModel : PipViewModel, IPipRoute
 {
-    [GenerateProperty] private bool _isWaitIndicatorVisible;
+	[GenerateProperty] private bool _isWaitIndicatorVisible;
     [GenerateProperty] private InvestmentItemViewModel? _selectedInvestment;
     private readonly PipDbContext _dbContext;
 
@@ -41,9 +41,21 @@ public partial class InvestmentsViewModel : PipViewModel, IPipRoute, ISupportNav
     {
         if (Investments.Any()) return;
 
-        //foreach (Investment investment in _treasuryDataProvider.GetInvestments())
         foreach (Investment investment in _dbContext.Investments.ToArray())
-            Investments.Add(new InvestmentItemViewModel(investment));
+	        Investments.Add(new InvestmentItemViewModel(investment));
+    }
+
+    public override async Task LoadAsync()
+    {
+	    if (Investments.Any()) return;
+
+	    Investment[] inv = await Task.Run(() => _dbContext.Investments.ToArray()).ConfigureAwait(false);
+
+	    Dispatcher.InvokeAsync(() =>
+	    {
+		    foreach (Investment investment in inv)
+			    Investments.Add(new InvestmentItemViewModel(investment));
+	    });
     }
 
     private void Receive(AfterInsertInvestmentMessage message)
@@ -94,13 +106,5 @@ public partial class InvestmentsViewModel : PipViewModel, IPipRoute, ISupportNav
         {
             args.ResultAsync = Task.FromResult(new ValidationErrorInfo($"Error Deleting:\n{e.Message}"));
         }
-    }
-
-    public void OnNavigatedTo()
-    {
-    }
-
-    public void OnNavigatedFrom()
-    {
     }
 }
