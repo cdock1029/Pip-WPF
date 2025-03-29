@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Windows;
 using System.Windows.Threading;
-using DevExpress.Mvvm;
 using DevExpress.Xpf.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,8 +27,7 @@ public partial class App
 
             CompatibilitySettings.UseLightweightThemes = true;
             //ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win10System.Name;
-            //ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
-            ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Office2019BlackBrickwork.Name;
+            ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
 
             Theme.CachePaletteThemes = true;
             Theme.RegisterPredefinedPaletteThemes();
@@ -58,7 +56,6 @@ public partial class App
         serviceCollection = [];
         serviceCollection
             .AddMemoryCache()
-            .AddSingleton<IMessageBoxService, DXMessageBoxService>()
             .AddSingleton<MainViewModel>()
             .AddSingleton<HomeViewModel>()
             .AddSingleton<SearchViewModel>()
@@ -79,11 +76,6 @@ public partial class App
 
     public static void ShowError(Exception ex)
     {
-        /*
-        IMessageBoxService messageBoxService = _serviceProvider.GetRequiredService<IMessageBoxService>();
-        messageBoxService.Show($"Unhandled Exception. Contact administrator: [{e.Exception.Message}]", "Error",
-            MessageBoxButton.OK);
-        */
         ThemedMessageBox.Show("Application Error",
             $"{ex.GetType()}: {ex.Message}",
             MessageBoxButton.OK, MessageBoxImage.Error);

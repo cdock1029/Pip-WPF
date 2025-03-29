@@ -50,8 +50,18 @@ public partial class MainWindow
         Settings.Default.Save();
     }
 
-    private void Show_Flyout(object sender, RoutedEventArgs e)
+    private void ButtonEdit_OnIsKeyboardFocusWithinChanged(object sender, DependencyPropertyChangedEventArgs e)
     {
-        FlyoutControl.IsOpen = true;
+        var isFocusedWithin = (bool)e.NewValue;
+
+        bool searchHasItems = ((MainViewModel)DataContext).SearchViewModel.HasSearchResults;
+
+        if (isFocusedWithin && searchHasItems)
+            FlyoutControl.IsOpen = true;
+    }
+
+    private void FlyoutControl_OnClosing(object? sender, CancelEventArgs e)
+    {
+        if (((MainViewModel)DataContext).SearchViewModel.HasSearchResults) e.Cancel = true;
     }
 }

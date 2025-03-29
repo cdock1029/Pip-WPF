@@ -79,28 +79,54 @@
     <dx:ThemedWindow.HeaderItems>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="220" />
+                <ColumnDefinition Width="110" />
             </Grid.ColumnDefinitions>
             <dxe:ButtonEdit VerticalAlignment="Center" x:Name="ButtonEdit"
                             NullText="Search CUSIP"
+                            Text="{Binding SearchViewModel.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            IsKeyboardFocusWithinChanged="ButtonEdit_OnIsKeyboardFocusWithinChanged"
                             AllowDefaultButton="False"
                             AllowFocusEditorButtons="True">
-                <dxe:ButtonInfo x:Name="Search" Click="Show_Flyout" GlyphKind="Search"
-                                ToolTipService.ToolTip="Search" />
+                <dxe:ButtonEdit.Buttons>
+                    <dxe:ButtonInfo GlyphKind="Cancel" ToolTip="Clear"
+                                    Command="{Binding SearchViewModel.ClearCommand}"
+                                    Visibility="{Binding SearchViewModel.SearchText, Converter={StaticResource StringToBoolConverter}}" />
+                    <dxe:ButtonInfo x:Name="Search" GlyphKind="Search" ToolTipService.ToolTip="Search">
+                        <dxmvvm:Interaction.Behaviors>
+                            <dxmvvm:CompositeCommandBehavior CanExecuteCondition="AnyCommandCanBeExecuted">
+                                <dxmvvm:CommandItem Command="{Binding  SearchViewModel.SearchCommand}" />
+                                <dxmvvm:CommandItem
+                                    Command="{Binding Source={x:Reference FlyoutControl}, Path=OpenCommand}" />
+                            </dxmvvm:CompositeCommandBehavior>
+                        </dxmvvm:Interaction.Behaviors>
+                    </dxe:ButtonInfo>
+                </dxe:ButtonEdit.Buttons>
             </dxe:ButtonEdit>
             <Border Grid.Column="1" Background="Transparent" native:WindowChrome.IsHitTestVisibleInChrome="False" />
         </Grid>
-        <dxe:FlyoutControl x:Name="FlyoutControl" IsOpen="False"
+        <dxe:FlyoutControl x:Name="FlyoutControl"
                            PlacementTarget="{Binding ElementName=ButtonEdit}"
                            AllowMoveAnimation="False"
                            AnimationDuration="0:0:0.0"
+                           Closing="FlyoutControl_OnClosing"
                            MinHeight="200"
-                           MaxHeight="300" Width="200">
+                           MaxHeight="300" Width="220">
             <dxe:FlyoutControl.Settings>
                 <dxe:FlyoutSettings Placement="Bottom" />
             </dxe:FlyoutControl.Settings>
-            <dxe:ListBoxEdit VerticalAlignment="Top" ItemsSource="{Binding SearchResults}">
+            <!--<dxe:FlyoutControl.Style>
+                <Style TargetType="dxe:FlyoutControl">
+                    <Setter Property="IsOpen" Value="True" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=SearchResultsList, Path=Items.Count}" Value="0">
+                            <Setter Property="IsOpen" Value="False" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </dxe:FlyoutControl.Style>-->
+            <dxe:ListBoxEdit x:Name="SearchResultsList" VerticalAlignment="Top"
+                             ItemsSource="{Binding SearchViewModel.SearchResults}">
                 <dxe:ListBoxEditSettings />
                 <!--<dxe:ListBoxEdit.Style>
                     <Style TargetType="dxe:ListBoxEdit">

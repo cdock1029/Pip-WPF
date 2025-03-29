@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using DevExpress.Xpf.Core.Native;
@@ -34,9 +33,6 @@ public partial class MainViewModel : PipViewModel
 
         Messenger.Default.Register<AfterInsertInvestmentMessage>(this, ReceiveAfterInvestmentMessage);
     }
-
-    public ObservableCollection<string> SearchResults { get; } =
-        ["Issue Date 1", "Issue Date 2", "Issue Date 3", "Issue Date 4", "Issue Date 5"];
 
     public HomeViewModel HomeViewModel { get; }
     public InvestmentsViewModel InvestmentsViewModel { get; }
@@ -73,6 +69,5 @@ public partial class MainViewModel : PipViewModel
     private void ReceiveAfterInvestmentMessage(AfterInsertInvestmentMessage msg)
     {
         SelectedRoute = InvestmentsViewModel;
-        //NavigateInvestments();
     }
 }

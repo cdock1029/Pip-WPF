@@ -1,4 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:utils="clr-namespace:Pip.UI.Utils">
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConv" />
+
+    <utils:StringToBoolConverter x:Key="StringToBoolConverter" />
 </ResourceDictionary>

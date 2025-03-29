@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using JetBrains.Annotations;
@@ -34,7 +35,7 @@ public partial class SearchViewModel : PipViewModel
         set
         {
             field = value;
-            if (string.IsNullOrWhiteSpace(field)) SearchResults.Clear();
+            if (string.IsNullOrWhiteSpace(field) && SearchResults.Any()) SearchResults.Clear();
 
             RaisePropertyChanged();
         }
@@ -45,6 +46,7 @@ public partial class SearchViewModel : PipViewModel
     [GenerateCommand]
     private async Task Search()
     {
+        Debug.WriteLine("\nSearching..");
         ArgumentException.ThrowIfNullOrWhiteSpace(SearchText);
 
         IEnumerable<Treasury>? treasuries = await _treasuryDataProvider.SearchTreasuriesAsync(SearchText.Trim());
@@ -53,11 +55,17 @@ public partial class SearchViewModel : PipViewModel
         if (treasuries == null) return;
         foreach (Treasury treasury in treasuries)
             SearchResults.Add(new TreasuryItemViewModel(treasury));
+
+        Debug.WriteLine("\nSearch complete");
     }
 
     private bool CanSearch()
     {
-        return !string.IsNullOrWhiteSpace(SearchText);
+        string? trimmed = SearchText?.Trim();
+
+        if (string.IsNullOrEmpty(trimmed)) return false;
+
+        return trimmed.Length == 9;
     }
 
     [GenerateCommand]
@@ -84,6 +92,13 @@ public partial class SearchViewModel : PipViewModel
     {
         return SelectedTreasuryItem is not null;
     }
+
+    [GenerateCommand]
+    private void Clear()
+    {
+        SearchText = null;
+        SearchResults.Clear();
+    }
 }
 
 [PublicAPI]
@@ -101,6 +116,6 @@ public class TreasuryItemViewModel(Treasury treasury)
 
     public override string ToString()
     {
-        return $"Issue: {IssueDate:dd MMM yyyy} Type: {Type} Term: {Term}";
+        return $"{Type}|{Term}|Issue: {IssueDate:dd MMM yyyy}";
     }
 }
