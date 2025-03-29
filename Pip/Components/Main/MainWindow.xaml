@@ -169,8 +169,9 @@
                         SummaryItemHeader="Navigation"
                         CollapsedItemClickAction="Select"
                         ExpandItemOnHeaderClick="False"
+                        ShowPopupOnHover="True"
                         RootItemExpandButtonPosition="None"
-                        RootItemDisplayMode="Item"
+                        RootItemDisplayMode="Group"
                         ViewMode="Accordion"
                         ItemsSource="{Binding Routes}"
                         SelectedItem="{Binding SelectedRoute, Mode=TwoWay}"
@@ -189,23 +190,31 @@
                                 <Setter Property="Header" Value="{Binding Title}" />
                                 <Setter Property="Glyph" Value="{Binding Image}" />
                                 <Setter Property="FontSize" Value="14" />
-                                <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
-                                <!--<Setter Property="GlyphTemplate">
-                                    <Setter.Value>
-                                        <DataTemplate>
-                                            <Image Height="18" Width="18" Source="{Binding}" Margin="8,6,10,6" />
-                                        </DataTemplate>
-                                    </Setter.Value>
-                                </Setter>-->
+                                <Setter Property="FontWeight" Value="SemiBold" />
+
                                 <Setter Property="GlyphTemplate">
                                     <Setter.Value>
                                         <DataTemplate>
-                                            <Image Height="18" Width="18" Source="{Binding}" Margin="4,6,10,6" />
+                                            <Image Height="18" Width="18" Source="{Binding}" Margin="6,0,8,0" />
                                         </DataTemplate>
                                     </Setter.Value>
                                 </Setter>
+                                <Style.Triggers>
+                                    <DataTrigger
+                                        Binding="{DXBinding '@s.($dx:LightweightThemeManager.CurrentTheme).Name.Contains(`Win11`)'}"
+                                        Value="True">
+                                        <Setter Property="GlyphTemplate">
+                                            <Setter.Value>
+                                                <DataTemplate>
+                                                    <Image Height="20" Width="20" Source="{Binding}" Margin="6,4" />
+                                                </DataTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
                             </Style>
                         </dxa:AccordionControl.ItemContainerStyle>
+
                     </dxa:AccordionControl>
                 </dxdo:LayoutPanel>
                 <dxdo:LayoutPanel
@@ -214,7 +223,6 @@
                     <dxwui:NavigationFrame AllowMerging="True" NavigationCacheMode="Required" AnimationType="None">
                         <dxmvvm:Interaction.Behaviors>
                             <navigation:FrameNavigationService />
-                            <!--<dxmvvm:EventToCommand EventName="Loaded" Command="{Binding NavigateToSelectedCommand}" />-->
                         </dxmvvm:Interaction.Behaviors>
                     </dxwui:NavigationFrame>
                 </dxdo:LayoutPanel>

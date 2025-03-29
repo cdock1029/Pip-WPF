@@ -20,24 +20,19 @@ public partial class App
 {
     private IServiceProvider _serviceProvider = null!;
 
-    public App()
-    {
-        CompatibilitySettings.UseLightweightThemes = true;
-
-        ThemedWindow.UseNativeWindow = false;
-
-        //ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win10System.Name;
-        ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
-
-        Theme.CachePaletteThemes = true;
-        Theme.RegisterPredefinedPaletteThemes();
-    }
-
     protected override async void OnStartup(StartupEventArgs e)
     {
         try
         {
             base.OnStartup(e);
+
+            CompatibilitySettings.UseLightweightThemes = true;
+            //ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win10System.Name;
+            //ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
+            ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Office2019BlackBrickwork.Name;
+
+            Theme.CachePaletteThemes = true;
+            Theme.RegisterPredefinedPaletteThemes();
 
             await ApplicationThemeHelper.PreloadAsync(PreloadCategories.Grid, PreloadCategories.Docking);
 
@@ -46,6 +41,7 @@ public partial class App
 
             PipDbContext dbContext = _serviceProvider.GetRequiredService<PipDbContext>();
             await Task.Run(() => dbContext.Database.Migrate());
+
 
             MainWindow mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
             mainWindow.Show();
