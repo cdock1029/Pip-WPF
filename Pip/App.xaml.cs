@@ -24,10 +24,13 @@ public partial class App
     {
         CompatibilitySettings.UseLightweightThemes = true;
 
-        ThemedWindow.UseNativeWindow = true;
+        ThemedWindow.UseNativeWindow = false;
 
-        //ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
-        ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win10System.Name;
+        //ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win10System.Name;
+        ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
+
+        Theme.CachePaletteThemes = true;
+        Theme.RegisterPredefinedPaletteThemes();
     }
 
     protected override async void OnStartup(StartupEventArgs e)
@@ -75,8 +78,18 @@ public partial class App
     {
         e.Handled = true;
         Debug.WriteLine(e.Exception);
+        ShowError(e.Exception);
+    }
+
+    public static void ShowError(Exception ex)
+    {
+        /*
         IMessageBoxService messageBoxService = _serviceProvider.GetRequiredService<IMessageBoxService>();
         messageBoxService.Show($"Unhandled Exception. Contact administrator: [{e.Exception.Message}]", "Error",
             MessageBoxButton.OK);
+        */
+        ThemedMessageBox.Show("Application Error",
+            $"{ex.GetType()}: {ex.Message}",
+            MessageBoxButton.OK, MessageBoxImage.Error);
     }
 }

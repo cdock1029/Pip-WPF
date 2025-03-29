@@ -34,7 +34,6 @@ public partial class InvestmentsViewModel : PipViewModel, IPipRoute
 
     public string Title => "Investments";
 
-    //public Uri Image { get; } = DXImageHelper.GetImageUri("Images/Spreadsheet/FunctionsFinancial_32x32.png");
     public Uri Image { get; } = DXImageHelper.GetImageUri("SvgImages/Business Objects/BO_Opportunity.svg");
 
     public override void Load()

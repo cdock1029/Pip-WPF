@@ -56,7 +56,6 @@
     <PackageVersion Include="DevExpress.Wpf.Grid" Version="24.2.6" />
     <PackageVersion Include="devexpress.wpf.propertygrid" Version="24.2.6" />
     <PackageVersion Include="DevExpress.Wpf.Ribbon" Version="24.2.6" />
-    <PackageVersion Include="DevExpress.Wpf.Themes.All" Version="24.2.6" />
     <PackageVersion Include="DevExpress.Wpf.ThemesLW" Version="24.2.6" />
     <PackageVersion Include="DevExpress.Blazor" Version="24.2.5" />
     <PackageVersion Include="JetBrains.Annotations" Version="2025.1.0-eap1" />

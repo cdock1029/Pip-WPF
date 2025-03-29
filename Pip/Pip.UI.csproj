@@ -30,7 +30,6 @@
         <PackageReference Include="DevExpress.Wpf.Grid" />
         <PackageReference Include="Devexpress.Wpf.Propertygrid" />
         <PackageReference Include="DevExpress.Wpf.Ribbon" />
-        <PackageReference Include="DevExpress.Wpf.Themes.All" />
         <PackageReference Include="DevExpress.Wpf.ThemesLW" />
         <PackageReference Include="JetBrains.Annotations" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" />
@@ -49,13 +48,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <RuntimeHostConfigurationOption Include="Switch.System.Windows.Media.EnableHardwareAccelerationInRdp"
-                                        Value="true" />
+        <RuntimeHostConfigurationOption Include="Switch.System.Windows.Media.EnableHardwareAccelerationInRdp" Value="true" />
     </ItemGroup>
 
     <ItemGroup>
-        <RuntimeHostConfigurationOption Include="Switch.System.Windows.Controls.DisableDynamicResourceOptimization"
-                                        Value="false" />
+        <RuntimeHostConfigurationOption Include="Switch.System.Windows.Controls.DisableDynamicResourceOptimization" Value="false" />
     </ItemGroup>
 
     <ItemGroup>

@@ -10,11 +10,20 @@
              xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              xmlns:attachedProperties="clr-namespace:Pip.UI.AttachedProperties"
              xmlns:model="clr-namespace:Pip.Model;assembly=Pip.Model"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
              mc:Ignorable="d"
+             Loaded="{DXEvent Handler='LoadAsync()'}"
              d:DataContext="{d:DesignInstance Type={x:Type auctions:AuctionsViewModel}}"
              d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.Resources>
+        <Style TargetType="{x:Type dxdo:DocumentGroup}">
+            <Setter Property="ShowDropDownButton" Value="False" />
+        </Style>
+
+        <Style TargetType="{x:Type dxdo:DocumentPanel}">
+            <Setter Property="ShowCloseButton" Value="False" />
+        </Style>
         <Style TargetType="{x:Type dxg:GridControl}">
             <Setter Property="AutoExpandAllGroups" Value="True" />
             <Setter Property="ShowBorder" Value="False" />
@@ -32,16 +41,9 @@
                                 NavigationStyle="Row"
                                 ShowGroupedColumns="False">
                                 <dxg:TableView.RowCellMenuCustomizations>
-                                    <dxb:BarButtonItem Content="Save to Investments...">
-                                        <dxmvvm:Interaction.Behaviors>
-                                            <dxmvvm:ConfirmationBehavior
-                                                Command="{Binding Path=(attachedProperties:GridControlProperties.RowCellMenuCommand), RelativeSource={RelativeSource AncestorType={x:Type dxg:GridControl}}}"
-                                                EnableConfirmationMessage="True"
-                                                MessageIcon="Exclamation"
-                                                MessageButton="OKCancel"
-                                                MessageText="Confirm save?" />
-                                        </dxmvvm:Interaction.Behaviors>
-                                    </dxb:BarButtonItem>
+                                    <dxb:BarButtonItem Content="Save to Investments..."
+                                                       Command="{Binding Path=(attachedProperties:GridControlProperties.RowCellMenuCommand), RelativeSource={RelativeSource AncestorType={x:Type dxg:GridControl}}}"
+                                                       Glyph="{dx:DXImage 'SvgImages/Business Objects/BO_Opportunity.svg'}" />
                                 </dxg:TableView.RowCellMenuCustomizations>
                             </dxg:TableView>
                         </DataTemplate>
@@ -52,13 +54,10 @@
     </UserControl.Resources>
 
     <dxdo:DockLayoutManager>
-        <dxdo:LayoutGroup Orientation="Vertical" Loaded="{DXEvent Handler='LoadAsync()'}">
-            <dxdo:DocumentGroup Caption="Auctions"
-                                ShowCaption="True"
-                                SelectedTabIndex="0">
+        <dxdo:LayoutGroup Orientation="Vertical">
+            <dxdo:DocumentGroup SelectedTabIndex="0">
                 <dxdo:DocumentPanel Caption="Recent" x:Name="RecentTab">
                     <dxg:GridControl
-                        ShowBorder="False"
                         ItemsSource="{Binding TreasuriesRecent}"
                         SelectedItem="{Binding SelectedTreasuryRecent, Mode=TwoWay}"
                         attachedProperties:GridControlProperties.RowCellMenuCommand="{Binding SaveRecentToInvestmentsCommand}">
@@ -91,7 +90,6 @@
 
                 <dxdo:DocumentPanel Caption="Upcoming" x:Name="UpcomingTab">
                     <dxg:GridControl
-                        ShowBorder="False"
                         ItemsSource="{Binding TreasuriesUpcoming}"
                         SelectedItem="{Binding SelectedTreasuryUpcoming}"
                         attachedProperties:GridControlProperties.RowCellMenuCommand="{Binding SaveUpcomingtToInvestmentsCommand}">

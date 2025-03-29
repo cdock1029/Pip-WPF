@@ -140,7 +140,7 @@
     </dx:ThemedWindow.HeaderItems>
 
 
-    <DockPanel Margin="0, 20, 8, 8">
+    <DockPanel>
         <dxdo:DockLayoutManager ViewStyle="Default">
             <dxdo:LayoutGroup>
                 <dxdo:LayoutGroup.Resources>
