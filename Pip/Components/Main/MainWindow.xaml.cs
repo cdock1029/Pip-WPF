@@ -54,14 +54,14 @@ public partial class MainWindow
     {
         var isFocusedWithin = (bool)e.NewValue;
 
-        bool searchHasItems = ((MainViewModel)DataContext).SearchViewModel.HasSearchResults;
+        bool searchExecuted = ((MainViewModel)DataContext).SearchViewModel.SearchResults is not null;
 
-        if (isFocusedWithin && searchHasItems)
+        if (isFocusedWithin && searchExecuted)
             FlyoutControl.IsOpen = true;
     }
 
     private void FlyoutControl_OnClosing(object? sender, CancelEventArgs e)
     {
-        if (((MainViewModel)DataContext).SearchViewModel.HasSearchResults) e.Cancel = true;
+        if (((MainViewModel)DataContext).SearchViewModel.SearchResults is not null) e.Cancel = true;
     }
 }

@@ -3,5 +3,4 @@
                     xmlns:utils="clr-namespace:Pip.UI.Utils">
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConv" />
 
-    <utils:StringToBoolConverter x:Key="StringToBoolConverter" />
 </ResourceDictionary>

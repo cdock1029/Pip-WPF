@@ -16,9 +16,8 @@ public partial class SearchViewModel : PipViewModel
 {
     private readonly ITreasuryDataProvider _treasuryDataProvider;
 
-    [GenerateProperty] private bool _hasSearchResults;
 
-    [GenerateProperty] private ObservableCollection<TreasuryItemViewModel> _searchResults = [];
+    [GenerateProperty] private ObservableCollection<TreasuryItemViewModel>? _searchResults;
     [GenerateProperty] private TreasuryItemViewModel? _selectedTreasuryItem;
 
     public SearchViewModel(ITreasuryDataProvider treasuryDataProvider,
@@ -26,7 +25,7 @@ public partial class SearchViewModel : PipViewModel
     {
         _treasuryDataProvider = treasuryDataProvider;
         DetailsViewModel = detailsViewModel;
-        SearchResults.CollectionChanged += (_, _) => { HasSearchResults = SearchResults.Count > 0; };
+        //SearchResults.CollectionChanged += (_, _) => { HasSearchResults = SearchResults.Count > 0; };
     }
 
     public string? SearchText
@@ -35,7 +34,7 @@ public partial class SearchViewModel : PipViewModel
         set
         {
             field = value;
-            if (string.IsNullOrWhiteSpace(field) && SearchResults.Any()) SearchResults.Clear();
+            if (string.IsNullOrWhiteSpace(field) && SearchResults != null && SearchResults.Any()) SearchResults = null;
 
             RaisePropertyChanged();
         }
@@ -51,7 +50,7 @@ public partial class SearchViewModel : PipViewModel
 
         IEnumerable<Treasury>? treasuries = await _treasuryDataProvider.SearchTreasuriesAsync(SearchText.Trim());
 
-        SearchResults.Clear();
+        SearchResults = [];
         if (treasuries == null) return;
         foreach (Treasury treasury in treasuries)
             SearchResults.Add(new TreasuryItemViewModel(treasury));
@@ -97,7 +96,7 @@ public partial class SearchViewModel : PipViewModel
     private void Clear()
     {
         SearchText = null;
-        SearchResults.Clear();
+        SearchResults = null;
     }
 }
 
