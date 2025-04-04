@@ -41,6 +41,11 @@
                                 NavigationStyle="Row"
                                 ShowGroupedColumns="False">
                                 <dxg:TableView.RowCellMenuCustomizations>
+                                    <dxb:BarButtonItem Content="Copy CUSIP"
+                                                       Glyph="{dx:DXImage 'SvgImages/Outlook Inspired/Copy.svg'}"
+                                                       CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=dxg:GridControl}, Path=SelectedItem.(model:Treasury.Cusip)}"
+                                                       Command="ApplicationCommands.Copy" />
+                                    <dxb:BarItemLinkSeparator />
                                     <dxb:BarButtonItem Content="Save to Investments..."
                                                        Command="{Binding Path=(attachedProperties:GridControlProperties.RowCellMenuCommand), RelativeSource={RelativeSource AncestorType={x:Type dxg:GridControl}}}"
                                                        Glyph="{dx:DXImage 'SvgImages/Business Objects/BO_Opportunity.svg'}" />
@@ -58,9 +63,15 @@
             <dxdo:DocumentGroup SelectedTabIndex="0">
                 <dxdo:DocumentPanel Caption="Recent" x:Name="RecentTab">
                     <dxg:GridControl
+                        Name="RecentGrid"
                         ItemsSource="{Binding TreasuriesRecent}"
                         SelectedItem="{Binding SelectedTreasuryRecent, Mode=TwoWay}"
                         attachedProperties:GridControlProperties.RowCellMenuCommand="{Binding SaveRecentToInvestmentsCommand}">
+
+                        <dxg:GridControl.CommandBindings>
+                            <CommandBinding Command="ApplicationCommands.Copy"
+                                            Executed="CopyCommandBindingRecent_Executed" />
+                        </dxg:GridControl.CommandBindings>
                         <dxg:GridControl.Columns>
                             <dxg:GridColumn
                                 Binding="{Binding Path=(model:Treasury.Cusip)}"
@@ -90,9 +101,16 @@
 
                 <dxdo:DocumentPanel Caption="Upcoming" x:Name="UpcomingTab">
                     <dxg:GridControl
+                        Name="UpcomingGrid"
                         ItemsSource="{Binding TreasuriesUpcoming}"
                         SelectedItem="{Binding SelectedTreasuryUpcoming}"
+                        
                         attachedProperties:GridControlProperties.RowCellMenuCommand="{Binding SaveUpcomingtToInvestmentsCommand}">
+
+                        <dxg:GridControl.CommandBindings>
+                            <CommandBinding Command="ApplicationCommands.Copy"
+                                            Executed="CopyCommandBindingUpcoming_Executed" />
+                        </dxg:GridControl.CommandBindings>
                         <dxg:GridControl.Columns>
                             <dxg:GridColumn
                                 Binding="{Binding Path=(model:Treasury.Cusip)}"

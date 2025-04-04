@@ -10,10 +10,9 @@ public partial class HomeView : INavigationAware
 	}
 
 	public void NavigatedTo(NavigationEventArgs e)
-	{
-		if (DataContext is not null) return;
-		if (e.Parameter is HomeViewModel vm) DataContext = vm;
-	}
+    {
+        if (e.Parameter is HomeViewModel vm) DataContext ??= vm;
+    }
 
 	public void NavigatingFrom(NavigatingEventArgs e)
 	{

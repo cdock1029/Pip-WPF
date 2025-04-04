@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
-using JetBrains.Annotations;
 using Pip.DataAccess.Services;
 using Pip.Model;
 using Pip.UI.Components.Details;
@@ -12,21 +11,13 @@ using Pip.UI.Components.Shared;
 namespace Pip.UI.Components.Search;
 
 [GenerateViewModel]
-public partial class SearchViewModel : PipViewModel
+public partial class SearchViewModel(
+    ITreasuryDataProvider treasuryDataProvider,
+    DetailsViewModel detailsViewModel)
+    : PipViewModel
 {
-    private readonly ITreasuryDataProvider _treasuryDataProvider;
-
-
     [GenerateProperty] private ObservableCollection<TreasuryItemViewModel>? _searchResults;
     [GenerateProperty] private TreasuryItemViewModel? _selectedTreasuryItem;
-
-    public SearchViewModel(ITreasuryDataProvider treasuryDataProvider,
-        DetailsViewModel detailsViewModel)
-    {
-        _treasuryDataProvider = treasuryDataProvider;
-        DetailsViewModel = detailsViewModel;
-        //SearchResults.CollectionChanged += (_, _) => { HasSearchResults = SearchResults.Count > 0; };
-    }
 
     public string? SearchText
     {
@@ -40,7 +31,7 @@ public partial class SearchViewModel : PipViewModel
         }
     }
 
-    public DetailsViewModel DetailsViewModel { get; }
+    public DetailsViewModel DetailsViewModel { get; } = detailsViewModel;
 
     [GenerateCommand]
     private async Task Search()
@@ -48,7 +39,7 @@ public partial class SearchViewModel : PipViewModel
         Debug.WriteLine("\nSearching..");
         ArgumentException.ThrowIfNullOrWhiteSpace(SearchText);
 
-        IEnumerable<Treasury>? treasuries = await _treasuryDataProvider.SearchTreasuriesAsync(SearchText.Trim());
+        IEnumerable<Treasury>? treasuries = await treasuryDataProvider.SearchTreasuriesAsync(SearchText.Trim());
 
         SearchResults = [];
         if (treasuries == null) return;
@@ -82,7 +73,7 @@ public partial class SearchViewModel : PipViewModel
             SecurityTerm = treasury.SecurityTerm,
             Type = treasury.Type
         };
-        _treasuryDataProvider.Insert(investment);
+        treasuryDataProvider.Insert(investment);
         Messenger.Default.Send(
             new AfterInsertInvestmentMessage(new AfterInsertInvestmentArgs(investment.Id)));
     }
@@ -97,24 +88,5 @@ public partial class SearchViewModel : PipViewModel
     {
         SearchText = null;
         SearchResults = null;
-    }
-}
-
-[PublicAPI]
-public class TreasuryItemViewModel(Treasury treasury)
-{
-    public string Cusip { get; set; } = treasury.Cusip;
-
-    public DateOnly? IssueDate { get; set; } = treasury.IssueDate;
-
-    public TreasuryType? Type { get; set; } = treasury.Type;
-
-    public string? Term { get; set; } = treasury.SecurityTerm;
-
-    public Treasury Treasury { get; set; } = treasury;
-
-    public override string ToString()
-    {
-        return $"{Type}|{Term}|Issue: {IssueDate:dd MMM yyyy}";
     }
 }

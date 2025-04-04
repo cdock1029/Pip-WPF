@@ -28,7 +28,6 @@ public partial class AuctionsViewModel(ITreasuryDataProvider treasuryDataProvide
 
     public string Title => "Auctions";
 
-    //public Uri Image { get; } = DXImageHelper.GetImageUri("Images/Business Objects/BOSale_32x32.png");
     public Uri Image { get; } =
         DXImageHelper.GetImageUri("SvgImages/Business Objects/BO_Sale_Item.svg");
 
