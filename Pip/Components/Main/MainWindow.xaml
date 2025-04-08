@@ -77,7 +77,7 @@
     </dx:ThemedWindow.ToolbarItems>
 
     <dx:ThemedWindow.HeaderItems>
-        <Grid>
+        <Grid FocusManager.IsFocusScope="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="220" />
                 <ColumnDefinition Width="110" />
@@ -102,50 +102,61 @@
                         </dxmvvm:Interaction.Behaviors>
                     </dxe:ButtonInfo>
                 </dxe:ButtonEdit.Buttons>
+                <dxe:ButtonEdit.InputBindings>
+                    <KeyBinding Key="Return">
+                        <dxmvvm:Interaction.Behaviors>
+                            <dxmvvm:CompositeCommandBehavior CanExecuteCondition="AllCommandsCanBeExecuted">
+                                <dxmvvm:CommandItem Command="{Binding  SearchViewModel.SearchCommand}" />
+                                <dxmvvm:CommandItem
+                                    Command="{Binding Source={x:Reference FlyoutControl}, Path=OpenCommand}" />
+                            </dxmvvm:CompositeCommandBehavior>
+                        </dxmvvm:Interaction.Behaviors>
+                    </KeyBinding>
+                </dxe:ButtonEdit.InputBindings>
             </dxe:ButtonEdit>
             <Border Grid.Column="1" Background="Transparent" native:WindowChrome.IsHitTestVisibleInChrome="False" />
+            <dxe:FlyoutControl Grid.Column="0" x:Name="FlyoutControl"
+                               PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Path=Children[0]}"
+                               AllowMoveAnimation="False"
+                               AnimationDuration="0:0:0.0"
+                               Closing="FlyoutControl_OnClosing"
+                               MinHeight="80"
+                               MaxHeight="300" Width="220">
+                <dxe:FlyoutControl.Settings>
+                    <dxe:FlyoutSettings Placement="Bottom" />
+                </dxe:FlyoutControl.Settings>
+                <Grid>
+                    <TextBlock Text="No results" Margin="4">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SearchViewModel.SearchResults.Count}" Value="0">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <dxe:ListBoxEdit x:Name="SearchResultsList" VerticalAlignment="Top"
+                                     ItemsSource="{Binding SearchViewModel.SearchResults}">
+                        <dxe:ListBoxEdit.Style>
+                            <Style TargetType="dxe:ListBoxEdit">
+                                <Setter Property="Visibility" Value="Visible" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SearchViewModel.SearchResults}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding SearchViewModel.SearchResults.Count}" Value="0">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </dxe:ListBoxEdit.Style>
+                    </dxe:ListBoxEdit>
+                </Grid>
+            </dxe:FlyoutControl>
         </Grid>
-        <dxe:FlyoutControl x:Name="FlyoutControl"
-                           PlacementTarget="{Binding ElementName=ButtonEdit}"
-                           AllowMoveAnimation="False"
-                           AnimationDuration="0:0:0.0"
-                           Closing="FlyoutControl_OnClosing"
-                           MinHeight="80"
-                           MaxHeight="300" Width="220">
-            <dxe:FlyoutControl.Settings>
-                <dxe:FlyoutSettings Placement="Bottom" />
-            </dxe:FlyoutControl.Settings>
-            <Grid>
-                <TextBlock Text="No results" Margin="4">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Visibility" Value="Collapsed" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SearchViewModel.SearchResults.Count}" Value="0">
-                                    <Setter Property="Visibility" Value="Visible" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-                <dxe:ListBoxEdit x:Name="SearchResultsList" VerticalAlignment="Top"
-                                 ItemsSource="{Binding SearchViewModel.SearchResults}">
-                    <dxe:ListBoxEdit.Style>
-                        <Style TargetType="dxe:ListBoxEdit">
-                            <Setter Property="Visibility" Value="Visible" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SearchViewModel.SearchResults}" Value="{x:Null}">
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding SearchViewModel.SearchResults.Count}" Value="0">
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </dxe:ListBoxEdit.Style>
-                </dxe:ListBoxEdit>
-            </Grid>
-        </dxe:FlyoutControl>
     </dx:ThemedWindow.HeaderItems>
 
 
@@ -167,7 +178,7 @@
                     AllowSizing="{Binding ElementName=NavAccordion, Path=IsExpanded}"
                     ItemWidth="{Binding ElementName=NavAccordion, Mode=TwoWay, Path=IsExpanded, Converter={utils:BoolToWidthConverter StartupWidth=200}}"
                     MinWidth="{Binding ElementName=NavAccordion, Path=IsExpanded, Converter={StaticResource PanelMinWidthConverter}}"
-                    MaxWidth="500">
+                    MaxWidth="400">
                     <dxa:AccordionControl
                         x:Name="NavAccordion"
                         CompactNavigation="False"
@@ -227,6 +238,7 @@
                     </dxa:AccordionControl>
                 </dxdo:LayoutPanel>
                 <dxdo:LayoutPanel
+                    FocusManager.IsFocusScope="True"
                     Background="{x:Null}"
                     ShowBorder="False">
                     <dxwui:NavigationFrame AllowMerging="True" NavigationCacheMode="Required" AnimationType="None">

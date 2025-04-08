@@ -40,7 +40,7 @@ public partial class InvestmentsViewModel : PipViewModel, IPipRoute
     {
         if (Investments.Any()) return;
 
-        foreach (Investment investment in _dbContext.Investments.ToArray())
+        foreach (Investment investment in _dbContext.Investments.AsEnumerable())
             Investments.Add(new InvestmentItemViewModel(investment));
     }
 
@@ -48,7 +48,7 @@ public partial class InvestmentsViewModel : PipViewModel, IPipRoute
     {
         if (Investments.Any()) return;
 
-        Investment[] inv = await Task.Run(() => _dbContext.Investments.ToArray()).ConfigureAwait(false);
+        IEnumerable<Investment> inv = await Task.Run(() => _dbContext.Investments.AsEnumerable()).ConfigureAwait(false);
 
         Dispatcher.InvokeAsync(() =>
         {
@@ -59,12 +59,11 @@ public partial class InvestmentsViewModel : PipViewModel, IPipRoute
 
     private void Receive(AfterInsertInvestmentMessage message)
     {
-        Dispatcher.BeginInvoke(async () =>
+        Dispatcher.InvokeAsync(async () =>
         {
             await Task.Delay(1000);
             Investments.Clear();
-            //await LoadDataAsync();
-            Load();
+            await LoadAsync();
             SelectedInvestment = Investments.FirstOrDefault(i => i.Id == message.Value.Id);
         });
     }

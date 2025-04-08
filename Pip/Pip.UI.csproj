@@ -10,6 +10,7 @@
         <IncludeAllContentForSelfExtract>false</IncludeAllContentForSelfExtract>
         <ApplicationIcon>Assets\cat.ico</ApplicationIcon>
         <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
+        <PublishReadyToRun>true</PublishReadyToRun>
     </PropertyGroup>
     <ItemGroup>
         <None Remove="Assets\cat.ico" />

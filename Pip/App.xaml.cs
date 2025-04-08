@@ -32,13 +32,14 @@ public partial class App
             Theme.CachePaletteThemes = true;
             Theme.RegisterPredefinedPaletteThemes();
 
-            await ApplicationThemeHelper.PreloadAsync(PreloadCategories.Grid, PreloadCategories.Docking);
+            await ApplicationThemeHelper.PreloadAsync(PreloadCategories.Grid, PreloadCategories.Docking,
+                PreloadCategories.Accordion, PreloadCategories.Controls, PreloadCategories.Core);
 
             ConfigureServices(out ServiceCollection serviceCollection);
             _serviceProvider = serviceCollection.BuildServiceProvider();
 
             PipDbContext dbContext = _serviceProvider.GetRequiredService<PipDbContext>();
-            await Task.Run(() => dbContext.Database.Migrate());
+            await Task.Run(dbContext.Database.Migrate);
 
 
             MainWindow mainWindow = _serviceProvider.GetRequiredService<MainWindow>();

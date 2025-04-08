@@ -78,17 +78,21 @@
                                 Header="CUSIP"
                                 ReadOnly="True" />
                             <dxg:GridColumn
+                                Binding="{Binding Path=(model:Treasury.SecurityTerm)}"
+                                Header="Term"
+                                SortFieldName="TermSpan"
+                                ReadOnly="True" />
+                            <dxg:GridColumn
+                                Binding="{Binding Path=(model:Treasury.AuctionDate)}"
+                                Header="Auction Date"
+                                ReadOnly="True" />
+                            <dxg:GridColumn
                                 Binding="{Binding Path=(model:Treasury.IssueDate)}"
                                 Header="Issue Date"
                                 ReadOnly="True" />
                             <dxg:GridColumn
                                 Binding="{Binding Path=(model:Treasury.MaturityDate), FallbackValue=''}"
                                 Header="Maturity Date"
-                                ReadOnly="True" />
-                            <dxg:GridColumn
-                                Binding="{Binding Path=(model:Treasury.SecurityTerm)}"
-                                Header="Term"
-                                SortFieldName="TermSpan"
                                 ReadOnly="True" />
                             <dxg:GridColumn
                                 Binding="{Binding Path=(model:Treasury.Type)}"
@@ -117,17 +121,21 @@
                                 Header="CUSIP"
                                 ReadOnly="True" />
                             <dxg:GridColumn
+                                Binding="{Binding Path=(model:Treasury.SecurityTerm)}"
+                                Header="Term"
+                                SortFieldName="TermSpan"
+                                ReadOnly="True" />
+                            <dxg:GridColumn
+                                Binding="{Binding Path=(model:Treasury.AuctionDate)}"
+                                Header="Auction Date"
+                                ReadOnly="True" />
+                            <dxg:GridColumn
                                 Binding="{Binding Path=(model:Treasury.IssueDate)}"
                                 Header="Issue Date"
                                 ReadOnly="True" />
                             <dxg:GridColumn
                                 Binding="{Binding Path=(model:Treasury.MaturityDate), FallbackValue=''}"
                                 Header="Maturity Date"
-                                ReadOnly="True" />
-                            <dxg:GridColumn
-                                Binding="{Binding Path=(model:Treasury.SecurityTerm)}"
-                                Header="Term"
-                                SortFieldName="TermSpan"
                                 ReadOnly="True" />
                             <dxg:GridColumn
                                 Binding="{Binding Path=(model:Treasury.Type)}"
