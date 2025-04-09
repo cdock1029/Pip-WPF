@@ -176,7 +176,7 @@
                 <dxdo:LayoutPanel
                     ShowBorder="False"
                     AllowSizing="{Binding ElementName=NavAccordion, Path=IsExpanded}"
-                    ItemWidth="{Binding ElementName=NavAccordion, Mode=TwoWay, Path=IsExpanded, Converter={utils:BoolToWidthConverter StartupWidth=200}}"
+                    ItemWidth="{Binding ElementName=NavAccordion, Mode=TwoWay, Path=IsExpanded, Converter={utils:BoolToWidthConverter StartupWidth=220}}"
                     MinWidth="{Binding ElementName=NavAccordion, Path=IsExpanded, Converter={StaticResource PanelMinWidthConverter}}"
                     MaxWidth="400">
                     <dxa:AccordionControl

@@ -8,6 +8,7 @@ using Pip.DataAccess;
 using Pip.DataAccess.Services;
 using Pip.UI.Components.Auctions;
 using Pip.UI.Components.Details;
+using Pip.UI.Components.Historical;
 using Pip.UI.Components.Home;
 using Pip.UI.Components.Investments;
 using Pip.UI.Components.Main;
@@ -62,6 +63,7 @@ public partial class App
             .AddSingleton<SearchViewModel>()
             .AddSingleton<InvestmentsViewModel>()
             .AddSingleton<AuctionsViewModel>()
+            .AddSingleton<HistoricalViewModel>()
             .AddSingleton<DetailsViewModel>()
             .AddSingleton<MainWindow>()
             .AddDbContext<PipDbContext>(ServiceLifetime.Transient)

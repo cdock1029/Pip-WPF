@@ -4,6 +4,7 @@ using DevExpress.Mvvm.CodeGenerators;
 using DevExpress.Xpf.Core.Native;
 using Pip.UI.Components.Auctions;
 using Pip.UI.Components.Details;
+using Pip.UI.Components.Historical;
 using Pip.UI.Components.Home;
 using Pip.UI.Components.Investments;
 using Pip.UI.Components.Investments.Messages;
@@ -20,6 +21,7 @@ public partial class MainViewModel : PipViewModel
     public MainViewModel(InvestmentsViewModel investmentsViewModel,
         SearchViewModel searchViewModel,
         AuctionsViewModel auctionsViewModel,
+        HistoricalViewModel historicalViewModel,
         DetailsViewModel detailsViewModel,
         HomeViewModel homeViewModel)
     {
@@ -28,6 +30,7 @@ public partial class MainViewModel : PipViewModel
         InvestmentsViewModel = investmentsViewModel;
         HomeViewModel = homeViewModel;
         AuctionsViewModel = auctionsViewModel;
+        HistoricalViewModel = historicalViewModel;
 
         SelectedRoute = HomeViewModel;
 
@@ -39,10 +42,11 @@ public partial class MainViewModel : PipViewModel
     public SearchViewModel SearchViewModel { get; }
     public DetailsViewModel DetailsViewModel { get; }
     public AuctionsViewModel AuctionsViewModel { get; }
+    public HistoricalViewModel HistoricalViewModel { get; }
 
     private INavigationService NavigationService => GetService<INavigationService>();
 
-    public IPipRoute[] Routes => [HomeViewModel, AuctionsViewModel, InvestmentsViewModel];
+    public IPipRoute[] Routes => [HomeViewModel, AuctionsViewModel, HistoricalViewModel, InvestmentsViewModel];
 
     [GenerateCommand]
     private void ShowForm()
