@@ -4,7 +4,9 @@
     {
       "Path": "wwwroot\\css\\tailwind.css",
       "IsDefault": true,
-      "ApplicableLocations": []
+        "ApplicableLocations": [
+            "..\\Td\\"
+        ]
     }
   ],
   "BuildFiles": [
