@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using DevExpress.Xpf.Grid;
 using DevExpress.Xpf.WindowsUI.Navigation;
 using Pip.Model;
@@ -36,9 +35,5 @@ public partial class AuctionsView : INavigationAware
     {
         GridControl grid = (GridControl)sender;
         if (grid.SelectedItem is Treasury t) Clipboard.SetText(t.Cusip);
-    }
-
-    private void CopyingRows(TableView view, BindingList<Treasury> list)
-    {
     }
 }

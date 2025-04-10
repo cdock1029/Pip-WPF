@@ -1,9 +1,8 @@
 ﻿using DevExpress.Xpf.WindowsUI.Navigation;
-using UserControl = System.Windows.Controls.UserControl;
 
 namespace Pip.UI.Components.Historical;
 
-public partial class HistoricalView : UserControl, INavigationAware
+public partial class HistoricalView : INavigationAware
 {
     public HistoricalView()
     {

@@ -8,7 +8,7 @@ namespace Pip.UI.Components.Historical;
 // ReSharper disable once PartialTypeWithSinglePart
 public partial class HistoricalViewModel : PipViewModel, IPipRoute
 {
-    public string? View => nameof(HistoricalView);
+    public string View => nameof(HistoricalView);
     public string Title => "Historical Data";
     public Uri? Image { get; } = DXImageHelper.GetImageUri("SvgImages/Business Objects/BO_Audit_ChangeHistory.svg");
 

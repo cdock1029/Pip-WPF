@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DevExpress.Blazor;
+using Microsoft.EntityFrameworkCore;
 using Pip.DataAccess;
 using Pip.Web.Components;
 using Pip.Web.Components.Pages;
@@ -13,6 +14,7 @@ builder.Services.AddRazorComponents()
 builder.Services.AddDevExpressBlazor(options =>
 {
     //options.BootstrapVersion = BootstrapVersion.v5;
+    options.SizeMode = SizeMode.Medium;
 });
 builder.Services.AddSingleton<WeatherForecastService>();
 
