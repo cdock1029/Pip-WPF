@@ -2,9 +2,7 @@
 @layer theme, base, components, utilities;
 @layer theme {
   :root, :host {
-    --color-red-500: oklch(63.7% 0.237 25.331);
     --spacing: 0.25rem;
-    --container-4xl: 56rem;
   }
 }
 @layer utilities {
@@ -20,17 +18,11 @@
   .table {
     display: table;
   }
-  .h-full {
-    height: 100%;
-  }
   .w-100 {
     width: calc(var(--spacing) * 100);
   }
   .w-full {
     width: 100%;
-  }
-  .max-w-4xl {
-    max-width: var(--container-4xl);
   }
   .flex-1 {
     flex: 1;
@@ -40,8 +32,5 @@
   }
   .px-4 {
     padding-inline: calc(var(--spacing) * 4);
-  }
-  .text-red-500 {
-    color: var(--color-red-500);
   }
 }

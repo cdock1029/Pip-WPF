@@ -1,7 +1,7 @@
 ﻿@page "/weather"
+@using System.Diagnostics
 
 @attribute [StreamRendering]
-@rendermode @(new InteractiveServerRenderMode(false))
 
 @inject PipDbContext DbContext
 @inject InvestmentPageState PageState
@@ -9,9 +9,9 @@
 <PageTitle>Investments</PageTitle>
 <h1>Investments</h1>
 
-<DxLoadingPanel Visible="PageState.Treasuries is null" IsContentBlocked="true" ApplyBackgroundShading="true" IndicatorAreaVisible="false">
+<DxLoadingPanel Visible="PageState.Investments is null" IsContentBlocked="true" ApplyBackgroundShading="true" IndicatorAreaVisible="false">
     <div class="flex flex-col">
-<DxGrid Data="@PageState.Treasuries"
+@* <DxGrid Data="@PageState.Investments"
         CssClass="w-full flex-1">
     <Columns>
         <DxGridDataColumn Caption="CUSIP" FieldName="@nameof(Investment.Cusip)"/>
@@ -22,25 +22,27 @@
         <DxGridDataColumn Caption="Maturity Date" FieldName="@nameof(Investment.MaturityDate)"/>
         <DxGridDataColumn Caption="Par" FieldName="@nameof(Investment.Par)"/>
     </Columns>
-</DxGrid>
-</div>
+</DxGrid> *@
+
+<InvestmentsGrid Investments="@PageState.Investments"/>
+    </div>
 </DxLoadingPanel>
 
 @code {
     protected override async Task OnInitializedAsync()
     {
-        PageState.Treasuries ??= await Load();
+        Debug.WriteLine($"PageState investments: {PageState.Investments}");
+        PageState.Investments ??= await Load();
     }
 
     private async Task<List<Investment>> Load()
     { 
-        await Task.Delay(1000);
         return await DbContext.Investments.ToListAsync();
     }
 
 
     public class InvestmentPageState
     {
-        public List<Investment>? Treasuries { get; set; }
+        public List<Investment>? Investments { get; set; }
     }
 }

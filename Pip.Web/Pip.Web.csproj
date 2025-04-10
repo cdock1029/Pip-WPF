@@ -12,6 +12,7 @@
   <ItemGroup>
     <PackageReference Include="DevExpress.Blazor" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
       <PrivateAssets>all</PrivateAssets>
@@ -22,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Pip.DataAccess\Pip.DataAccess.csproj" />
+    <ProjectReference Include="..\Pip.Web.Client\Pip.Web.Client.csproj" />
   </ItemGroup>
 
 </Project>

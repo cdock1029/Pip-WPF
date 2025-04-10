@@ -4,12 +4,14 @@ using Pip.DataAccess;
 using Pip.Web.Components;
 using Pip.Web.Components.Pages;
 using Pip.Web.Services;
+using _Imports = Pip.Web.Client._Imports;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+    .AddInteractiveServerComponents()
+    .AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddDevExpressBlazor(options =>
 {
@@ -34,9 +36,13 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 #endif
 
 WebApplication app = builder.Build();
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
+    app.UseWebAssemblyDebugging();
+}
+else
+{
+    app.UseExceptionHandler("/Error", true);
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
@@ -49,6 +55,8 @@ app.UseAntiforgery();
 app.MapStaticAssets();
 
 app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+    .AddInteractiveServerRenderMode()
+    .AddInteractiveWebAssemblyRenderMode()
+    .AddAdditionalAssemblies(typeof(_Imports).Assembly);
 
 app.Run();
