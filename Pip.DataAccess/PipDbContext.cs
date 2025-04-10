@@ -10,6 +10,8 @@ public class PipDbContext(DbContextOptions<PipDbContext> options) : DbContext(op
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        if (optionsBuilder.IsConfigured) return;
+
         string dbPath = DatabasePathHelper.GetDatabasePath("pip.db");
         Debug.WriteLine($"dbPath={dbPath}");
         optionsBuilder.UseSqlite($"Data Source={dbPath}");

@@ -13,6 +13,7 @@
     <PackageVersion Include="DevExpress.AIIntegration.OpenAI" Version="24.2.5" />
     <PackageVersion Include="DevExpress.AIIntegration.Wpf" Version="24.2.5" />
     <PackageVersion Include="Markdig" Version="0.40.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.4" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.0.4" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.4" />

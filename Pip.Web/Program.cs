@@ -1,5 +1,7 @@
-﻿using DevExpress.Blazor;
+﻿using Microsoft.EntityFrameworkCore;
+using Pip.DataAccess;
 using Pip.Web.Components;
+using Pip.Web.Components.Pages;
 using Pip.Web.Services;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -10,9 +12,24 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddDevExpressBlazor(options =>
 {
-    options.BootstrapVersion = BootstrapVersion.v5;
+    //options.BootstrapVersion = BootstrapVersion.v5;
 });
 builder.Services.AddSingleton<WeatherForecastService>();
+
+builder.Services.AddScoped<Weather.InvestmentPageState>();
+
+builder.Services.AddDbContextFactory<PipDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DatabaseConnection") ??
+                         throw new InvalidOperationException("Connection string 'DatabaseConnection' not found."),
+        b => b.MigrationsAssembly("Pip.Web"));
+});
+
+#if DEBUG
+
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+#endif
 
 WebApplication app = builder.Build();
 if (!app.Environment.IsDevelopment())

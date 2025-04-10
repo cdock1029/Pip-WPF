@@ -1,35 +1,46 @@
 ﻿@page "/weather"
 
-@using Pip.Web.Services
-@attribute [StreamRendering(true)]
-@rendermode InteractiveServer
-@inject WeatherForecastService ForecastService
+@attribute [StreamRendering]
+@rendermode @(new InteractiveServerRenderMode(false))
 
-<PageTitle>Weather</PageTitle>
-<h1>Weather</h1>
+@inject PipDbContext DbContext
+@inject InvestmentPageState PageState
 
-@if (forecasts == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <DxGrid Data="@forecasts"
-                CssClass="mw-1100">
-        <Columns>
-            <DxGridDataColumn Caption="Date" FieldName="Date" />
-            <DxGridDataColumn Caption="Temperature (C)" FieldName="TemperatureC" />
-            <DxGridDataColumn Caption="Temperature (F)" FieldName="TemperatureF" />
-            <DxGridDataColumn Caption="Summary" FieldName="Summary" />
-        </Columns>
-    </DxGrid>
-}
+<PageTitle>Investments</PageTitle>
+<h1>Investments</h1>
+
+<DxLoadingPanel Visible="PageState.Treasuries is null" IsContentBlocked="true" ApplyBackgroundShading="true" IndicatorAreaVisible="false">
+    <div class="flex flex-col">
+<DxGrid Data="@PageState.Treasuries"
+        CssClass="w-full flex-1">
+    <Columns>
+        <DxGridDataColumn Caption="CUSIP" FieldName="@nameof(Investment.Cusip)"/>
+        <DxGridDataColumn Caption="Term" FieldName="@nameof(Investment.SecurityTerm)"/>
+        <DxGridDataColumn Caption="Type" FieldName="@nameof(Investment.Type)"/>
+        <DxGridDataColumn Caption="Auction Date" FieldName="@nameof(Investment.AuctionDate)"/>
+        <DxGridDataColumn Caption="Issue Date" FieldName="@nameof(Investment.IssueDate)"/>
+        <DxGridDataColumn Caption="Maturity Date" FieldName="@nameof(Investment.MaturityDate)"/>
+        <DxGridDataColumn Caption="Par" FieldName="@nameof(Investment.Par)"/>
+    </Columns>
+</DxGrid>
+</div>
+</DxLoadingPanel>
 
 @code {
-    private WeatherForecast[]? forecasts;
-
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateOnly.FromDateTime(DateTime.Now));
+        PageState.Treasuries ??= await Load();
+    }
+
+    private async Task<List<Investment>> Load()
+    { 
+        await Task.Delay(1000);
+        return await DbContext.Investments.ToListAsync();
+    }
+
+
+    public class InvestmentPageState
+    {
+        public List<Investment>? Treasuries { get; set; }
     }
 }
