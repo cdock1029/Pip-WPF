@@ -21,6 +21,8 @@ public partial class HistoricalViewModel(ITreasuryDataProvider treasuryDataProvi
 
     [GenerateProperty] private ObservableCollection<Treasury>? _treasuries;
 
+    [GenerateProperty] private bool _isLoading;
+
     public override void Load()
     {
         if (Years.Any()) return;
@@ -33,6 +35,7 @@ public partial class HistoricalViewModel(ITreasuryDataProvider treasuryDataProvi
     {
         if (SelectedYear is not null)
         {
+            IsLoading = true;
             Treasuries = [];
 
             IEnumerable<Treasury>? treasuries =
@@ -40,6 +43,7 @@ public partial class HistoricalViewModel(ITreasuryDataProvider treasuryDataProvi
 
             await Dispatcher.InvokeAsync(() =>
             {
+                IsLoading = false;
                 if (treasuries is null) return;
                 foreach (Treasury treasury in treasuries)
                     Treasuries.Add(treasury);
