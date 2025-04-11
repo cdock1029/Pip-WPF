@@ -1,7 +1,10 @@
 ﻿@rendermode @(new InteractiveWebAssemblyRenderMode(false))
 
 <DxGrid Data="Investments"
-        CssClass="w-full flex-1">
+        ShowGroupPanel="true"
+        ShowFilterRow="false"
+        ShowSearchBox="true"
+        AutoExpandAllGroupRows="true">
     <Columns>
         <DxGridDataColumn Caption="CUSIP" FieldName="@nameof(Investment.Cusip)"/>
         <DxGridDataColumn Caption="Term" FieldName="@nameof(Investment.SecurityTerm)"/>

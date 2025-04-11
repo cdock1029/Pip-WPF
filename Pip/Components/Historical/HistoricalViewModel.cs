@@ -1,12 +1,15 @@
-﻿using DevExpress.Mvvm.CodeGenerators;
+﻿using System.Collections.ObjectModel;
+using DevExpress.Mvvm.CodeGenerators;
 using DevExpress.Xpf.Core;
+using Pip.DataAccess.Services;
+using Pip.Model;
 using Pip.UI.Components.Shared;
 
 namespace Pip.UI.Components.Historical;
 
 [GenerateViewModel]
 // ReSharper disable once PartialTypeWithSinglePart
-public partial class HistoricalViewModel : PipViewModel, IPipRoute
+public partial class HistoricalViewModel(ITreasuryDataProvider treasuryDataProvider) : PipViewModel, IPipRoute
 {
     public string View => nameof(HistoricalView);
     public string Title => "Historical Data";
@@ -14,14 +17,34 @@ public partial class HistoricalViewModel : PipViewModel, IPipRoute
 
     [GenerateProperty] private Year? _selectedYear;
 
-    [GenerateProperty] private ObservableCollectionCore<Year> _years = [];
+    [GenerateProperty] private ObservableCollection<Year> _years = [];
 
+    [GenerateProperty] private ObservableCollection<Treasury>? _treasuries;
 
     public override void Load()
     {
         if (Years.Any()) return;
 
         foreach (int i in GenerateYears()) Years.Add(new Year(i));
+    }
+
+    [GenerateCommand]
+    public async Task HandleYearChanged()
+    {
+        if (SelectedYear is not null)
+        {
+            Treasuries = [];
+
+            IEnumerable<Treasury>? treasuries =
+                await treasuryDataProvider.AnnouncementsResultsSearch(SelectedYear.Range.start, SelectedYear.Range.end);
+
+            await Dispatcher.InvokeAsync(() =>
+            {
+                if (treasuries is null) return;
+                foreach (Treasury treasury in treasuries)
+                    Treasuries.Add(treasury);
+            });
+        }
     }
 
     private static IEnumerable<int> GenerateYears()

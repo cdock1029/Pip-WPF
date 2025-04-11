@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Pip.DataAccess;
 using Pip.Web.Components;
 using Pip.Web.Components.Pages;
-using Pip.Web.Services;
 using _Imports = Pip.Web.Client._Imports;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -18,9 +17,8 @@ builder.Services.AddDevExpressBlazor(options =>
     //options.BootstrapVersion = BootstrapVersion.v5;
     options.SizeMode = SizeMode.Medium;
 });
-builder.Services.AddSingleton<WeatherForecastService>();
 
-builder.Services.AddScoped<Weather.InvestmentPageState>();
+builder.Services.AddScoped<InvestmentsPage.InvestmentPageState>();
 
 builder.Services.AddDbContextFactory<PipDbContext>(options =>
 {

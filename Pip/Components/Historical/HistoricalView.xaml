@@ -5,6 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Pip.UI.Components.Historical"
              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:model="clr-namespace:Pip.Model;assembly=Pip.Model"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type={x:Type local:HistoricalViewModel}}"
@@ -19,12 +22,74 @@
         <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
             <Label Content="Year" />
             <dxe:ComboBoxEdit
+                x:Name="YearComboBox"
                 ItemsSource="{Binding Years}"
                 SelectedItem="{Binding SelectedYear}"
                 DisplayMember="Value"
                 IsTextEditable="False"
                 NullText="Choose year"
-                Width="250" />
+                Width="250">
+                <dxmvvm:Interaction.Behaviors>
+                    <dxmvvm:EventToCommand EventName="SelectedIndexChanged"
+                                           Command="{Binding HandleYearChangedCommand}" />
+                </dxmvvm:Interaction.Behaviors>
+            </dxe:ComboBoxEdit>
         </StackPanel>
+
+        <dxg:GridControl Grid.Row="1"
+                         Margin="0,20,0,0"
+                         ShowBorder="False"
+                         ItemsSource="{Binding Treasuries}">
+            <dxg:GridControl.View>
+                <dxg:TableView
+                    AllowBestFit="True"
+                    AllowGrouping="True"
+                    AllowScrollAnimation="False"
+                    AutoWidth="True"
+                    AllowCellMerge="True"
+                    NavigationStyle="Row"
+                    ShowGroupedColumns="False">
+                    <!--<dxg:TableView.RowCellMenuCustomizations>
+                        <dxb:BarButtonItem Content="Copy CUSIP"
+                                           Glyph="{dx:DXImage 'SvgImages/Outlook Inspired/Copy.svg'}"
+                                           CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=dxg:GridControl}, Path=SelectedItem.(model:Treasury.Cusip)}"
+                                           Command="ApplicationCommands.Copy" />
+                        <dxb:BarItemLinkSeparator />
+                        <dxb:BarButtonItem Content="Save to Investments..."
+                                           Command="{Binding Path=(attachedProperties:GridControlProperties.RowCellMenuCommand), RelativeSource={RelativeSource AncestorType={x:Type dxg:GridControl}}}"
+                                           Glyph="{dx:DXImage 'SvgImages/Business Objects/BO_Opportunity.svg'}" />
+                    </dxg:TableView.RowCellMenuCustomizations>-->
+                </dxg:TableView>
+            </dxg:GridControl.View>
+
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn
+                    Binding="{Binding Path=(model:Treasury.Cusip)}"
+                    Header="CUSIP"
+                    ReadOnly="True" />
+                <dxg:GridColumn
+                    Binding="{Binding Path=(model:Treasury.SecurityTerm)}"
+                    Header="Term"
+                    SortFieldName="TermSpan"
+                    ReadOnly="True" />
+                <dxg:GridColumn
+                    Binding="{Binding Path=(model:Treasury.AuctionDate)}"
+                    Header="Auction Date"
+                    ReadOnly="True" />
+                <dxg:GridColumn
+                    Binding="{Binding Path=(model:Treasury.IssueDate)}"
+                    Header="Issue Date"
+                    ReadOnly="True" />
+                <dxg:GridColumn
+                    Binding="{Binding Path=(model:Treasury.MaturityDate), FallbackValue=''}"
+                    Header="Maturity Date"
+                    ReadOnly="True" />
+                <dxg:GridColumn
+                    Binding="{Binding Path=(model:Treasury.Type)}"
+                    GroupIndex="0"
+                    Header="Type"
+                    ReadOnly="True" />
+            </dxg:GridControl.Columns>
+        </dxg:GridControl>
     </Grid>
 </UserControl>

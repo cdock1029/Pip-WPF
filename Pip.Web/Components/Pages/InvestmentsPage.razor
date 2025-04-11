@@ -1,0 +1,35 @@
+﻿@page "/investments"
+@using System.Diagnostics
+
+@attribute [StreamRendering]
+
+@inject PipDbContext DbContext
+@inject InvestmentPageState PageState
+
+<PageTitle>Investments</PageTitle>
+<h1>Investments</h1>
+
+<DxLoadingPanel Visible="PageState.Investments is null" IsContentBlocked="true" ApplyBackgroundShading="true" IndicatorAreaVisible="false">
+    <div class="flex items-start">
+    <InvestmentsGrid Investments="@PageState.Investments"/>
+    </div>
+</DxLoadingPanel>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        Debug.WriteLine($"PageState investments: {PageState.Investments}");
+        PageState.Investments ??= await Load();
+    }
+
+    private async Task<List<Investment>> Load()
+    { 
+        return await DbContext.Investments.ToListAsync();
+    }
+
+
+    public class InvestmentPageState
+    {
+        public List<Investment>? Investments { get; set; }
+    }
+}
