@@ -35,7 +35,7 @@
     <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.3" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.4" />
     <PackageVersion Include="Microsoft.SemanticKernel" Version="1.40.1" />
-    <PackageVersion Include="Microsoft.SemanticKernel.Abstractions" Version="1.45.0" />
+    <PackageVersion Include="Microsoft.SemanticKernel.Abstractions" Version="1.46.0" />
     <PackageVersion Include="Microsoft.SemanticKernel.Connectors.HuggingFace" Version="1.40.1-preview" />
     <PackageVersion Include="Microsoft.SemanticKernel.Connectors.OpenAI" Version="1.40.1" />
     <PackageVersion Include="Microsoft.SemanticKernel.Connectors.AzureAIInference" Version="1.40.1-beta" />
@@ -50,17 +50,17 @@
     <PackageVersion Include="System.Text.Json" Version="9.0.4" />
     <PackageVersion Include="System.Formats.Asn1" Version="9.0.4" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageVersion Include="DevExpress.Images" Version="24.2.6" />
+    <PackageVersion Include="DevExpress.Images" Version="25.1.1-alpha" />
     <PackageVersion Include="DevExpress.Mvvm.CodeGenerators" Version="22.1.1" />
-    <PackageVersion Include="DevExpress.Wpf.Accordion" Version="24.2.6" />
-    <PackageVersion Include="DevExpress.Wpf.Controls" Version="24.2.6" />
-    <PackageVersion Include="DevExpress.Wpf.Core" Version="24.2.6" />
-    <PackageVersion Include="Devexpress.Wpf.Docking" Version="24.2.6" />
-    <PackageVersion Include="DevExpress.Wpf.Grid" Version="24.2.6" />
-    <PackageVersion Include="devexpress.wpf.propertygrid" Version="24.2.6" />
-    <PackageVersion Include="DevExpress.Wpf.Ribbon" Version="24.2.6" />
-    <PackageVersion Include="DevExpress.Wpf.ThemesLW" Version="24.2.6" />
-    <PackageVersion Include="DevExpress.Blazor" Version="24.2.6" />
+    <PackageVersion Include="DevExpress.Wpf.Accordion" Version="25.1.1-alpha" />
+    <PackageVersion Include="DevExpress.Wpf.Controls" Version="25.1.1-alpha" />
+    <PackageVersion Include="DevExpress.Wpf.Core" Version="25.1.1-alpha" />
+    <PackageVersion Include="Devexpress.Wpf.Docking" Version="25.1.1-alpha" />
+    <PackageVersion Include="DevExpress.Wpf.Grid" Version="25.1.1-alpha" />
+    <PackageVersion Include="devexpress.wpf.propertygrid" Version="25.1.1-alpha" />
+    <PackageVersion Include="DevExpress.Wpf.Ribbon" Version="25.1.1-alpha" />
+    <PackageVersion Include="DevExpress.Wpf.ThemesLW" Version="25.1.1-alpha" />
+    <PackageVersion Include="DevExpress.Blazor" Version="25.1.1-alpha" />
     <PackageVersion Include="JetBrains.Annotations" Version="2025.1.0-eap1" />
     <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="1.11.2" />
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.11.2" />

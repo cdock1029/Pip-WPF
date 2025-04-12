@@ -27,8 +27,7 @@ public partial class App
             base.OnStartup(e);
 
             CompatibilitySettings.UseLightweightThemes = true;
-            //ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win10System.Name;
-            ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
+            ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11SystemColors.Name;
 
             Theme.CachePaletteThemes = true;
             Theme.RegisterPredefinedPaletteThemes();
