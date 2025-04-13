@@ -23,6 +23,7 @@
     WindowStartupLocation="CenterScreen"
     UseLayoutRounding="True"
     SnapsToDevicePixels="True"
+    ShowLeftPanel="True"
     mc:Ignorable="d"
     dx:DXSerializer.Enabled="True"
     dx:WindowRestoreLayoutOptions.AllowRestoreStateForDisplayedWindow="True">
@@ -48,7 +49,7 @@
         <Style TargetType="{x:Type Image}">
             <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
         </Style>
-        <dxmvvm:ObjectToObjectConverter x:Key="PanelMinWidthConverter" DefaultTarget="130">
+        <dxmvvm:ObjectToObjectConverter x:Key="PanelMinWidthConverter" DefaultTarget="220">
             <dxmvvm:MapItem Source="False" Target="20" />
         </dxmvvm:ObjectToObjectConverter>
     </dx:ThemedWindow.Resources>
@@ -159,95 +160,76 @@
         </Grid>
     </dx:ThemedWindow.HeaderItems>
 
+    <dx:ThemedWindow.LeftPanelContent>
 
-    <DockPanel>
-        <dxdo:DockLayoutManager ViewStyle="Default">
-            <dxdo:LayoutGroup>
-                <dxdo:LayoutGroup.Resources>
-                    <Style TargetType="{x:Type dxdo:LayoutPanel}">
-                        <Setter Property="AllowClose" Value="False" />
-                        <Setter Property="AllowFloat" Value="False" />
-                        <Setter Property="ShowPinButton" Value="False" />
-                        <Setter Property="ShowBorder" Value="False" />
-                        <Setter Property="ShowCaption" Value="False" />
-                    </Style>
-                </dxdo:LayoutGroup.Resources>
+        <dxa:AccordionControl
+            x:Name="NavAccordion"
+            native:WindowChrome.IsHitTestVisibleInChrome="True"
+            Margin="5,0,0,0"
+            MinWidth="{Binding RelativeSource={RelativeSource Self}, Path=IsExpanded, Converter={StaticResource PanelMinWidthConverter}}"
+            CompactNavigation="False"
+            IsCollapseButtonVisible="True"
+            CollapsedItemDisplayMode="ContentAndGlyph"
+            SummaryItemGlyph="{dx:DXImage 'SvgImages/Icon Builder/Actions_NavigationBar.svg'}"
+            SummaryItemGlyphSize="16,16"
+            SummaryItemHeader="Navigation"
+            CollapsedItemClickAction="Select"
+            ExpandItemOnHeaderClick="False"
+            ShowPopupOnHover="True"
+            RootItemExpandButtonPosition="None"
+            RootItemDisplayMode="Group"
+            ViewMode="Accordion"
+            ItemsSource="{Binding Routes}"
+            SelectedItem="{Binding SelectedRoute, Mode=TwoWay}"
+            AutoExpandAllItems="True">
 
-                <dxdo:LayoutPanel
-                    ShowBorder="False"
-                    AllowSizing="{Binding ElementName=NavAccordion, Path=IsExpanded}"
-                    ItemWidth="{Binding ElementName=NavAccordion, Mode=TwoWay, Path=IsExpanded, Converter={utils:BoolToWidthConverter StartupWidth=220}}"
-                    MinWidth="{Binding ElementName=NavAccordion, Path=IsExpanded, Converter={StaticResource PanelMinWidthConverter}}"
-                    MaxWidth="400">
-                    <dxa:AccordionControl
-                        x:Name="NavAccordion"
-                        CompactNavigation="False"
-                        IsCollapseButtonVisible="True"
-                        CollapsedItemDisplayMode="ContentAndGlyph"
-                        SummaryItemGlyph="{dx:DXImage 'SvgImages/Icon Builder/Actions_NavigationBar.svg'}"
-                        SummaryItemGlyphSize="16,16"
-                        SummaryItemHeader="Navigation"
-                        CollapsedItemClickAction="Select"
-                        ExpandItemOnHeaderClick="False"
-                        ShowPopupOnHover="True"
-                        RootItemExpandButtonPosition="None"
-                        RootItemDisplayMode="Group"
-                        ViewMode="Accordion"
-                        ItemsSource="{Binding Routes}"
-                        SelectedItem="{Binding SelectedRoute, Mode=TwoWay}"
-                        AutoExpandAllItems="True">
+            <dxmvvm:Interaction.Behaviors>
+                <dxmvvm:EventToCommand EventName="SelectedItemChanged"
+                                       Command="{Binding NavigateToSelectedCommand}" />
+            </dxmvvm:Interaction.Behaviors>
 
-                        <dxmvvm:Interaction.Behaviors>
-                            <dxmvvm:EventToCommand EventName="SelectedItemChanged"
-                                                   Command="{Binding NavigateToSelectedCommand}" />
-                        </dxmvvm:Interaction.Behaviors>
+            <dxa:AccordionControl.ItemContainerStyle>
+                <Style TargetType="{x:Type dxa:AccordionItem}">
+                    <d:Style.DataContext>
+                        <x:Type Type="shared:IPipRoute" />
+                    </d:Style.DataContext>
+                    <Setter Property="Header" Value="{Binding Title}" />
+                    <Setter Property="Glyph" Value="{Binding Image}" />
+                    <Setter Property="FontSize" Value="14" />
+                    <Setter Property="FontWeight" Value="SemiBold" />
 
-                        <dxa:AccordionControl.ItemContainerStyle>
-                            <Style TargetType="{x:Type dxa:AccordionItem}">
-                                <d:Style.DataContext>
-                                    <x:Type Type="shared:IPipRoute" />
-                                </d:Style.DataContext>
-                                <Setter Property="Header" Value="{Binding Title}" />
-                                <Setter Property="Glyph" Value="{Binding Image}" />
-                                <Setter Property="FontSize" Value="14" />
-                                <Setter Property="FontWeight" Value="SemiBold" />
+                    <Setter Property="GlyphTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <Image Height="18" Width="18" Source="{Binding}" Margin="6,0,8,0" />
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <DataTrigger
+                            Binding="{DXBinding '@s.($dx:LightweightThemeManager.CurrentTheme).Name.Contains(`Win11`)'}"
+                            Value="True">
+                            <Setter Property="GlyphTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <Image Height="20" Width="20" Source="{Binding}" Margin="6,4" />
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </dxa:AccordionControl.ItemContainerStyle>
+        </dxa:AccordionControl>
+    </dx:ThemedWindow.LeftPanelContent>
 
-                                <Setter Property="GlyphTemplate">
-                                    <Setter.Value>
-                                        <DataTemplate>
-                                            <Image Height="18" Width="18" Source="{Binding}" Margin="6,0,8,0" />
-                                        </DataTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                                <Style.Triggers>
-                                    <DataTrigger
-                                        Binding="{DXBinding '@s.($dx:LightweightThemeManager.CurrentTheme).Name.Contains(`Win11`)'}"
-                                        Value="True">
-                                        <Setter Property="GlyphTemplate">
-                                            <Setter.Value>
-                                                <DataTemplate>
-                                                    <Image Height="20" Width="20" Source="{Binding}" Margin="6,4" />
-                                                </DataTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </dxa:AccordionControl.ItemContainerStyle>
-
-                    </dxa:AccordionControl>
-                </dxdo:LayoutPanel>
-                <dxdo:LayoutPanel
-                    FocusManager.IsFocusScope="True"
-                    Background="{x:Null}"
-                    ShowBorder="False">
-                    <dxwui:NavigationFrame AllowMerging="True" NavigationCacheMode="Required" AnimationType="None">
-                        <dxmvvm:Interaction.Behaviors>
-                            <navigation:FrameNavigationService />
-                        </dxmvvm:Interaction.Behaviors>
-                    </dxwui:NavigationFrame>
-                </dxdo:LayoutPanel>
-            </dxdo:LayoutGroup>
-        </dxdo:DockLayoutManager>
-    </DockPanel>
+    <dxwui:NavigationFrame AllowMerging="True"
+                           NavigationCacheMode="Required"
+                           AnimationType="None"
+                           Margin="5, 20, 5,5"
+                           FocusManager.IsFocusScope="True">
+        <dxmvvm:Interaction.Behaviors>
+            <navigation:FrameNavigationService />
+        </dxmvvm:Interaction.Behaviors>
+    </dxwui:NavigationFrame>
 </dx:ThemedWindow>
