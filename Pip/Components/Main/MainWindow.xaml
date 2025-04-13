@@ -23,7 +23,7 @@
     SnapsToDevicePixels="True"
     ShowLeftPanel="True"
     Title="TreasuryDirector"
-    TitleAlignment="Left"
+    TitleAlignment="Center"
     mc:Ignorable="d"
     dx:DXSerializer.Enabled="True"
     dx:WindowRestoreLayoutOptions.AllowRestoreStateForDisplayedWindow="True">
@@ -56,7 +56,7 @@
 
     <dx:ThemedWindow.ToolbarItems>
         <dxb:MainMenuControl VerticalAlignment="Center" ShowBackground="False">
-            
+
             <dxb:BarSubItem Content="_File">
                 <dxb:BarButtonItem x:Name="BtnNew" Content="_New" Glyph="{dx:DXImage Image=New_32x32.png}"
                                    Command="{Binding ShowFormCommand}" />
@@ -75,8 +75,6 @@
                 <dxb:BarButtonItem x:Name="BtnCopy" Content="_Copy" Glyph="{dx:DXImage Image=Copy_32x32.png}" />
                 <dxb:BarButtonItem x:Name="BtnPaste" Content="_Paste" Glyph="{dx:DXImage Image=Paste_32x32.png}" />
             </dxb:BarSubItem>
-            <dxb:BarItemSeparator />
-            <dxb:BarSubItem />
         </dxb:MainMenuControl>
     </dx:ThemedWindow.ToolbarItems>
 
