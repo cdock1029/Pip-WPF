@@ -3,7 +3,6 @@ using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using DevExpress.Xpf.Core.Native;
 using Pip.UI.Components.Auctions;
-using Pip.UI.Components.Details;
 using Pip.UI.Components.Historical;
 using Pip.UI.Components.Home;
 using Pip.UI.Components.Investments;
@@ -16,17 +15,17 @@ namespace Pip.UI.Components.Main;
 [GenerateViewModel]
 public partial class MainViewModel : PipViewModel
 {
-    [GenerateProperty] private IPipRoute _selectedRoute;
+    [GenerateProperty] private IPipRoute? _selectedRoute;
 
     public MainViewModel(InvestmentsViewModel investmentsViewModel,
         SearchViewModel searchViewModel,
         AuctionsViewModel auctionsViewModel,
         HistoricalViewModel historicalViewModel,
-        DetailsViewModel detailsViewModel,
+        //DetailsViewModel detailsViewModel,
         HomeViewModel homeViewModel)
     {
         SearchViewModel = searchViewModel;
-        DetailsViewModel = detailsViewModel;
+        //DetailsViewModel = detailsViewModel;
         InvestmentsViewModel = investmentsViewModel;
         HomeViewModel = homeViewModel;
         AuctionsViewModel = auctionsViewModel;
@@ -40,7 +39,8 @@ public partial class MainViewModel : PipViewModel
     public HomeViewModel HomeViewModel { get; }
     public InvestmentsViewModel InvestmentsViewModel { get; }
     public SearchViewModel SearchViewModel { get; }
-    public DetailsViewModel DetailsViewModel { get; }
+
+    //public DetailsViewModel DetailsViewModel { get; }
     public AuctionsViewModel AuctionsViewModel { get; }
     public HistoricalViewModel HistoricalViewModel { get; }
 
@@ -67,7 +67,7 @@ public partial class MainViewModel : PipViewModel
     [GenerateCommand]
     private void NavigateToSelected()
     {
-        NavigationService.Navigate(SelectedRoute.View, SelectedRoute);
+        if (SelectedRoute != null) NavigationService.Navigate(SelectedRoute.View, SelectedRoute);
     }
 
     private void ReceiveAfterInvestmentMessage(AfterInsertInvestmentMessage msg)

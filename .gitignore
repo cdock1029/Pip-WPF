@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 /Td/wwwroot/css/tailwind.output.css
+/Pip.Web/wwwroot/css/tailwind.output.css

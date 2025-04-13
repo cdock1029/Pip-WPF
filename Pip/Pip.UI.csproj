@@ -8,17 +8,12 @@
         <DebugType>pdbonly</DebugType>
         <IncludeNativeLibrariesForSelfExtract>false</IncludeNativeLibrariesForSelfExtract>
         <IncludeAllContentForSelfExtract>false</IncludeAllContentForSelfExtract>
-        <ApplicationIcon>Assets\cat.ico</ApplicationIcon>
         <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
         <PublishReadyToRun>true</PublishReadyToRun>
+        <ApplicationIcon>Assets\coin.ico</ApplicationIcon>
     </PropertyGroup>
     <ItemGroup>
-        <None Remove="Assets\cat.ico" />
-    </ItemGroup>
-    <ItemGroup>
-        <Content Include="Assets\cat.ico">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
+      <Content Include="Assets\coin.ico" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="CommunityToolkit.Mvvm" />
