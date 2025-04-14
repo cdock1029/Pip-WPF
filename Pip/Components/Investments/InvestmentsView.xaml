@@ -15,14 +15,14 @@
     d:DataContext="{d:DesignInstance Type=investments:InvestmentsViewModel}"
     d:DesignHeight="400"
     d:DesignWidth="900"
-    mc:Ignorable="d"
-    Loaded="{DXEvent Handler='LoadAsync()'}">
+    mc:Ignorable="d">
 
     <dxdo:DockLayoutManager>
         <dxdo:LayoutGroup Orientation="Vertical">
             <dxdo:DocumentGroup SelectedTabIndex="0" ShowDropDownButton="False">
                 <dxdo:DocumentPanel Caption="Investments" x:Name="InvestmentsTab" ShowCloseButton="False">
                     <dxg:GridControl x:Name="InvestmentsGrid"
+                                     ShowLoadingPanel="{Binding Investments, Converter={StaticResource ObjectToBooleanConverterInverse}}"
                                      AutoExpandAllGroups="True"
                                      DesignTimeDataObjectType="investments:InvestmentItemViewModel"
                                      SelectionMode="Row"
@@ -36,14 +36,13 @@
                         </dxmvvm:Interaction.Behaviors>
                         <dxg:GridControl.View>
                             <dxg:TableView
+                                x:Name="InvestmentsGridTable"
                                 AllowBestFit="True"
                                 AllowGrouping="True"
                                 AllowScrollAnimation="True"
                                 NewItemRowPosition="None"
-
                                 ShowUpdateRowButtons="Never"
                                 EditFormShowMode="Dialog"
-
                                 AutoWidth="True"
                                 IsTotalSummaryMenuEnabled="True"
                                 ShowGroupedColumns="True"
@@ -56,7 +55,7 @@
                                                        Glyph="{dx:DXImage 'SvgImages/Outlook Inspired/Delete.svg'}">
                                         <dxmvvm:Interaction.Behaviors>
                                             <dxmvvm:ConfirmationBehavior
-                                                Command="{x:Static dxg:GridCommands.DeleteFocusedRow}"
+                                                Command="{Binding ElementName=InvestmentsGridTable, Path=Commands.DeleteFocusedRow}"
                                                 EnableConfirmationMessage="True"
                                                 MessageIcon="Exclamation"
                                                 MessageButton="YesNo"
@@ -70,7 +69,7 @@
                             <KeyBinding Key="Delete">
                                 <dxmvvm:Interaction.Behaviors>
                                     <dxmvvm:ConfirmationBehavior
-                                        Command="{x:Static dxg:GridCommands.DeleteFocusedRow}"
+                                        Command="{Binding ElementName=InvestmentsGridTable, Path=Commands.DeleteFocusedRow}"
                                         EnableConfirmationMessage="True"
                                         MessageIcon="Exclamation"
                                         MessageButton="YesNo"

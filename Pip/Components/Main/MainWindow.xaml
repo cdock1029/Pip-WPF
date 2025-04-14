@@ -56,7 +56,6 @@
 
     <dx:ThemedWindow.ToolbarItems>
         <dxb:MainMenuControl VerticalAlignment="Center" ShowBackground="False">
-
             <dxb:BarSubItem Content="_File">
                 <dxb:BarButtonItem x:Name="BtnNew" Content="_New" Glyph="{dx:DXImage Image=New_32x32.png}"
                                    Command="{Binding ShowFormCommand}" />
@@ -227,10 +226,14 @@
     <dxwui:NavigationFrame AllowMerging="True"
                            NavigationCacheMode="Required"
                            AnimationType="None"
+                           AnimationDelay="0:0:0.010"
+                           AnimationSpeedRatio="2"
                            Margin="5, 20, 5,5"
                            FocusManager.IsFocusScope="True">
         <dxmvvm:Interaction.Behaviors>
             <navigation:FrameNavigationService />
+            <dxmvvm:EventToCommand EventName="ContentRendered"
+                                   Command="{Binding OnNavigationFrameContentRenderedCommand}" />
         </dxmvvm:Interaction.Behaviors>
     </dxwui:NavigationFrame>
 </dx:ThemedWindow>

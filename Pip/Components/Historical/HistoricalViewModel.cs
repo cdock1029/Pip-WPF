@@ -8,47 +8,41 @@ using Pip.UI.Components.Shared;
 namespace Pip.UI.Components.Historical;
 
 [GenerateViewModel]
-// ReSharper disable once PartialTypeWithSinglePart
 public partial class HistoricalViewModel(ITreasuryDataProvider treasuryDataProvider) : PipViewModel, IPipRoute
 {
+    [GenerateProperty] private Year? _selectedYear;
+
+    [GenerateProperty] private ObservableCollection<Treasury>? _treasuries = [];
+
+    [GenerateProperty] private ObservableCollection<Year> _years = [];
     public string View => nameof(HistoricalView);
     public string Title => "Historical Data";
     public Uri? Image { get; } = DXImageHelper.GetImageUri("SvgImages/Business Objects/BO_Audit_ChangeHistory.svg");
 
-    [GenerateProperty] private Year? _selectedYear;
-
-    [GenerateProperty] private ObservableCollection<Year> _years = [];
-
-    [GenerateProperty] private ObservableCollection<Treasury>? _treasuries;
-
-    [GenerateProperty] private bool _isLoading;
-
-    public override void Load()
+    public override async Task LoadAsync()
     {
         if (Years.Any()) return;
 
-        foreach (int i in GenerateYears()) Years.Add(new Year(i));
+        await Dispatcher.InvokeAsync(() =>
+        {
+            foreach (int i in GenerateYears()) Years.Add(new Year(i));
+        });
     }
 
     [GenerateCommand]
     public async Task HandleYearChanged()
     {
-        if (SelectedYear is not null)
-        {
-            IsLoading = true;
-            Treasuries = [];
+        if (SelectedYear == null) return;
 
-            IEnumerable<Treasury>? treasuries =
-                await treasuryDataProvider.AnnouncementsResultsSearch(SelectedYear.Range.start, SelectedYear.Range.end);
+        Treasuries = null;
 
-            await Dispatcher.InvokeAsync(() =>
-            {
-                IsLoading = false;
-                if (treasuries is null) return;
-                foreach (Treasury treasury in treasuries)
-                    Treasuries.Add(treasury);
-            });
-        }
+        IEnumerable<Treasury>? treasuries =
+            await treasuryDataProvider.AnnouncementsResultsSearch(SelectedYear.Range.start, SelectedYear.Range.end);
+
+        Treasuries = [];
+        if (treasuries is null) return;
+            foreach (Treasury treasury in treasuries)
+                Treasuries.Add(treasury);
     }
 
     private static IEnumerable<int> GenerateYears()

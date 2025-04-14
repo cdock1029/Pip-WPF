@@ -17,10 +17,11 @@ public partial class AuctionsViewModel(ITreasuryDataProvider treasuryDataProvide
 
     [GenerateProperty] private Treasury? _selectedTreasuryUpcoming;
 
-    [GenerateProperty] private IEnumerable<Treasury> _treasuriesRecent = [];
+    [GenerateProperty] private IEnumerable<Treasury>? _treasuriesRecent;
 
-    [GenerateProperty] private IEnumerable<Treasury> _treasuriesUpcoming = [];
+    [GenerateProperty] private IEnumerable<Treasury>? _treasuriesUpcoming;
 
+    [GenerateProperty] private bool _isLoading;
 
     public DetailsViewModel DetailsViewModel => detailsViewModel;
 
@@ -33,34 +34,30 @@ public partial class AuctionsViewModel(ITreasuryDataProvider treasuryDataProvide
 
     public override async Task LoadAsync()
     {
-        Task<(IEnumerable<Treasury>?, string)>[] tasks = [LoadRecent(), LoadUpcoming()];
+        if (TreasuriesRecent != null && TreasuriesRecent.Any() && TreasuriesUpcoming != null &&
+            TreasuriesUpcoming.Any()) return;
 
+        await Dispatcher.InvokeAsync(() => IsLoading = true);
 
-        await foreach (Task<(IEnumerable<Treasury>?, string)> task in Task.WhenEach(tasks).ConfigureAwait(false))
-        {
-            (IEnumerable<Treasury>? treasuries, string name) = task.Result;
-            switch (name)
-            {
-                case "recent":
-                    Dispatcher.BeginInvoke(() => { TreasuriesRecent = treasuries ?? []; });
-                    break;
-                case "upcoming":
-                    Dispatcher.BeginInvoke(() => { TreasuriesUpcoming = treasuries ?? []; });
-                    break;
-            }
-        }
+        await Task.WhenAll(LoadRecent(), LoadUpcoming());
+
+        await Dispatcher.InvokeAsync(() => IsLoading = false);
     }
 
-    private async Task<(IEnumerable<Treasury>?, string)> LoadRecent()
+    private async Task LoadRecent()
     {
         IEnumerable<Treasury>? recent = await treasuryDataProvider.GetRecentAsync().ConfigureAwait(false);
-        return (recent, "recent");
+
+        await Task.Delay(2000);
+
+        await Dispatcher.InvokeAsync(() => TreasuriesRecent = recent ?? []);
     }
 
-    private async Task<(IEnumerable<Treasury>?, string)> LoadUpcoming()
+    private async Task LoadUpcoming()
     {
         IEnumerable<Treasury>? upcoming = await treasuryDataProvider.GetUpcomingAsync().ConfigureAwait(false);
-        return (upcoming, "upcoming");
+
+        await Dispatcher.InvokeAsync(() => TreasuriesUpcoming = upcoming ?? []);
     }
 
 

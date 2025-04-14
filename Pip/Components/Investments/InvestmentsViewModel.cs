@@ -15,6 +15,7 @@ namespace Pip.UI.Components.Investments;
 public partial class InvestmentsViewModel : PipViewModel, IPipRoute
 {
     private readonly PipDbContext _dbContext;
+    [GenerateProperty] private ObservableCollection<InvestmentItemViewModel>? _investments;
     [GenerateProperty] private bool _isWaitIndicatorVisible;
     [GenerateProperty] private InvestmentItemViewModel? _selectedInvestment;
 
@@ -26,8 +27,6 @@ public partial class InvestmentsViewModel : PipViewModel, IPipRoute
         Messenger.Default.Register<AfterInsertInvestmentMessage>(this, Receive);
     }
 
-    public ObservableCollection<InvestmentItemViewModel> Investments { get; } = [];
-
     public DetailsViewModel DetailsViewModel { get; }
 
     public string View => nameof(InvestmentsView);
@@ -38,21 +37,24 @@ public partial class InvestmentsViewModel : PipViewModel, IPipRoute
 
     public override void Load()
     {
-        if (Investments.Any()) return;
+        if (Investments != null && Investments.Any()) return;
 
+        Investments ??= [];
         foreach (Investment investment in _dbContext.Investments.AsEnumerable())
             Investments.Add(new InvestmentItemViewModel(investment));
     }
 
     public override async Task LoadAsync()
     {
-        if (Investments.Any()) return;
+        if (Investments != null && Investments.Any()) return;
 
-        IEnumerable<Investment> inv = await Task.Run(() => _dbContext.Investments.AsEnumerable()).ConfigureAwait(false);
+        IEnumerable<Investment> investments =
+            await Task.Run(() => _dbContext.Investments.AsEnumerable()).ConfigureAwait(false);
 
         Dispatcher.InvokeAsync(() =>
         {
-            foreach (Investment investment in inv)
+            Investments ??= [];
+            foreach (Investment investment in investments)
                 Investments.Add(new InvestmentItemViewModel(investment));
         });
     }
@@ -61,17 +63,17 @@ public partial class InvestmentsViewModel : PipViewModel, IPipRoute
     {
         Dispatcher.InvokeAsync(async () =>
         {
-            await Task.Delay(1000);
-            Investments.Clear();
+            await Task.Delay(500);
+            Investments?.Clear();
             await LoadAsync();
-            SelectedInvestment = Investments.FirstOrDefault(i => i.Id == message.Value.Id);
+            SelectedInvestment = Investments?.FirstOrDefault(i => i.Id == message.Value.Id);
         });
     }
 
     [GenerateCommand]
     private void DataSourceRefresh(DataSourceRefreshArgs args)
     {
-        Investments.Clear();
+        Investments?.Clear();
         Load();
     }
 
@@ -83,10 +85,8 @@ public partial class InvestmentsViewModel : PipViewModel, IPipRoute
 
         Investment inv = investmentItem.SyncToInvestment();
         if (args.IsNewItem)
-            //_treasuryDataProvider.Add(inv);
             _dbContext.Investments.Add(inv);
 
-        //_treasuryDataProvider.Save();
         _dbContext.SaveChanges();
     }
 
@@ -96,7 +96,6 @@ public partial class InvestmentsViewModel : PipViewModel, IPipRoute
         try
         {
             InvestmentItemViewModel? investmentItem = (InvestmentItemViewModel)args.Items.Single();
-            //_treasuryDataProvider.Delete(investmentItem.SyncToInvestment());
             _dbContext.Investments.Remove(investmentItem.SyncToInvestment());
             _dbContext.SaveChanges();
         }

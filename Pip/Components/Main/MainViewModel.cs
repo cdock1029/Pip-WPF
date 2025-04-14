@@ -70,6 +70,13 @@ public partial class MainViewModel : PipViewModel
         if (SelectedRoute != null) NavigationService.Navigate(SelectedRoute.View, SelectedRoute);
     }
 
+    [GenerateCommand]
+    private async Task OnNavigationFrameContentRendered()
+    {
+        if (SelectedRoute is PipViewModel vm)
+            await vm.LoadAsync();
+    }
+
     private void ReceiveAfterInvestmentMessage(AfterInsertInvestmentMessage msg)
     {
         SelectedRoute = InvestmentsViewModel;

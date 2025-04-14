@@ -11,6 +11,13 @@ public partial class MainWindow
         InitializeComponent();
 
         DataContext = mainViewModel;
+
+        Loaded += MainWindow_LoadedFocus;
+    }
+
+    private void MainWindow_LoadedFocus(object? sender, EventArgs e)
+    {
+        NavAccordion.Focus();
     }
 
     protected override void OnSourceInitialized(EventArgs e)

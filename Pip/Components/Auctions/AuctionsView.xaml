@@ -12,7 +12,6 @@
              xmlns:model="clr-namespace:Pip.Model;assembly=Pip.Model"
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
              mc:Ignorable="d"
-             Loaded="{DXEvent Handler='LoadAsync()'}"
              d:DataContext="{d:DesignInstance Type={x:Type auctions:AuctionsViewModel}}"
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -64,6 +63,7 @@
                 <dxdo:DocumentPanel Caption="Recent" x:Name="RecentTab">
                     <dxg:GridControl
                         Name="RecentGrid"
+                        ShowLoadingPanel="{Binding TreasuriesRecent, Converter={StaticResource ObjectToBooleanConverterInverse}}"
                         ItemsSource="{Binding TreasuriesRecent}"
                         SelectedItem="{Binding SelectedTreasuryRecent, Mode=TwoWay}"
                         attachedProperties:GridControlProperties.RowCellMenuCommand="{Binding SaveRecentToInvestmentsCommand}">
@@ -108,7 +108,7 @@
                         Name="UpcomingGrid"
                         ItemsSource="{Binding TreasuriesUpcoming}"
                         SelectedItem="{Binding SelectedTreasuryUpcoming}"
-                        
+
                         attachedProperties:GridControlProperties.RowCellMenuCommand="{Binding SaveUpcomingtToInvestmentsCommand}">
 
                         <dxg:GridControl.CommandBindings>
