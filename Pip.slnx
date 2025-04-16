@@ -5,8 +5,8 @@
   </Folder>
   <Project Path="Pip.DataAccess/Pip.DataAccess.csproj" />
   <Project Path="Pip.Model/Pip.Model.csproj" />
-  <Project Path="Pip.Web.Client/Pip.Web.Client.csproj" Id="a4635bbb-99c3-45a8-828b-ae5721727997" />
-  <Project Path="Pip.Web/Pip.Web.csproj" Id="d6092db9-b4f0-4bbb-92b1-f466078ee76d" />
+  <Project Path="Pip.Web/Pip.Web.Client/Pip.Web.Client.csproj" Id="13d4783f-f080-4f4f-adb4-22fde8ed0294" />
+  <Project Path="Pip.Web/Pip.Web/Pip.Web.csproj" Id="4a2920a7-fc9c-4a6c-82c8-5c3ccdcb8d20" />
   <Project Path="Pip/Pip.UI.csproj" />
   <Project Path="Td/Td.csproj" />
 </Solution>
