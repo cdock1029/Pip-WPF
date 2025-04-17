@@ -1,12 +1,13 @@
-﻿@rendermode InteractiveWebAssembly
-
+﻿
 <div class="navmenu">
     <input type="checkbox" title="Menu expand/collapse toggle" id="navmenu-toggle" class="navmenu-icon" />
     <label for="navmenu-toggle" class="navmenu-icon"><FluentIcon Value="@(new Icons.Regular.Size20.Navigation())" Color="Color.Fill" /></label>
     <nav class="sitenav" aria-labelledby="main-menu">
-        <FluentNavMenu Id="main-menu" Width="250" Collapsible="true" Title="Navigation menu" @bind-Expanded="expanded" CustomToggle="true">
+        <FluentNavMenu Id="main-menu" Width="250" Collapsible="true" Title="Navigation menu" @bind-Expanded="_expanded" CustomToggle="true">
             <FluentNavLink Href="/" Match="NavLinkMatch.All" Icon="@(new Icons.Regular.Size20.Home())" IconColor="Color.Accent">Home</FluentNavLink>
             <FluentNavLink Href="auctions" Tooltip="Auctions" Icon="@(new Icons.Regular.Size20.ClipboardTextEdit())" IconColor="Color.Accent">Auctions</FluentNavLink>
+            <FluentNavLink Href="previous" Tooltip="Historical Data" Icon="@(new Icons.Regular.Size20.Calendar())" IconColor="Color.Accent">Historical Data</FluentNavLink>
+            <FluentNavLink Href="investments" Tooltip="Investments" Icon="@(new Icons.Regular.Size20.ArrowTrendingLines())" IconColor="Color.Accent">Investments</FluentNavLink>
 
             <FluentNavLink Href="counter" Icon="@(new Icons.Regular.Size20.NumberSymbolSquare())" IconColor="Color.Accent">Counter</FluentNavLink>
             <FluentNavLink Href="weather" Icon="@(new Icons.Regular.Size20.WeatherPartlyCloudyDay())" IconColor="Color.Accent">Weather</FluentNavLink>
@@ -15,6 +16,5 @@
 </div>
 
 @code {
-    private bool expanded = true;
-
+    private bool _expanded = true;
 }

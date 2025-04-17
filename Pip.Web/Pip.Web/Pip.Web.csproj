@@ -13,14 +13,21 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="DevExpress.Blazor" />
+        <PackageReference Include="DevExpress.Blazor.Themes" />
+        <PackageReference Include="DevExpress.Blazor.Themes.Fluent" />
+
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" />
+
         <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" />
         <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" />
+
         <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+
     </ItemGroup>
 </Project>

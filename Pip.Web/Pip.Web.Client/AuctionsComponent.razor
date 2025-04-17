@@ -1,28 +1,12 @@
-﻿@rendermode @(new InteractiveWebAssemblyRenderMode(true))
+﻿@using Microsoft.FluentUI.AspNetCore.Components.Icons.Regular
 
-@* @if (Treasuries is null)
-{
-    <h2>Loading..</h2>
-}
-else
-{
-    <ul>
-    @foreach (TreasuryItemViewModel t in Treasuries)
-    {
-        <li @key="@t">@t.Cusip</li>
-    }
-    </ul>
-}
- *@
-
-@* <FluentTabs Id="tabs" @bind-ActiveTabId="_activeTabId" Style="flex:1;height:1px;overflow:scroll;padding-bottom:1rem;">
-
+<FluentTabs Id="tabs" @bind-ActiveTabId="_activeTabId" Style="flex:1;height:1px;overflow:scroll;padding-bottom:1rem;">
     <FluentTab Label="Recent" Id="tab-recent">
- *@
+
         <FluentDataGrid ItemKey="t => t.Cusip!" AutoFit="false" Items="Treasuries?.AsQueryable()" Loading="Treasuries is null">
             <TemplateColumn Width="100px" Align="Align.Center" Title="Details">
                 <div class="flex items-center justify-center">
-                    <FluentIcon Value="new Icons.Regular.Size20.Link()" OnClick="() => NavigateTreasuryItem(context)"/>
+                    <FluentIcon Value="new Size20.Link()" OnClick="() => NavigateTreasuryItem(context)"/>
                 </div>
             </TemplateColumn>
             <PropertyColumn Width="130px" Style="@Statics.GridFont" Property="@(p => p.Cusip)" Sortable="true"/>
@@ -33,20 +17,18 @@ else
             <PropertyColumn Width="200px" Style="@Statics.GridFont" Property="@(p => p.Term)" Title="Term" Sortable="true" SortBy="@Statics.TermSpanSort"/>
             <TemplateColumn Width="100px" Title="Save" Align="Align.Center">
                 <div class="flex items-center justify-center">
-                    <FluentIcon Title="@($"Save {context.Type} {context.Term}")" Value="new Icons.Regular.Size20.Save()" OnClick="() => AddInvestment(context)"/>
+                    <FluentIcon Title="@($"Save {context.Type} {context.Term}")" Value="new Size20.Save()" OnClick="() => AddInvestment(context)"/>
                 </div>
             </TemplateColumn>
         </FluentDataGrid>
-@* 
+
     </FluentTab>
 
     <FluentTab Label="Upcoming" Id="tab-upcoming">
-
         <FluentLabel Typo="Typography.PaneHeader" MarginBlock="default">Upcoming todo</FluentLabel>
-
     </FluentTab>
 
-</FluentTabs> *@
+</FluentTabs>
 
 
 @code {
