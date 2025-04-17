@@ -1,0 +1,50 @@
+﻿@page "/previous"
+@attribute [StreamRendering]
+@inject ITreasuryDataProvider TreasuryDataProvider
+
+<div class="investments-container" style="height:100%;display:flex;flex-direction:column;">
+    <FluentLabel Class="page-title" Typo="Typography.PageTitle" MarginBlock="default">
+        Previous Auctions
+    </FluentLabel>
+
+
+    <EditForm class="contents" FormName="Historical" Model="Model" Enhance OnSubmit="HandleSubmit">
+        <PreviousAuctionsComponent @rendermode="InteractiveWebAssembly"
+                                   Years="_years"
+                                   Treasuries="_treasuries"
+                                   SelectedYear="Model?.SelectedYear"/>
+    </EditForm>
+
+</div>
+
+@code {
+
+    //[SupplyParameterFromForm] int? SelectedYear { get; set; }
+    [SupplyParameterFromForm] HistoricalModel? Model { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Model ??= new HistoricalModel();
+    }
+
+    readonly List<int> _years = AppState.GetYears();
+
+    List<Treasury>? _treasuries;
+
+    async Task HandleSubmit(EditContext arg)
+    {
+        if (Model?.SelectedYear is null) return;
+
+        DateOnly start = new(Model.SelectedYear.Value, 1, 1);
+        DateOnly end = new(Model.SelectedYear.Value, 12, 31);
+
+        _treasuries = (await TreasuryDataProvider.AnnouncementsResultsSearch(start, end))?.ToList();
+        StateHasChanged();
+    }
+
+    class HistoricalModel
+    {
+        public int? SelectedYear { get; set; }
+    }
+
+}

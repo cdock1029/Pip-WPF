@@ -1,15 +1,62 @@
 /*! tailwindcss v4.1.4 | MIT License | https://tailwindcss.com */
 @layer properties;
 @layer theme, base, components, utilities;
+@layer theme {
+  :root, :host {
+    --spacing: 0.25rem;
+  }
+}
 @layer utilities {
   .static {
     position: static;
   }
+  .mx-3 {
+    margin-inline: calc(var(--spacing) * 3);
+  }
+  .mt-8 {
+    margin-top: calc(var(--spacing) * 8);
+  }
+  .mr-2 {
+    margin-right: calc(var(--spacing) * 2);
+  }
+  .mb-8 {
+    margin-bottom: calc(var(--spacing) * 8);
+  }
+  .ml-8 {
+    margin-left: calc(var(--spacing) * 8);
+  }
+  .contents {
+    display: contents;
+  }
   .flex {
     display: flex;
   }
+  .hidden {
+    display: none;
+  }
+  .hidden\! {
+    display: none !important;
+  }
+  .inline-flex {
+    display: inline-flex;
+  }
+  .h-full {
+    height: 100%;
+  }
+  .h-px {
+    height: 1px;
+  }
   .max-h-full {
     max-height: 100%;
+  }
+  .w-24 {
+    width: calc(var(--spacing) * 24);
+  }
+  .w-72 {
+    width: calc(var(--spacing) * 72);
+  }
+  .flex-auto {
+    flex: auto;
   }
   .flex-col {
     flex-direction: column;
@@ -17,11 +64,20 @@
   .items-center {
     align-items: center;
   }
+  .items-start {
+    align-items: flex-start;
+  }
   .justify-center {
     justify-content: center;
   }
+  .self-end {
+    align-self: flex-end;
+  }
   .overflow-y-hidden {
     overflow-y: hidden;
+  }
+  .px-1 {
+    padding-inline: calc(var(--spacing) * 1);
   }
   .tabular-nums {
     --tw-numeric-spacing: tabular-nums;

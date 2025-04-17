@@ -1,0 +1,34 @@
+﻿@page "/auctions"
+@attribute [StreamRendering]
+@inject ITreasuryDataProvider DataProvider
+
+<PageTitle>Auctions</PageTitle>
+
+
+<div class="flex max-h-full flex-col overflow-y-hidden">
+
+    <FluentLabel Class="page-title" Typo="Typography.PageTitle" MarginBlock="default">Auctions</FluentLabel>
+
+    <AuctionsComponent @rendermode="InteractiveWebAssembly" Treasuries="RecentTreasuries"/>
+
+</div>
+
+@code {
+
+    List<TreasuryItemViewModel>? RecentTreasuries { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        RecentTreasuries = (await DataProvider.GetRecentAsync())?.Select(t => new TreasuryItemViewModel
+        {
+            Cusip = t.Cusip,
+            AuctionDate = t.AuctionDate,
+            IssueDate = t.IssueDate,
+            MaturityDate = t.MaturityDate,
+            Type = t.Type,
+            Term = t.SecurityTerm
+        }).ToList();
+    }
+
+}

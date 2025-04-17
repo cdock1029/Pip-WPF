@@ -1,8 +1,10 @@
+using DevExpress.Blazor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Pip.DataAccess;
 using Pip.DataAccess.Services;
 using Pip.Web.Components;
+using Pip.Web.Services;
 using _Imports = Pip.Web.Client._Imports;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -10,7 +12,11 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
+
 builder.Services.AddFluentUIComponents();
+builder.Services.AddDevExpressBlazor(configure => configure.BootstrapVersion = BootstrapVersion.v5);
+
+builder.Services.AddMvc();
 
 builder.Services.AddMemoryCache();
 builder.Services
@@ -22,6 +28,8 @@ builder.Services.AddDbContextFactory<PipDbContext>(options =>
                          throw new InvalidOperationException("Connection string 'DatabaseConnection' not found."),
         b => b.MigrationsAssembly("Pip.Web"));
 });
+
+builder.Services.AddSingleton<AppState>();
 
 WebApplication app = builder.Build();
 

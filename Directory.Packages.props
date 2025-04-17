@@ -61,6 +61,8 @@
     <PackageVersion Include="DevExpress.Wpf.Ribbon" Version="25.1.1-alpha" />
     <PackageVersion Include="DevExpress.Wpf.ThemesLW" Version="25.1.1-alpha" />
     <PackageVersion Include="DevExpress.Blazor" Version="25.1.1-alpha" />
+    <PackageVersion Include="DevExpress.Blazor.Themes" Version="25.1.1-alpha" />
+    <PackageVersion Include="DevExpress.Blazor.Themes.Fluent" Version="25.1.1-alpha" />
     <PackageVersion Include="JetBrains.Annotations" Version="2025.1.0-eap1" />
     <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="1.11.2" />
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.11.2" />
