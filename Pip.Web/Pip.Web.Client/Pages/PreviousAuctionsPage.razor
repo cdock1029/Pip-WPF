@@ -1,8 +1,16 @@
-﻿
-    <DxGrid
+﻿@page "/previous"
+@rendermode InteractiveWebAssembly
+@inject ITreasuryDataProvider TreasuryDataProvider
+
+<div class="investments-container" style="height:100%;display:flex;flex-direction:column;">
+    <FluentLabel Class="page-title" Typo="Typography.PageTitle" MarginBlock="default">
+        Previous Auctions
+    </FluentLabel>
+
+     <DxGrid
         Id="previous-auctions-grid"
         KeyFieldNames="[nameof(Treasury.Cusip), nameof(Treasury.IssueDate)]"
-        Data="Treasuries"
+        Data="_treasuries"
         CssClass="flex h-px flex-auto"
         SizeMode="SizeMode.Small"
         ShowGroupPanel="true"
@@ -129,17 +137,8 @@
                                     Context="comboContext"
                                     Data="Years"
                                     @bind-Value="SelectedYear"
+                                    SelectedItemChanged="(int year) => Load(year)"
                                     NullText="Select Year"/>
-                                <input type="hidden" name="Model.SelectedYear" value="@SelectedYear"/>
-                                <DxButton
-                                    @ref="_submitButtonRef"
-                                    Context="submitButtonContext"
-                                    disabled="@(SelectedYear is null || IsLoading)"
-                                    SubmitFormOnClick="true"
-                                    CssClass="ml-8!" RenderStyle="ButtonRenderStyle.Primary"
-                                    RenderStyleMode="ButtonRenderStyleMode.Contained">
-                                    Load
-                                </DxButton>
                             </div>
                         </Template>
                     </DxToolbarItem>
@@ -148,7 +147,7 @@
         </ToolbarTemplate>
     </DxGrid>
 
-    <DxLoadingPanel @bind-Visible="@IsLoading"
+    <DxLoadingPanel @bind-Visible="@_isLoading"
                     PositionTarget="#previous-auctions-grid"
                     IsContentBlocked="true"
                     ApplyBackgroundShading="true"
@@ -156,23 +155,47 @@
                     Text="Fetching Data..."/>
 
 
+</div>
 
-@code
-{
+@code {
 
-    [Parameter] public List<Treasury>? Treasuries { get; set; }
+    bool _isLoading;
 
-    [Parameter] public int? SelectedYear { get; set; }
+    public List<int> Years { get; } = Enumerable.Range(1997, DateTime.Now.Year - 1997 + 1).Reverse().ToList();
 
-    [Parameter] public bool IsLoading { get; set; }
+    public int? SelectedYear { get; set; }
 
-    [Parameter]
-    public List<int>? Years { get; set; } = null!;
-
-    DxButton? _submitButtonRef;
+    List<Treasury>? _treasuries;
 
 
-    //TODO: fix something wrong with custom sort first rows
+
+    async Task Load(int year)
+    {
+        //if (SelectedYear is null) return;
+
+        Console.WriteLine($"Load year: {year}, selected: {SelectedYear}");
+
+        await InvokeAsync(() =>
+        {
+            _treasuries = null;
+            _isLoading = true;
+            StateHasChanged();
+        });
+
+
+        DateOnly start = new(year, 1, 1);
+        DateOnly end = new(year, 12, 31);
+
+        IEnumerable<Treasury>? data = await TreasuryDataProvider.AnnouncementsResultsSearch(start, end);
+
+        await InvokeAsync(() =>
+        {
+            _treasuries = data?.ToList();
+            _isLoading = false;
+            StateHasChanged();
+        });
+    }
+
     private static void OnCustomSort(GridCustomSortEventArgs e)
     {
         switch (e.FieldName)
