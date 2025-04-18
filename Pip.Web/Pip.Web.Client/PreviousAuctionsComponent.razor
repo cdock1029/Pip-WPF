@@ -132,7 +132,6 @@
                                     NullText="Select Year"/>
                                 <input type="hidden" name="Model.SelectedYear" value="@SelectedYear"/>
                                 <DxButton
-                                    @ref="_submitButtonRef"
                                     Context="submitButtonContext"
                                     disabled="@(SelectedYear is null || IsLoading)"
                                     SubmitFormOnClick="true"
@@ -167,9 +166,7 @@
     [Parameter] public bool IsLoading { get; set; }
 
     [Parameter]
-    public List<int>? Years { get; set; } = null!;
-
-    DxButton? _submitButtonRef;
+    public List<int>? Years { get; set; }
 
 
     //TODO: fix something wrong with custom sort first rows
