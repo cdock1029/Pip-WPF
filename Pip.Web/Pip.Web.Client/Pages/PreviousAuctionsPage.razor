@@ -1,5 +1,5 @@
 ﻿@page "/previous"
-@rendermode InteractiveWebAssembly
+@attribute [StreamRendering]
 @inject ITreasuryDataProvider TreasuryDataProvider
 
 <div class="investments-container" style="height:100%;display:flex;flex-direction:column;">
@@ -7,7 +7,7 @@
         Previous Auctions
     </FluentLabel>
 
-     <DxGrid
+     @* <DxGrid
         Id="previous-auctions-grid"
         KeyFieldNames="[nameof(Treasury.Cusip), nameof(Treasury.IssueDate)]"
         Data="_treasuries"
@@ -145,14 +145,16 @@
                 </Items>
             </DxToolbar>
         </ToolbarTemplate>
-    </DxGrid>
+    </DxGrid> *@
 
-    <DxLoadingPanel @bind-Visible="@_isLoading"
+  @*   <DxLoadingPanel @bind-Visible="@_isLoading"
                     PositionTarget="#previous-auctions-grid"
                     IsContentBlocked="true"
                     ApplyBackgroundShading="true"
                     IndicatorAreaVisible="false"
-                    Text="Fetching Data..."/>
+                    Text="Fetching Data..."/> *@
+    
+    <PreviousAuctionsComponent @rendermode="@(new InteractiveWebAssemblyRenderMode(true))" Years="Years" Treasuries="_treasuries" SelectedYear="SelectedYear" IsLoading="_isLoading"/>
 
 
 </div>
@@ -161,18 +163,14 @@
 
     bool _isLoading;
 
-    public List<int> Years { get; } = Enumerable.Range(1997, DateTime.Now.Year - 1997 + 1).Reverse().ToList();
+    public static List<int>? Years { get; set; } = Enumerable.Range(1997, DateTime.Now.Year - 1997 + 1).Reverse().ToList();
 
     public int? SelectedYear { get; set; }
 
     List<Treasury>? _treasuries;
 
-
-
     async Task Load(int year)
     {
-        //if (SelectedYear is null) return;
-
         Console.WriteLine($"Load year: {year}, selected: {SelectedYear}");
 
         await InvokeAsync(() =>
