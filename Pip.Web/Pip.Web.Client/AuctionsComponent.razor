@@ -2,7 +2,7 @@
 <FluentTabs Id="tabs" @bind-ActiveTabId="_activeTabId" Style="flex:1;height:1px;overflow:scroll;padding-bottom:1rem;">
     <FluentTab Label="Recent" Id="tab-recent">
 
-        <FluentDataGrid ItemKey="t => t.Cusip!" AutoFit="false" Items="Treasuries?.AsQueryable()" Loading="Treasuries is null">
+        <FluentDataGrid DisplayMode="DataGridDisplayMode.Table" ItemKey="t => t.Cusip!" AutoFit="false" Items="Treasuries?.AsQueryable()" Loading="Treasuries is null">
             <TemplateColumn Width="100px" Align="Align.Center" Title="Details">
                 <div class="flex items-center justify-center">
                     <FluentIcon Value="new Size20.Link()" OnClick="() => NavigateTreasuryItem(context)"/>
