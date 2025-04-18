@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Pip.DataAccess;
 using Pip.DataAccess.Services;
+using Pip.Web.Client.ViewModels;
 using Pip.Web.Components;
-using Pip.Web.Services;
 using _Imports = Pip.Web.Client._Imports;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -29,7 +29,7 @@ builder.Services.AddDbContextFactory<PipDbContext>(options =>
         b => b.MigrationsAssembly("Pip.Web"));
 });
 
-builder.Services.AddSingleton<AppState>();
+builder.Services.AddSingleton<PreviousAuctionsViewModel>();
 
 WebApplication app = builder.Build();
 
@@ -53,5 +53,10 @@ app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(_Imports).Assembly);
+
+app.MapGet($"/api/{nameof(TreasuryDataProvider.AnnouncementsResultsSearch)}/{{start}}/{{end}}",
+    (DateOnly start, DateOnly end, ITreasuryDataProvider treasuryDataProvider) =>
+        treasuryDataProvider.AnnouncementsResultsSearch(start, end));
+
 
 app.Run();

@@ -16,6 +16,8 @@ public class AppState
 
         static List<int> GenerateYears()
         {
+            //var years = Enumerable.Range(1997, DateTime.Now.Year - 1997 + 1).Reverse();
+
             int currYear = DateTime.Now.Year;
             List<int> yrs = [];
             for (int i = currYear; i >= 1997; i--) yrs.Add(i);
