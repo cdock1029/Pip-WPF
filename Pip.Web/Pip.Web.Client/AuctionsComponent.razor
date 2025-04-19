@@ -1,5 +1,5 @@
 ﻿
-<FluentTabs Id="tabs" @bind-ActiveTabId="_activeTabId" Style="flex:1;height:1px;overflow:scroll;padding-bottom:1rem;">
+<FluentTabs Id="tabs" @bind-ActiveTabId="_activeTabId" Style="flex:1;height:1px;overflow:auto;padding-bottom:1rem;">
     <FluentTab Label="Recent" Id="tab-recent">
 
         <FluentDataGrid DisplayMode="DataGridDisplayMode.Table" ItemKey="t => t.Cusip!" AutoFit="false" Items="Treasuries?.AsQueryable()" Loading="Treasuries is null">
