@@ -1,5 +1,5 @@
 ﻿@page "/previous"
-@rendermode @(new InteractiveWebAssemblyRenderMode(false))
+@rendermode @(new InteractiveWebAssemblyRenderMode(true))
 @inject ITreasuryDataProvider TreasuryDataProvider
 
 <div class="investments-container" style="height:100%;display:flex;flex-direction:column;">
@@ -17,7 +17,11 @@
                         IndicatorAreaVisible="false"
                         Text="Fetching Data..."/>
                         
-        <PreviousAuctionsComponent Id="previous-auctions-grid" Treasuries="_treasuries" Years="Years" YearChangedCallback="Load" />
+        <PreviousAuctionsComponent @rendermode="@(new InteractiveWebAssemblyRenderMode(false))"
+                                   Id="previous-auctions-grid"
+                                   Treasuries="_treasuries"
+                                   Years="Years"
+                                   YearChangedCallback="Load" />
         
        
     </div>

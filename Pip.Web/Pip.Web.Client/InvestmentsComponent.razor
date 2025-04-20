@@ -85,8 +85,9 @@
     </TotalSummary>
 </DxGrid>
 
-<DxLoadingPanel Visible="Investments is null"
+<DxLoadingPanel Visible="Investments is null || !RendererInfo.IsInteractive"
                 ApplyBackgroundShading="true"
+                IndicatorAreaVisible="false"
                 PositionTarget="#investments-grid"/>
 
 
