@@ -51,7 +51,7 @@ public partial class InvestmentsViewModel : PipViewModel, IPipRoute
         IEnumerable<Investment> investments =
             await Task.Run(() => _dbContext.Investments.AsEnumerable()).ConfigureAwait(false);
 
-        Dispatcher.InvokeAsync(() =>
+        await Dispatcher.InvokeAsync(() =>
         {
             Investments ??= [];
             foreach (Investment investment in investments)
