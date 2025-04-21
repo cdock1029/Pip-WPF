@@ -1,5 +1,4 @@
 ﻿@page "/auctions"
-@attribute [StreamRendering]
 @inject ITreasuryDataProvider DataProvider
 
 <PageTitle>Auctions</PageTitle>
@@ -9,7 +8,7 @@
 
     <FluentLabel Class="page-title" Typo="Typography.PageTitle" MarginBlock="default">Auctions</FluentLabel>
 
-    <AuctionsComponent @rendermode="InteractiveWebAssembly" Treasuries="RecentTreasuries"/>
+    <AuctionsComponent Treasuries="RecentTreasuries"/>
 
 </div>
 

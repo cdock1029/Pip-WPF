@@ -4,6 +4,9 @@ using Pip.DataAccess.Services;
 using Pip.Web.Client.Services;
 
 WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
+
+builder.Services.AddMemoryCache();
+
 builder.Services.AddFluentUIComponents();
 
 builder.Services.AddDevExpressBlazor(configure => configure.BootstrapVersion = BootstrapVersion.v5);

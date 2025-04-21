@@ -13,6 +13,7 @@ public interface ITreasuryDataProvider
     void Save();
     void Update(Investment investment);
     IEnumerable<Investment> GetInvestments();
+    Task<List<Investment>> GetInvestmentsAsync();
     void Add(Investment investment);
     void Insert(Investment investment);
     void Delete(Investment investment);

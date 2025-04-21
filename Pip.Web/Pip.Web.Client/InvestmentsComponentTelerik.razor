@@ -1,0 +1,41 @@
+﻿@using Telerik.DataSource
+<TelerikGrid
+    Width="100%"
+    Data="@Investments"
+    Pageable="false"
+    Sortable="true"
+    Groupable="true"
+    OnStateInit="@((GridStateEventArgs<Investment> args) => OnGridStateInit(args))"
+    Size="@(ThemeConstants.Grid.Size.Small)"
+    FilterMode="@GridFilterMode.None">
+    <GridColumns>
+        <GridColumn Field="@nameof(Investment.Id)" Title="ID"/>
+        <GridColumn Field="@nameof(Investment.Cusip)" Title="CUSIP"/>
+        <GridColumn Field="@nameof(Investment.Par)" DisplayFormat="{0:C2}"/>
+        <GridColumn Field="@nameof(Investment.Type)"/>
+        <GridColumn Field="@nameof(Investment.IssueDate)" DisplayFormat="@($"{{0:{Statics.DateFormatString}}}")"/>
+        <GridColumn Field="@nameof(Investment.MaturityDate)" DisplayFormat="@($"{{0:{Statics.DateFormatString}}}")"/>
+        <GridColumn Field="@nameof(Investment.SecurityTerm)"/>
+    </GridColumns>
+</TelerikGrid>
+
+@code {
+
+    [Parameter] public List<Investment>? Investments { get; set; }
+
+
+    void OnGridStateInit(GridStateEventArgs<Investment> args)
+    {
+        GridState<Investment> gridState = args.GridState;
+
+        gridState.GroupDescriptors.Clear();
+
+        gridState.GroupDescriptors.Add(new GroupDescriptor()
+        {
+            Member = nameof(Investment.Type),
+            MemberType = typeof(TreasuryType),
+            SortDirection = ListSortDirection.Ascending
+        });
+    }
+
+}

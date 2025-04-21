@@ -1,0 +1,83 @@
+﻿@page "/investments"
+@inject ITreasuryDataProvider DataProvider
+@inject PersistentComponentState PageState
+@inject IMemoryCache Cache
+@using Pip.Web.Client.Services
+@implements IDisposable
+
+<PageTitle>Investments</PageTitle>
+
+<div class="investments-container" style="height:100%;display:flex;flex-direction:column;">
+    <FluentLabel Class="page-title" Typo="Typography.PageTitle" MarginBlock="default">
+        Investments
+    </FluentLabel>
+
+    <div class="relative flex h-px flex-auto">
+        @*<InvestmentsComponent Investments="_investments" />*@
+
+        <TelerikLoaderContainer Visible="@(_isLoading)"
+                                Text="@null">
+            <Template>
+                <TelerikLoader Type="@LoaderType.InfiniteSpinner" Size="@ThemeConstants.Loader.Size.Large"></TelerikLoader>
+            </Template>
+        </TelerikLoaderContainer>
+        <InvestmentsComponentTelerik Investments="_investments"/>
+    </div>
+
+</div>
+
+@code {
+
+    PersistingComponentStateSubscription? _subscription;
+
+    List<Investment>? _investments;
+
+    bool _isLoading;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (PageState.TryTakeFromJson<List<Investment>>(nameof(_investments), out List<Investment>? data))
+        {
+            _investments = data;
+            StateHasChanged();
+            Cache.Set(nameof(TreasuryClientWebDataProvider.GetInvestmentsAsync), data, TimeSpan.FromMinutes(5));
+        }
+        else
+        {
+            Task<List<Investment>> invTask = DataProvider.GetInvestmentsAsync();
+
+
+            if (invTask.IsCompleted)
+            {
+                Console.WriteLine("invTask completed");
+
+                _investments = invTask.Result;
+            }
+            else
+            {
+
+                _isLoading = true;
+                StateHasChanged(); 
+                _investments = await invTask;
+                _isLoading = false;
+                StateHasChanged(); 
+            }
+        }
+
+        _subscription = PageState.RegisterOnPersisting(SavePage);
+
+    }
+
+    Task SavePage()
+    {
+        PageState.PersistAsJson(nameof(_investments), _investments);
+
+        return Task.CompletedTask;
+    }
+
+    public void Dispose()
+    {
+        _subscription?.Dispose();
+    }
+
+}

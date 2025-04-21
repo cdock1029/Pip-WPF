@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Net.Http.Json;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Pip.Model;
 
@@ -103,6 +104,11 @@ public class TreasuryDataProvider : ITreasuryDataProvider
         IEnumerable<Investment> investments = _dbContext
             .Investments.AsEnumerable();
         return investments;
+    }
+
+    public Task<List<Investment>> GetInvestmentsAsync()
+    {
+        return _dbContext.Investments.ToListAsync();
     }
 
     public void Insert(Investment investment)
