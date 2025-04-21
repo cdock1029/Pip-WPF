@@ -66,6 +66,7 @@
     <PackageVersion Include="JetBrains.Annotations" Version="2025.1.0-eap1" />
     <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="1.11.2" />
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.11.2" />
+    <PackageVersion Include="Telerik.UI.for.Blazor" Version="8.1.1" />
     <PackageVersion Include="WPF-UI" Version="4.0.2" />
   </ItemGroup>
 </Project>

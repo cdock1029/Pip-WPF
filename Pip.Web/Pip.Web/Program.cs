@@ -17,6 +17,9 @@ builder.Services.AddRazorComponents()
 builder.Services.AddFluentUIComponents();
 builder.Services.AddDevExpressBlazor(configure => configure.BootstrapVersion = BootstrapVersion.v5);
 
+builder.Services.AddTelerikBlazor();
+
+
 builder.Services.AddMvc();
 
 builder.Services.AddMemoryCache();
@@ -60,5 +63,10 @@ app.MapGet($"/api/{nameof(TreasuryDataProvider.AnnouncementsResultsSearch)}/{{st
     (DateOnly start, DateOnly end, ITreasuryDataProvider treasuryDataProvider) =>
         treasuryDataProvider.AnnouncementsResultsSearch(start, end));
 
+app.MapGet("/api/investments", (ITreasuryDataProvider dataProvider) => dataProvider.GetInvestmentsAsync());
+
+app.MapGet("/api/auctionsRecent", (ITreasuryDataProvider dataProvider) => dataProvider.GetRecentAsync());
+
+app.MapGet("/api/auctionsUpcoming", (ITreasuryDataProvider dataProvider) => dataProvider.GetUpcomingAsync());
 
 app.Run();

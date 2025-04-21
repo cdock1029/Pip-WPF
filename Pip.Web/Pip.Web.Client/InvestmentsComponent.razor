@@ -1,4 +1,5 @@
-﻿@* <FluentDataGrid ItemKey="t => t.Cusip!" AutoFit="false" Items="Investments?.AsQueryable()" Loading="Investments is null">
+﻿@using GridEditMode = DevExpress.Blazor.GridEditMode
+@* <FluentDataGrid ItemKey="t => t.Cusip!" AutoFit="false" Items="Investments?.AsQueryable()" Loading="Investments is null">
     <PropertyColumn Width="130px" Style="@Statics.GridFont" Property="@(p => p.Cusip)" Sortable="true"/>
     <PropertyColumn Width="180px" Align="Align.End" Style="@Statics.GridFont" Property="@(p => p.AuctionDate)" Title="Auction date" Format="@Statics.DateFormatString" Sortable="true"/>
     <PropertyColumn Width="180px" Align="Align.End" Style="@Statics.GridFont" Property="@(p => p.IssueDate)" Title="Issue date" Format="@Statics.DateFormatString" Sortable="true"/>

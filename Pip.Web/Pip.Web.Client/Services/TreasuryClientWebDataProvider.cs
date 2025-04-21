@@ -1,10 +1,11 @@
 ﻿using System.Net.Http.Json;
+using Microsoft.Extensions.Caching.Memory;
 using Pip.DataAccess.Services;
 using Pip.Model;
 
 namespace Pip.Web.Client.Services;
 
-public class TreasuryClientWebDataProvider(HttpClient httpClient) : ITreasuryDataProvider
+public class TreasuryClientWebDataProvider(HttpClient httpClient, IMemoryCache cache) : ITreasuryDataProvider
 {
     public Task<IEnumerable<Treasury>?> SearchTreasuriesAsync(string cusip)
     {
@@ -22,12 +23,14 @@ public class TreasuryClientWebDataProvider(HttpClient httpClient) : ITreasuryDat
 
     public Task<IEnumerable<Treasury>?> GetUpcomingAsync()
     {
-        throw new NotImplementedException();
+        return httpClient.GetFromJsonAsync<IEnumerable<Treasury>?>(
+            "api/auctionsUpcoming");
     }
 
     public Task<IEnumerable<Treasury>?> GetRecentAsync()
     {
-        throw new NotImplementedException();
+        return httpClient.GetFromJsonAsync<IEnumerable<Treasury>?>(
+            "api/auctionsRecent");
     }
 
     public IAsyncEnumerable<Treasury?> GetRecentAsyncEnumerable()
@@ -53,6 +56,17 @@ public class TreasuryClientWebDataProvider(HttpClient httpClient) : ITreasuryDat
     public IEnumerable<Investment> GetInvestments()
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<List<Investment>> GetInvestmentsAsync()
+    {
+        if (!cache.TryGetValue<List<Investment>>(nameof(GetInvestmentsAsync), out List<Investment>? data))
+        {
+            data = await httpClient.GetFromJsonAsync<List<Investment>>("/api/investments");
+            cache.Set(nameof(GetInvestmentsAsync), data, TimeSpan.FromMinutes(5));
+        }
+
+        return data ?? [];
     }
 
     public void Add(Investment investment)

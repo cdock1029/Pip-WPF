@@ -1,0 +1,25 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new Fluent Blazor app.
+
+<TelerikButton ThemeColor="@ThemeConstants.Button.ThemeColor.Primary"
+               OnClick="@SayHelloHandler">Say Hello</TelerikButton>
+
+<p>@HelloString</p>
+
+@code {
+    private MarkupString HelloString { get; set; }
+
+    private void SayHelloHandler()
+    {
+        string msg = $"Hello from <strong>Telerik UI for Blazor</strong> at {DateTime.Now:HH:mm:ss}!" +
+                     "<br /> Now you can use C# to write front-end!";
+
+        HelloString = new MarkupString(msg);
+    }
+
+}
