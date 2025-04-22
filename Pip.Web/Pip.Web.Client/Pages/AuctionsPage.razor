@@ -1,5 +1,9 @@
 ﻿@page "/auctions"
 @inject ITreasuryDataProvider DataProvider
+@inject PersistentComponentState PageState
+@inject IMemoryCache Cache
+@using Pip.Web.Client.Services
+@implements IDisposable
 
 <PageTitle>Auctions</PageTitle>
 
@@ -14,20 +18,33 @@
 
 @code {
 
-    List<TreasuryItemViewModel>? RecentTreasuries { get; set; }
+    IEnumerable<Treasury>? RecentTreasuries { get; set; }
 
+    PersistingComponentStateSubscription? _subscriptionRecent;
 
     protected override async Task OnInitializedAsync()
     {
-        RecentTreasuries = (await DataProvider.GetRecentAsync())?.Select(t => new TreasuryItemViewModel
+        if (PageState.TryTakeFromJson<IEnumerable<Treasury>>(nameof(RecentTreasuries), out IEnumerable<Treasury>? data))
         {
-            Cusip = t.Cusip,
-            AuctionDate = t.AuctionDate,
-            IssueDate = t.IssueDate,
-            MaturityDate = t.MaturityDate,
-            Type = t.Type,
-            Term = t.SecurityTerm
-        }).ToList();
+            RecentTreasuries = Cache.Set(nameof(TreasuryClientWebDataProvider.GetRecentAsync), data, TimeSpan.FromMinutes(5));
+        }
+        else
+        {
+            RecentTreasuries = await DataProvider.GetRecentAsync();
+        }
+
+        _subscriptionRecent = PageState.RegisterOnPersisting(SavePage);
+    }
+
+    Task SavePage()
+    {
+        PageState.PersistAsJson(nameof(RecentTreasuries), RecentTreasuries);    
+        return Task.CompletedTask;
+    }
+
+    public void Dispose()
+    {
+        _subscriptionRecent?.Dispose();
     }
 
 }

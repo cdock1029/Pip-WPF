@@ -38,9 +38,7 @@
     {
         if (PageState.TryTakeFromJson<List<Investment>>(nameof(_investments), out List<Investment>? data))
         {
-            _investments = data;
-            StateHasChanged();
-            Cache.Set(nameof(TreasuryClientWebDataProvider.GetInvestmentsAsync), data, TimeSpan.FromMinutes(5));
+            _investments = Cache.Set(nameof(TreasuryClientWebDataProvider.GetInvestmentsAsync), data, TimeSpan.FromMinutes(5));
         }
         else
         {
@@ -55,7 +53,6 @@
             }
             else
             {
-
                 _isLoading = true;
                 StateHasChanged(); 
                 _investments = await invTask;
