@@ -23,14 +23,22 @@ public class TreasuryClientWebDataProvider(HttpClient httpClient, IMemoryCache c
 
     public Task<IEnumerable<Treasury>?> GetUpcomingAsync()
     {
-        return httpClient.GetFromJsonAsync<IEnumerable<Treasury>?>(
-            "api/auctionsUpcoming");
+        return cache.GetOrCreateAsync(nameof(GetUpcomingAsync), e =>
+        {
+            e.SetAbsoluteExpiration(TimeSpan.FromMinutes(5));
+            return httpClient.GetFromJsonAsync<IEnumerable<Treasury>>(
+                "api/auctionsUpcoming");
+        });
     }
 
     public Task<IEnumerable<Treasury>?> GetRecentAsync()
     {
-        return httpClient.GetFromJsonAsync<IEnumerable<Treasury>?>(
-            "api/auctionsRecent");
+        return cache.GetOrCreateAsync(nameof(GetRecentAsync), e =>
+        {
+            e.SetAbsoluteExpiration(TimeSpan.FromMinutes(5));
+            return httpClient.GetFromJsonAsync<IEnumerable<Treasury>>(
+                "api/auctionsRecent");
+        });
     }
 
     public IAsyncEnumerable<Treasury?> GetRecentAsyncEnumerable()
