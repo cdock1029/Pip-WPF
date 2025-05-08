@@ -98,6 +98,13 @@ public class TreasuryDataProvider : ITreasuryDataProvider
         _dbContext.SaveChanges();
     }
 
+    public async Task UpdateAsync(Investment investment)
+    {
+        if (await _dbContext.Investments.FindAsync(investment.Id) is not { } inv) return;
+        _dbContext.Entry(inv).CurrentValues.SetValues(investment);
+        await _dbContext.SaveChangesAsync();
+    }
+
     // sync I/O faster. https://x.com/davkean/status/1821875521954963742
     public IEnumerable<Investment> GetInvestments()
     {
@@ -115,6 +122,12 @@ public class TreasuryDataProvider : ITreasuryDataProvider
     {
         _dbContext.Investments.Add(investment);
         _dbContext.SaveChanges();
+    }
+
+    public Task InsertAsync(Investment investment)
+    {
+        _dbContext.Investments.Add(investment);
+        return _dbContext.SaveChangesAsync();
     }
 
     public void Delete(Investment investment)

@@ -1,5 +1,4 @@
-﻿
-namespace Pip.Web.Client;
+﻿namespace Pip.Web.Client.Utils;
 
 public static class Statics
 {

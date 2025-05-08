@@ -8,7 +8,6 @@
              xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:model="clr-namespace:Pip.Model;assembly=Pip.Model"
-             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800"
@@ -21,12 +20,14 @@
                     <dxg:GridControl
                         ShowLoadingPanel="{Binding Treasuries, Converter={StaticResource ObjectToBooleanConverterInverse}}"
                         ShowBorder="False"
+                        CustomColumnSortCommand="{Binding HandleCustomColumnSortCommand}"
                         ItemsSource="{Binding Treasuries}">
                         <dxg:GridControl.View>
                             <dxg:TableView
                                 AllowBestFit="True"
                                 AllowGrouping="True"
                                 AllowScrollAnimation="False"
+                                AllowPerPixelScrolling="True"
                                 RowAnimationKind="None"
                                 AutoWidth="True"
                                 AllowCellMerge="False"
@@ -71,9 +72,10 @@
                                 Header="CUSIP"
                                 ReadOnly="True" />
                             <dxg:GridColumn
-                                Binding="{Binding Path=(model:Treasury.SecurityTerm)}"
+                                FieldName="SecurityTerm"
                                 Header="Term"
-                                SortFieldName="TermSpan"
+                                SortMode="Custom"
+                                GroupIndex="1"
                                 ReadOnly="True" />
                             <dxg:GridColumn
                                 Binding="{Binding Path=(model:Treasury.AuctionDate)}"

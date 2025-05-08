@@ -1,4 +1,4 @@
-﻿<DxGrid
+﻿@* <DxGrid
     Id="@Id"
     Data="Treasuries"
     CssClass="h-full"
@@ -131,7 +131,7 @@
             </Columns>
         </DxGridBandColumn>
     </Columns>
-</DxGrid>
+</DxGrid> *@
 
 
 @code
@@ -149,20 +149,20 @@
 
 
     //TODO: fix something wrong with custom sort first rows
-    private static void OnCustomSort(GridCustomSortEventArgs e)
-    {
-        switch (e.FieldName)
-        {
-            case nameof(Treasury.SecurityTerm):
-            {
-                Treasury? t1 = (Treasury)e.DataItem1;
-                Treasury? t2 = (Treasury)e.DataItem2;
+    // private static void OnCustomSort(GridCustomSortEventArgs e)
+    // {
+    //     switch (e.FieldName)
+    //     {
+    //         case nameof(Treasury.SecurityTerm):
+    //         {
+    //             Treasury? t1 = (Treasury)e.DataItem1;
+    //             Treasury? t2 = (Treasury)e.DataItem2;
 
-                e.Result = t1.CompareTerm(t2);
-                e.Handled = true;
-                break;
-            }
-        }
-    }
+    //             e.Result = t1.CompareTerm(t2);
+    //             e.Handled = true;
+    //             break;
+    //         }
+    //     }
+    // }
 
 }

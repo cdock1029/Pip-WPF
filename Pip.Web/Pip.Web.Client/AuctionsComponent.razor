@@ -1,8 +1,12 @@
-﻿
-<FluentTabs Id="tabs" @bind-ActiveTabId="_activeTabId" Style="flex:1;height:1px;overflow:auto;padding-bottom:1rem;">
+﻿@inject ITreasuryDataProvider DataProvider
+@inject IDialogService DialogService
+@inject NavigationManager Navigation
+@inject IToastService ToastService
+
+<FluentTabs Id="tabs" Style="flex:1;height:1px;overflow:auto;padding-bottom:1rem;" OnTabChange="HandleTabChange">
     <FluentTab Label="Recent" Id="tab-recent">
 
-        <FluentDataGrid DisplayMode="DataGridDisplayMode.Table" ItemKey="t => t.Cusip!" AutoFit="false" Items="Treasuries?.AsQueryable()" Loading="Treasuries is null">
+        <FluentDataGrid DisplayMode="DataGridDisplayMode.Table" ItemKey="t => t.Cusip" AutoFit="false" Items="TreasuriesRecent?.AsQueryable()" Loading="TreasuriesRecent is null">
             <TemplateColumn Width="100px" Align="Align.Center" Title="Details">
                 <div class="flex items-center justify-center">
                     <FluentIcon Value="new Size20.Link()" OnClick="() => NavigateTreasuryItem(context)"/>
@@ -13,7 +17,7 @@
             <PropertyColumn Width="180px" Align="Align.End" Style="@Statics.GridFont" Property="@(p => p.IssueDate)" Title="Issue date" Format="@Statics.DateFormatString" Sortable="true"/>
             <PropertyColumn Width="180px" Align="Align.End" Style="@Statics.GridFont" Property="@(p => p.MaturityDate)" Title="Maturity date" Format="@Statics.DateFormatString" Sortable="true"/>
             <PropertyColumn Width="100px" Style="@Statics.GridFont" Property="@(p => p.Type)" Title="Type" Sortable="true"/>
-            <PropertyColumn Width="200px" Style="@Statics.GridFont" Property="@(p => p.Term)" Title="Term" Sortable="true" SortBy="@Statics.TermSpanSort"/>
+            <PropertyColumn Width="200px" Style="@Statics.GridFont" Property="@(p => p.SecurityTerm)" Title="Term" Sortable="true" SortBy="@Statics.TermSpanSort"/>
             <TemplateColumn Width="100px" Title="Save" Align="Align.Center">
                 <div class="flex items-center justify-center">
                     <FluentIcon Title="@($"Save {context.Type} {context.Term}")" Value="new Size20.Save()" OnClick="() => AddInvestment(context)"/>
@@ -23,27 +27,66 @@
 
     </FluentTab>
 
-    <FluentTab Label="Upcoming" Id="tab-upcoming">
-        <FluentLabel Typo="Typography.PaneHeader" MarginBlock="default">Upcoming todo</FluentLabel>
-    </FluentTab>
+    <FluentTab @ref="_upcomingTab" Label="Upcoming" Id="tab-upcoming" DeferredLoading="true">
 
+        <FluentDataGrid DisplayMode="DataGridDisplayMode.Table" ItemKey="t => t.Cusip" AutoFit="false" Items="_treasuriesUpcoming?.AsQueryable()" Loading="_treasuriesUpcoming is null">
+            <TemplateColumn Width="100px" Align="Align.Center" Title="Details">
+                <div class="flex items-center justify-center">
+                    <FluentIcon Value="new Size20.Link()" OnClick="() => NavigateTreasuryItem(context)"/>
+                </div>
+            </TemplateColumn>
+            <PropertyColumn Width="130px" Style="@Statics.GridFont" Property="@(p => p.Cusip)" Sortable="true"/>
+            <PropertyColumn Width="180px" Align="Align.End" Style="@Statics.GridFont" Property="@(p => p.AuctionDate)" Title="Auction date" Format="@Statics.DateFormatString" Sortable="true"/>
+            <PropertyColumn Width="180px" Align="Align.End" Style="@Statics.GridFont" Property="@(p => p.IssueDate)" Title="Issue date" Format="@Statics.DateFormatString" Sortable="true"/>
+            <PropertyColumn Width="180px" Align="Align.End" Style="@Statics.GridFont" Property="@(p => p.MaturityDate)" Title="Maturity date" Format="@Statics.DateFormatString" Sortable="true"/>
+            <PropertyColumn Width="100px" Style="@Statics.GridFont" Property="@(p => p.Type)" Title="Type" Sortable="true"/>
+            <PropertyColumn Width="200px" Style="@Statics.GridFont" Property="@(p => p.SecurityTerm)" Title="Term" Sortable="true" SortBy="@Statics.TermSpanSort"/>
+            <TemplateColumn Width="100px" Title="Save" Align="Align.Center">
+                <div class="flex items-center justify-center">
+                    <FluentIcon Title="@($"Save {context.Type} {context.Term}")" Value="new Size20.Save()" OnClick="() => AddInvestment(context)"/>
+                </div>
+            </TemplateColumn>
+        </FluentDataGrid>
+
+    </FluentTab>
+    
 </FluentTabs>
 
 
 @code {
 
 
-    [Parameter] public IEnumerable<Treasury>? Treasuries { get; set; }
+    [Parameter] public IEnumerable<Treasury>? TreasuriesRecent { get; set; }
 
-    string? _activeTabId = "tab-recent";
+    IEnumerable<Treasury>? _treasuriesUpcoming;
+
+    FluentTab? _upcomingTab;
 
 
-    void NavigateTreasuryItem(object context)
+    private async Task AddInvestment(Treasury treasury)
     {
+        DialogResult result = await DialogService.OpenCreateInvestmentDialogAsync(treasury);
+        if (result.Data is Investment newInvestment)
+        {
+            await DataProvider.InsertAsync(newInvestment);
+
+            Navigation.NavigateTo("investments");
+
+            await Task.Delay(500);
+
+            ToastService.ShowSuccess("Investment saved");
+        }
     }
 
-    void AddInvestment(object context)
+    private void NavigateTreasuryItem(Treasury treasuryItem)
     {
+        //Navigation.NavigateTo($"treasury/{treasuryItem.Cusip}/{treasuryItem.IssueDate?.ToString("yyyy-MM-dd")}");
+    }
+
+    private async Task HandleTabChange(FluentTab tab)
+    {
+        if (tab != _upcomingTab || (_treasuriesUpcoming != null && _treasuriesUpcoming.Any())) return;
+        _treasuriesUpcoming = await DataProvider.GetUpcomingAsync();
     }
 
 }

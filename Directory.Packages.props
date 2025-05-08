@@ -46,6 +46,12 @@
     <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.11.8" />
     <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components.Emoji" Version="4.11.7" />
     <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.11.8" />
+    <PackageVersion Include="Syncfusion.Blazor" Version="29.1.39" />
+    <PackageVersion Include="Syncfusion.Blazor.Calendars" Version="29.1.39" />
+    <PackageVersion Include="Syncfusion.Blazor.Core" Version="29.1.39" />
+    <PackageVersion Include="Syncfusion.Blazor.DropDowns" Version="29.1.39" />
+    <PackageVersion Include="Syncfusion.Blazor.Grid" Version="29.1.39" />
+    <PackageVersion Include="Syncfusion.Blazor.Themes" Version="29.1.39" />
     <PackageVersion Include="System.Drawing.Common" Version="9.0.4" />
     <PackageVersion Include="System.Text.Json" Version="9.0.4" />
     <PackageVersion Include="System.Formats.Asn1" Version="9.0.4" />
@@ -66,7 +72,6 @@
     <PackageVersion Include="JetBrains.Annotations" Version="2025.1.0-eap1" />
     <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="1.11.2" />
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.11.2" />
-    <PackageVersion Include="Telerik.UI.for.Blazor" Version="8.1.1" />
     <PackageVersion Include="WPF-UI" Version="4.0.2" />
   </ItemGroup>
 </Project>

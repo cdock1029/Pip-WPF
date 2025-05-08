@@ -1,73 +1,10 @@
-﻿@page "/previous"
-@inject ITreasuryDataProvider TreasuryDataProvider
+﻿@page "/historical"
 
 <PageTitle>Historical</PageTitle>
 
-<div class="investments-container" style="height:100%;display:flex;flex-direction:column;">
+<div class="flex h-full flex-col">
     <FluentLabel Class="page-title" Typo="Typography.PageTitle" MarginBlock="default">
-        Previous Auctions
+        Historical Data
     </FluentLabel>
-
-    <div id="previous-auctions-grid-wrapper" class="relative flex h-px flex-auto">
-
-@*         <DxLoadingPanel Visible="_isLoading"
-                        PositionTarget="#previous-auctions-grid"
-                        CssClass="h-full"
-                        IsContentBlocked="true"
-                        ApplyBackgroundShading="true"
-                        IndicatorAreaVisible="false"
-                        Text="Fetching Data..."/>
-                        
-        <PreviousAuctionsComponent @rendermode="@(new InteractiveWebAssemblyRenderMode(false))"
-                                   Id="previous-auctions-grid"
-                                   Treasuries="_treasuries"
-                                   Years="Years"
-                                   YearChangedCallback="Load" />
- *@        
- 
-
-        <TelerikLoaderContainer Visible="@(_isLoading)"
-                                Text="@null">
-            <Template>
-                <TelerikLoader Type="@LoaderType.InfiniteSpinner" Size="@ThemeConstants.Loader.Size.Large"></TelerikLoader>
-            </Template>
-        </TelerikLoaderContainer>
-        <PreviousAuctionsComponentTelerik Years="Years" YearChangedCallback="Load" Treasuries="_treasuries"/>
-       
-    </div>
+    <PreviousAuctionsComponentSf @rendermode="@(new InteractiveWebAssemblyRenderMode(false))"/>
 </div>
-
-@code {
-
-    bool _isLoading;
-
-    public static IEnumerable<int>? Years { get; set; } = Enumerable.Range(1997, DateTime.Now.Year - 1997 + 1).Reverse();
-
-    IEnumerable<Treasury>? _treasuries;
-
-    async Task Load(int? year)
-    {
-        if (year is null) return;
-
-        await InvokeAsync(() =>
-        {
-            _treasuries = null;
-            _isLoading = true;
-            StateHasChanged();
-        });
-
-
-        DateOnly start = new(year.Value, 1, 1);
-        DateOnly end = new(year.Value, 12, 31);
-
-        IEnumerable<Treasury>? data = await TreasuryDataProvider.AnnouncementsResultsSearch(start, end);
-
-        await InvokeAsync(() =>
-        {
-            _treasuries = data;
-            _isLoading = false;
-            StateHasChanged();
-        });
-    }
-   
-}

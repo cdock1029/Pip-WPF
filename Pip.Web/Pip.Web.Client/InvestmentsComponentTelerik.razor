@@ -1,5 +1,4 @@
-﻿@using Telerik.DataSource
-<TelerikGrid
+﻿@* <TelerikGrid
     Width="100%"
     Data="@Investments"
     Pageable="false"
@@ -9,33 +8,33 @@
     Size="@(ThemeConstants.Grid.Size.Small)"
     FilterMode="@GridFilterMode.None">
     <GridColumns>
-        <GridColumn Field="@nameof(Investment.Id)" Title="ID"/>
-        <GridColumn Field="@nameof(Investment.Cusip)" Title="CUSIP"/>
-        <GridColumn Field="@nameof(Investment.Par)" DisplayFormat="{0:C2}"/>
-        <GridColumn Field="@nameof(Investment.Type)"/>
-        <GridColumn Field="@nameof(Investment.IssueDate)" DisplayFormat="@($"{{0:{Statics.DateFormatString}}}")"/>
-        <GridColumn Field="@nameof(Investment.MaturityDate)" DisplayFormat="@($"{{0:{Statics.DateFormatString}}}")"/>
-        <GridColumn Field="@nameof(Investment.SecurityTerm)"/>
+        <Telerik.Blazor.Components.GridColumn Field="@nameof(Investment.Id)" Title="ID"/>
+        <Telerik.Blazor.Components.GridColumn Field="@nameof(Investment.Cusip)" Title="CUSIP"/>
+        <Telerik.Blazor.Components.GridColumn Field="@nameof(Investment.Par)" DisplayFormat="{0:C2}"/>
+        <Telerik.Blazor.Components.GridColumn Field="@nameof(Investment.Type)"/>
+        <Telerik.Blazor.Components.GridColumn Field="@nameof(Investment.IssueDate)" DisplayFormat="@($"{{0:{Statics.DateFormatString}}}")"/>
+        <Telerik.Blazor.Components.GridColumn Field="@nameof(Investment.MaturityDate)" DisplayFormat="@($"{{0:{Statics.DateFormatString}}}")"/>
+        <Telerik.Blazor.Components.GridColumn Field="@nameof(Investment.SecurityTerm)"/>
     </GridColumns>
-</TelerikGrid>
+</TelerikGrid> *@
 
 @code {
 
-    [Parameter] public List<Investment>? Investments { get; set; }
+    // [Parameter] public List<Investment>? Investments { get; set; }
 
 
-    void OnGridStateInit(GridStateEventArgs<Investment> args)
-    {
-        GridState<Investment> gridState = args.GridState;
+    // void OnGridStateInit(GridStateEventArgs<Investment> args)
+    // {
+    //     GridState<Investment> gridState = args.GridState;
 
-        gridState.GroupDescriptors.Clear();
+    //     gridState.GroupDescriptors.Clear();
 
-        gridState.GroupDescriptors.Add(new GroupDescriptor()
-        {
-            Member = nameof(Investment.Type),
-            MemberType = typeof(TreasuryType),
-            SortDirection = ListSortDirection.Ascending
-        });
-    }
+    //     gridState.GroupDescriptors.Add(new GroupDescriptor()
+    //     {
+    //         Member = nameof(Investment.Type),
+    //         MemberType = typeof(TreasuryType),
+    //         SortDirection = ListSortDirection.Ascending
+    //     });
+    // }
 
 }

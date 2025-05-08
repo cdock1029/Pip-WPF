@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using DevExpress.Mvvm.CodeGenerators;
+using DevExpress.Mvvm.Xpf;
 using DevExpress.Xpf.Core;
 using Pip.DataAccess.Services;
 using Pip.Model;
@@ -43,6 +44,27 @@ public partial class HistoricalViewModel(ITreasuryDataProvider treasuryDataProvi
         if (treasuries is null) return;
             foreach (Treasury treasury in treasuries)
                 Treasuries.Add(treasury);
+    }
+
+    [GenerateCommand]
+    public void HandleCustomColumnSort(RowSortArgs args)
+    {
+        if (args.FieldName != nameof(Treasury.SecurityTerm)) return;
+
+        Treasury t1 = (Treasury)args.FirstItem;
+        Treasury t2 = (Treasury)args.SecondItem;
+
+        if (t1.MaturityDate is not { } m1 ||
+            t2.MaturityDate is not { } m2 || t1.IssueDate is not { } i1 || t2.IssueDate is not { } i2)
+        {
+            args.Result = 0;
+            return;
+        }
+
+        int span1 = m1.DayNumber - i1.DayNumber;
+        int span2 = m2.DayNumber - i2.DayNumber;
+
+        args.Result = span1 - span2;
     }
 
     private static IEnumerable<int> GenerateYears()

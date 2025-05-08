@@ -1,4 +1,7 @@
 ﻿@page "/"
+@rendermode @(new InteractiveWebAssemblyRenderMode(true))
+@inject IToastService ToastService
+
 
 <PageTitle>Home</PageTitle>
 
@@ -6,20 +9,22 @@
 
 Welcome to your new Fluent Blazor app.
 
-<TelerikButton ThemeColor="@ThemeConstants.Button.ThemeColor.Primary"
-               OnClick="@SayHelloHandler">Say Hello</TelerikButton>
+<div>
+    <SfButton IsPrimary="true" Content="Say Hello"/>
+</div>
 
-<p>@HelloString</p>
+<br/>
+
+<div>
+    <FluentButton OnClick="ShowToast" Appearance="Appearance.Accent">Say Hello</FluentButton>
+</div>
+
 
 @code {
-    private MarkupString HelloString { get; set; }
 
-    private void SayHelloHandler()
+    private void ShowToast(MouseEventArgs obj)
     {
-        string msg = $"Hello from <strong>Telerik UI for Blazor</strong> at {DateTime.Now:HH:mm:ss}!" +
-                     "<br /> Now you can use C# to write front-end!";
-
-        HelloString = new MarkupString(msg);
+        ToastService.ShowInfo("Pippy McGee", 4000);
     }
 
 }

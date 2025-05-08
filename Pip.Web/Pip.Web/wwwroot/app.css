@@ -11,8 +11,18 @@ table {
     margin-bottom: 0;
 }
 
-button {
-    cursor: initial !important;
+button:not(:disabled),
+button.control:not(:disabled),
+:host(:not([disabled])) button.control,
+[type=button]:not(:disabled),
+[type=reset]:not(:disabled),
+[type=submit]:not(:disabled) {
+    cursor: default !important;
+}
+
+fluent-select.outline {
+    outline-style: none;
+    outline-width: 0px;
 }
 
 .navmenu-icon {

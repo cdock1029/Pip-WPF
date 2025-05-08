@@ -1,50 +1,23 @@
 ﻿@page "/auctions"
+@attribute [StreamRendering]
 @inject ITreasuryDataProvider DataProvider
-@inject PersistentComponentState PageState
-@inject IMemoryCache Cache
-@using Pip.Web.Client.Services
-@implements IDisposable
 
 <PageTitle>Auctions</PageTitle>
-
 
 <div class="flex max-h-full flex-col overflow-y-hidden">
 
     <FluentLabel Class="page-title" Typo="Typography.PageTitle" MarginBlock="default">Auctions</FluentLabel>
 
-    <AuctionsComponent Treasuries="RecentTreasuries"/>
+    <AuctionsComponent @rendermode="@(new InteractiveWebAssemblyRenderMode(false))" TreasuriesRecent="_treasuriesRecent"/>
 
 </div>
 
 @code {
 
-    IEnumerable<Treasury>? RecentTreasuries { get; set; }
-
-    PersistingComponentStateSubscription? _subscriptionRecent;
+    IEnumerable<Treasury>? _treasuriesRecent;
 
     protected override async Task OnInitializedAsync()
     {
-        if (PageState.TryTakeFromJson<IEnumerable<Treasury>>(nameof(RecentTreasuries), out IEnumerable<Treasury>? data))
-        {
-            RecentTreasuries = Cache.Set(nameof(TreasuryClientWebDataProvider.GetRecentAsync), data, TimeSpan.FromMinutes(5));
-        }
-        else
-        {
-            RecentTreasuries = await DataProvider.GetRecentAsync();
-        }
-
-        _subscriptionRecent = PageState.RegisterOnPersisting(SavePage);
+        _treasuriesRecent = await DataProvider.GetRecentAsync();
     }
-
-    Task SavePage()
-    {
-        PageState.PersistAsJson(nameof(RecentTreasuries), RecentTreasuries);    
-        return Task.CompletedTask;
-    }
-
-    public void Dispose()
-    {
-        _subscriptionRecent?.Dispose();
-    }
-
 }

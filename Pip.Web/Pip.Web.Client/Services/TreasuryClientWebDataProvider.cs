@@ -1,7 +1,6 @@
 ﻿using System.Net.Http.Json;
 using Microsoft.Extensions.Caching.Memory;
 using Pip.DataAccess.Services;
-using Pip.Model;
 
 namespace Pip.Web.Client.Services;
 
@@ -61,6 +60,11 @@ public class TreasuryClientWebDataProvider(HttpClient httpClient, IMemoryCache c
         throw new NotImplementedException();
     }
 
+    public Task UpdateAsync(Investment investment)
+    {
+        return httpClient.PostAsJsonAsync("/api/investments/update", investment);
+    }
+
     public IEnumerable<Investment> GetInvestments()
     {
         throw new NotImplementedException();
@@ -85,6 +89,11 @@ public class TreasuryClientWebDataProvider(HttpClient httpClient, IMemoryCache c
     public void Insert(Investment investment)
     {
         throw new NotImplementedException();
+    }
+
+    public Task InsertAsync(Investment investment)
+    {
+        return httpClient.PostAsJsonAsync("/api/investments/new", investment);
     }
 
     public void Delete(Investment investment)

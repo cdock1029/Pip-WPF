@@ -1,5 +1,4 @@
-﻿@using DevExpress.Blazor
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -8,35 +7,31 @@
     <base href="/"/>
 
     <meta name="color-scheme" content="dark light">
+    
+    <link href="@Assets["css/tailwind.output.css"]" rel="stylesheet"/>
 
     <link rel="stylesheet" href="@Assets["_content/Microsoft.FluentUI.AspNetCore.Components/css/reboot.css"]"/>
 
-@*     <link href="@Assets["_content/DevExpress.Blazor.Themes.Fluent/fluent-light.min.css"]" rel="stylesheet" media="(prefers-color-scheme: light)"/>
-    <link href="@Assets["_content/DevExpress.Blazor.Themes.Fluent/fluent-dark.min.css"]" rel="stylesheet" media="not (prefers-color-scheme: light)"/>
- *@
+    <link href="_content/Syncfusion.Blazor.Themes/fluent2.css" rel="stylesheet" media="(prefers-color-scheme: light)"/>
+    <link href="_content/Syncfusion.Blazor.Themes/fluent2-dark.css" rel="stylesheet" media="not (prefers-color-scheme: light)"/>
 
-    <link href="@Assets["css/fluent-main.10.5.0.css"]" rel="stylesheet" media="(prefers-color-scheme: light)"/>
-    <link href="@Assets["css/fluent-main-dark.10.5.0.css"]" rel="stylesheet" media="not (prefers-color-scheme: light)" />
-
-    <link href="@Assets["css/tailwind.output.css"]" rel="stylesheet"/>
 
     <link rel="stylesheet" href="@Assets["app.css"]"/>
     <link rel="stylesheet" href="@Assets["Pip.Web.styles.css"]"/>
+
     <ImportMap />
     <link rel="icon" type="image/x-icon" href="favicon.ico"/>
-    <HeadOutlet @rendermode="InteractiveWebAssembly"/>
+    <HeadOutlet />
 
-    @DxResourceManager.RegisterScripts()
-    <script src="_content/Telerik.UI.for.Blazor/js/telerik-blazor.js"></script>
 </head>
 
 <body>
-    @* ReSharper disable Html.PathError *@
     <script src="_content/Microsoft.FluentUI.AspNetCore.Components/js/loading-theme.js" type="text/javascript"></script>
     <loading-theme storage-name="theme"></loading-theme>
     <FluentDesignTheme OfficeColor="OfficeColor.Project" StorageName="theme"/>
-    <Routes @rendermode="InteractiveWebAssembly"/>
+    <Routes />
     <script src="_framework/blazor.web.js"></script>
+    <script src="_content/Syncfusion.Blazor.Core/scripts/syncfusion-blazor.min.js" type="text/javascript"></script>
 </body>
 
 </html>

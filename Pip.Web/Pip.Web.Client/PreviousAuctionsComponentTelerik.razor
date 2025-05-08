@@ -1,5 +1,4 @@
-﻿@using Telerik.DataSource
-<TelerikGrid
+﻿@* <TelerikGrid
     @ref="GridRef"
     Width="100%"
     Height="100%"
@@ -22,89 +21,89 @@
         </GridToolBarCustomTool>
     </GridToolBar>
     <GridColumns>
-        <GridColumn Field="@nameof(Treasury.AnnouncementDate)" Title="Announcement Date" DisplayFormat="@($"{{0:{Statics.DateFormatString}}}")"/>
-        <GridColumn Field="@nameof(Treasury.AuctionDate)" Title="Auction Date" DisplayFormat="@($"{{0:{Statics.DateFormatString}}}")"/>
-        <GridColumn Field="@nameof(Treasury.Cusip)" Title="CUSIP"/>
-        <GridColumn Field="@nameof(Treasury.Type)"/>
-        <GridColumn Field="@nameof(Treasury.IssueDate)" Title="Issue Date" DisplayFormat="@($"{{0:{Statics.DateFormatString}}}")"/>
-        <GridColumn Field="@nameof(Treasury.MaturityDate)" Title="Maturity Date" DisplayFormat="@($"{{0:{Statics.DateFormatString}}}")"/>
-        <GridColumn Field="@nameof(Treasury.SecurityTerm)" Title="Term"/>
-        <GridColumn Field="@nameof(Treasury.SecurityType)" Title="Type"/>
+        <Telerik.Blazor.Components.GridColumn Field="@nameof(Treasury.AnnouncementDate)" Title="Announcement Date" DisplayFormat="@($"{{0:{Statics.DateFormatString}}}")"/>
+        <Telerik.Blazor.Components.GridColumn Field="@nameof(Treasury.AuctionDate)" Title="Auction Date" DisplayFormat="@($"{{0:{Statics.DateFormatString}}}")"/>
+        <Telerik.Blazor.Components.GridColumn Field="@nameof(Treasury.Cusip)" Title="CUSIP"/>
+        <Telerik.Blazor.Components.GridColumn Field="@nameof(Treasury.Type)"/>
+        <Telerik.Blazor.Components.GridColumn Field="@nameof(Treasury.IssueDate)" Title="Issue Date" DisplayFormat="@($"{{0:{Statics.DateFormatString}}}")"/>
+        <Telerik.Blazor.Components.GridColumn Field="@nameof(Treasury.MaturityDate)" Title="Maturity Date" DisplayFormat="@($"{{0:{Statics.DateFormatString}}}")"/>
+        <Telerik.Blazor.Components.GridColumn Field="@nameof(Treasury.SecurityTerm)" Title="Term"/>
+        <Telerik.Blazor.Components.GridColumn Field="@nameof(Treasury.SecurityType)" Title="Type"/>
     </GridColumns>
-</TelerikGrid>
+</TelerikGrid> *@
 
 @code {
 
-    [Parameter] public IEnumerable<Treasury>? Treasuries { get; set; }
+    // [Parameter] public IEnumerable<Treasury>? Treasuries { get; set; }
 
-    [Parameter] public IEnumerable<int>? Years { get; set; }
+    // [Parameter] public IEnumerable<int>? Years { get; set; }
 
-    [Parameter] public required EventCallback<int?> YearChangedCallback { get; set; }
+    // [Parameter] public required EventCallback<int?> YearChangedCallback { get; set; }
 
-    string? _defaultText = "Choose year";
+    // string? _defaultText = "Choose year";
 
-    bool GridGroupFlag { get; set; } = false;
+    // bool GridGroupFlag { get; set; } = false;
 
-    TelerikGrid<Treasury>? GridRef { get; set; }
+    // TelerikGrid<Treasury>? GridRef { get; set; }
 
 
-    async Task HandleYearChanged(int year)
-    {
-        _defaultText = null;
-        await YearChangedCallback.InvokeAsync(year);
-    }
+    // async Task HandleYearChanged(int year)
+    // {
+    //     _defaultText = null;
+    //     await YearChangedCallback.InvokeAsync(year);
+    // }
 
-    void OnGridStateInit(GridStateEventArgs<Treasury> args)
-    {
-        var gridState = new GridState<Treasury>
-        {
-            GroupDescriptors =
-            [
-                new GroupDescriptor
-                {
-                    Member = nameof(Treasury.Type),
-                    MemberType = typeof(TreasuryType),
-                    SortDirection = ListSortDirection.Ascending
-                },
-                new GroupDescriptor
-                {
-                    Member = nameof(Treasury.SecurityTerm),
-                    MemberType = typeof(string),
-                    SortDirection = ListSortDirection.Ascending
-                }
-            ],
-            SortDescriptors = [
-                new SortDescriptor
-                {
-                    Member = nameof(Treasury.AuctionDate),
-                    SortDirection = ListSortDirection.Ascending
-                }
-            ],
-            CollapsedGroups = Enumerable.Range(0, (Treasuries ?? []).ToList().Count()).ToList()
-        };
+    // void OnGridStateInit(GridStateEventArgs<Treasury> args)
+    // {
+    //     var gridState = new GridState<Treasury>
+    //     {
+    //         GroupDescriptors =
+    //         [
+    //             new GroupDescriptor
+    //             {
+    //                 Member = nameof(Treasury.Type),
+    //                 MemberType = typeof(TreasuryType),
+    //                 SortDirection = ListSortDirection.Ascending
+    //             },
+    //             new GroupDescriptor
+    //             {
+    //                 Member = nameof(Treasury.SecurityTerm),
+    //                 MemberType = typeof(string),
+    //                 SortDirection = ListSortDirection.Ascending
+    //             }
+    //         ],
+    //         SortDescriptors = [
+    //             new SortDescriptor
+    //             {
+    //                 Member = nameof(Treasury.AuctionDate),
+    //                 SortDirection = ListSortDirection.Ascending
+    //             }
+    //         ],
+    //         CollapsedGroups = Enumerable.Range(0, (Treasuries ?? []).ToList().Count()).ToList()
+    //     };
 
-        args.GridState = gridState;
-    }
+    //     args.GridState = gridState;
+    // }
 
-    void OnStateChangedHandler(GridStateEventArgs<Treasury> args)
-    {
-        if (args.PropertyName == "Page")
-        {
-            GridGroupFlag = true;
-        }
-    }
+    // void OnStateChangedHandler(GridStateEventArgs<Treasury> args)
+    // {
+    //     if (args.PropertyName == "Page")
+    //     {
+    //         GridGroupFlag = true;
+    //     }
+    // }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (GridGroupFlag)
-        {
-            GridState<Treasury> gridState = GridRef!.GetState();
-            gridState.CollapsedGroups = Enumerable.Range(0, (Treasuries ?? []).ToList().Count).ToList();
-            GridGroupFlag = false;
-            await GridRef.SetStateAsync(gridState);
-        }
+    // protected override async Task OnAfterRenderAsync(bool firstRender)
+    // {
+    //     if (GridGroupFlag)
+    //     {
+    //         GridState<Treasury> gridState = GridRef!.GetState();
+    //         gridState.CollapsedGroups = Enumerable.Range(0, (Treasuries ?? []).ToList().Count).ToList();
+    //         GridGroupFlag = false;
+    //         await GridRef.SetStateAsync(gridState);
+    //     }
 
-        await base.OnAfterRenderAsync(firstRender);
-    }
+    //     await base.OnAfterRenderAsync(firstRender);
+    // }
 
 }

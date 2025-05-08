@@ -1,5 +1,4 @@
-﻿using Pip.Model;
-
+﻿
 namespace Pip.Web.Client.ViewModels;
 
 public class TreasuryItemViewModel

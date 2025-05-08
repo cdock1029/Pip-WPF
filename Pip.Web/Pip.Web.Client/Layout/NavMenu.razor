@@ -1,16 +1,15 @@
-﻿
-<div class="navmenu">
-    <input type="checkbox" title="Menu expand/collapse toggle" id="navmenu-toggle" class="navmenu-icon" />
-    <label for="navmenu-toggle" class="navmenu-icon"><FluentIcon Value="@(new Icons.Regular.Size20.Navigation())" Color="Color.Fill" /></label>
+﻿<div class="navmenu">
+    <input type="checkbox" title="Menu expand/collapse toggle" id="navmenu-toggle" class="navmenu-icon"/>
+    <label for="navmenu-toggle" class="navmenu-icon">
+        <FluentIcon Value="@(new Size20.Navigation())" Color="Color.Fill"/>
+    </label>
     <nav class="sitenav" aria-labelledby="main-menu">
-        <FluentNavMenu Id="main-menu" Width="250" Collapsible="true" Title="Navigation menu" @bind-Expanded="_expanded" CustomToggle="true">
-            <FluentNavLink Disabled="!RendererInfo.IsInteractive" Href="/" Match="NavLinkMatch.All" Icon="@(new Icons.Regular.Size20.Home())" IconColor="Color.Accent">Home</FluentNavLink>
-            <FluentNavLink Disabled="!RendererInfo.IsInteractive" Href="auctions" Tooltip="Auctions" Icon="@(new Icons.Regular.Size20.ClipboardTextEdit())" IconColor="Color.Accent">Auctions</FluentNavLink>
-            <FluentNavLink Disabled="!RendererInfo.IsInteractive" Href="previous" Tooltip="Historical Data" Icon="@(new Icons.Regular.Size20.Calendar())" IconColor="Color.Accent">Historical Data</FluentNavLink>
-            <FluentNavLink Disabled="!RendererInfo.IsInteractive" Href="investments" Tooltip="Investments" Icon="@(new Icons.Regular.Size20.ArrowTrendingLines())" IconColor="Color.Accent">Investments</FluentNavLink>
+        <FluentNavMenu Id="main-menu" Width="220" Collapsible="true" Title="Navigation menu" @bind-Expanded="_expanded" CustomToggle="true">
+            <FluentNavLink Disabled="!RendererInfo.IsInteractive" Href="/" Match="NavLinkMatch.All" Icon="@(new Size20.Home())" IconColor="Color.Accent">Home</FluentNavLink>
+            <FluentNavLink Disabled="!RendererInfo.IsInteractive" Href="auctions" Tooltip="Auctions" Icon="@(new Size20.ClipboardTextEdit())" IconColor="Color.Accent">Auctions</FluentNavLink>
+            <FluentNavLink Disabled="!RendererInfo.IsInteractive" Href="investments" Tooltip="Investments" Icon="@(new Size20.ArrowTrendingLines())" IconColor="Color.Accent">Investments</FluentNavLink>
+            <FluentNavLink Disabled="!RendererInfo.IsInteractive" Href="historical" Tooltip="Historical Data" Icon="@(new Size20.Calendar())" IconColor="Color.Accent">Historical Data</FluentNavLink>
 
-            <FluentNavLink Disabled="!RendererInfo.IsInteractive" Href="counter" Icon="@(new Icons.Regular.Size20.NumberSymbolSquare())" IconColor="Color.Accent">Counter</FluentNavLink>
-            <FluentNavLink Disabled="!RendererInfo.IsInteractive" Href="weather" Icon="@(new Icons.Regular.Size20.WeatherPartlyCloudyDay())" IconColor="Color.Accent">Weather</FluentNavLink>
         </FluentNavMenu>
     </nav>
 </div>
