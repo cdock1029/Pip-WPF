@@ -4,12 +4,12 @@
         <TargetFramework>net9.0-windows</TargetFramework>
         <UseWPF>true</UseWPF>
         <PublishSingleFile>false</PublishSingleFile>
-        <SelfContained>true</SelfContained>
+        <SelfContained>false</SelfContained>
         <DebugType>pdbonly</DebugType>
         <IncludeNativeLibrariesForSelfExtract>false</IncludeNativeLibrariesForSelfExtract>
         <IncludeAllContentForSelfExtract>false</IncludeAllContentForSelfExtract>
         <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
-        <PublishReadyToRun>true</PublishReadyToRun>
+        <PublishReadyToRun>false</PublishReadyToRun>
         <ApplicationIcon>Assets\coin.ico</ApplicationIcon>
     </PropertyGroup>
     <ItemGroup>

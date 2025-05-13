@@ -47,7 +47,8 @@ public partial class App
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"OnStartup exception: {ex.Message}");
+            Debug.WriteLine($"OnStartup exception: {ex}");
+            Debug.WriteLine($"OnStartup INNER: {ex.InnerException}");
             Environment.Exit(1);
         }
     }
