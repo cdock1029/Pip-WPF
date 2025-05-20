@@ -1,8 +1,10 @@
 ﻿using System.Collections.ObjectModel;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
+using DevExpress.Mvvm.Native;
 using DevExpress.Mvvm.Xpf;
 using DevExpress.Xpf.Core;
+using Microsoft.EntityFrameworkCore;
 using Pip.DataAccess;
 using Pip.Model;
 using Pip.UI.Components.Details;
@@ -39,23 +41,20 @@ public partial class InvestmentsViewModel : PipViewModel, IPipRoute
     {
         if (Investments != null && Investments.Any()) return;
 
-        Investments ??= [];
-        foreach (Investment investment in _dbContext.Investments.AsEnumerable())
-            Investments.Add(new InvestmentItemViewModel(investment));
+        _dbContext.Investments.Load();
+        Investments = _dbContext.Investments.Local.Select(i => new InvestmentItemViewModel(i)).ToObservableCollection();
     }
 
     public override async Task LoadAsync()
     {
         if (Investments != null && Investments.Any()) return;
 
-        IEnumerable<Investment> investments =
-            await Task.Run(() => _dbContext.Investments.AsEnumerable()).ConfigureAwait(false);
+        await Task.Run(() => _dbContext.Investments.Load()).ConfigureAwait(false);
 
         await Dispatcher.InvokeAsync(() =>
         {
-            Investments ??= [];
-            foreach (Investment investment in investments)
-                Investments.Add(new InvestmentItemViewModel(investment));
+            Investments = _dbContext.Investments.Local.Select(i => new InvestmentItemViewModel(i))
+                .ToObservableCollection();
         });
     }
 

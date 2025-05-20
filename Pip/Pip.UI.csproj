@@ -1,16 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net9.0-windows</TargetFramework>
         <UseWPF>true</UseWPF>
-        <PublishSingleFile>false</PublishSingleFile>
-        <SelfContained>false</SelfContained>
-        <DebugType>pdbonly</DebugType>
+        <ApplicationIcon>Assets\coin.ico</ApplicationIcon>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
         <IncludeNativeLibrariesForSelfExtract>false</IncludeNativeLibrariesForSelfExtract>
         <IncludeAllContentForSelfExtract>false</IncludeAllContentForSelfExtract>
         <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
-        <PublishReadyToRun>false</PublishReadyToRun>
-        <ApplicationIcon>Assets\coin.ico</ApplicationIcon>
+        <SelfContained>true</SelfContained>
+        <PublishSingleFile>false</PublishSingleFile>
+        <Optimize>true</Optimize>
+        <DebugType>none</DebugType>
+        <DebugSymbols>false</DebugSymbols>
+        <Prefer32Bit>false</Prefer32Bit>
+        <PublishReadyToRun>true</PublishReadyToRun>
+        <ReadyToRunUseCrossgen2>true</ReadyToRunUseCrossgen2>
+        <TieredCompilation>true</TieredCompilation>
+        <ServerGarbageCollection>false</ServerGarbageCollection>
+        <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
+        <GcRetainVM>false</GcRetainVM>
+        <InvariantGlobalization>false</InvariantGlobalization>
+        <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+        <EnableNETAnalyzers>false</EnableNETAnalyzers>
     </PropertyGroup>
     <ItemGroup>
       <Content Include="Assets\coin.ico" />

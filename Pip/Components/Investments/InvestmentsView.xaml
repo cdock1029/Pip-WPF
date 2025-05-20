@@ -41,11 +41,11 @@
                                 AllowGrouping="True"
                                 AllowScrollAnimation="True"
                                 NewItemRowPosition="None"
-                                ShowUpdateRowButtons="Never"
-                                EditFormShowMode="Dialog"
+                                ShowUpdateRowButtons="OnCellValueChange"
+                                EditFormShowMode="None"
                                 AutoWidth="True"
                                 IsTotalSummaryMenuEnabled="True"
-                                ShowGroupedColumns="True"
+                                ShowGroupedColumns="False"
                                 ValidateRowCommand="{Binding ValidateRowCommand}"
                                 ValidateRowDeletionCommand="{Binding ValidateRowDeletionCommand}"
                                 DataSourceRefreshCommand="{Binding DataSourceRefreshCommand}"
@@ -92,18 +92,23 @@
                         </dxg:GridControl.GroupSummary>
                         <dxg:GridControl.Columns>
                             <dxg:GridColumn
+                                AllowEditing="False"
                                 FieldName="Cusip"
                                 Header="CUSIP" />
                             <dxg:GridColumn
+                                AllowEditing="False"
                                 FieldName="IssueDate"
                                 Header="Issue Date" />
                             <dxg:GridColumn
+                                AllowEditing="False"
                                 FieldName="MaturityDate"
                                 Header="Maturity Date" />
                             <dxg:GridColumn
+                                AllowEditing="False"
                                 FieldName="Term"
                                 SortFieldName="TermSpan" />
                             <dxg:GridColumn
+                                AllowEditing="False"
                                 FieldName="Type"
                                 GroupIndex="0">
                                 <dxg:GridColumn.EditSettings>
@@ -118,12 +123,6 @@
                                     <dxe:TextEditSettings DisplayFormat="c" Mask="c" MaskType="Numeric" />
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
-                            <dxg:GridColumn
-                                FieldName="Confirmation"
-                                AllowCellMerge="False" />
-                            <dxg:GridColumn
-                                FieldName="Reinvestments"
-                                AllowCellMerge="False" />
                         </dxg:GridControl.Columns>
                     </dxg:GridControl>
 
