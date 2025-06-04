@@ -1,7 +1,3 @@
 <Solution>
-  <Folder Name="/Solution Items/" Id="02ea681e-c7d8-13c7-8484-4ac65e1b71e8">
-    <File Path="Directory.Build.props" />
-    <File Path="Directory.Packages.props" />
-  </Folder>
   <Project Path="Pip/Pip.UI.csproj" />
 </Solution>

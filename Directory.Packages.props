@@ -1,20 +1,8 @@
 ﻿<Project>
   <PropertyGroup>
-    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <CentralPackageTransitivePinningEnabled>false</CentralPackageTransitivePinningEnabled>
+    <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.5" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.5" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.5" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Abstractions" Version="9.0.5" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.5" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.AutoActivation" Version="9.5.0" />
-    <PackageVersion Include="Microsoft.Extensions.Http" Version="9.0.5" />
-    <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.3" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.5" />
-    <PackageVersion Include="Microsoft.SemanticKernel.Abstractions" Version="1.54.0" />
-    <PackageVersion Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+  <!--<ItemGroup>
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageVersion Include="DevExpress.Images" Version="25.1.1-alpha" />
     <PackageVersion Include="DevExpress.Mvvm.CodeGenerators" Version="22.1.1" />
@@ -23,9 +11,18 @@
     <PackageVersion Include="DevExpress.Wpf.Core" Version="25.1.1-alpha" />
     <PackageVersion Include="Devexpress.Wpf.Docking" Version="25.1.1-alpha" />
     <PackageVersion Include="DevExpress.Wpf.Grid" Version="25.1.1-alpha" />
-    <PackageVersion Include="devexpress.wpf.propertygrid" Version="25.1.1-alpha" />
+    <PackageVersion Include="Devexpress.Wpf.Propertygrid" Version="25.1.1-alpha" />
     <PackageVersion Include="DevExpress.Wpf.Ribbon" Version="25.1.1-alpha" />
     <PackageVersion Include="DevExpress.Wpf.ThemesLW" Version="25.1.1-alpha" />
     <PackageVersion Include="JetBrains.Annotations" Version="2025.1.0-eap1" />
-  </ItemGroup>
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Abstractions" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.AutoActivation" Version="9.5.0" />
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="9.0.5" />
+    <PackageVersion Include="Microsoft.SemanticKernel.Abstractions" Version="1.54.0" />
+    <PackageVersion Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+  </ItemGroup>-->
 </Project>
