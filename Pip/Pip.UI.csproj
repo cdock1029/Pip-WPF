@@ -42,7 +42,7 @@
         <PackageReference Include="DevExpress.Wpf.ThemesLW" />
         <PackageReference Include="JetBrains.Annotations" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -50,7 +50,6 @@
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.AutoActivation" />
         <PackageReference Include="Microsoft.Extensions.Http" />
         <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" />
-        <PackageReference Include="System.Formats.Asn1" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Pip.DataAccess\Pip.DataAccess.csproj" />

@@ -1,8 +1,0 @@
-.search-option-row {
-    display: table-row;
-}
-
-.search-option-row > * {
-    display: table-cell;
-    padding: 2px 4px;
-}
