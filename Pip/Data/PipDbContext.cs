@@ -4,8 +4,16 @@ using Pip.UI.Models;
 
 namespace Pip.UI.Data;
 
-public class PipDbContext(DbContextOptions<PipDbContext> options) : DbContext(options)
+public class PipDbContext : DbContext
 {
+    public PipDbContext()
+    {
+    }
+
+    public PipDbContext(DbContextOptions<PipDbContext> options) : base(options)
+    {
+    }
+
     public DbSet<Investment> Investments { get; init; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
