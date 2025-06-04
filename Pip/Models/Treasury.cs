@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
-using Pip.Model.Converters;
+using Pip.UI.Models.Converters;
 
-namespace Pip.Model;
+namespace Pip.UI.Models;
 
 public class Treasury
 {

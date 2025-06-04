@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using DevExpress.Mvvm.CodeGenerators;
-using Pip.DataAccess.Services;
-using Pip.Model;
 using Pip.UI.Components.Investments;
 using Pip.UI.Components.Shared;
+using Pip.UI.Data.Services;
+using Pip.UI.Models;
 
 namespace Pip.UI.Components.Details;
 

@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
-using Pip.Model;
+using Pip.UI.Models;
 
-namespace Pip.DataAccess;
+namespace Pip.UI.Data;
 
 public class PipDbContext(DbContextOptions<PipDbContext> options) : DbContext(options)
 {

@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 
-namespace Pip.DataAccess;
+namespace Pip.UI.Data;
 
 public static class DatabasePathHelper
 {

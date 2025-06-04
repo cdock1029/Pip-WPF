@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Pip.DataAccess.Migrations
+namespace Pip.UI.Migrations
 {
     /// <inheritdoc />
     public partial class IndexOnInvestment : Migration

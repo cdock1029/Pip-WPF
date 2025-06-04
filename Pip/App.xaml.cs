@@ -4,8 +4,6 @@ using System.Windows.Threading;
 using DevExpress.Xpf.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Pip.DataAccess;
-using Pip.DataAccess.Services;
 using Pip.UI.Components.Auctions;
 using Pip.UI.Components.Details;
 using Pip.UI.Components.Historical;
@@ -13,6 +11,8 @@ using Pip.UI.Components.Home;
 using Pip.UI.Components.Investments;
 using Pip.UI.Components.Main;
 using Pip.UI.Components.Search;
+using Pip.UI.Data;
+using Pip.UI.Data.Services;
 
 namespace Pip.UI;
 
@@ -77,7 +77,7 @@ public partial class App
         ShowError(e.Exception);
     }
 
-    public static void ShowError(Exception ex)
+    private static void ShowError(Exception ex)
     {
         ThemedMessageBox.Show("Application Error",
             $"{ex.GetType()}: {ex.Message}",

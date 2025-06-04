@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:search="clr-namespace:Pip.UI.Components.Search"
     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-    xmlns:model="clr-namespace:Pip.Model;assembly=Pip.Model"
+    xmlns:models="clr-namespace:Pip.UI.Models"
     x:Name="SearchViewControl"
     d:DataContext="{d:DesignInstance Type=search:SearchViewModel}"
     d:DesignHeight="450"
@@ -15,7 +15,7 @@
 
     <UserControl.Resources>
         <!-- DataTemplate for ListBox item to render Treasury model -->
-        <DataTemplate DataType="{x:Type model:Treasury}">
+        <DataTemplate DataType="{x:Type models:Treasury}">
             <Grid>
                 <Grid.Resources>
                     <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">

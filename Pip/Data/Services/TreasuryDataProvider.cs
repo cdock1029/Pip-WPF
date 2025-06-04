@@ -1,10 +1,11 @@
 ﻿using System.Globalization;
+using System.Net.Http;
 using System.Net.Http.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
-using Pip.Model;
+using Pip.UI.Models;
 
-namespace Pip.DataAccess.Services;
+namespace Pip.UI.Data.Services;
 
 public class TreasuryDataProvider : ITreasuryDataProvider
 {

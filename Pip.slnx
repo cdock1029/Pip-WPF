@@ -3,7 +3,5 @@
     <File Path="Directory.Build.props" />
     <File Path="Directory.Packages.props" />
   </Folder>
-  <Project Path="Pip.DataAccess/Pip.DataAccess.csproj" />
-  <Project Path="Pip.Model/Pip.Model.csproj" />
   <Project Path="Pip/Pip.UI.csproj" />
 </Solution>

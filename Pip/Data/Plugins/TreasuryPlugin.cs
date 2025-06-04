@@ -5,10 +5,10 @@ using System.Runtime.InteropServices;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.SemanticKernel;
-using Pip.DataAccess.Services;
-using Pip.Model;
+using Pip.UI.Data.Services;
+using Pip.UI.Models;
 
-namespace Pip.DataAccess.Plugins;
+namespace Pip.UI.Data.Plugins;
 
 [UsedImplicitly]
 public sealed class TreasuryPlugin(ITreasuryDataProvider dataProvider, PipDbContext dbContext)

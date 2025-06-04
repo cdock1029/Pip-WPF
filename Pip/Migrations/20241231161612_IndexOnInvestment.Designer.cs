@@ -4,13 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Pip.DataAccess;
 
 #nullable disable
 
-namespace Pip.DataAccess.Migrations
+namespace Pip.UI.Migrations
 {
-    [DbContext(typeof(PipDbContext))]
+    [DbContext(typeof(UI.Data.PipDbContext))]
     [Migration("20241231161612_IndexOnInvestment")]
     partial class IndexOnInvestment
     {

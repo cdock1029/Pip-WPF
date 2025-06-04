@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
-namespace Pip.Model;
+namespace Pip.UI.Models;
 
 [Description("A US Treasury investment saved in a porfolio")]
 [Index(nameof(Cusip), nameof(IssueDate))]
@@ -11,6 +11,7 @@ public class Investment
     [Description("Database ID")] public int Id { get; set; }
 
     [Description("Treasury CUSIP identifier")]
+    [StringLength(9, ErrorMessage = "CUSIP must be 9 characters long")]
     public required string Cusip { get; set; }
 
     [Description("Date when it was issued to the purchaser by the treasury department")]
@@ -28,6 +29,7 @@ public class Investment
     [Description("Date of the auction")] public DateOnly? AuctionDate { get; set; }
 
     [Description("Confirmation code for the purchase order")]
+    [MaxLength(50)]
     public string? Confirmation { get; set; }
 
     [Description("The count of how many automatic reinvestments or rollovers are scheduled")]

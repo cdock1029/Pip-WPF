@@ -2,9 +2,9 @@
 using DevExpress.Mvvm.CodeGenerators;
 using DevExpress.Mvvm.Xpf;
 using DevExpress.Xpf.Core;
-using Pip.DataAccess.Services;
-using Pip.Model;
 using Pip.UI.Components.Shared;
+using Pip.UI.Data.Services;
+using Pip.UI.Models;
 
 namespace Pip.UI.Components.Historical;
 
@@ -31,7 +31,7 @@ public partial class HistoricalViewModel(ITreasuryDataProvider treasuryDataProvi
     }
 
     [GenerateCommand]
-    public async Task HandleYearChanged()
+    private async Task HandleYearChanged()
     {
         if (SelectedYear == null) return;
 
@@ -47,7 +47,7 @@ public partial class HistoricalViewModel(ITreasuryDataProvider treasuryDataProvi
     }
 
     [GenerateCommand]
-    public void HandleCustomColumnSort(RowSortArgs args)
+    private void HandleCustomColumnSort(RowSortArgs args)
     {
         if (args.FieldName != nameof(Treasury.SecurityTerm)) return;
 

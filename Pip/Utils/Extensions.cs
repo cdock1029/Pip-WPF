@@ -1,4 +1,4 @@
-﻿using Pip.Model;
+﻿using Treasury = Pip.UI.Models.Treasury;
 
 namespace Pip.UI.Utils;
 

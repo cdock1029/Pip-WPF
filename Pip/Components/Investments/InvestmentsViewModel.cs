@@ -5,11 +5,11 @@ using DevExpress.Mvvm.Native;
 using DevExpress.Mvvm.Xpf;
 using DevExpress.Xpf.Core;
 using Microsoft.EntityFrameworkCore;
-using Pip.DataAccess;
-using Pip.Model;
 using Pip.UI.Components.Details;
 using Pip.UI.Components.Investments.Messages;
 using Pip.UI.Components.Shared;
+using Investment = Pip.UI.Models.Investment;
+using PipDbContext = Pip.UI.Data.PipDbContext;
 
 namespace Pip.UI.Components.Investments;
 

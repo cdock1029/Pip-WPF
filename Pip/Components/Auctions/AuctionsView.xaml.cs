@@ -1,7 +1,7 @@
 ﻿using System.Windows.Input;
 using DevExpress.Xpf.Grid;
 using DevExpress.Xpf.WindowsUI.Navigation;
-using Pip.Model;
+using Treasury = Pip.UI.Models.Treasury;
 
 namespace Pip.UI.Components.Auctions;
 

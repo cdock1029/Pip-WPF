@@ -1,6 +1,6 @@
-﻿using Pip.Model;
+﻿using Pip.UI.Models;
 
-namespace Pip.DataAccess.Services;
+namespace Pip.UI.Data.Services;
 
 public interface ITreasuryDataProvider
 {

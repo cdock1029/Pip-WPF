@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using DevExpress.Mvvm.CodeGenerators;
 using JetBrains.Annotations;
-using Pip.Model;
 using Pip.UI.Components.Shared;
+using Investment = Pip.UI.Models.Investment;
+using TreasuryType = Pip.UI.Models.TreasuryType;
 
 namespace Pip.UI.Components.Investments;
 

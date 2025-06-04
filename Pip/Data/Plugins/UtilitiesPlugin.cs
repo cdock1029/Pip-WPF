@@ -1,7 +1,7 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.SemanticKernel;
 
-namespace Pip.DataAccess.Plugins;
+namespace Pip.UI.Data.Plugins;
 
 [UsedImplicitly]
 public sealed class UtilitiesPlugin

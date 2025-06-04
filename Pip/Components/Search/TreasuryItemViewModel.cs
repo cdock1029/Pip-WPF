@@ -1,5 +1,6 @@
 ﻿using JetBrains.Annotations;
-using Pip.Model;
+using Treasury = Pip.UI.Models.Treasury;
+using TreasuryType = Pip.UI.Models.TreasuryType;
 
 namespace Pip.UI.Components.Search;
 

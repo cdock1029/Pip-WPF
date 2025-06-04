@@ -9,8 +9,8 @@
              xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
              xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              xmlns:attachedProperties="clr-namespace:Pip.UI.AttachedProperties"
-             xmlns:model="clr-namespace:Pip.Model;assembly=Pip.Model"
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:model="clr-namespace:Pip.UI.Models"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type={x:Type auctions:AuctionsViewModel}}"
              d:DesignHeight="450" d:DesignWidth="800">
@@ -62,7 +62,7 @@
             <dxdo:DocumentGroup SelectedTabIndex="0">
                 <dxdo:DocumentPanel Caption="Recent" x:Name="RecentTab">
                     <dxg:GridControl
-                        Name="RecentGrid"
+                        x:Name="RecentGrid"
                         ShowLoadingPanel="{Binding TreasuriesRecent, Converter={StaticResource ObjectToBooleanConverterInverse}}"
                         ItemsSource="{Binding TreasuriesRecent}"
                         SelectedItem="{Binding SelectedTreasuryRecent, Mode=TwoWay}"
@@ -105,7 +105,7 @@
 
                 <dxdo:DocumentPanel Caption="Upcoming" x:Name="UpcomingTab">
                     <dxg:GridControl
-                        Name="UpcomingGrid"
+                        x:Name="UpcomingGrid"
                         ItemsSource="{Binding TreasuriesUpcoming}"
                         SelectedItem="{Binding SelectedTreasuryUpcoming}"
 

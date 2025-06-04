@@ -3,11 +3,11 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Pip.DataAccess;
+using Pip.UI.Data;
 
 #nullable disable
 
-namespace Pip.DataAccess.Migrations
+namespace Pip.UI.Migrations
 {
     [DbContext(typeof(PipDbContext))]
     partial class PipDbContextModelSnapshot : ModelSnapshot

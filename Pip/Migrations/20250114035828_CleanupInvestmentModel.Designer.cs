@@ -4,27 +4,29 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Pip.DataAccess;
 
 #nullable disable
 
-namespace Pip.DataAccess.Migrations
+namespace Pip.UI.Migrations
 {
-    [DbContext(typeof(PipDbContext))]
-    [Migration("20241004222133_SqliteOnlyInvestment")]
-    partial class SqliteOnlyInvestment
+    [DbContext(typeof(UI.Data.PipDbContext))]
+    [Migration("20250114035828_CleanupInvestmentModel")]
+    partial class CleanupInvestmentModel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "9.0.0-rc.1.24451.1");
+            modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
 
             modelBuilder.Entity("Pip.Model.Investment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateOnly?>("AuctionDate")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Confirmation")
                         .HasColumnType("TEXT");
@@ -46,12 +48,15 @@ namespace Pip.DataAccess.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("SecurityTerm")
+                        .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Type")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Cusip", "IssueDate");
 
                     b.ToTable("Investments");
 

@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Pip.Model.Converters;
+namespace Pip.UI.Models.Converters;
 
 public class EmptyStringNullableConverter<T> : JsonConverter<T?> where T : struct
 {

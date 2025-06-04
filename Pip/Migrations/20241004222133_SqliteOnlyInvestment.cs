@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace Pip.DataAccess.Migrations
+namespace Pip.UI.Migrations
 {
     /// <inheritdoc />
     public partial class SqliteOnlyInvestment : Migration
