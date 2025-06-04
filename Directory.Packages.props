@@ -12,7 +12,7 @@
     <PackageVersion Include="DevExpress.AIIntegration.Desktop" Version="24.2.5" />
     <PackageVersion Include="DevExpress.AIIntegration.OpenAI" Version="24.2.5" />
     <PackageVersion Include="DevExpress.AIIntegration.Wpf" Version="24.2.5" />
-    <PackageVersion Include="Markdig" Version="0.40.0" />
+    <PackageVersion Include="Markdig" Version="0.41.1" />
     <PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.5" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.5" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.5" />
@@ -30,28 +30,28 @@
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.AutoActivation" Version="9.5.0" />
     <PackageVersion Include="Microsoft.Extensions.Http" Version="9.0.5" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.2" />
-    <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="9.4.0" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="9.0.4" />
+    <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="9.5.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="9.0.5" />
     <PackageVersion Include="Microsoft.Extensions.Caching.Memory" Version="9.0.3" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.4" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.5" />
     <PackageVersion Include="Microsoft.SemanticKernel" Version="1.40.1" />
-    <PackageVersion Include="Microsoft.SemanticKernel.Abstractions" Version="1.52.1" />
+    <PackageVersion Include="Microsoft.SemanticKernel.Abstractions" Version="1.54.0" />
     <PackageVersion Include="Microsoft.SemanticKernel.Connectors.HuggingFace" Version="1.40.1-preview" />
     <PackageVersion Include="Microsoft.SemanticKernel.Connectors.OpenAI" Version="1.40.1" />
     <PackageVersion Include="Microsoft.SemanticKernel.Connectors.AzureAIInference" Version="1.40.1-beta" />
     <PackageVersion Include="Microsoft.SemanticKernel.Connectors.Google" Version="1.40.1-alpha" />
     <PackageVersion Include="Microsoft.SemanticKernel.Connectors.Ollama" Version="1.40.1-alpha" />
     <PackageVersion Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
-    <PackageVersion Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="9.0.50" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="9.0.70" />
     <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.11.9" />
-    <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components.Emoji" Version="4.11.7" />
+    <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components.Emoji" Version="4.11.9" />
     <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.11.9" />
     <PackageVersion Include="Syncfusion.Blazor" Version="29.1.39" />
     <PackageVersion Include="Syncfusion.Blazor.Calendars" Version="29.1.39" />
     <PackageVersion Include="Syncfusion.Blazor.Core" Version="29.1.39" />
     <PackageVersion Include="Syncfusion.Blazor.DropDowns" Version="29.1.39" />
-    <PackageVersion Include="Syncfusion.Blazor.Grid" Version="29.1.41" />
-    <PackageVersion Include="Syncfusion.Blazor.Themes" Version="29.1.41" />
+    <PackageVersion Include="Syncfusion.Blazor.Grid" Version="29.2.7" />
+    <PackageVersion Include="Syncfusion.Blazor.Themes" Version="29.2.7" />
     <PackageVersion Include="System.Drawing.Common" Version="9.0.5" />
     <PackageVersion Include="System.Text.Json" Version="9.0.5" />
     <PackageVersion Include="System.Formats.Asn1" Version="9.0.5" />
@@ -70,8 +70,8 @@
     <PackageVersion Include="DevExpress.Blazor.Themes" Version="25.1.1-alpha" />
     <PackageVersion Include="DevExpress.Blazor.Themes.Fluent" Version="25.1.1-alpha" />
     <PackageVersion Include="JetBrains.Annotations" Version="2025.1.0-eap1" />
-    <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="1.11.2" />
-    <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.11.2" />
+    <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="1.12.0" />
+    <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.12.0" />
     <PackageVersion Include="WPF-UI" Version="4.0.2" />
   </ItemGroup>
 </Project>
