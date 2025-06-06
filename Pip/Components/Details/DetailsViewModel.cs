@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using DevExpress.Mvvm.CodeGenerators;
-using Pip.UI.Components.Investments;
 using Pip.UI.Components.Shared;
 using Pip.UI.Data.Services;
 using Pip.UI.Models;
@@ -20,7 +19,7 @@ public partial class DetailsViewModel(ITreasuryDataProvider treasuryDataProvider
     }
 
     [GenerateCommand]
-    private void HandleSelectedInvestmentChanged(InvestmentItemViewModel? selected)
+    private void HandleSelectedInvestmentChanged(Investment? selected)
     {
         _tokenSource?.Cancel();
 

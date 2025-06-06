@@ -48,8 +48,6 @@ public partial class AuctionsViewModel(ITreasuryDataProvider treasuryDataProvide
     {
         IEnumerable<Treasury>? recent = await treasuryDataProvider.GetRecentAsync().ConfigureAwait(false);
 
-        await Task.Delay(2000);
-
         await Dispatcher.InvokeAsync(() => TreasuriesRecent = recent ?? []);
     }
 
@@ -62,35 +60,31 @@ public partial class AuctionsViewModel(ITreasuryDataProvider treasuryDataProvide
 
 
     [GenerateCommand]
-    private void SaveRecentToInvestments()
+    private async Task SaveRecentToInvestments()
     {
         ArgumentNullException.ThrowIfNull(SelectedTreasuryRecent);
-        Investment investment = new()
-        {
-            Cusip = SelectedTreasuryRecent.Cusip,
-            IssueDate = SelectedTreasuryRecent.IssueDate!.Value,
-            MaturityDate = SelectedTreasuryRecent.MaturityDate,
-            SecurityTerm = SelectedTreasuryRecent.SecurityTerm,
-            Type = SelectedTreasuryRecent.Type
-        };
-        treasuryDataProvider.Insert(investment);
-        Messenger.Default.Send(new AfterInsertInvestmentMessage(new AfterInsertInvestmentArgs(investment.Id)));
+        await SaveToInvestmentsAsync(SelectedTreasuryRecent);
     }
 
 
     [GenerateCommand]
-    private void SaveUpcomingtToInvestments()
+    private async Task SaveUpcomingToInvestments()
     {
         ArgumentNullException.ThrowIfNull(SelectedTreasuryUpcoming);
+        await SaveToInvestmentsAsync(SelectedTreasuryUpcoming);
+    }
+
+    private async Task SaveToInvestmentsAsync(Treasury treasury)
+    {
         Investment investment = new()
         {
-            Cusip = SelectedTreasuryUpcoming.Cusip,
-            IssueDate = SelectedTreasuryUpcoming.IssueDate!.Value,
-            MaturityDate = SelectedTreasuryUpcoming.MaturityDate,
-            SecurityTerm = SelectedTreasuryUpcoming.SecurityTerm,
-            Type = SelectedTreasuryUpcoming.Type
+            Cusip = treasury.Cusip,
+            IssueDate = treasury.IssueDate!.Value,
+            MaturityDate = treasury.MaturityDate,
+            SecurityTerm = treasury.SecurityTerm,
+            Type = treasury.Type
         };
-        treasuryDataProvider.Insert(investment);
+        await treasuryDataProvider.InsertAsync(investment);
         Messenger.Default.Send(new AfterInsertInvestmentMessage(new AfterInsertInvestmentArgs(investment.Id)));
     }
 }

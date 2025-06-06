@@ -63,6 +63,7 @@
                 <dxdo:DocumentPanel Caption="Recent" x:Name="RecentTab">
                     <dxg:GridControl
                         x:Name="RecentGrid"
+                        AllowInitiallyFocusedRow="False"
                         ShowLoadingPanel="{Binding TreasuriesRecent, Converter={StaticResource ObjectToBooleanConverterInverse}}"
                         ItemsSource="{Binding TreasuriesRecent}"
                         SelectedItem="{Binding SelectedTreasuryRecent, Mode=TwoWay}"
@@ -106,10 +107,11 @@
                 <dxdo:DocumentPanel Caption="Upcoming" x:Name="UpcomingTab">
                     <dxg:GridControl
                         x:Name="UpcomingGrid"
+                        AllowInitiallyFocusedRow="False"
                         ItemsSource="{Binding TreasuriesUpcoming}"
                         SelectedItem="{Binding SelectedTreasuryUpcoming}"
 
-                        attachedProperties:GridControlProperties.RowCellMenuCommand="{Binding SaveUpcomingtToInvestmentsCommand}">
+                        attachedProperties:GridControlProperties.RowCellMenuCommand="{Binding SaveUpcomingToInvestmentsCommand}">
 
                         <dxg:GridControl.CommandBindings>
                             <CommandBinding Command="ApplicationCommands.Copy"

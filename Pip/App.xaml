@@ -1,8 +1,7 @@
 ﻿<Application x:Class="Pip.UI.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:resources="clr-namespace:Pip.UI.Resources"
-             DispatcherUnhandledException="App_OnDispatcherUnhandledException">
+             xmlns:resources="clr-namespace:Pip.UI.Resources">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

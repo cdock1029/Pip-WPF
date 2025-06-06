@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
-using DevExpress.Mvvm.Native;
 using DevExpress.Mvvm.Xpf;
 using DevExpress.Xpf.Core;
 using Microsoft.EntityFrameworkCore;
@@ -17,15 +16,16 @@ namespace Pip.UI.Components.Investments;
 public partial class InvestmentsViewModel : PipViewModel, IPipRoute
 {
     private readonly PipDbContext _dbContext;
-    [GenerateProperty] private ObservableCollection<InvestmentItemViewModel>? _investments;
-    [GenerateProperty] private bool _isWaitIndicatorVisible;
-    [GenerateProperty] private InvestmentItemViewModel? _selectedInvestment;
+    [GenerateProperty] private ObservableCollection<Investment>? _investments;
+    [GenerateProperty] private Investment? _selectedInvestment;
 
     public InvestmentsViewModel(DetailsViewModel detailsViewModel,
         PipDbContext dbContext)
     {
         _dbContext = dbContext;
         DetailsViewModel = detailsViewModel;
+        _dbContext.Investments.Load();
+        Investments = _dbContext.Investments.Local.ToObservableCollection();
         Messenger.Default.Register<AfterInsertInvestmentMessage>(this, Receive);
     }
 
@@ -37,54 +37,24 @@ public partial class InvestmentsViewModel : PipViewModel, IPipRoute
 
     public Uri Image { get; } = DXImageHelper.GetImageUri("SvgImages/Business Objects/BO_Opportunity.svg");
 
-    public override void Load()
-    {
-        if (Investments != null && Investments.Any()) return;
-
-        _dbContext.Investments.Load();
-        Investments = _dbContext.Investments.Local.Select(i => new InvestmentItemViewModel(i)).ToObservableCollection();
-    }
-
-    public override async Task LoadAsync()
-    {
-        if (Investments != null && Investments.Any()) return;
-
-        await Task.Run(() => _dbContext.Investments.Load()).ConfigureAwait(false);
-
-        await Dispatcher.InvokeAsync(() =>
-        {
-            Investments = _dbContext.Investments.Local.Select(i => new InvestmentItemViewModel(i))
-                .ToObservableCollection();
-        });
-    }
-
     private void Receive(AfterInsertInvestmentMessage message)
     {
-        Dispatcher.InvokeAsync(async () =>
-        {
-            await Task.Delay(500);
-            Investments?.Clear();
-            await LoadAsync();
-            SelectedInvestment = Investments?.FirstOrDefault(i => i.Id == message.Value.Id);
-        });
+        SelectedInvestment = Investments?.FirstOrDefault(i => i.Id == message.Value.Id);
     }
 
     [GenerateCommand]
     private void DataSourceRefresh(DataSourceRefreshArgs args)
     {
-        Investments?.Clear();
-        Load();
     }
 
     [GenerateCommand]
     private void ValidateRow(RowValidationArgs args)
     {
-        InvestmentItemViewModel? investmentItem = (InvestmentItemViewModel)args.Item;
-        if (investmentItem.HasErrors) return;
+        Investment investmentItem = (Investment)args.Item;
+        //if (investmentItem.HasErrors) return;
 
-        Investment inv = investmentItem.SyncToInvestment();
         if (args.IsNewItem)
-            _dbContext.Investments.Add(inv);
+            _dbContext.Investments.Add(investmentItem);
 
         _dbContext.SaveChanges();
     }
@@ -94,8 +64,8 @@ public partial class InvestmentsViewModel : PipViewModel, IPipRoute
     {
         try
         {
-            InvestmentItemViewModel? investmentItem = (InvestmentItemViewModel)args.Items.Single();
-            _dbContext.Investments.Remove(investmentItem.SyncToInvestment());
+            Investment investmentItem = (Investment)args.Items.Single();
+            _dbContext.Investments.Local.Remove(investmentItem);
             _dbContext.SaveChanges();
         }
         catch (Exception e)

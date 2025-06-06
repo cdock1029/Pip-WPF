@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Pip.UI.Models;
 
 namespace Pip.UI.Data;
@@ -21,7 +20,6 @@ public class PipDbContext : DbContext
         if (optionsBuilder.IsConfigured) return;
 
         string dbPath = DatabasePathHelper.GetDatabasePath("pip.db");
-        Debug.WriteLine($"dbPath={dbPath}");
         optionsBuilder.UseSqlite($"Data Source={dbPath}");
     }
 

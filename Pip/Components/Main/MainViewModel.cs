@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
+using System.Windows;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 using DevExpress.Xpf.Core.Native;
@@ -16,6 +18,8 @@ namespace Pip.UI.Components.Main;
 public partial class MainViewModel : PipViewModel
 {
     [GenerateProperty] private IPipRoute? _selectedRoute;
+
+    [GenerateProperty] private bool _isFlyoutOpen;
 
     public MainViewModel(InvestmentsViewModel investmentsViewModel,
         SearchViewModel searchViewModel,
@@ -76,6 +80,24 @@ public partial class MainViewModel : PipViewModel
         if (SelectedRoute is PipViewModel vm)
             await vm.LoadAsync();
     }
+
+    [GenerateCommand]
+    private void OnSearchFocusWithinChanged(DependencyPropertyChangedEventArgs e)
+    {
+        var isFocusedWithin = (bool)e.NewValue;
+
+        Debug.WriteLine($"focus within change to: {isFocusedWithin}");
+
+        if (isFocusedWithin && SearchViewModel.SearchResults is not null)
+            IsFlyoutOpen = true;
+    }
+
+    [GenerateCommand]
+    private void FlyoutOnClosing(CancelEventArgs e)
+    {
+        if (SearchViewModel.SearchResults is not null) e.Cancel = true;
+    }
+
 
     private void ReceiveAfterInvestmentMessage(AfterInsertInvestmentMessage msg)
     {

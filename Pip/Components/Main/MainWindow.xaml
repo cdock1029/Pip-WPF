@@ -86,9 +86,14 @@
             <dxe:ButtonEdit VerticalAlignment="Center" x:Name="ButtonEdit"
                             NullText="Search CUSIP"
                             Text="{Binding SearchViewModel.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            IsKeyboardFocusWithinChanged="ButtonEdit_OnIsKeyboardFocusWithinChanged"
                             AllowDefaultButton="False"
                             AllowFocusEditorButtons="True">
+                <dxmvvm:Interaction.Behaviors>
+                    <dxmvvm:EventToCommand
+                        EventName="IsKeyboardFocusWithinChanged"
+                        PassEventArgsToCommand="True"
+                        Command="{Binding OnSearchFocusWithinChangedCommand}" />
+                </dxmvvm:Interaction.Behaviors>
                 <dxe:ButtonEdit.Buttons>
                     <dxe:ButtonInfo GlyphKind="Cancel" ToolTip="Clear"
                                     Command="{Binding SearchViewModel.ClearCommand}"
@@ -120,9 +125,15 @@
                                PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Path=Children[0]}"
                                AllowMoveAnimation="False"
                                AnimationDuration="0:0:0.0"
-                               Closing="FlyoutControl_OnClosing"
                                MinHeight="80"
                                MaxHeight="300" Width="220">
+
+                <dxmvvm:Interaction.Behaviors>
+                    <dxmvvm:EventToCommand
+                        EventName="Closing"
+                        PassEventArgsToCommand="True"
+                        Command="{Binding FlyoutOnClosingCommand}" />
+                </dxmvvm:Interaction.Behaviors>
                 <dxe:FlyoutControl.Settings>
                     <dxe:FlyoutSettings Placement="Bottom" />
                 </dxe:FlyoutControl.Settings>

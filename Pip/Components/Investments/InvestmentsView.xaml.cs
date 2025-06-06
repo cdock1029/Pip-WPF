@@ -5,11 +5,11 @@ namespace Pip.UI.Components.Investments;
 public partial class InvestmentsView : INavigationAware
 {
 	public InvestmentsView()
-	{
-		InitializeComponent();
-	}
+    {
+        InitializeComponent();
+    }
 
-	public void NavigatedTo(NavigationEventArgs e)
+    public void NavigatedTo(NavigationEventArgs e)
     {
         if (e.Parameter is InvestmentsViewModel vm) DataContext ??= vm;
     }

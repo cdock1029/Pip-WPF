@@ -1,9 +1,9 @@
-﻿using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Threading;
 using DevExpress.Xpf.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Pip.UI.Components.Auctions;
 using Pip.UI.Components.Details;
 using Pip.UI.Components.Historical;
@@ -19,43 +19,67 @@ namespace Pip.UI;
 public partial class App
 {
     private IServiceProvider _serviceProvider = null!;
+    private ILogger<App> _log = null!;
 
-    protected override async void OnStartup(StartupEventArgs e)
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        CompatibilitySettings.UseLightweightThemes = true;
+        Theme.CachePaletteThemes = true;
+        Theme.RegisterPredefinedPaletteThemes();
+        ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11SystemColors.Name;
+        _serviceProvider = ConfigureServices();
+        _log = _serviceProvider.GetRequiredService<ILogger<App>>();
+
+        DispatcherUnhandledException += App_DispatcherUnhandledException;
+        TaskScheduler.UnobservedTaskException += (_, args) =>
+        {
+            _log.LogError(args.Exception, "Unobserved task exception");
+            args.SetObserved();
+        };
+
+        _ = StartupAsync();
+    }
+
+    private async Task StartupAsync()
     {
         try
         {
-            base.OnStartup(e);
+            Task dbTask = Task.Run(() =>
+            {
+                PipDbContext dbContext = _serviceProvider.GetRequiredService<PipDbContext>();
+                dbContext.Database.Migrate();
+            });
 
-            CompatibilitySettings.UseLightweightThemes = true;
-            ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11SystemColors.Name;
+            Task uiPreloadTask = ApplicationThemeHelper.PreloadAsync(PreloadCategories.Grid, PreloadCategories.Docking);
 
-            Theme.CachePaletteThemes = true;
-            Theme.RegisterPredefinedPaletteThemes();
-
-            await ApplicationThemeHelper.PreloadAsync(PreloadCategories.Grid, PreloadCategories.Docking,
-                PreloadCategories.Accordion, PreloadCategories.Controls, PreloadCategories.Core);
-
-            ConfigureServices(out ServiceCollection serviceCollection);
-            _serviceProvider = serviceCollection.BuildServiceProvider();
-
-            PipDbContext dbContext = _serviceProvider.GetRequiredService<PipDbContext>();
-            await Task.Run(dbContext.Database.Migrate);
-
+            await dbTask;
 
             MainWindow mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
             mainWindow.Show();
+
+            await uiPreloadTask;
         }
+
         catch (Exception ex)
         {
-            Debug.WriteLine($"OnStartup exception: {ex}");
-            Debug.WriteLine($"OnStartup INNER: {ex.InnerException}");
+            _log.LogCritical(ex, "OnStartup exception");
+            ShowError(ex);
             Environment.Exit(1);
         }
     }
 
-    private static void ConfigureServices(out ServiceCollection serviceCollection)
+    private static IServiceProvider ConfigureServices()
     {
-        serviceCollection = [];
+        ServiceCollection serviceCollection = [];
+
+        serviceCollection.AddLogging(builder =>
+        {
+#if DEBUG
+            builder.AddDebug();
+#endif
+            builder.AddEventLog();
+        });
+
         serviceCollection
             .AddMemoryCache()
             .AddSingleton<MainViewModel>()
@@ -66,21 +90,22 @@ public partial class App
             .AddSingleton<HistoricalViewModel>()
             .AddSingleton<DetailsViewModel>()
             .AddSingleton<MainWindow>()
-            .AddDbContext<PipDbContext>(ServiceLifetime.Transient)
+            .AddDbContext<PipDbContext>(ServiceLifetime.Singleton)
             .AddHttpClient<ITreasuryDataProvider, TreasuryDataProvider>();
+        return serviceCollection.BuildServiceProvider();
     }
 
-    private void App_OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+    private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
     {
         e.Handled = true;
-        Debug.WriteLine(e.Exception);
+        _log.LogError(e.Exception, "Dispatcher Unhandled Exception");
         ShowError(e.Exception);
     }
 
     private static void ShowError(Exception ex)
     {
         ThemedMessageBox.Show("Application Error",
-            $"{ex.GetType()}: {ex.Message}",
+            $"{ex.GetType()}: {ex.Message}\n{ex.StackTrace}",
             MessageBoxButton.OK, MessageBoxImage.Error);
     }
 }

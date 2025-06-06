@@ -56,19 +56,4 @@ public partial class MainWindow
         Settings.Default.WindowState = WindowState;
         Settings.Default.Save();
     }
-
-    private void ButtonEdit_OnIsKeyboardFocusWithinChanged(object sender, DependencyPropertyChangedEventArgs e)
-    {
-        var isFocusedWithin = (bool)e.NewValue;
-
-        bool searchExecuted = ((MainViewModel)DataContext).SearchViewModel.SearchResults is not null;
-
-        if (isFocusedWithin && searchExecuted)
-            FlyoutControl.IsOpen = true;
-    }
-
-    private void FlyoutControl_OnClosing(object? sender, CancelEventArgs e)
-    {
-        if (((MainViewModel)DataContext).SearchViewModel.SearchResults is not null) e.Cancel = true;
-    }
 }

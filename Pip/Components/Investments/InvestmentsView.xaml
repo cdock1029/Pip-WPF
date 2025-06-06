@@ -25,7 +25,8 @@
                                      ShowLoadingPanel="{Binding Investments, Converter={StaticResource ObjectToBooleanConverterInverse}}"
                                      AutoExpandAllGroups="True"
                                      DesignTimeDataObjectType="investments:InvestmentItemViewModel"
-                                     SelectionMode="Row"
+                                     SelectionMode="None"
+                                     AllowInitiallyFocusedRow="False"
                                      ShowBorder="False"
                                      ItemsSource="{Binding Investments}"
                                      SelectedItem="{Binding SelectedInvestment, Mode=TwoWay}">
@@ -43,6 +44,7 @@
                                 NewItemRowPosition="None"
                                 ShowUpdateRowButtons="OnCellValueChange"
                                 EditFormShowMode="None"
+                                FadeSelectionOnLostFocus="False"
                                 AutoWidth="True"
                                 IsTotalSummaryMenuEnabled="True"
                                 ShowGroupedColumns="False"
@@ -105,8 +107,8 @@
                                 Header="Maturity Date" />
                             <dxg:GridColumn
                                 AllowEditing="False"
-                                FieldName="Term"
-                                SortFieldName="TermSpan" />
+                                FieldName="SecurityTerm"
+                                Header="Term" />
                             <dxg:GridColumn
                                 AllowEditing="False"
                                 FieldName="Type"

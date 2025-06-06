@@ -36,16 +36,16 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-        <PackageReference Include="DevExpress.Images" Version="25.1.1-alpha" />
+        <PackageReference Include="DevExpress.Images" Version="25.1.2-beta" />
         <PackageReference Include="DevExpress.Mvvm.CodeGenerators" Version="22.1.1" />
-        <PackageReference Include="DevExpress.Wpf.Accordion" Version="25.1.1-alpha" />
-        <PackageReference Include="DevExpress.Wpf.Controls" Version="25.1.1-alpha" />
-        <PackageReference Include="DevExpress.Wpf.Core" Version="25.1.1-alpha" />
-        <PackageReference Include="Devexpress.Wpf.Docking" Version="25.1.1-alpha" />
-        <PackageReference Include="DevExpress.Wpf.Grid" Version="25.1.1-alpha" />
-        <PackageReference Include="Devexpress.Wpf.Propertygrid" Version="25.1.1-alpha" />
-        <PackageReference Include="DevExpress.Wpf.Ribbon" Version="25.1.1-alpha" />
-        <PackageReference Include="DevExpress.Wpf.ThemesLW" Version="25.1.1-alpha" />
+        <PackageReference Include="DevExpress.Wpf.Accordion" Version="25.1.2-beta" />
+        <PackageReference Include="DevExpress.Wpf.Controls" Version="25.1.2-beta" />
+        <PackageReference Include="DevExpress.Wpf.Core" Version="25.1.2-beta" />
+        <PackageReference Include="Devexpress.Wpf.Docking" Version="25.1.2-beta" />
+        <PackageReference Include="DevExpress.Wpf.Grid" Version="25.1.2-beta" />
+        <PackageReference Include="Devexpress.Wpf.Propertygrid" Version="25.1.2-beta" />
+        <PackageReference Include="DevExpress.Wpf.Ribbon" Version="25.1.2-beta" />
+        <PackageReference Include="DevExpress.Wpf.ThemesLW" Version="25.1.2-beta" />
         <PackageReference Include="JetBrains.Annotations" Version="2025.1.0-eap1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.5" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="9.0.5" />
@@ -57,12 +57,13 @@
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.5" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.AutoActivation" Version="9.5.0" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.5" />
-        <PackageReference Include="Microsoft.SemanticKernel.Abstractions" Version="1.54.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.5" />
+        <PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="9.0.5" />
+        <PackageReference Include="Microsoft.SemanticKernel.Abstractions" Version="1.55.0" />
         <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
     </ItemGroup>
     <ItemGroup>
-        <RuntimeHostConfigurationOption Include="Switch.System.Windows.Controls.DisableDynamicResourceOptimization"
-                                        Value="false" />
+        <RuntimeHostConfigurationOption Include="Switch.System.Windows.Controls.DisableDynamicResourceOptimization" Value="false" />
     </ItemGroup>
     <ItemGroup>
         <Compile Update="Properties\Settings.Designer.cs">
