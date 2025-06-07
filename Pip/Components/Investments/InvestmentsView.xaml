@@ -24,7 +24,7 @@
                     <dxg:GridControl x:Name="InvestmentsGrid"
                                      ShowLoadingPanel="{Binding Investments, Converter={StaticResource ObjectToBooleanConverterInverse}}"
                                      AutoExpandAllGroups="True"
-                                     DesignTimeDataObjectType="investments:InvestmentItemViewModel"
+                                     DesignTimeDataObjectType="models:Investment"
                                      SelectionMode="None"
                                      AllowInitiallyFocusedRow="False"
                                      ShowBorder="False"
@@ -52,6 +52,9 @@
                                 ValidateRowDeletionCommand="{Binding ValidateRowDeletionCommand}"
                                 DataSourceRefreshCommand="{Binding DataSourceRefreshCommand}"
                                 ShowFixedTotalSummary="True">
+                                <!--<dxg:TableView.ColumnFilterPopupMode>
+                                    <dxg:ColumnFilterPopupMode>Excel</dxg:ColumnFilterPopupMode>
+                                </dxg:TableView.ColumnFilterPopupMode>-->
                                 <dxg:TableView.RowCellMenuCustomizations>
                                     <dxb:BarButtonItem Content="Delete..."
                                                        Glyph="{dx:DXImage 'SvgImages/Outlook Inspired/Delete.svg'}">
@@ -108,7 +111,15 @@
                             <dxg:GridColumn
                                 AllowEditing="False"
                                 FieldName="SecurityTerm"
+                                SortFieldName="TermDuration"
                                 Header="Term" />
+                            <!-- Add this after the SecurityTerm column -->
+                            <dxg:GridColumn
+                                AllowEditing="False"
+                                FieldName="TermDuration"
+                                Header="Term (Days)"
+                                UnboundType="Integer"
+                                UnboundExpression="Iif(IsNullOrEmpty([MaturityDate]), 0, DateDiffDay([IssueDate], [MaturityDate]))" />
                             <dxg:GridColumn
                                 AllowEditing="False"
                                 FieldName="Type"
@@ -120,9 +131,10 @@
                             </dxg:GridColumn>
                             <dxg:GridColumn AllowCellMerge="False"
                                             AllowEditing="True"
-                                            FieldName="Par">
+                                            FieldName="Par"
+                                            ColumnFilterMode="Value">
                                 <dxg:GridColumn.EditSettings>
-                                    <dxe:TextEditSettings DisplayFormat="c" Mask="c" MaskType="Numeric" />
+                                    <dxe:TextEditSettings Mask="c" MaskUseAsDisplayFormat="True" MaskType="Numeric" />
                                 </dxg:GridColumn.EditSettings>
                             </dxg:GridColumn>
                         </dxg:GridControl.Columns>

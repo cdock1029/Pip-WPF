@@ -21,6 +21,8 @@ public class Investment
     public required TreasuryType Type { get; set; }
 
     [Description("The principle or face value of the treasury investment")]
+    [DataType(DataType.Currency)]
+    [Range(100, int.MaxValue)]
     public int Par { get; set; }
 
     [Description("Date when the treasury matures")]
@@ -29,7 +31,7 @@ public class Investment
     [Description("Date of the auction")] public DateOnly? AuctionDate { get; set; }
 
     [Description("Confirmation code for the purchase order")]
-    [MaxLength(50)]
+    [StringLength(5, ErrorMessage = "Must be of length 5")]
     public string? Confirmation { get; set; }
 
     [Description("The count of how many automatic reinvestments or rollovers are scheduled")]

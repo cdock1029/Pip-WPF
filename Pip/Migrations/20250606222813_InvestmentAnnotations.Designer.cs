@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Pip.UI.Data;
 
@@ -10,9 +11,11 @@ using Pip.UI.Data;
 namespace Pip.UI.Migrations
 {
     [DbContext(typeof(PipDbContext))]
-    partial class PipDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250606222813_InvestmentAnnotations")]
+    partial class InvestmentAnnotations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.5");

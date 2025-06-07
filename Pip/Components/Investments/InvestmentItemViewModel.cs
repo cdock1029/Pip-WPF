@@ -36,8 +36,8 @@ public partial class InvestmentItemViewModel : PipViewModel
 
     [Display(GroupName = "[Investment parameters]")]
     [DataType(DataType.Currency)]
-    [GenerateProperty]
     [Range(100, int.MaxValue)]
+    [GenerateProperty]
     private int _par;
 
     [Display(GroupName = "[Investment parameters]")]
