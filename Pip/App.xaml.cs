@@ -24,6 +24,7 @@ public partial class App
     protected override void OnStartup(StartupEventArgs e)
     {
         CompatibilitySettings.UseLightweightThemes = true;
+        ThemedWindow.UseNativeWindow = true;
         Theme.CachePaletteThemes = true;
         Theme.RegisterPredefinedPaletteThemes();
         ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11SystemColors.Name;
